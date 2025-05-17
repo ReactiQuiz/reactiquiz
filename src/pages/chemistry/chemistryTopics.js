@@ -18,5 +18,21 @@ export const chemistryTopics = [
     id: 'organic-basics',
     name: 'Organic Chemistry Basics',
     description: 'Introduction to hydrocarbons and functional groups.',
+  },  {
+    id: 'organic-basics',
+    name: 'Organic Chemistry Basics',
+    description: 'Introduction to hydrocarbons and functional groups.',
+  },  {
+    id: 'organic-basics',
+    name: 'Organic Chemistry Basics',
+    description: 'Introduction to hydrocarbons and functional groups.',
+  },  {
+    id: 'organic-basics',
+    name: 'Organic Chemistry Basics',
+    description: 'Introduction to hydrocarbons and functional groups.',
+  },  {
+    id: 'organic-basics',
+    name: 'Organic Chemistry Basics',
+    description: 'Introduction to hydrocarbons and functional groups.',
   },
 ];

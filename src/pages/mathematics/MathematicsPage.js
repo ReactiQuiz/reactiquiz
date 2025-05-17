@@ -1,11 +1,14 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardContent, CardActions, Button } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { mathematicsTopics } from './mathematicsTopics'; // Import topics
+import { Box, Typography, Grid } from '@mui/material';
+import { mathematicsTopics } from './mathematicsTopics';
+import TopicCard from '../../components/TopicCard'; // Adjust path if TopicCard is elsewhere
 
 function MathematicsPage() {
   const handleStartQuiz = (topicId) => {
+    // Placeholder for navigation or starting quiz logic
     console.log(`Start quiz for mathematics topic: ${topicId}`);
+    // Example navigation using useNavigate hook:
+    // navigate(`/mathematics/quiz/${topicId}`);
   };
 
   return (
@@ -18,28 +21,12 @@ function MathematicsPage() {
       </Typography>
       <Grid container spacing={3}>
         {mathematicsTopics.map((topic) => (
-          <Grid item xs={12} sm={6} md={4} key={topic.id}>
-            <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="div">
-                  {topic.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {topic.description}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="small"
-                  onClick={() => handleStartQuiz(topic.id)}
-                  // component={RouterLink}
-                  // to={`/mathematics/quiz/${topic.id}`}
-                >
-                  Start Quiz
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          <TopicCard
+            key={topic.id}
+            topic={topic}
+            onStartQuiz={handleStartQuiz}
+            // subjectBasePath="/mathematics" // Optional: if TopicCard handles navigation
+          />
         ))}
       </Grid>
     </Box>
