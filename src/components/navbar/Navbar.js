@@ -1,10 +1,7 @@
-// src/components/navbar/Navbar.js
 import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-// CssBaseline might be redundant here if handled well in App.js/index.js
-// import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -20,8 +17,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Link as RouterLink } from 'react-router-dom';
 
-import QuizIcon from '@mui/icons-material/Quiz';
+// Existing Icons
+import QuizIcon from '@mui/icons-material/Quiz'; // Or HomeIcon if '/' is more a home page
 import AssessmentIcon from '@mui/icons-material/Assessment';
+
+// --- Import New Icons for Subjects ---
+import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined'; // For Chemistry
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined'; // For Mathematics
+import BiotechOutlinedIcon from '@mui/icons-material/BiotechOutlined'; // For Biology
+import BoltOutlinedIcon from '@mui/icons-material/BoltOutlined'; // For Physics (alternative: HardwareIcon, PublicIcon for general science)
 
 const drawerWidth = 240;
 
@@ -65,8 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar, // This will now use the updated height from theme.js
+  ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
 }));
 
@@ -82,15 +85,20 @@ export default function NavbarLayout({ children }) {
     setOpen(false);
   };
 
+  // --- Updated Navigation Items ---
   const navItems = [
-    { text: 'Quiz', icon: <QuizIcon />, path: '/' },
+    { text: 'Home', icon: <QuizIcon />, path: '/' }, // Renamed "Quiz" to "Home" for clarity, assuming '/' is main quiz or landing
     { text: 'Results', icon: <AssessmentIcon />, path: '/results' },
+    { text: 'Chemistry', icon: <ScienceOutlinedIcon />, path: '/chemistry' },
+    { text: 'Physics', icon: <BoltOutlinedIcon />, path: '/physics' },
+    { text: 'Mathematics', icon: <CalculateOutlinedIcon />, path: '/mathematics' },
+    { text: 'Biology', icon: <BiotechOutlinedIcon />, path: '/biology' },
   ];
 
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={open}>
-        <Toolbar> {/* This Toolbar will also use the new height from theme.mixins.toolbar */}
+        <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -101,7 +109,7 @@ export default function NavbarLayout({ children }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            ReactiQuiz {/* <<< MODIFIED HERE */}
+            ReactiQuiz
           </Typography>
         </Toolbar>
       </AppBar>
@@ -118,7 +126,7 @@ export default function NavbarLayout({ children }) {
         anchor="left"
         open={open}
       >
-        <DrawerHeader> {/* This uses theme.mixins.toolbar for height */}
+        <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -138,7 +146,6 @@ export default function NavbarLayout({ children }) {
         </List>
       </Drawer>
       <Main open={open}>
-        {/* The Toolbar spacer in App.js will push content down by the new AppBar height */}
         {children}
       </Main>
     </Box>
