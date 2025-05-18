@@ -1,6 +1,8 @@
+// src/pages/quiz/QuizPage.js
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Typography, Button, RadioGroup, FormControlLabel, Radio, Paper, CircularProgress, Alert } from '@mui/material';
+import { Box, Typography, Button, Paper, CircularProgress, Alert } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import { lighten, darken, useTheme } from '@mui/material/styles';
 
 // --- Import Question Data ---
 import allChemistryQuestions from '../../questions/chemistry.json';
@@ -15,39 +17,113 @@ const subjectQuestionMap = {
   biology: allBiologyQuestions,
 };
 
-// Helper function to shuffle an array (Fisher-Yates shuffle)
+const subjectAccentColors = {
+  chemistry: '#e53935', // Red 600
+  physics: '#1e88e5',   // Blue 600
+  mathematics: '#fb8c00', // Orange 600
+  biology: '#43a047',   // Green 600
+  default: '#757575'     // Grey 600
+};
+
 const shuffleArray = (array) => {
-  let currentIndex = array.length,  randomIndex;
-  // While there remain elements to shuffle.
+  if (!array || !Array.isArray(array)) return [];
+  let newArray = [...array];
+  let currentIndex = newArray.length,  randomIndex;
   while (currentIndex !== 0) {
-    // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+    [newArray[currentIndex], newArray[randomIndex]] = [
+      newArray[randomIndex], newArray[currentIndex]];
   }
-  return array;
+  return newArray;
+};
+
+const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOptionId, accentColor }) => {
+  const theme = useTheme();
+  // console.log(`RENDERING QuestionItem ${question.id}. Received selectedOptionId: ${selectedOptionId}`);
+
+  return (
+    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3, width: '100%' }}>
+      <Typography variant="h6" gutterBottom component="div" sx={{ color: accentColor, fontWeight: 500 }}>
+        Question {questionNumber}:
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 2.5, color: theme.palette.text.primary }}>
+        {question.text}
+      </Typography>
+      <Box display="flex" flexDirection="column" gap={1.5}>
+        {question.options.map((option) => {
+          const isSelected = option.id === selectedOptionId;
+          // console.log(`  Q_ID ${question.id}, Option_ID ${option.id}: isSelected = ${isSelected} (selectedOptionId was ${selectedOptionId})`);
+          return (
+            <Button
+              key={option.id}
+              variant={isSelected ? "contained" : "outlined"}
+              fullWidth
+              onClick={() => onOptionSelect(question.id, option.id)}
+              sx={{
+                justifyContent: 'flex-start',
+                textAlign: 'left',
+                py: 1.5,
+                borderColor: accentColor,
+                color: isSelected
+                  ? theme.palette.getContrastText(accentColor)
+                  : 'white',
+                backgroundColor: isSelected
+                  ? accentColor
+                  : 'transparent',
+                '&:hover': {
+                  borderColor: accentColor,
+                  backgroundColor: isSelected
+                    ? darken(accentColor, 0.1)
+                    : lighten(accentColor, 0.9),
+                  color: isSelected
+                    ? theme.palette.getContrastText(darken(accentColor, 0.1))
+                    : 'white',
+                },
+                textTransform: 'none',
+                fontSize: '1rem',
+                lineHeight: 1.5,
+                fontWeight: isSelected ? 500 : 400,
+              }}
+            >
+              {option.text}
+            </Button>
+          );
+        })}
+      </Box>
+    </Paper>
+  );
 };
 
 
 function QuizPage() {
   const { subject, topicId } = useParams();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState('');
   const [userAnswers, setUserAnswers] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const currentAccentColor = subjectAccentColors[subject?.toLowerCase()] || subjectAccentColors.default;
+
   useEffect(() => {
     setIsLoading(true);
     setError('');
-    // console.log("QuizPage useEffect: Loading for subject =", subject, "topicId =", topicId);
+    console.log("EFFECT: Loading questions for subject =", subject, "topicId =", topicId);
+
+    if (!subject || !topicId) {
+        console.log("EFFECT: Subject or TopicId is missing, skipping load.");
+        setError("Subject or Topic ID is missing in the URL.");
+        setIsLoading(false);
+        setQuestions([]);
+        return;
+    }
 
     const allQuestionsForSubject = subjectQuestionMap[subject.toLowerCase()];
+    // console.log('EFFECT - All questions for subject:', allQuestionsForSubject ? allQuestionsForSubject.length : 'undefined');
+
 
     if (!allQuestionsForSubject) {
       setError(`Questions for subject "${subject}" not found.`);
@@ -57,45 +133,53 @@ function QuizPage() {
     }
 
     const topicQuestions = allQuestionsForSubject.filter(q => q.topicId === topicId);
-    // console.log("Filtered topicQuestions for", topicId + ":", topicQuestions.length, topicQuestions);
+    // console.log('EFFECT - Filtered topicQuestions for', topicId + ":", topicQuestions.length);
+
 
     if (topicQuestions.length === 0) {
       setError(`No questions found for topic "${topicId}" in subject "${subject}".`);
       setQuestions([]);
     } else {
-      // --- SHUFFLE AND SLICE ---
-      const shuffledQuestions = shuffleArray([...topicQuestions]); // Shuffle a copy of the array
-      const selectedQuestions = shuffledQuestions.slice(0, 10); // Take the first 10 (or fewer if less than 10)
+      const shuffledQuestions = shuffleArray([...topicQuestions]);
+      // console.log('EFFECT - Shuffled questions:', shuffledQuestions.length);
+      if (!shuffledQuestions) {
+          console.error("Error: shuffledQuestions is undefined after shuffle!");
+          setError("An error occurred while preparing questions.");
+          setQuestions([]);
+          setIsLoading(false);
+          return;
+      }
+      const selectedQuestions = shuffledQuestions.slice(0, 10);
       setQuestions(selectedQuestions);
-      // console.log("Setting questions state with", selectedQuestions.length, "questions after shuffle and slice.");
+      // console.log("EFFECT - Setting questions state with", selectedQuestions.length, "questions.");
     }
-    setCurrentQuestionIndex(0);
-    setSelectedOption('');
     setUserAnswers({});
     setIsLoading(false);
   }, [subject, topicId]);
 
-  const currentQuestion = questions[currentQuestionIndex];
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleOptionSelectForQuestion = (questionId, selectedOptionId) => {
+    console.log(`HANDLER: Option selected for Q_ID ${questionId}: Option_ID ${selectedOptionId}`);
+    setUserAnswers(prevAnswers => {
+      const newAnswers = {
+        ...prevAnswers,
+        [questionId]: selectedOptionId,
+      };
+      console.log('HANDLER - Updated userAnswers state:', newAnswers);
+      return newAnswers;
+    });
   };
 
-  const handleNextQuestion = useCallback(() => {
-    if (currentQuestion && selectedOption) {
-      setUserAnswers(prev => ({ ...prev, [currentQuestion.id]: selectedOption }));
-    }
-    setSelectedOption('');
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-    } else {
-      const finalAnswers = { ...userAnswers, ...(currentQuestion && selectedOption && { [currentQuestion.id]: selectedOption }) };
-      navigate('/results', { state: { answers: finalAnswers, questions: questions } });
-    }
-  }, [currentQuestionIndex, questions, selectedOption, currentQuestion, userAnswers, navigate]);
+  const handleSubmitQuiz = useCallback(() => {
+    console.log("HANDLER: Quiz Submitted! Answers:", userAnswers);
+    navigate('/results', { state: { answers: userAnswers, questions: questions, subjectAccentColor: currentAccentColor } });
+  }, [userAnswers, questions, navigate, currentAccentColor]); // Added navigate and currentAccentColor as per eslint or usage
+
+  const allQuestionsAnswered = () => {
+    if (questions.length === 0) return false;
+    return questions.every(q => userAnswers.hasOwnProperty(q.id) && userAnswers[q.id] !== '' && userAnswers[q.id] !== undefined);
+  };
 
 
-  // ... (rest of the component: isLoading, error, rendering JSX remains the same)
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
@@ -106,7 +190,7 @@ function QuizPage() {
 
   if (error) {
     return (
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto' }}>
         <Alert severity="error">{error}</Alert>
         <Button variant="outlined" onClick={() => navigate('/')} sx={{ mt: 2 }}>
           Back to Home
@@ -115,10 +199,11 @@ function QuizPage() {
     );
   }
 
-  if (!currentQuestion) {
-    return (
-      <Box sx={{ p: 3 }}>
-        <Typography>No questions available for this topic, or quiz already completed.</Typography>
+  // Add a check here before trying to render questions
+  if (!isLoading && questions.length === 0 && !error) {
+     return (
+      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto' }}>
+        <Typography>No questions are currently available for this topic. Please try another.</Typography>
          <Button variant="outlined" onClick={() => navigate('/')} sx={{ mt: 2 }}>
           Back to Home
         </Button>
@@ -126,41 +211,43 @@ function QuizPage() {
     );
   }
 
-  return (
-    <Box sx={{ p: 3, maxWidth: '700px', margin: 'auto' }}>
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h5" gutterBottom component="div">
-          Question {currentQuestionIndex + 1} of {questions.length}
-        </Typography>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          {currentQuestion.text}
-        </Typography>
-        <RadioGroup
-          aria-label="quiz-option"
-          name="quiz-option-group"
-          value={selectedOption}
-          onChange={handleOptionChange}
-        >
-          {currentQuestion.options.map((option) => (
-            <FormControlLabel
-              key={option.id}
-              value={option.id}
-              control={<Radio />}
-              label={option.text}
-              sx={{ mb: 1 }}
-            />
-          ))}
-        </RadioGroup>
-      </Paper>
 
-      <Box display="flex" justifyContent="flex-end">
+  return (
+    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}>
+      <Typography variant="h4" gutterBottom component="div" sx={{ mb: 3, textAlign: 'center', color: currentAccentColor, fontWeight: 'bold' }}>
+        {/* Safety check for subject and topicId before using string methods */}
+        {subject && topicId
+          ? `${subject.charAt(0).toUpperCase() + subject.slice(1)} Quiz - ${topicId.replace(/-/g, ' ')}`
+          : 'Quiz'}
+      </Typography>
+
+      {questions.map((question, index) => (
+        <QuestionItem
+          key={question.id}
+          question={question}
+          questionNumber={index + 1}
+          selectedOptionId={userAnswers[question.id]} // Pass the selected option for this question
+          onOptionSelect={handleOptionSelectForQuestion}
+          accentColor={currentAccentColor}
+        />
+      ))}
+
+      <Box display="flex" justifyContent="center" sx={{ mt: 3, mb: 4 }}>
         <Button
           variant="contained"
-          color="primary"
-          onClick={handleNextQuestion}
-          disabled={!selectedOption}
+          size="large"
+          onClick={handleSubmitQuiz}
+          disabled={!allQuestionsAnswered()}
+          sx={{
+            backgroundColor: currentAccentColor,
+            color: theme.palette.getContrastText(currentAccentColor),
+            '&:hover': {
+              backgroundColor: darken(currentAccentColor, 0.15),
+            },
+            minWidth: '200px',
+          }}
         >
-          {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+          Submit Quiz
         </Button>
       </Box>
     </Box>
