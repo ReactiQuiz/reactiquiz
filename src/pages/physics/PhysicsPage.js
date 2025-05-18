@@ -1,14 +1,13 @@
+// src/pages/physics/PhysicsPage.js
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { physicsTopics } from './physicsTopics';
-import TopicCard from '../../components/TopicCard'; // Adjust path if TopicCard is elsewhere
+import TopicCard from '../../components/TopicCard';
 
 function PhysicsPage() {
   const handleStartQuiz = (topicId) => {
-    // Placeholder for navigation or starting quiz logic
     console.log(`Start quiz for physics topic: ${topicId}`);
-    // Example navigation using useNavigate hook:
-    // navigate(`/physics/quiz/${topicId}`);
+    // Future: navigate(`/physics/quiz/${topicId}`);
   };
 
   return (
@@ -19,16 +18,16 @@ function PhysicsPage() {
       <Typography paragraph>
         Select a topic below to start your Physics quiz.
       </Typography>
-      <Grid container spacing={3}>
+      <Box>
         {physicsTopics.map((topic) => (
-          <TopicCard
-            key={topic.id}
-            topic={topic}
-            onStartQuiz={handleStartQuiz}
-            // subjectBasePath="/physics" // Optional: if TopicCard handles navigation
-          />
+          <Box key={topic.id} sx={{ mb: 2 }}> {/* Wrapper Box for spacing */}
+            <TopicCard
+              topic={topic}
+              onStartQuiz={handleStartQuiz}
+            />
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

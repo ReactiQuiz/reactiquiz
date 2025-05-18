@@ -1,16 +1,13 @@
+// src/pages/chemistry/ChemistryPage.js
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
-// No longer need Card, CardContent, CardActions, Button directly here if TopicCard handles them
-// import { Link as RouterLink } from 'react-router-dom'; // Only if parent page constructs link
+import { Box, Typography } from '@mui/material';
 import { chemistryTopics } from './chemistryTopics';
-import TopicCard from '../../components/TopicCard'; // Adjust path if TopicCard is elsewhere
+import TopicCard from '../../components/TopicCard';
 
 function ChemistryPage() {
   const handleStartQuiz = (topicId) => {
-    // Placeholder for navigation or starting quiz logic
     console.log(`Start quiz for chemistry topic: ${topicId}`);
-    // Example navigation using useNavigate hook (would be defined in this component):
-    // navigate(`/chemistry/quiz/${topicId}`);
+    // Future: navigate(`/chemistry/quiz/${topicId}`);
   };
 
   return (
@@ -21,17 +18,16 @@ function ChemistryPage() {
       <Typography paragraph>
         Select a topic below to start your Chemistry quiz.
       </Typography>
-      <Grid container spacing={3}> {/* spacing between cards */}
+      <Box>
         {chemistryTopics.map((topic) => (
-          // The TopicCard component itself is a Grid item
-          <TopicCard
-            key={topic.id}
-            topic={topic}
-            onStartQuiz={handleStartQuiz}
-            // subjectBasePath="/chemistry" // Pass if TopicCard handles navigation directly
-          />
+          <Box key={topic.id} sx={{ mb: 2 }}> {/* Wrapper Box for spacing */}
+            <TopicCard
+              topic={topic}
+              onStartQuiz={handleStartQuiz}
+            />
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

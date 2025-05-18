@@ -1,3 +1,4 @@
+// src/pages/chemistry/chemistryTopics.js
 export const chemistryTopics = [
   {
     id: 'periodic-table',
@@ -7,32 +8,31 @@ export const chemistryTopics = [
   {
     id: 'chemical-bonding',
     name: 'Chemical Bonding',
-    description: 'Ionic, covalent, and metallic bonds.',
+    description: 'Ionic, covalent, and metallic bonds, VSEPR theory.',
   },
   {
     id: 'stoichiometry',
     name: 'Stoichiometry',
-    description: 'Mole concept and chemical calculations.',
+    description: 'Mole concept, empirical formulas, and chemical calculations.',
   },
   {
     id: 'organic-basics',
     name: 'Organic Chemistry Basics',
     description: 'Introduction to hydrocarbons and functional groups.',
-  },  {
-    id: 'organic-basics',
-    name: 'Organic Chemistry Basics',
-    description: 'Introduction to hydrocarbons and functional groups.',
-  },  {
-    id: 'organic-basics',
-    name: 'Organic Chemistry Basics',
-    description: 'Introduction to hydrocarbons and functional groups.',
-  },  {
-    id: 'organic-basics',
-    name: 'Organic Chemistry Basics',
-    description: 'Introduction to hydrocarbons and functional groups.',
-  },  {
-    id: 'organic-basics',
-    name: 'Organic Chemistry Basics',
-    description: 'Introduction to hydrocarbons and functional groups.',
+  },
+  {
+    id: 'acids-bases',
+    name: 'Acids and Bases',
+    description: 'Definitions, pH scale, and common reactions.',
+  },
+  {
+    id: 'thermo-chem',
+    name: 'Thermochemistry',
+    description: 'Enthalpy, entropy, and Gibbs free energy basics.',
+  },
+  {
+    id: 'redox-reactions',
+    name: 'Redox Reactions',
+    description: 'Oxidation states, balancing redox equations.',
   },
 ];

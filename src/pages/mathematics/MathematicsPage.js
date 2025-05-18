@@ -1,14 +1,13 @@
+// src/pages/mathematics/MathematicsPage.js
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { mathematicsTopics } from './mathematicsTopics';
-import TopicCard from '../../components/TopicCard'; // Adjust path if TopicCard is elsewhere
+import TopicCard from '../../components/TopicCard';
 
 function MathematicsPage() {
   const handleStartQuiz = (topicId) => {
-    // Placeholder for navigation or starting quiz logic
     console.log(`Start quiz for mathematics topic: ${topicId}`);
-    // Example navigation using useNavigate hook:
-    // navigate(`/mathematics/quiz/${topicId}`);
+    // Future: navigate(`/mathematics/quiz/${topicId}`);
   };
 
   return (
@@ -19,16 +18,16 @@ function MathematicsPage() {
       <Typography paragraph>
         Select a topic below to start your Mathematics quiz.
       </Typography>
-      <Grid container spacing={3}>
+      <Box>
         {mathematicsTopics.map((topic) => (
-          <TopicCard
-            key={topic.id}
-            topic={topic}
-            onStartQuiz={handleStartQuiz}
-            // subjectBasePath="/mathematics" // Optional: if TopicCard handles navigation
-          />
+          <Box key={topic.id} sx={{ mb: 2 }}> {/* Wrapper Box for spacing */}
+            <TopicCard
+              topic={topic}
+              onStartQuiz={handleStartQuiz}
+            />
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

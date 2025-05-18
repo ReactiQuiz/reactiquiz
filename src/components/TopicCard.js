@@ -1,59 +1,89 @@
+// src/components/TopicCard.js
 import React from 'react';
-import { Grid, Card, CardContent, CardActions, Button, Typography } from '@mui/material';
+import { Card, CardContent, CardActions, Button, Typography } from '@mui/material'; // Removed Box as it's not strictly needed here now
 
 function TopicCard({ topic, onStartQuiz }) {
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Card
+    <Card
+      sx={{
+        border: '1px solid white',
+        backgroundColor: 'background.paper',
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: { sm: 'center' },
+        minHeight: { xs: 'auto', sm: '120px' }, // Adjusted minHeight for sm+
+        '&:hover': {
+          boxShadow: (theme) => theme.shadows[4],
+          transition: 'box-shadow 0.2s ease-in-out',
+        }
+      }}
+    >
+      {/* Content Area (Title and Description) */}
+      <CardContent
         sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          border: '1px solid white',
-          backgroundColor: 'background.paper',
-          // Optional hover effect (can be kept or removed)
-          '&:hover': {
-            boxShadow: (theme) => theme.shadows[4],
-            // transform: 'scale(1.02)', // Keep if you like the zoom
-            transition: 'box-shadow 0.2s ease-in-out', // Removed transform transition if zoom is removed
-          }
+          flexGrow: 1,
+          overflow: 'hidden',
+          py: { xs: 1.5, sm: 2 },
+          px: 2,
         }}
       >
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ textAlign: 'center', mb: 1.5 }}
-          >
-            {topic.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
-            {topic.description}
-          </Typography>
-        </CardContent>
-        <CardActions
+        <Typography
+          variant="h6"
+          component="div"
           sx={{
-            justifyContent: 'center',
-            p: 1.5,
+            textAlign: 'left',
+            mb: 0.5,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => onStartQuiz(topic.id)}
-            sx={{
-              width: '90%',
-              fontWeight: 'bold', // --- MAKE BUTTON TEXT BOLD ---
-              // py: 1, // Optional: for taller button
-            }}
-          >
-            Start Quiz
-          </Button>
-        </CardActions>
-      </Card>
-    </Grid>
+          {topic.name}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            textAlign: 'left',
+            display: '-webkit-box',
+            '-webkit-line-clamp': '2',
+            '-webkit-box-orient': 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {topic.description}
+        </Typography>
+      </CardContent>
+
+      {/* Actions Area (Button) */}
+      <CardActions
+        sx={{
+          justifyContent: 'flex-start', // Align button to the left
+          flexShrink: 0,
+          width: { xs: '100%', sm: '25%' }, // Button area takes 25% on sm+
+          p: { xs: 1.5, sm: 2 },
+          pt: { xs: 1, sm: 2 }, // Adjusted top padding for xs
+          // Center button vertically within this action area if CardActions height is more than button
+          display: 'flex',
+          alignItems: 'center', // Vertically center the button in this flex container
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onStartQuiz(topic.id)}
+          sx={{
+            fontWeight: 'bold',
+            width: '100%', // Button takes full width of its CardActions parent
+            // On xs, CardActions is 100% wide, so button is 100% of that.
+            // On sm+, CardActions is 25% wide, so button is 100% of that 25%.
+          }}
+        >
+          Start Quiz
+        </Button>
+      </CardActions>
+    </Card>
   );
 }
 
