@@ -1,18 +1,22 @@
-// src/pages/mathematics/MathematicsPage.js
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { mathematicsTopics } from './mathematicsTopics';
 import TopicCard from '../../components/TopicCard';
 
+const MATHEMATICS_ACCENT_COLOR = '#f57c00'; // Orange 700
+
 function MathematicsPage() {
   const handleStartQuiz = (topicId) => {
     console.log(`Start quiz for mathematics topic: ${topicId}`);
-    // Future: navigate(`/mathematics/quiz/${topicId}`);
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ color: MATHEMATICS_ACCENT_COLOR }} // Apply orange color to the title
+      >
         Mathematics Quiz Topics
       </Typography>
       <Typography paragraph>
@@ -20,10 +24,12 @@ function MathematicsPage() {
       </Typography>
       <Box>
         {mathematicsTopics.map((topic) => (
-          <Box key={topic.id} sx={{ mb: 2 }}> {/* Wrapper Box for spacing */}
+          <Box key={topic.id} sx={{ mb: 2 }}>
             <TopicCard
               topic={topic}
               onStartQuiz={handleStartQuiz}
+              accentColor={MATHEMATICS_ACCENT_COLOR} // Pass the accent color
+              subjectBasePath="mathematics"
             />
           </Box>
         ))}

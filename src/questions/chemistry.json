@@ -1,0 +1,365 @@
+[
+  {
+    "id": "chem_pt_q1",
+    "topicId": "periodic-table",
+    "text": "Which element is a halogen in Period 3?",
+    "options": [
+      { "id": "a", "text": "Sodium (Na)" },
+      { "id": "b", "text": "Magnesium (Mg)" },
+      { "id": "c", "text": "Chlorine (Cl)" },
+      { "id": "d", "text": "Argon (Ar)" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 12,
+    "explanation": "Chlorine (Cl) is in Group 17 (halogens) and Period 3."
+  },
+  {
+    "id": "chem_pt_q2",
+    "topicId": "periodic-table",
+    "text": "What is the general trend for atomic radius across a period (left to right)?",
+    "options": [
+      { "id": "a", "text": "Increases" },
+      { "id": "b", "text": "Decreases" },
+      { "id": "c", "text": "Remains the same" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 15,
+    "explanation": "Atomic radius generally decreases due to increasing nuclear charge."
+  },
+  {
+    "id": "chem_pt_q3",
+    "topicId": "periodic-table",
+    "text": "Elements in Group 2 of the periodic table are known as:",
+    "options": [
+      { "id": "a", "text": "Alkali Metals" },
+      { "id": "b", "text": "Alkaline Earth Metals" },
+      { "id": "c", "text": "Halogens" },
+      { "id": "d", "text": "Noble Gases" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 11,
+    "explanation": "Atomic radius generally decreases due to increasing nuclear charge."
+  },
+  {
+    "id": "chem_pt_q4",
+    "topicId": "periodic-table",
+    "text": "Which property generally increases down a group in the periodic table?",
+    "options": [
+      { "id": "a", "text": "Ionization Energy" },
+      { "id": "b", "text": "Electronegativity" },
+      { "id": "c", "text": "Atomic Radius" },
+      { "id": "d", "text": "Electron Affinity" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 16,
+    "explanation": "Atomic radius increases down a group due to the addition of electron shells."
+  },
+  {
+    "id": "chem_pt_q5",
+    "topicId": "periodic-table",
+    "text": "Which block of the periodic table contains the transition metals?",
+    "options": [
+      { "id": "a", "text": "s-block" },
+      { "id": "b", "text": "p-block" },
+      { "id": "c", "text": "d-block" },
+      { "id": "d", "text": "f-block" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 13
+  },
+  {
+    "id": "chem_cb_q1",
+    "topicId": "chemical-bonding",
+    "text": "Which type of bond involves the sharing of electrons between two atoms?",
+    "options": [
+      { "id": "a", "text": "Ionic bond" },
+      { "id": "b", "text": "Covalent bond" },
+      { "id": "c", "text": "Metallic bond" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 11
+  },
+  {
+    "id": "chem_cb_q2",
+    "topicId": "chemical-bonding",
+    "text": "An ionic bond is typically formed between:",
+    "options": [
+      { "id": "a", "text": "Two nonmetals" },
+      { "id": "b", "text": "A metal and a nonmetal" },
+      { "id": "c", "text": "Two metals" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 12,
+    "explanation": "Ionic bonds involve the transfer of electrons from a metal to a nonmetal."
+  },
+  {
+    "id": "chem_cb_q3",
+    "topicId": "chemical-bonding",
+    "text": "What is the shape of a methane (CH₄) molecule according to VSEPR theory?",
+    "options": [
+      { "id": "a", "text": "Linear" },
+      { "id": "b", "text": "Trigonal planar" },
+      { "id": "c", "text": "Tetrahedral" },
+      { "id": "d", "text": "Bent" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 16
+  },
+  {
+    "id": "chem_cb_q4",
+    "topicId": "chemical-bonding",
+    "text": "Which of the following molecules exhibits hydrogen bonding?",
+    "options": [
+      { "id": "a", "text": "CH₄ (Methane)" },
+      { "id": "b", "text": "H₂S (Hydrogen Sulfide)" },
+      { "id": "c", "text": "NH₃ (Ammonia)" },
+      { "id": "d", "text": "HCl (Hydrogen Chloride)" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 17,
+    "explanation": "Hydrogen bonding occurs when hydrogen is bonded to N, O, or F."
+  },
+  {
+    "id": "chem_cb_q5",
+    "topicId": "chemical-bonding",
+    "text": "A double bond consists of:",
+    "options": [
+      { "id": "a", "text": "One sigma bond" },
+      { "id": "b", "text": "One pi bond" },
+      { "id": "c", "text": "One sigma bond and one pi bond" },
+      { "id": "d", "text": "Two pi bonds" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 15
+  },
+  {
+    "id": "chem_st_q1",
+    "topicId": "stoichiometry",
+    "text": "How many moles are there in 44 grams of CO₂? (Atomic masses: C=12, O=16)",
+    "options": [
+      { "id": "a", "text": "0.5 moles" },
+      { "id": "b", "text": "1 mole" },
+      { "id": "c", "text": "2 moles" },
+      { "id": "d", "text": "44 moles" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 14,
+    "explanation": "Molar mass of CO₂ = 12 + (2*16) = 44 g/mol. Moles = mass / molar mass = 44g / 44g/mol = 1 mole."
+  },
+  {
+    "id": "chem_st_q2",
+    "topicId": "stoichiometry",
+    "text": "Avogadro's number represents the number of:",
+    "options": [
+      { "id": "a", "text": "Grams in one mole of a substance" },
+      { "id": "b", "text": "Milliliters in one liter" },
+      { "id": "c", "text": "Particles (atoms, molecules, ions) in one mole of a substance" },
+      { "id": "d", "text": "Neutrons in the nucleus of an atom" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 12
+  },
+  {
+    "id": "chem_st_q3",
+    "topicId": "stoichiometry",
+    "text": "In the reaction 2H₂ + O₂ → 2H₂O, if 4 moles of H₂ react completely, how many moles of H₂O are formed?",
+    "options": [
+      { "id": "a", "text": "2 moles" },
+      { "id": "b", "text": "4 moles" },
+      { "id": "c", "text": "6 moles" },
+      { "id": "d", "text": "8 moles" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 15,
+    "explanation": "The mole ratio of H₂ to H₂O is 2:2 or 1:1. So, 4 moles of H₂ will produce 4 moles of H₂O."
+  },
+  {
+    "id": "chem_st_q4",
+    "topicId": "stoichiometry",
+    "text": "The empirical formula of a compound is CH₂O and its molar mass is 180 g/mol. What is its molecular formula? (Atomic masses: C=12, H=1, O=16)",
+    "options": [
+      { "id": "a", "text": "C₃H₆O₃" },
+      { "id": "b", "text": "C₆H₁₂O₆" },
+      { "id": "c", "text": "C₂H₄O₂" },
+      { "id": "d", "text": "CH₂O" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 18,
+    "explanation": "Empirical formula mass of CH₂O = 12+2+16 = 30 g/mol. n = Molar mass / Empirical formula mass = 180/30 = 6. Molecular formula = (CH₂O)₆ = C₆H₁₂O₆."
+  },
+  {
+    "id": "chem_oc_q1",
+    "topicId": "organic-basics",
+    "text": "Which of the following is the simplest alkane?",
+    "options": [
+      { "id": "a", "text": "Ethene" },
+      { "id": "b", "text": "Methane" },
+      { "id": "c", "text": "Propane" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 10
+  },
+  {
+    "id": "chem_oc_q2",
+    "topicId": "organic-basics",
+    "text": "The general formula for alkanes is:",
+    "options": [
+      { "id": "a", "text": "CnH2n" },
+      { "id": "b", "text": "CnH2n+2" },
+      { "id": "c", "text": "CnH2n-2" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 13
+  },
+  {
+    "id": "chem_oc_q3",
+    "topicId": "organic-basics",
+    "text": "Which functional group characterizes alcohols?",
+    "options": [
+      { "id": "a", "text": "-COOH (Carboxyl)" },
+      { "id": "b", "text": "-CHO (Aldehyde)" },
+      { "id": "c", "text": "-OH (Hydroxyl)" },
+      { "id": "d", "text": "-NH₂ (Amino)" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 12
+  },
+  {
+    "id": "chem_oc_q4",
+    "topicId": "organic-basics",
+    "text": "Isomers are compounds that have:",
+    "options": [
+      { "id": "a", "text": "The same molecular formula but different structural formulas" },
+      { "id": "b", "text": "The same structural formula but different molecular formulas" },
+      { "id": "c", "text": "Different molecular formulas and different structural formulas" }
+    ],
+    "correctOptionId": "a",
+    "difficulty": 14
+  },
+  {
+    "id": "chem_ab_q1",
+    "topicId": "acids-bases",
+    "text": "What is the pH of a neutral solution at 25°C?",
+    "options": [
+      { "id": "a", "text": "0" },
+      { "id": "b", "text": "7" },
+      { "id": "c", "text": "14" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 10
+  },
+  {
+    "id": "chem_ab_q2",
+    "topicId": "acids-bases",
+    "text": "According to the Brønsted-Lowry definition, an acid is a substance that:",
+    "options": [
+      { "id": "a", "text": "Donates an electron pair" },
+      { "id": "b", "text": "Accepts a proton (H⁺ ion)" },
+      { "id": "c", "text": "Donates a proton (H⁺ ion)" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 13
+  },
+  {
+    "id": "chem_ab_q3",
+    "topicId": "acids-bases",
+    "text": "A solution with a pH of 3 is considered:",
+    "options": [
+      { "id": "a", "text": "Strongly acidic" },
+      { "id": "b", "text": "Weakly acidic" },
+      { "id": "c", "text": "Neutral" },
+      { "id": "d", "text": "Weakly basic" }
+    ],
+    "correctOptionId": "a",
+    "difficulty": 11
+  },
+  {
+    "id": "chem_ab_q4",
+    "topicId": "acids-bases",
+    "text": "Which of the following is a common strong acid?",
+    "options": [
+      { "id": "a", "text": "CH₃COOH (Acetic acid)" },
+      { "id": "b", "text": "H₂CO₃ (Carbonic acid)" },
+      { "id": "c", "text": "HCl (Hydrochloric acid)" },
+      { "id": "d", "text": "NH₄OH (Ammonium hydroxide)" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 14
+  },
+  {
+    "id": "chem_tc_q1",
+    "topicId": "thermo-chem",
+    "text": "A reaction that releases heat to its surroundings is called:",
+    "options": [
+      { "id": "a", "text": "Endothermic" },
+      { "id": "b", "text": "Exothermic" },
+      { "id": "c", "text": "Isothermal" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 11
+  },
+  {
+    "id": "chem_tc_q2",
+    "topicId": "thermo-chem",
+    "text": "Enthalpy change (ΔH) is negative for which type of reaction?",
+    "options": [
+      { "id": "a", "text": "Endothermic" },
+      { "id": "b", "text": "Exothermic" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 13
+  },
+  {
+    "id": "chem_tc_q3",
+    "topicId": "thermo-chem",
+    "text": "The measure of disorder or randomness in a system is known as:",
+    "options": [
+      { "id": "a", "text": "Enthalpy" },
+      { "id": "b", "text": "Entropy" },
+      { "id": "c", "text": "Gibbs free energy" },
+      { "id": "d", "text": "Activation energy" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 15
+  },
+  {
+    "id": "chem_rr_q1",
+    "topicId": "redox-reactions",
+    "text": "In a redox reaction, oxidation involves:",
+    "options": [
+      { "id": "a", "text": "Gain of electrons" },
+      { "id": "b", "text": "Loss of electrons" },
+      { "id": "c", "text": "Gain of protons" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 12,
+    "explanation": "OIL RIG: Oxidation Is Loss, Reduction Is Gain (of electrons)."
+  },
+  {
+    "id": "chem_rr_q2",
+    "topicId": "redox-reactions",
+    "text": "What is the oxidation state of manganese (Mn) in KMnO₄?",
+    "options": [
+      { "id": "a", "text": "+2" },
+      { "id": "b", "text": "+4" },
+      { "id": "c", "text": "+7" },
+      { "id": "d", "text": "-1" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 17,
+    "explanation": "K is +1, O is -2. So, +1 + Mn + 4*(-2) = 0  => Mn - 7 = 0 => Mn = +7."
+  },
+  {
+    "id": "chem_rr_q3",
+    "topicId": "redox-reactions",
+    "text": "A substance that causes another substance to be reduced is called a(n):",
+    "options": [
+      { "id": "a", "text": "Oxidizing agent" },
+      { "id": "b", "text": "Reducing agent" },
+      { "id": "c", "text": "Catalyst" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 16,
+    "explanation": "A reducing agent itself gets oxidized while causing reduction."
+  }
+]

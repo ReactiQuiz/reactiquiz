@@ -12,6 +12,7 @@ import ChemistryPage from './pages/chemistry/ChemistryPage'; // Updated path
 import PhysicsPage from './pages/physics/PhysicsPage';     // Updated path
 import MathematicsPage from './pages/mathematics/MathematicsPage'; // Updated path
 import BiologyPage from './pages/biology/BiologyPage';     // Updated path
+import QuizPage from './pages/quiz/QuizPage'; // <<< IMPORT THE NEW QUIZ PAGE
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/physics" element={<PhysicsPage />} />
             <Route path="/mathematics" element={<MathematicsPage />} />
             <Route path="/biology" element={<BiologyPage />} />
+            <Route path="/quiz/:subject/:topicId" element={<QuizPage />} />
           </Routes>
         </NavbarLayout>
       </Router>

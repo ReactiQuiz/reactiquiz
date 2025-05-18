@@ -1,0 +1,63 @@
+[
+  {
+    "id": "math_q1",
+    "topicId": "algebra",
+    "text": "Solve for x: 3x - 7 = 14",
+    "options": [
+      { "id": "a", "text": "x = 7" },
+      { "id": "b", "text": "x = 3" },
+      { "id": "c", "text": "x = 21/3" }
+    ],
+    "correctOptionId": "a",
+    "difficulty": 11,
+    "explanation": "3x = 14 + 7 => 3x = 21 => x = 7."
+  },
+  {
+    "id": "math_q2",
+    "topicId": "geometry",
+    "text": "What is the sum of angles in a triangle?",
+    "options": [
+      { "id": "a", "text": "90 degrees" },
+      { "id": "b", "text": "180 degrees" },
+      { "id": "c", "text": "360 degrees" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 10
+  },
+  {
+    "id": "math_q3",
+    "topicId": "calculus-intro",
+    "text": "The derivative of x² with respect to x is:",
+    "options": [
+      { "id": "a", "text": "x" },
+      { "id": "b", "text": "2x" },
+      { "id": "c", "text": "x³/3" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 15
+  },
+  {
+    "id": "math_q4",
+    "topicId": "probability-stats",
+    "text": "What is the probability of flipping a fair coin and getting heads?",
+    "options": [
+      { "id": "a", "text": "0" },
+      { "id": "b", "text": "0.5" },
+      { "id": "c", "text": "1" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 10
+  },
+  {
+    "id": "math_q5",
+    "topicId": "trigonometry",
+    "text": "What is sin(90 degrees)?",
+    "options": [
+      { "id": "a", "text": "0" },
+      { "id": "b", "text": "0.5" },
+      { "id": "c", "text": "1" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 13
+  }
+]

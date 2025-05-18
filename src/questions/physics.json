@@ -1,0 +1,65 @@
+[
+  {
+    "id": "phy_q1",
+    "topicId": "mechanics",
+    "text": "A car accelerates from rest to 20 m/s in 5 seconds. What is its acceleration?",
+    "options": [
+      { "id": "a", "text": "2 m/s²" },
+      { "id": "b", "text": "4 m/s²" },
+      { "id": "c", "text": "5 m/s²" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 12,
+    "explanation": "a = (vf - vi) / t = (20 - 0) / 5 = 4 m/s²."
+  },
+  {
+    "id": "phy_q2",
+    "topicId": "mechanics",
+    "text": "What is the unit of Force in the SI system?",
+    "options": [
+      { "id": "a", "text": "Joule (J)" },
+      { "id": "b", "text": "Watt (W)" },
+      { "id": "c", "text": "Newton (N)" },
+      { "id": "d", "text": "Pascal (Pa)" }
+    ],
+    "correctOptionId": "c",
+    "difficulty": 10
+  },
+  {
+    "id": "phy_q3",
+    "topicId": "electromagnetism",
+    "text": "Ohm's Law is typically expressed as:",
+    "options": [
+      { "id": "a", "text": "V = IR" },
+      { "id": "b", "text": "P = IV" },
+      { "id": "c", "text": "F = ma" }
+    ],
+    "correctOptionId": "a",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_q4",
+    "topicId": "optics",
+    "text": "The phenomenon of light bending as it passes from one medium to another is called:",
+    "options": [
+      { "id": "a", "text": "Reflection" },
+      { "id": "b", "text": "Refraction" },
+      { "id": "c", "text": "Diffraction" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_q5",
+    "topicId": "modern-physics",
+    "text": "Who proposed the theory of general relativity?",
+    "options": [
+      { "id": "a", "text": "Isaac Newton" },
+      { "id": "b", "text": "Albert Einstein" },
+      { "id": "c", "text": "Niels Bohr" },
+      { "id": "d", "text": "Max Planck" }
+    ],
+    "correctOptionId": "b",
+    "difficulty": 16
+  }
+]
