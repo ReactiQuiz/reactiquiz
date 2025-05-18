@@ -35,4 +35,24 @@ export const chemistryTopics = [
     name: 'Redox Reactions',
     description: 'Oxidation states, balancing redox equations.',
   },
+  {
+    id: 'solutions',
+    name: 'Solutions & Mixtures',
+    description: 'Solubility, concentration, and colligative properties.',
+  },
+  {
+    id: 'kinetics',
+    name: 'Chemical Kinetics',
+    description: 'Reaction rates, rate laws, and factors affecting rates.',
+  },
+  {
+    id: 'equilibrium',
+    name: 'Chemical Equilibrium',
+    description: 'Equilibrium constants and Le Chatelier\'s Principle.',
+  },
+  {
+    id: 'nuclear-chemistry',
+    name: 'Nuclear Chemistry',
+    description: 'Radioactivity, nuclear reactions, and half-life.',
+  }
 ];

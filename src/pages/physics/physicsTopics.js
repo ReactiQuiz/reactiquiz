@@ -1,4 +1,3 @@
-// src/pages/physics/physicsTopics.js
 export const physicsTopics = [
   {
     id: 'mechanics',
@@ -35,4 +34,14 @@ export const physicsTopics = [
     name: 'Fluid Mechanics',
     description: 'Pressure, buoyancy, and fluid dynamics principles.',
   },
+  {
+    id: 'nuclear-physics',
+    name: 'Nuclear Physics',
+    description: 'Structure of the nucleus, radioactivity, fission, and fusion.',
+  },
+  {
+    id: 'astrophysics-basics',
+    name: 'Astrophysics Basics',
+    description: 'Stars, galaxies, and basic cosmological concepts.',
+  }
 ];
