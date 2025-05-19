@@ -1,4 +1,3 @@
-// src/pages/mathematics/mathematicsTopics.js
 export const mathematicsTopics = [
   {
     id: 'algebra',
@@ -35,4 +34,14 @@ export const mathematicsTopics = [
     name: 'Number Theory Basics',
     description: 'Divisibility, prime numbers, and modular arithmetic.',
   },
+  {
+    id: 'discrete-math',
+    name: 'Discrete Mathematics',
+    description: 'Set theory, logic, combinatorics, and graph theory basics.',
+  },
+  {
+    id: 'logic-reasoning',
+    name: 'Logic and Reasoning',
+    description: 'Propositional logic, predicates, and logical fallacies.',
+  }
 ];

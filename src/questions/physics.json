@@ -1,75 +1,25 @@
 [
   {
-    "id": "phy_q1",
-    "topicId": "mechanics",
-    "text": "A car accelerates from rest to 20 m/s in 5 seconds. What is its acceleration?",
-    "options": [
-      { "id": "a", "text": "2 m/s²" },
-      { "id": "b", "text": "4 m/s²" },
-      { "id": "c", "text": "5 m/s²" }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 12,
-    "explanation": "a = (vf - vi) / t = (20 - 0) / 5 = 4 m/s²."
-  },
-  {
-    "id": "phy_q2",
-    "topicId": "mechanics",
-    "text": "What is the unit of Force in the SI system?",
-    "options": [
-      { "id": "a", "text": "Joule (J)" },
-      { "id": "b", "text": "Watt (W)" },
-      { "id": "c", "text": "Newton (N)" },
-      { "id": "d", "text": "Pascal (Pa)" }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_q3",
-    "topicId": "electromagnetism",
-    "text": "Ohm's Law is typically expressed as:",
-    "options": [
-      { "id": "a", "text": "V = IR" },
-      { "id": "b", "text": "P = IV" },
-      { "id": "c", "text": "F = ma" }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_q4",
-    "topicId": "optics",
-    "text": "The phenomenon of light bending as it passes from one medium to another is called:",
-    "options": [
-      { "id": "a", "text": "Reflection" },
-      { "id": "b", "text": "Refraction" },
-      { "id": "c", "text": "Diffraction" }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_q5",
-    "topicId": "modern-physics",
-    "text": "Who proposed the theory of general relativity?",
-    "options": [
-      { "id": "a", "text": "Isaac Newton" },
-      { "id": "b", "text": "Albert Einstein" },
-      { "id": "c", "text": "Niels Bohr" },
-      { "id": "d", "text": "Max Planck" }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16
-  }, {
     "id": "phy_mech_q1",
     "topicId": "mechanics",
     "text": "A car accelerates from rest to 20 m/s in 5 seconds. What is its acceleration?",
     "options": [
-      { "id": "a", "text": "2 m/s²" },
-      { "id": "b", "text": "4 m/s²" },
-      { "id": "c", "text": "5 m/s²" },
-      { "id": "d", "text": "10 m/s²" }
+      {
+        "id": "a",
+        "text": "2 m/s²"
+      },
+      {
+        "id": "b",
+        "text": "4 m/s²"
+      },
+      {
+        "id": "c",
+        "text": "5 m/s²"
+      },
+      {
+        "id": "d",
+        "text": "10 m/s²"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 12,
@@ -80,10 +30,22 @@
     "topicId": "mechanics",
     "text": "Newton's second law of motion is often expressed as:",
     "options": [
-      { "id": "a", "text": "F = ma" },
-      { "id": "b", "text": "E = mc²" },
-      { "id": "c", "text": "P = IV" },
-      { "id": "d", "text": "Every action has an equal and opposite reaction" }
+      {
+        "id": "a",
+        "text": "F = ma"
+      },
+      {
+        "id": "b",
+        "text": "E = mc²"
+      },
+      {
+        "id": "c",
+        "text": "P = IV"
+      },
+      {
+        "id": "d",
+        "text": "Every action has an equal and opposite reaction"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 10,
@@ -94,10 +56,22 @@
     "topicId": "mechanics",
     "text": "What is the unit of work and energy in the SI system?",
     "options": [
-      { "id": "a", "text": "Watt (W)" },
-      { "id": "b", "text": "Newton (N)" },
-      { "id": "c", "text": "Joule (J)" },
-      { "id": "d", "text": "Pascal (Pa)" }
+      {
+        "id": "a",
+        "text": "Watt (W)"
+      },
+      {
+        "id": "b",
+        "text": "Newton (N)"
+      },
+      {
+        "id": "c",
+        "text": "Joule (J)"
+      },
+      {
+        "id": "d",
+        "text": "Pascal (Pa)"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 11
@@ -107,10 +81,22 @@
     "topicId": "mechanics",
     "text": "If an object is moving at a constant velocity, its net force is:",
     "options": [
-      { "id": "a", "text": "Increasing" },
-      { "id": "b", "text": "Decreasing" },
-      { "id": "c", "text": "Zero" },
-      { "id": "d", "text": "Equal to its weight" }
+      {
+        "id": "a",
+        "text": "Increasing"
+      },
+      {
+        "id": "b",
+        "text": "Decreasing"
+      },
+      {
+        "id": "c",
+        "text": "Zero"
+      },
+      {
+        "id": "d",
+        "text": "Equal to its weight"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14,
@@ -121,10 +107,22 @@
     "topicId": "mechanics",
     "text": "The tendency of an object to resist changes in its state of motion is called:",
     "options": [
-      { "id": "a", "text": "Acceleration" },
-      { "id": "b", "text": "Momentum" },
-      { "id": "c", "text": "Inertia" },
-      { "id": "d", "text": "Force" }
+      {
+        "id": "a",
+        "text": "Acceleration"
+      },
+      {
+        "id": "b",
+        "text": "Momentum"
+      },
+      {
+        "id": "c",
+        "text": "Inertia"
+      },
+      {
+        "id": "d",
+        "text": "Force"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 10
@@ -134,10 +132,22 @@
     "topicId": "mechanics",
     "text": "Kinetic energy depends on an object's:",
     "options": [
-      { "id": "a", "text": "Mass and position" },
-      { "id": "b", "text": "Mass and velocity" },
-      { "id": "c", "text": "Velocity and position" },
-      { "id": "d", "text": "Force and displacement" }
+      {
+        "id": "a",
+        "text": "Mass and position"
+      },
+      {
+        "id": "b",
+        "text": "Mass and velocity"
+      },
+      {
+        "id": "c",
+        "text": "Velocity and position"
+      },
+      {
+        "id": "d",
+        "text": "Force and displacement"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13,
@@ -148,10 +158,22 @@
     "topicId": "mechanics",
     "text": "Which of the following is a vector quantity?",
     "options": [
-      { "id": "a", "text": "Speed" },
-      { "id": "b", "text": "Distance" },
-      { "id": "c", "text": "Mass" },
-      { "id": "d", "text": "Velocity" }
+      {
+        "id": "a",
+        "text": "Speed"
+      },
+      {
+        "id": "b",
+        "text": "Distance"
+      },
+      {
+        "id": "c",
+        "text": "Mass"
+      },
+      {
+        "id": "d",
+        "text": "Velocity"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 11,
@@ -162,10 +184,22 @@
     "topicId": "mechanics",
     "text": "The law of conservation of momentum states that in the absence of external forces, the total momentum of a system:",
     "options": [
-      { "id": "a", "text": "Always increases" },
-      { "id": "b", "text": "Always decreases" },
-      { "id": "c", "text": "Remains constant" },
-      { "id": "d", "text": "Is proportional to the net force" }
+      {
+        "id": "a",
+        "text": "Always increases"
+      },
+      {
+        "id": "b",
+        "text": "Always decreases"
+      },
+      {
+        "id": "c",
+        "text": "Remains constant"
+      },
+      {
+        "id": "d",
+        "text": "Is proportional to the net force"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -175,10 +209,22 @@
     "topicId": "mechanics",
     "text": "A force of 10 N is applied to an object of mass 2 kg. What is the acceleration of the object?",
     "options": [
-      { "id": "a", "text": "0.2 m/s²" },
-      { "id": "b", "text": "5 m/s²" },
-      { "id": "c", "text": "12 m/s²" },
-      { "id": "d", "text": "20 m/s²" }
+      {
+        "id": "a",
+        "text": "0.2 m/s²"
+      },
+      {
+        "id": "b",
+        "text": "5 m/s²"
+      },
+      {
+        "id": "c",
+        "text": "12 m/s²"
+      },
+      {
+        "id": "d",
+        "text": "20 m/s²"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 12,
@@ -189,10 +235,22 @@
     "topicId": "mechanics",
     "text": "Potential energy stored in a stretched or compressed spring is an example of:",
     "options": [
-      { "id": "a", "text": "Gravitational potential energy" },
-      { "id": "b", "text": "Elastic potential energy" },
-      { "id": "c", "text": "Kinetic energy" },
-      { "id": "d", "text": "Chemical energy" }
+      {
+        "id": "a",
+        "text": "Gravitational potential energy"
+      },
+      {
+        "id": "b",
+        "text": "Elastic potential energy"
+      },
+      {
+        "id": "c",
+        "text": "Kinetic energy"
+      },
+      {
+        "id": "d",
+        "text": "Chemical energy"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 11
@@ -202,10 +260,22 @@
     "topicId": "mechanics",
     "text": "The rate at which work is done is called:",
     "options": [
-      { "id": "a", "text": "Energy" },
-      { "id": "b", "text": "Power" },
-      { "id": "c", "text": "Force" },
-      { "id": "d", "text": "Momentum" }
+      {
+        "id": "a",
+        "text": "Energy"
+      },
+      {
+        "id": "b",
+        "text": "Power"
+      },
+      {
+        "id": "c",
+        "text": "Force"
+      },
+      {
+        "id": "d",
+        "text": "Momentum"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13
@@ -215,10 +285,22 @@
     "topicId": "mechanics",
     "text": "For an object in uniform circular motion, the direction of the centripetal acceleration is:",
     "options": [
-      { "id": "a", "text": "Tangent to the circle" },
-      { "id": "b", "text": "Away from the center of the circle" },
-      { "id": "c", "text": "Towards the center of the circle" },
-      { "id": "d", "text": "In the direction of motion" }
+      {
+        "id": "a",
+        "text": "Tangent to the circle"
+      },
+      {
+        "id": "b",
+        "text": "Away from the center of the circle"
+      },
+      {
+        "id": "c",
+        "text": "Towards the center of the circle"
+      },
+      {
+        "id": "d",
+        "text": "In the direction of motion"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 16
@@ -228,10 +310,22 @@
     "topicId": "mechanics",
     "text": "An object is dropped from rest. Ignoring air resistance, how far does it fall in 3 seconds? (g ≈ 10 m/s²)",
     "options": [
-      { "id": "a", "text": "15 m" },
-      { "id": "b", "text": "30 m" },
-      { "id": "c", "text": "45 m" },
-      { "id": "d", "text": "90 m" }
+      {
+        "id": "a",
+        "text": "15 m"
+      },
+      {
+        "id": "b",
+        "text": "30 m"
+      },
+      {
+        "id": "c",
+        "text": "45 m"
+      },
+      {
+        "id": "d",
+        "text": "90 m"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17,
@@ -242,10 +336,22 @@
     "topicId": "mechanics",
     "text": "The product of an object's mass and its velocity is known as its:",
     "options": [
-      { "id": "a", "text": "Impulse" },
-      { "id": "b", "text": "Kinetic Energy" },
-      { "id": "c", "text": "Momentum" },
-      { "id": "d", "text": "Work" }
+      {
+        "id": "a",
+        "text": "Impulse"
+      },
+      {
+        "id": "b",
+        "text": "Kinetic Energy"
+      },
+      {
+        "id": "c",
+        "text": "Momentum"
+      },
+      {
+        "id": "d",
+        "text": "Work"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 12
@@ -255,10 +361,22 @@
     "topicId": "mechanics",
     "text": "A simple pendulum completes one full swing (back and forth) in 2 seconds. What is its frequency?",
     "options": [
-      { "id": "a", "text": "0.5 Hz" },
-      { "id": "b", "text": "1 Hz" },
-      { "id": "c", "text": "2 Hz" },
-      { "id": "d", "text": "4 Hz" }
+      {
+        "id": "a",
+        "text": "0.5 Hz"
+      },
+      {
+        "id": "b",
+        "text": "1 Hz"
+      },
+      {
+        "id": "c",
+        "text": "2 Hz"
+      },
+      {
+        "id": "d",
+        "text": "4 Hz"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 14,
@@ -269,10 +387,22 @@
     "topicId": "thermodynamics",
     "text": "The transfer of heat through direct contact between particles is called:",
     "options": [
-      { "id": "a", "text": "Conduction" },
-      { "id": "b", "text": "Convection" },
-      { "id": "c", "text": "Radiation" },
-      { "id": "d", "text": "Evaporation" }
+      {
+        "id": "a",
+        "text": "Conduction"
+      },
+      {
+        "id": "b",
+        "text": "Convection"
+      },
+      {
+        "id": "c",
+        "text": "Radiation"
+      },
+      {
+        "id": "d",
+        "text": "Evaporation"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 11
@@ -282,10 +412,22 @@
     "topicId": "thermodynamics",
     "text": "The first law of thermodynamics is a statement of the conservation of:",
     "options": [
-      { "id": "a", "text": "Mass" },
-      { "id": "b", "text": "Energy" },
-      { "id": "c", "text": "Momentum" },
-      { "id": "d", "text": "Charge" }
+      {
+        "id": "a",
+        "text": "Mass"
+      },
+      {
+        "id": "b",
+        "text": "Energy"
+      },
+      {
+        "id": "c",
+        "text": "Momentum"
+      },
+      {
+        "id": "d",
+        "text": "Charge"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13
@@ -295,10 +437,22 @@
     "topicId": "thermodynamics",
     "text": "Absolute zero (0 Kelvin) is the temperature at which:",
     "options": [
-      { "id": "a", "text": "Water freezes" },
-      { "id": "b", "text": "All molecular motion theoretically ceases" },
-      { "id": "c", "text": "Water boils" },
-      { "id": "d", "text": "Substances become superconductors" }
+      {
+        "id": "a",
+        "text": "Water freezes"
+      },
+      {
+        "id": "b",
+        "text": "All molecular motion theoretically ceases"
+      },
+      {
+        "id": "c",
+        "text": "Water boils"
+      },
+      {
+        "id": "d",
+        "text": "Substances become superconductors"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 14
@@ -308,10 +462,22 @@
     "topicId": "thermodynamics",
     "text": "Heat naturally flows from:",
     "options": [
-      { "id": "a", "text": "A colder object to a hotter object" },
-      { "id": "b", "text": "A hotter object to a colder object" },
-      { "id": "c", "text": "Objects with lower specific heat to objects with higher specific heat" },
-      { "id": "d", "text": "Objects with less mass to objects with more mass" }
+      {
+        "id": "a",
+        "text": "A colder object to a hotter object"
+      },
+      {
+        "id": "b",
+        "text": "A hotter object to a colder object"
+      },
+      {
+        "id": "c",
+        "text": "Objects with lower specific heat to objects with higher specific heat"
+      },
+      {
+        "id": "d",
+        "text": "Objects with less mass to objects with more mass"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 10
@@ -321,10 +487,22 @@
     "topicId": "thermodynamics",
     "text": "The measure of the disorder or randomness of a system is known as:",
     "options": [
-      { "id": "a", "text": "Enthalpy" },
-      { "id": "b", "text": "Internal Energy" },
-      { "id": "c", "text": "Entropy" },
-      { "id": "d", "text": "Specific Heat" }
+      {
+        "id": "a",
+        "text": "Enthalpy"
+      },
+      {
+        "id": "b",
+        "text": "Internal Energy"
+      },
+      {
+        "id": "c",
+        "text": "Entropy"
+      },
+      {
+        "id": "d",
+        "text": "Specific Heat"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -334,10 +512,22 @@
     "topicId": "thermodynamics",
     "text": "Which of these processes is an example of convection?",
     "options": [
-      { "id": "a", "text": "Sunlight warming the Earth" },
-      { "id": "b", "text": "A metal spoon getting hot when placed in hot soup" },
-      { "id": "c", "text": "Warm air rising above a heater" },
-      { "id": "d", "text": "Feeling the heat from a campfire without touching it" }
+      {
+        "id": "a",
+        "text": "Sunlight warming the Earth"
+      },
+      {
+        "id": "b",
+        "text": "A metal spoon getting hot when placed in hot soup"
+      },
+      {
+        "id": "c",
+        "text": "Warm air rising above a heater"
+      },
+      {
+        "id": "d",
+        "text": "Feeling the heat from a campfire without touching it"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 13
@@ -347,10 +537,22 @@
     "topicId": "thermodynamics",
     "text": "The efficiency of a heat engine is always:",
     "options": [
-      { "id": "a", "text": "Greater than 1 (or 100%)" },
-      { "id": "b", "text": "Equal to 1 (or 100%)" },
-      { "id": "c", "text": "Less than 1 (or 100%)" },
-      { "id": "d", "text": "Zero" }
+      {
+        "id": "a",
+        "text": "Greater than 1 (or 100%)"
+      },
+      {
+        "id": "b",
+        "text": "Equal to 1 (or 100%)"
+      },
+      {
+        "id": "c",
+        "text": "Less than 1 (or 100%)"
+      },
+      {
+        "id": "d",
+        "text": "Zero"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 16,
@@ -361,10 +563,22 @@
     "topicId": "thermodynamics",
     "text": "A process that occurs at constant temperature is called:",
     "options": [
-      { "id": "a", "text": "Adiabatic" },
-      { "id": "b", "text": "Isobaric" },
-      { "id": "c", "text": "Isochoric (Isovolumetric)" },
-      { "id": "d", "text": "Isothermal" }
+      {
+        "id": "a",
+        "text": "Adiabatic"
+      },
+      {
+        "id": "b",
+        "text": "Isobaric"
+      },
+      {
+        "id": "c",
+        "text": "Isochoric (Isovolumetric)"
+      },
+      {
+        "id": "d",
+        "text": "Isothermal"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 14
@@ -374,10 +588,22 @@
     "topicId": "thermodynamics",
     "text": "The specific heat capacity of water is relatively high. This means that water:",
     "options": [
-      { "id": "a", "text": "Heats up and cools down very quickly" },
-      { "id": "b", "text": "Requires a large amount of energy to change its temperature" },
-      { "id": "c", "text": "Is a very good conductor of heat" },
-      { "id": "d", "text": "Has a low boiling point" }
+      {
+        "id": "a",
+        "text": "Heats up and cools down very quickly"
+      },
+      {
+        "id": "b",
+        "text": "Requires a large amount of energy to change its temperature"
+      },
+      {
+        "id": "c",
+        "text": "Is a very good conductor of heat"
+      },
+      {
+        "id": "d",
+        "text": "Has a low boiling point"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 15
@@ -387,10 +613,22 @@
     "topicId": "thermodynamics",
     "text": "The second law of thermodynamics implies that the total entropy of an isolated system:",
     "options": [
-      { "id": "a", "text": "Can only decrease or stay the same" },
-      { "id": "b", "text": "Can only increase or stay the same" },
-      { "id": "c", "text": "Always remains constant" },
-      { "id": "d", "text": "Always decreases" }
+      {
+        "id": "a",
+        "text": "Can only decrease or stay the same"
+      },
+      {
+        "id": "b",
+        "text": "Can only increase or stay the same"
+      },
+      {
+        "id": "c",
+        "text": "Always remains constant"
+      },
+      {
+        "id": "d",
+        "text": "Always decreases"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 18
@@ -400,10 +638,22 @@
     "topicId": "electromagnetism",
     "text": "Like charges ______, and opposite charges ______.",
     "options": [
-      { "id": "a", "text": "attract, repel" },
-      { "id": "b", "text": "repel, attract" },
-      { "id": "c", "text": "attract, attract" },
-      { "id": "d", "text": "repel, repel" }
+      {
+        "id": "a",
+        "text": "attract, repel"
+      },
+      {
+        "id": "b",
+        "text": "repel, attract"
+      },
+      {
+        "id": "c",
+        "text": "attract, attract"
+      },
+      {
+        "id": "d",
+        "text": "repel, repel"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 10
@@ -413,10 +663,22 @@
     "topicId": "electromagnetism",
     "text": "The unit of electric current is:",
     "options": [
-      { "id": "a", "text": "Volt (V)" },
-      { "id": "b", "text": "Ohm (Ω)" },
-      { "id": "c", "text": "Ampere (A)" },
-      { "id": "d", "text": "Watt (W)" }
+      {
+        "id": "a",
+        "text": "Volt (V)"
+      },
+      {
+        "id": "b",
+        "text": "Ohm (Ω)"
+      },
+      {
+        "id": "c",
+        "text": "Ampere (A)"
+      },
+      {
+        "id": "d",
+        "text": "Watt (W)"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 10
@@ -426,10 +688,22 @@
     "topicId": "electromagnetism",
     "text": "Ohm's Law states the relationship between voltage (V), current (I), and resistance (R) as:",
     "options": [
-      { "id": "a", "text": "V = I/R" },
-      { "id": "b", "text": "V = IR" },
-      { "id": "c", "text": "I = VR" },
-      { "id": "d", "text": "R = VI" }
+      {
+        "id": "a",
+        "text": "V = I/R"
+      },
+      {
+        "id": "b",
+        "text": "V = IR"
+      },
+      {
+        "id": "c",
+        "text": "I = VR"
+      },
+      {
+        "id": "d",
+        "text": "R = VI"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 11
@@ -439,10 +713,22 @@
     "topicId": "electromagnetism",
     "text": "A material that strongly resists the flow of electric current is called a(n):",
     "options": [
-      { "id": "a", "text": "Conductor" },
-      { "id": "b", "text": "Semiconductor" },
-      { "id": "c", "text": "Insulator" },
-      { "id": "d", "text": "Superconductor" }
+      {
+        "id": "a",
+        "text": "Conductor"
+      },
+      {
+        "id": "b",
+        "text": "Semiconductor"
+      },
+      {
+        "id": "c",
+        "text": "Insulator"
+      },
+      {
+        "id": "d",
+        "text": "Superconductor"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 11
@@ -452,10 +738,22 @@
     "topicId": "electromagnetism",
     "text": "Magnetic field lines around a bar magnet emerge from the:",
     "options": [
-      { "id": "a", "text": "North pole and enter the South pole" },
-      { "id": "b", "text": "South pole and enter the North pole" },
-      { "id": "c", "text": "Center of the magnet and go outwards" },
-      { "id": "d", "text": "Edges of the magnet only" }
+      {
+        "id": "a",
+        "text": "North pole and enter the South pole"
+      },
+      {
+        "id": "b",
+        "text": "South pole and enter the North pole"
+      },
+      {
+        "id": "c",
+        "text": "Center of the magnet and go outwards"
+      },
+      {
+        "id": "d",
+        "text": "Edges of the magnet only"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 12
@@ -465,10 +763,22 @@
     "topicId": "electromagnetism",
     "text": "Electromagnetic induction is the production of an electromotive force (voltage) across an electrical conductor in a changing:",
     "options": [
-      { "id": "a", "text": "Electric field" },
-      { "id": "b", "text": "Gravitational field" },
-      { "id": "c", "text": "Magnetic field" },
-      { "id": "d", "text": "Temperature gradient" }
+      {
+        "id": "a",
+        "text": "Electric field"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational field"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic field"
+      },
+      {
+        "id": "d",
+        "text": "Temperature gradient"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 16,
@@ -479,10 +789,22 @@
     "topicId": "electromagnetism",
     "text": "In a series circuit, the total resistance is the ______ of individual resistances.",
     "options": [
-      { "id": "a", "text": "Sum" },
-      { "id": "b", "text": "Product" },
-      { "id": "c", "text": "Reciprocal of the sum of reciprocals" },
-      { "id": "d", "text": "Average" }
+      {
+        "id": "a",
+        "text": "Sum"
+      },
+      {
+        "id": "b",
+        "text": "Product"
+      },
+      {
+        "id": "c",
+        "text": "Reciprocal of the sum of reciprocals"
+      },
+      {
+        "id": "d",
+        "text": "Average"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 13
@@ -492,10 +814,22 @@
     "topicId": "electromagnetism",
     "text": "A capacitor is a device used to store:",
     "options": [
-      { "id": "a", "text": "Electric current" },
-      { "id": "b", "text": "Magnetic energy" },
-      { "id": "c", "text": "Electric charge (and thus electrical energy)" },
-      { "id": "d", "text": "Kinetic energy" }
+      {
+        "id": "a",
+        "text": "Electric current"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic energy"
+      },
+      {
+        "id": "c",
+        "text": "Electric charge (and thus electrical energy)"
+      },
+      {
+        "id": "d",
+        "text": "Kinetic energy"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
@@ -505,10 +839,22 @@
     "topicId": "electromagnetism",
     "text": "Which of the following is NOT a part of the electromagnetic spectrum?",
     "options": [
-      { "id": "a", "text": "Radio waves" },
-      { "id": "b", "text": "Microwaves" },
-      { "id": "c", "text": "Sound waves" },
-      { "id": "d", "text": "Gamma rays" }
+      {
+        "id": "a",
+        "text": "Radio waves"
+      },
+      {
+        "id": "b",
+        "text": "Microwaves"
+      },
+      {
+        "id": "c",
+        "text": "Sound waves"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 12,
@@ -519,10 +865,22 @@
     "topicId": "electromagnetism",
     "text": "The force between two point charges is described by:",
     "options": [
-      { "id": "a", "text": "Newton's Law of Universal Gravitation" },
-      { "id": "b", "text": "Ohm's Law" },
-      { "id": "c", "text": "Coulomb's Law" },
-      { "id": "d", "text": "Faraday's Law of Induction" }
+      {
+        "id": "a",
+        "text": "Newton's Law of Universal Gravitation"
+      },
+      {
+        "id": "b",
+        "text": "Ohm's Law"
+      },
+      {
+        "id": "c",
+        "text": "Coulomb's Law"
+      },
+      {
+        "id": "d",
+        "text": "Faraday's Law of Induction"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -532,10 +890,22 @@
     "topicId": "optics",
     "text": "The phenomenon of light bouncing off a surface is called:",
     "options": [
-      { "id": "a", "text": "Refraction" },
-      { "id": "b", "text": "Reflection" },
-      { "id": "c", "text": "Diffraction" },
-      { "id": "d", "text": "Interference" }
+      {
+        "id": "a",
+        "text": "Refraction"
+      },
+      {
+        "id": "b",
+        "text": "Reflection"
+      },
+      {
+        "id": "c",
+        "text": "Diffraction"
+      },
+      {
+        "id": "d",
+        "text": "Interference"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 10
@@ -545,10 +915,22 @@
     "topicId": "optics",
     "text": "The bending of light as it passes from one medium to another is known as:",
     "options": [
-      { "id": "a", "text": "Reflection" },
-      { "id": "b", "text": "Dispersion" },
-      { "id": "c", "text": "Refraction" },
-      { "id": "d", "text": "Polarization" }
+      {
+        "id": "a",
+        "text": "Reflection"
+      },
+      {
+        "id": "b",
+        "text": "Dispersion"
+      },
+      {
+        "id": "c",
+        "text": "Refraction"
+      },
+      {
+        "id": "d",
+        "text": "Polarization"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 11
@@ -558,10 +940,22 @@
     "topicId": "optics",
     "text": "A lens that is thicker at the center than at the edges is a:",
     "options": [
-      { "id": "a", "text": "Concave lens (diverging)" },
-      { "id": "b", "text": "Convex lens (converging)" },
-      { "id": "c", "text": "Plane mirror" },
-      { "id": "d", "text": "Prism" }
+      {
+        "id": "a",
+        "text": "Concave lens (diverging)"
+      },
+      {
+        "id": "b",
+        "text": "Convex lens (converging)"
+      },
+      {
+        "id": "c",
+        "text": "Plane mirror"
+      },
+      {
+        "id": "d",
+        "text": "Prism"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 12
@@ -571,10 +965,22 @@
     "topicId": "optics",
     "text": "The separation of white light into its constituent colors by a prism is called:",
     "options": [
-      { "id": "a", "text": "Diffraction" },
-      { "id": "b", "text": "Interference" },
-      { "id": "c", "text": "Dispersion" },
-      { "id": "d", "text": "Polarization" }
+      {
+        "id": "a",
+        "text": "Diffraction"
+      },
+      {
+        "id": "b",
+        "text": "Interference"
+      },
+      {
+        "id": "c",
+        "text": "Dispersion"
+      },
+      {
+        "id": "d",
+        "text": "Polarization"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 13
@@ -584,10 +990,22 @@
     "topicId": "optics",
     "text": "Which color of visible light has the longest wavelength?",
     "options": [
-      { "id": "a", "text": "Violet" },
-      { "id": "b", "text": "Blue" },
-      { "id": "c", "text": "Green" },
-      { "id": "d", "text": "Red" }
+      {
+        "id": "a",
+        "text": "Violet"
+      },
+      {
+        "id": "b",
+        "text": "Blue"
+      },
+      {
+        "id": "c",
+        "text": "Green"
+      },
+      {
+        "id": "d",
+        "text": "Red"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 14
@@ -597,10 +1015,22 @@
     "topicId": "optics",
     "text": "The law of reflection states that the angle of incidence is equal to the:",
     "options": [
-      { "id": "a", "text": "Angle of refraction" },
-      { "id": "b", "text": "Angle of reflection" },
-      { "id": "c", "text": "Critical angle" },
-      { "id": "d", "text": "Brewster's angle" }
+      {
+        "id": "a",
+        "text": "Angle of refraction"
+      },
+      {
+        "id": "b",
+        "text": "Angle of reflection"
+      },
+      {
+        "id": "c",
+        "text": "Critical angle"
+      },
+      {
+        "id": "d",
+        "text": "Brewster's angle"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 11
@@ -610,10 +1040,22 @@
     "topicId": "optics",
     "text": "Nearsightedness (myopia) can be corrected using a:",
     "options": [
-      { "id": "a", "text": "Convex lens" },
-      { "id": "b", "text": "Concave lens" },
-      { "id": "c", "text": "Cylindrical lens" },
-      { "id": "d", "text": "Bifocal lens" }
+      {
+        "id": "a",
+        "text": "Convex lens"
+      },
+      {
+        "id": "b",
+        "text": "Concave lens"
+      },
+      {
+        "id": "c",
+        "text": "Cylindrical lens"
+      },
+      {
+        "id": "d",
+        "text": "Bifocal lens"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 16
@@ -623,10 +1065,22 @@
     "topicId": "optics",
     "text": "The wave nature of light is demonstrated by which phenomenon?",
     "options": [
-      { "id": "a", "text": "Photoelectric effect" },
-      { "id": "b", "text": "Compton scattering" },
-      { "id": "c", "text": "Diffraction and Interference" },
-      { "id": "d", "text": "Blackbody radiation" }
+      {
+        "id": "a",
+        "text": "Photoelectric effect"
+      },
+      {
+        "id": "b",
+        "text": "Compton scattering"
+      },
+      {
+        "id": "c",
+        "text": "Diffraction and Interference"
+      },
+      {
+        "id": "d",
+        "text": "Blackbody radiation"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17
@@ -636,10 +1090,22 @@
     "topicId": "modern-physics",
     "text": "Who proposed the theory of special relativity?",
     "options": [
-      { "id": "a", "text": "Max Planck" },
-      { "id": "b", "text": "Niels Bohr" },
-      { "id": "c", "text": "Albert Einstein" },
-      { "id": "d", "text": "Erwin Schrödinger" }
+      {
+        "id": "a",
+        "text": "Max Planck"
+      },
+      {
+        "id": "b",
+        "text": "Niels Bohr"
+      },
+      {
+        "id": "c",
+        "text": "Albert Einstein"
+      },
+      {
+        "id": "d",
+        "text": "Erwin Schrödinger"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 13
@@ -649,10 +1115,22 @@
     "topicId": "modern-physics",
     "text": "The equation E=mc² relates energy (E) to mass (m) and the speed of light (c). This equation is a consequence of:",
     "options": [
-      { "id": "a", "text": "Newtonian mechanics" },
-      { "id": "b", "text": "Special Relativity" },
-      { "id": "c", "text": "Quantum mechanics" },
-      { "id": "d", "text": "Thermodynamics" }
+      {
+        "id": "a",
+        "text": "Newtonian mechanics"
+      },
+      {
+        "id": "b",
+        "text": "Special Relativity"
+      },
+      {
+        "id": "c",
+        "text": "Quantum mechanics"
+      },
+      {
+        "id": "d",
+        "text": "Thermodynamics"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 15
@@ -662,10 +1140,22 @@
     "topicId": "modern-physics",
     "text": "The photoelectric effect demonstrates that light can behave as a:",
     "options": [
-      { "id": "a", "text": "Wave only" },
-      { "id": "b", "text": "Particle only (photon)" },
-      { "id": "c", "text": "Wave and a particle simultaneously" },
-      { "id": "d", "text": "Form of heat" }
+      {
+        "id": "a",
+        "text": "Wave only"
+      },
+      {
+        "id": "b",
+        "text": "Particle only (photon)"
+      },
+      {
+        "id": "c",
+        "text": "Wave and a particle simultaneously"
+      },
+      {
+        "id": "d",
+        "text": "Form of heat"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 16,
@@ -676,10 +1166,22 @@
     "topicId": "modern-physics",
     "text": "According to quantum mechanics, electrons in an atom can only exist in discrete:",
     "options": [
-      { "id": "a", "text": "Velocities" },
-      { "id": "b", "text": "Temperatures" },
-      { "id": "c", "text": "Energy levels" },
-      { "id": "d", "text": "Masses" }
+      {
+        "id": "a",
+        "text": "Velocities"
+      },
+      {
+        "id": "b",
+        "text": "Temperatures"
+      },
+      {
+        "id": "c",
+        "text": "Energy levels"
+      },
+      {
+        "id": "d",
+        "text": "Masses"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
@@ -689,10 +1191,22 @@
     "topicId": "modern-physics",
     "text": "Heisenberg's Uncertainty Principle states that it is impossible to simultaneously know with perfect accuracy both the ______ and ______ of a particle.",
     "options": [
-      { "id": "a", "text": "Mass, charge" },
-      { "id": "b", "text": "Position, momentum (or velocity)" },
-      { "id": "c", "text": "Energy, time (in some contexts)" },
-      { "id": "d", "text": "Both b and c can be formulations" }
+      {
+        "id": "a",
+        "text": "Mass, charge"
+      },
+      {
+        "id": "b",
+        "text": "Position, momentum (or velocity)"
+      },
+      {
+        "id": "c",
+        "text": "Energy, time (in some contexts)"
+      },
+      {
+        "id": "d",
+        "text": "Both b and c can be formulations"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 18
@@ -702,10 +1216,22 @@
     "topicId": "modern-physics",
     "text": "The Bohr model of the atom proposed that electrons:",
     "options": [
-      { "id": "a", "text": "Are spread throughout the atom like a cloud" },
-      { "id": "b", "text": "Orbit the nucleus in any possible path" },
-      { "id": "c", "text": "Orbit the nucleus only in specific, quantized energy levels" },
-      { "id": "d", "text": "Are located within the nucleus along with protons" }
+      {
+        "id": "a",
+        "text": "Are spread throughout the atom like a cloud"
+      },
+      {
+        "id": "b",
+        "text": "Orbit the nucleus in any possible path"
+      },
+      {
+        "id": "c",
+        "text": "Orbit the nucleus only in specific, quantized energy levels"
+      },
+      {
+        "id": "d",
+        "text": "Are located within the nucleus along with protons"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 13
@@ -715,10 +1241,22 @@
     "topicId": "waves-sound",
     "text": "The distance between two consecutive crests or troughs of a wave is called its:",
     "options": [
-      { "id": "a", "text": "Amplitude" },
-      { "id": "b", "text": "Frequency" },
-      { "id": "c", "text": "Wavelength" },
-      { "id": "d", "text": "Period" }
+      {
+        "id": "a",
+        "text": "Amplitude"
+      },
+      {
+        "id": "b",
+        "text": "Frequency"
+      },
+      {
+        "id": "c",
+        "text": "Wavelength"
+      },
+      {
+        "id": "d",
+        "text": "Period"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 10
@@ -728,10 +1266,22 @@
     "topicId": "waves-sound",
     "text": "The number of waves passing a point in one second is known as the wave's:",
     "options": [
-      { "id": "a", "text": "Wavelength" },
-      { "id": "b", "text": "Period" },
-      { "id": "c", "text": "Amplitude" },
-      { "id": "d", "text": "Frequency" }
+      {
+        "id": "a",
+        "text": "Wavelength"
+      },
+      {
+        "id": "b",
+        "text": "Period"
+      },
+      {
+        "id": "c",
+        "text": "Amplitude"
+      },
+      {
+        "id": "d",
+        "text": "Frequency"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 11
@@ -741,10 +1291,22 @@
     "topicId": "waves-sound",
     "text": "Sound waves are an example of:",
     "options": [
-      { "id": "a", "text": "Transverse waves" },
-      { "id": "b", "text": "Longitudinal waves" },
-      { "id": "c", "text": "Electromagnetic waves" },
-      { "id": "d", "text": "Surface waves" }
+      {
+        "id": "a",
+        "text": "Transverse waves"
+      },
+      {
+        "id": "b",
+        "text": "Longitudinal waves"
+      },
+      {
+        "id": "c",
+        "text": "Electromagnetic waves"
+      },
+      {
+        "id": "d",
+        "text": "Surface waves"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13,
@@ -755,10 +1317,22 @@
     "topicId": "waves-sound",
     "text": "The Doppler effect explains the change in observed ______ of a wave due to relative motion between the source and the observer.",
     "options": [
-      { "id": "a", "text": "Amplitude" },
-      { "id": "b", "text": "Speed" },
-      { "id": "c", "text": "Frequency (and wavelength)" },
-      { "id": "d", "text": "Phase" }
+      {
+        "id": "a",
+        "text": "Amplitude"
+      },
+      {
+        "id": "b",
+        "text": "Speed"
+      },
+      {
+        "id": "c",
+        "text": "Frequency (and wavelength)"
+      },
+      {
+        "id": "d",
+        "text": "Phase"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -768,10 +1342,22 @@
     "topicId": "waves-sound",
     "text": "Constructive interference occurs when two waves meet and their displacements are in the:",
     "options": [
-      { "id": "a", "text": "Same direction, resulting in a smaller amplitude" },
-      { "id": "b", "text": "Opposite directions, resulting in a larger amplitude" },
-      { "id": "c", "text": "Same direction, resulting in a larger amplitude" },
-      { "id": "d", "text": "Opposite directions, resulting in a smaller amplitude" }
+      {
+        "id": "a",
+        "text": "Same direction, resulting in a smaller amplitude"
+      },
+      {
+        "id": "b",
+        "text": "Opposite directions, resulting in a larger amplitude"
+      },
+      {
+        "id": "c",
+        "text": "Same direction, resulting in a larger amplitude"
+      },
+      {
+        "id": "d",
+        "text": "Opposite directions, resulting in a smaller amplitude"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
@@ -781,10 +1367,22 @@
     "topicId": "waves-sound",
     "text": "The speed of sound is generally fastest in:",
     "options": [
-      { "id": "a", "text": "Gases" },
-      { "id": "b", "text": "Liquids" },
-      { "id": "c", "text": "Solids" },
-      { "id": "d", "text": "Vacuum" }
+      {
+        "id": "a",
+        "text": "Gases"
+      },
+      {
+        "id": "b",
+        "text": "Liquids"
+      },
+      {
+        "id": "c",
+        "text": "Solids"
+      },
+      {
+        "id": "d",
+        "text": "Vacuum"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 13,
@@ -795,10 +1393,22 @@
     "topicId": "fluid-mechanics",
     "text": "Pressure in a fluid is defined as:",
     "options": [
-      { "id": "a", "text": "Force times area (F × A)" },
-      { "id": "b", "text": "Force per unit area (F/A)" },
-      { "id": "c", "text": "Mass per unit volume (m/V)" },
-      { "id": "d", "text": "Work done per unit time (W/t)" }
+      {
+        "id": "a",
+        "text": "Force times area (F × A)"
+      },
+      {
+        "id": "b",
+        "text": "Force per unit area (F/A)"
+      },
+      {
+        "id": "c",
+        "text": "Mass per unit volume (m/V)"
+      },
+      {
+        "id": "d",
+        "text": "Work done per unit time (W/t)"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 11
@@ -808,10 +1418,22 @@
     "topicId": "fluid-mechanics",
     "text": "Archimedes' principle states that the buoyant force on an object submerged in a fluid is equal to the:",
     "options": [
-      { "id": "a", "text": "Weight of the object" },
-      { "id": "b", "text": "Volume of the fluid displaced by the object" },
-      { "id": "c", "text": "Weight of the fluid displaced by the object" },
-      { "id": "d", "text": "Density of the object times its volume" }
+      {
+        "id": "a",
+        "text": "Weight of the object"
+      },
+      {
+        "id": "b",
+        "text": "Volume of the fluid displaced by the object"
+      },
+      {
+        "id": "c",
+        "text": "Weight of the fluid displaced by the object"
+      },
+      {
+        "id": "d",
+        "text": "Density of the object times its volume"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -821,10 +1443,22 @@
     "topicId": "fluid-mechanics",
     "text": "Pascal's principle is the basis for the operation of:",
     "options": [
-      { "id": "a", "text": "A thermometer" },
-      { "id": "b", "text": "An electric motor" },
-      { "id": "c", "text": "A hydraulic lift" },
-      { "id": "d", "text": "A telescope" }
+      {
+        "id": "a",
+        "text": "A thermometer"
+      },
+      {
+        "id": "b",
+        "text": "An electric motor"
+      },
+      {
+        "id": "c",
+        "text": "A hydraulic lift"
+      },
+      {
+        "id": "d",
+        "text": "A telescope"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14,
@@ -835,10 +1469,22 @@
     "topicId": "fluid-mechanics",
     "text": "Bernoulli's principle relates the pressure, speed, and height of a moving fluid. It implies that where the speed of a fluid is higher, the pressure is:",
     "options": [
-      { "id": "a", "text": "Higher" },
-      { "id": "b", "text": "Lower" },
-      { "id": "c", "text": "Unchanged" },
-      { "id": "d", "text": "Dependent only on density" }
+      {
+        "id": "a",
+        "text": "Higher"
+      },
+      {
+        "id": "b",
+        "text": "Lower"
+      },
+      {
+        "id": "c",
+        "text": "Unchanged"
+      },
+      {
+        "id": "d",
+        "text": "Dependent only on density"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 17
@@ -848,10 +1494,22 @@
     "topicId": "fluid-mechanics",
     "text": "The property of a fluid that describes its resistance to flow is called:",
     "options": [
-      { "id": "a", "text": "Density" },
-      { "id": "b", "text": "Viscosity" },
-      { "id": "c", "text": "Surface tension" },
-      { "id": "d", "text": "Buoyancy" }
+      {
+        "id": "a",
+        "text": "Density"
+      },
+      {
+        "id": "b",
+        "text": "Viscosity"
+      },
+      {
+        "id": "c",
+        "text": "Surface tension"
+      },
+      {
+        "id": "d",
+        "text": "Buoyancy"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13
@@ -861,22 +1519,47 @@
     "topicId": "fluid-mechanics",
     "text": "For an object to float in a fluid, its average density must be:",
     "options": [
-      { "id": "a", "text": "Greater than the density of the fluid" },
-      { "id": "b", "text": "Equal to the density of the fluid" },
-      { "id": "c", "text": "Less than or equal to the density of the fluid" },
-      { "id": "d", "text": "Irrelevant to whether it floats" }
+      {
+        "id": "a",
+        "text": "Greater than the density of the fluid"
+      },
+      {
+        "id": "b",
+        "text": "Equal to the density of the fluid"
+      },
+      {
+        "id": "c",
+        "text": "Less than or equal to the density of the fluid"
+      },
+      {
+        "id": "d",
+        "text": "Irrelevant to whether it floats"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
-  },{
+  },
+  {
     "id": "phy_mech_q16",
     "topicId": "mechanics",
     "text": "What is the work done by a force if the displacement is perpendicular to the force?",
     "options": [
-      { "id": "a", "text": "Maximum positive work" },
-      { "id": "b", "text": "Maximum negative work" },
-      { "id": "c", "text": "Zero" },
-      { "id": "d", "text": "Equal to the force magnitude" }
+      {
+        "id": "a",
+        "text": "Maximum positive work"
+      },
+      {
+        "id": "b",
+        "text": "Maximum negative work"
+      },
+      {
+        "id": "c",
+        "text": "Zero"
+      },
+      {
+        "id": "d",
+        "text": "Equal to the force magnitude"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15,
@@ -887,10 +1570,22 @@
     "topicId": "mechanics",
     "text": "The rotational equivalent of mass is:",
     "options": [
-      { "id": "a", "text": "Torque" },
-      { "id": "b", "text": "Angular velocity" },
-      { "id": "c", "text": "Moment of inertia" },
-      { "id": "d", "text": "Angular momentum" }
+      {
+        "id": "a",
+        "text": "Torque"
+      },
+      {
+        "id": "b",
+        "text": "Angular velocity"
+      },
+      {
+        "id": "c",
+        "text": "Moment of inertia"
+      },
+      {
+        "id": "d",
+        "text": "Angular momentum"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 16
@@ -900,10 +1595,22 @@
     "topicId": "mechanics",
     "text": "If the net torque on an object is zero, its angular momentum:",
     "options": [
-      { "id": "a", "text": "Increases" },
-      { "id": "b", "text": "Decreases" },
-      { "id": "c", "text": "Remains constant" },
-      { "id": "d", "text": "Becomes zero" }
+      {
+        "id": "a",
+        "text": "Increases"
+      },
+      {
+        "id": "b",
+        "text": "Decreases"
+      },
+      {
+        "id": "c",
+        "text": "Remains constant"
+      },
+      {
+        "id": "d",
+        "text": "Becomes zero"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17,
@@ -914,10 +1621,22 @@
     "topicId": "mechanics",
     "text": "Hooke's Law describes the force exerted by a spring as F = -kx. What does 'k' represent?",
     "options": [
-      { "id": "a", "text": "Displacement from equilibrium" },
-      { "id": "b", "text": "Spring constant (stiffness)" },
-      { "id": "c", "text": "Mass attached to the spring" },
-      { "id": "d", "text": "Period of oscillation" }
+      {
+        "id": "a",
+        "text": "Displacement from equilibrium"
+      },
+      {
+        "id": "b",
+        "text": "Spring constant (stiffness)"
+      },
+      {
+        "id": "c",
+        "text": "Mass attached to the spring"
+      },
+      {
+        "id": "d",
+        "text": "Period of oscillation"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13
@@ -927,10 +1646,22 @@
     "topicId": "thermodynamics",
     "text": "A process that occurs without any heat transfer between the system and its surroundings is called:",
     "options": [
-      { "id": "a", "text": "Isothermal" },
-      { "id": "b", "text": "Isobaric" },
-      { "id": "c", "text": "Adiabatic" },
-      { "id": "d", "text": "Isochoric" }
+      {
+        "id": "a",
+        "text": "Isothermal"
+      },
+      {
+        "id": "b",
+        "text": "Isobaric"
+      },
+      {
+        "id": "c",
+        "text": "Adiabatic"
+      },
+      {
+        "id": "d",
+        "text": "Isochoric"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -940,10 +1671,22 @@
     "topicId": "thermodynamics",
     "text": "The Zeroth Law of Thermodynamics defines:",
     "options": [
-      { "id": "a", "text": "Conservation of energy" },
-      { "id": "b", "text": "The direction of heat flow" },
-      { "id": "c", "text": "Thermal equilibrium and temperature" },
-      { "id": "d", "text": "Absolute zero" }
+      {
+        "id": "a",
+        "text": "Conservation of energy"
+      },
+      {
+        "id": "b",
+        "text": "The direction of heat flow"
+      },
+      {
+        "id": "c",
+        "text": "Thermal equilibrium and temperature"
+      },
+      {
+        "id": "d",
+        "text": "Absolute zero"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17
@@ -953,10 +1696,22 @@
     "topicId": "thermodynamics",
     "text": "What is the primary mode of heat transfer from the Sun to Earth?",
     "options": [
-      { "id": "a", "text": "Conduction" },
-      { "id": "b", "text": "Convection" },
-      { "id": "c", "text": "Radiation" },
-      { "id": "d", "text": "Advection" }
+      {
+        "id": "a",
+        "text": "Conduction"
+      },
+      {
+        "id": "b",
+        "text": "Convection"
+      },
+      {
+        "id": "c",
+        "text": "Radiation"
+      },
+      {
+        "id": "d",
+        "text": "Advection"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 12
@@ -966,10 +1721,22 @@
     "topicId": "thermodynamics",
     "text": "The ideal gas law is typically written as PV = nRT. What does 'R' represent?",
     "options": [
-      { "id": "a", "text": "Specific heat capacity" },
-      { "id": "b", "text": "Ideal gas constant" },
-      { "id": "c", "text": "Rate of reaction" },
-      { "id": "d", "text": "Resistance" }
+      {
+        "id": "a",
+        "text": "Specific heat capacity"
+      },
+      {
+        "id": "b",
+        "text": "Ideal gas constant"
+      },
+      {
+        "id": "c",
+        "text": "Rate of reaction"
+      },
+      {
+        "id": "d",
+        "text": "Resistance"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 11
@@ -979,10 +1746,22 @@
     "topicId": "electromagnetism",
     "text": "The unit of capacitance is the:",
     "options": [
-      { "id": "a", "text": "Henry (H)" },
-      { "id": "b", "text": "Farad (F)" },
-      { "id": "c", "text": "Tesla (T)" },
-      { "id": "d", "text": "Weber (Wb)" }
+      {
+        "id": "a",
+        "text": "Henry (H)"
+      },
+      {
+        "id": "b",
+        "text": "Farad (F)"
+      },
+      {
+        "id": "c",
+        "text": "Tesla (T)"
+      },
+      {
+        "id": "d",
+        "text": "Weber (Wb)"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 14
@@ -992,10 +1771,22 @@
     "topicId": "electromagnetism",
     "text": "A transformer works on the principle of:",
     "options": [
-      { "id": "a", "text": "Electrostatic induction" },
-      { "id": "b", "text": "Mutual induction" },
-      { "id": "c", "text": "Self-induction" },
-      { "id": "d", "text": "Ohm's Law" }
+      {
+        "id": "a",
+        "text": "Electrostatic induction"
+      },
+      {
+        "id": "b",
+        "text": "Mutual induction"
+      },
+      {
+        "id": "c",
+        "text": "Self-induction"
+      },
+      {
+        "id": "d",
+        "text": "Ohm's Law"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 16
@@ -1005,10 +1796,22 @@
     "topicId": "electromagnetism",
     "text": "The direction of the magnetic force on a moving charge can be determined using the:",
     "options": [
-      { "id": "a", "text": "Left-hand rule" },
-      { "id": "b", "text": "Right-hand rule (for positive charges)" },
-      { "id": "c", "text": "Coulomb's Law" },
-      { "id": "d", "text": "Gauss's Law" }
+      {
+        "id": "a",
+        "text": "Left-hand rule"
+      },
+      {
+        "id": "b",
+        "text": "Right-hand rule (for positive charges)"
+      },
+      {
+        "id": "c",
+        "text": "Coulomb's Law"
+      },
+      {
+        "id": "d",
+        "text": "Gauss's Law"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 15
@@ -1018,10 +1821,22 @@
     "topicId": "electromagnetism",
     "text": "Which of these materials is ferromagnetic?",
     "options": [
-      { "id": "a", "text": "Copper" },
-      { "id": "b", "text": "Aluminum" },
-      { "id": "c", "text": "Iron" },
-      { "id": "d", "text": "Glass" }
+      {
+        "id": "a",
+        "text": "Copper"
+      },
+      {
+        "id": "b",
+        "text": "Aluminum"
+      },
+      {
+        "id": "c",
+        "text": "Iron"
+      },
+      {
+        "id": "d",
+        "text": "Glass"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 13
@@ -1031,10 +1846,22 @@
     "topicId": "electromagnetism",
     "text": "What is the SI unit of magnetic flux density (magnetic field strength)?",
     "options": [
-      { "id": "a", "text": "Weber (Wb)" },
-      { "id": "b", "text": "Henry (H)" },
-      { "id": "c", "text": "Tesla (T)" },
-      { "id": "d", "text": "Farad (F)" }
+      {
+        "id": "a",
+        "text": "Weber (Wb)"
+      },
+      {
+        "id": "b",
+        "text": "Henry (H)"
+      },
+      {
+        "id": "c",
+        "text": "Tesla (T)"
+      },
+      {
+        "id": "d",
+        "text": "Farad (F)"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
@@ -1044,10 +1871,22 @@
     "topicId": "optics",
     "text": "Total internal reflection can occur when light travels from:",
     "options": [
-      { "id": "a", "text": "A rarer medium to a denser medium at any angle" },
-      { "id": "b", "text": "A denser medium to a rarer medium, if the angle of incidence exceeds the critical angle" },
-      { "id": "c", "text": "A denser medium to a rarer medium, at any angle less than the critical angle" },
-      { "id": "d", "text": "Air to glass only" }
+      {
+        "id": "a",
+        "text": "A rarer medium to a denser medium at any angle"
+      },
+      {
+        "id": "b",
+        "text": "A denser medium to a rarer medium, if the angle of incidence exceeds the critical angle"
+      },
+      {
+        "id": "c",
+        "text": "A denser medium to a rarer medium, at any angle less than the critical angle"
+      },
+      {
+        "id": "d",
+        "text": "Air to glass only"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 18
@@ -1057,10 +1896,22 @@
     "topicId": "optics",
     "text": "The power of a lens is measured in:",
     "options": [
-      { "id": "a", "text": "Meters (m)" },
-      { "id": "b", "text": "Diopters (D)" },
-      { "id": "c", "text": "Watts (W)" },
-      { "id": "d", "text": "Lumens (lm)" }
+      {
+        "id": "a",
+        "text": "Meters (m)"
+      },
+      {
+        "id": "b",
+        "text": "Diopters (D)"
+      },
+      {
+        "id": "c",
+        "text": "Watts (W)"
+      },
+      {
+        "id": "d",
+        "text": "Lumens (lm)"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13
@@ -1070,10 +1921,22 @@
     "topicId": "optics",
     "text": "Huygens' principle is used to explain:",
     "options": [
-      { "id": "a", "text": "The particle nature of light" },
-      { "id": "b", "text": "The quantization of energy" },
-      { "id": "c", "text": "Wave propagation, including diffraction and refraction" },
-      { "id": "d", "text": "The photoelectric effect" }
+      {
+        "id": "a",
+        "text": "The particle nature of light"
+      },
+      {
+        "id": "b",
+        "text": "The quantization of energy"
+      },
+      {
+        "id": "c",
+        "text": "Wave propagation, including diffraction and refraction"
+      },
+      {
+        "id": "d",
+        "text": "The photoelectric effect"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17
@@ -1083,10 +1946,22 @@
     "topicId": "optics",
     "text": "A virtual image formed by a lens or mirror is one that:",
     "options": [
-      { "id": "a", "text": "Can be projected onto a screen" },
-      { "id": "b", "text": "Is always inverted" },
-      { "id": "c", "text": "Appears to be located where light rays do not actually converge" },
-      { "id": "d", "text": "Is always larger than the object" }
+      {
+        "id": "a",
+        "text": "Can be projected onto a screen"
+      },
+      {
+        "id": "b",
+        "text": "Is always inverted"
+      },
+      {
+        "id": "c",
+        "text": "Appears to be located where light rays do not actually converge"
+      },
+      {
+        "id": "d",
+        "text": "Is always larger than the object"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -1096,10 +1971,22 @@
     "topicId": "modern-physics",
     "text": "The de Broglie wavelength of a particle is inversely proportional to its:",
     "options": [
-      { "id": "a", "text": "Mass" },
-      { "id": "b", "text": "Charge" },
-      { "id": "c", "text": "Momentum" },
-      { "id": "d", "text": "Energy" }
+      {
+        "id": "a",
+        "text": "Mass"
+      },
+      {
+        "id": "b",
+        "text": "Charge"
+      },
+      {
+        "id": "c",
+        "text": "Momentum"
+      },
+      {
+        "id": "d",
+        "text": "Energy"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17,
@@ -1110,10 +1997,22 @@
     "topicId": "modern-physics",
     "text": "Which fundamental force is responsible for holding quarks together within protons and neutrons?",
     "options": [
-      { "id": "a", "text": "Gravitational force" },
-      { "id": "b", "text": "Electromagnetic force" },
-      { "id": "c", "text": "Weak nuclear force" },
-      { "id": "d", "text": "Strong nuclear force" }
+      {
+        "id": "a",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "b",
+        "text": "Electromagnetic force"
+      },
+      {
+        "id": "c",
+        "text": "Weak nuclear force"
+      },
+      {
+        "id": "d",
+        "text": "Strong nuclear force"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 16
@@ -1123,10 +2022,22 @@
     "topicId": "modern-physics",
     "text": "An electron, a proton, and a neutron are fundamental particles. Which of these are leptons?",
     "options": [
-      { "id": "a", "text": "Electron only" },
-      { "id": "b", "text": "Proton and Neutron" },
-      { "id": "c", "text": "Electron and Proton" },
-      { "id": "d", "text": "All three" }
+      {
+        "id": "a",
+        "text": "Electron only"
+      },
+      {
+        "id": "b",
+        "text": "Proton and Neutron"
+      },
+      {
+        "id": "c",
+        "text": "Electron and Proton"
+      },
+      {
+        "id": "d",
+        "text": "All three"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 15,
@@ -1137,10 +2048,22 @@
     "topicId": "modern-physics",
     "text": "What is the name given to a quantum of the electromagnetic field, often described as a particle of light?",
     "options": [
-      { "id": "a", "text": "Electron" },
-      { "id": "b", "text": "Proton" },
-      { "id": "c", "text": "Photon" },
-      { "id": "d", "text": "Neutrino" }
+      {
+        "id": "a",
+        "text": "Electron"
+      },
+      {
+        "id": "b",
+        "text": "Proton"
+      },
+      {
+        "id": "c",
+        "text": "Photon"
+      },
+      {
+        "id": "d",
+        "text": "Neutrino"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 12
@@ -1150,10 +2073,22 @@
     "topicId": "waves-sound",
     "text": "The phenomenon where a wave bends around the edges of an obstacle is called:",
     "options": [
-      { "id": "a", "text": "Reflection" },
-      { "id": "b", "text": "Refraction" },
-      { "id": "c", "text": "Diffraction" },
-      { "id": "d", "text": "Interference" }
+      {
+        "id": "a",
+        "text": "Reflection"
+      },
+      {
+        "id": "b",
+        "text": "Refraction"
+      },
+      {
+        "id": "c",
+        "text": "Diffraction"
+      },
+      {
+        "id": "d",
+        "text": "Interference"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
@@ -1163,10 +2098,22 @@
     "topicId": "waves-sound",
     "text": "The perceived loudness of a sound is most closely related to its:",
     "options": [
-      { "id": "a", "text": "Frequency" },
-      { "id": "b", "text": "Wavelength" },
-      { "id": "c", "text": "Amplitude (or intensity)" },
-      { "id": "d", "text": "Speed" }
+      {
+        "id": "a",
+        "text": "Frequency"
+      },
+      {
+        "id": "b",
+        "text": "Wavelength"
+      },
+      {
+        "id": "c",
+        "text": "Amplitude (or intensity)"
+      },
+      {
+        "id": "d",
+        "text": "Speed"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 12
@@ -1176,10 +2123,22 @@
     "topicId": "waves-sound",
     "text": "Resonance occurs when an object is forced to vibrate at its:",
     "options": [
-      { "id": "a", "text": "Lowest possible frequency" },
-      { "id": "b", "text": "Highest possible frequency" },
-      { "id": "c", "text": "Natural frequency" },
-      { "id": "d", "text": "Harmonic frequency only" }
+      {
+        "id": "a",
+        "text": "Lowest possible frequency"
+      },
+      {
+        "id": "b",
+        "text": "Highest possible frequency"
+      },
+      {
+        "id": "c",
+        "text": "Natural frequency"
+      },
+      {
+        "id": "d",
+        "text": "Harmonic frequency only"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 15
@@ -1189,10 +2148,22 @@
     "topicId": "waves-sound",
     "text": "The speed of a wave (v) is related to its frequency (f) and wavelength (λ) by the equation:",
     "options": [
-      { "id": "a", "text": "v = f/λ" },
-      { "id": "b", "text": "v = λ/f" },
-      { "id": "c", "text": "v = fλ" },
-      { "id": "d", "text": "v = f + λ" }
+      {
+        "id": "a",
+        "text": "v = f/λ"
+      },
+      {
+        "id": "b",
+        "text": "v = λ/f"
+      },
+      {
+        "id": "c",
+        "text": "v = fλ"
+      },
+      {
+        "id": "d",
+        "text": "v = f + λ"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 11
@@ -1202,10 +2173,22 @@
     "topicId": "fluid-mechanics",
     "text": "Surface tension in a liquid is caused by:",
     "options": [
-      { "id": "a", "text": "Gravitational forces" },
-      { "id": "b", "text": "Cohesive forces between liquid molecules" },
-      { "id": "c", "text": "Adhesive forces between liquid and container" },
-      { "id": "d", "text": "The viscosity of the liquid" }
+      {
+        "id": "a",
+        "text": "Gravitational forces"
+      },
+      {
+        "id": "b",
+        "text": "Cohesive forces between liquid molecules"
+      },
+      {
+        "id": "c",
+        "text": "Adhesive forces between liquid and container"
+      },
+      {
+        "id": "d",
+        "text": "The viscosity of the liquid"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 16
@@ -1215,10 +2198,22 @@
     "topicId": "fluid-mechanics",
     "text": "The continuity equation for an incompressible fluid relates the fluid's speed and the cross-sectional area of the pipe it flows through. It states that A₁v₁ = A₂v₂. This is a consequence of conservation of:",
     "options": [
-      { "id": "a", "text": "Energy" },
-      { "id": "b", "text": "Momentum" },
-      { "id": "c", "text": "Mass" },
-      { "id": "d", "text": "Pressure" }
+      {
+        "id": "a",
+        "text": "Energy"
+      },
+      {
+        "id": "b",
+        "text": "Momentum"
+      },
+      {
+        "id": "c",
+        "text": "Mass"
+      },
+      {
+        "id": "d",
+        "text": "Pressure"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 18
@@ -1228,10 +2223,22 @@
     "topicId": "fluid-mechanics",
     "text": "What happens to the pressure at a certain depth in a liquid if the density of the liquid increases (assuming depth and g are constant)?",
     "options": [
-      { "id": "a", "text": "Increases" },
-      { "id": "b", "text": "Decreases" },
-      { "id": "c", "text": "Remains the same" },
-      { "id": "d", "text": "Becomes zero" }
+      {
+        "id": "a",
+        "text": "Increases"
+      },
+      {
+        "id": "b",
+        "text": "Decreases"
+      },
+      {
+        "id": "c",
+        "text": "Remains the same"
+      },
+      {
+        "id": "d",
+        "text": "Becomes zero"
+      }
     ],
     "correctOptionId": "a",
     "difficulty": 14,
@@ -1242,10 +2249,22 @@
     "topicId": "fluid-mechanics",
     "text": "A ship floats higher in saltwater than in freshwater because saltwater is:",
     "options": [
-      { "id": "a", "text": "Less dense than freshwater" },
-      { "id": "b", "text": "More dense than freshwater" },
-      { "id": "c", "text": "Warmer than freshwater" },
-      { "id": "d", "text": "Colder than freshwater" }
+      {
+        "id": "a",
+        "text": "Less dense than freshwater"
+      },
+      {
+        "id": "b",
+        "text": "More dense than freshwater"
+      },
+      {
+        "id": "c",
+        "text": "Warmer than freshwater"
+      },
+      {
+        "id": "d",
+        "text": "Colder than freshwater"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 15
@@ -1255,10 +2274,22 @@
     "topicId": "nuclear-physics",
     "text": "Which type of radiation is the most penetrating?",
     "options": [
-      { "id": "a", "text": "Alpha (α) particles" },
-      { "id": "b", "text": "Beta (β) particles" },
-      { "id": "c", "text": "Gamma (γ) rays" },
-      { "id": "d", "text": "Neutrons" }
+      {
+        "id": "a",
+        "text": "Alpha (α) particles"
+      },
+      {
+        "id": "b",
+        "text": "Beta (β) particles"
+      },
+      {
+        "id": "c",
+        "text": "Gamma (γ) rays"
+      },
+      {
+        "id": "d",
+        "text": "Neutrons"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 14
@@ -1268,10 +2299,22 @@
     "topicId": "nuclear-physics",
     "text": "Nuclear fission is the process where:",
     "options": [
-      { "id": "a", "text": "Light nuclei combine to form a heavier nucleus" },
-      { "id": "b", "text": "A heavy nucleus splits into two or more lighter nuclei" },
-      { "id": "c", "text": "An electron is emitted from the nucleus" },
-      { "id": "d", "text": "An atom gains an electron" }
+      {
+        "id": "a",
+        "text": "Light nuclei combine to form a heavier nucleus"
+      },
+      {
+        "id": "b",
+        "text": "A heavy nucleus splits into two or more lighter nuclei"
+      },
+      {
+        "id": "c",
+        "text": "An electron is emitted from the nucleus"
+      },
+      {
+        "id": "d",
+        "text": "An atom gains an electron"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 13
@@ -1281,10 +2324,22 @@
     "topicId": "nuclear-physics",
     "text": "What is the charge of an alpha particle?",
     "options": [
-      { "id": "a", "text": "-1e" },
-      { "id": "b", "text": "0" },
-      { "id": "c", "text": "+1e" },
-      { "id": "d", "text": "+2e" }
+      {
+        "id": "a",
+        "text": "-1e"
+      },
+      {
+        "id": "b",
+        "text": "0"
+      },
+      {
+        "id": "c",
+        "text": "+1e"
+      },
+      {
+        "id": "d",
+        "text": "+2e"
+      }
     ],
     "correctOptionId": "d",
     "difficulty": 15,
@@ -1295,10 +2350,22 @@
     "topicId": "nuclear-physics",
     "text": "The process that powers the Sun and other stars is primarily:",
     "options": [
-      { "id": "a", "text": "Nuclear fission" },
-      { "id": "b", "text": "Nuclear fusion" },
-      { "id": "c", "text": "Chemical combustion" },
-      { "id": "d", "text": "Radioactive decay" }
+      {
+        "id": "a",
+        "text": "Nuclear fission"
+      },
+      {
+        "id": "b",
+        "text": "Nuclear fusion"
+      },
+      {
+        "id": "c",
+        "text": "Chemical combustion"
+      },
+      {
+        "id": "d",
+        "text": "Radioactive decay"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 16
@@ -1308,10 +2375,22 @@
     "topicId": "astrophysics-basics",
     "text": "What is the name of the galaxy that contains our Solar System?",
     "options": [
-      { "id": "a", "text": "Andromeda Galaxy" },
-      { "id": "b", "text": "Triangulum Galaxy" },
-      { "id": "c", "text": "Milky Way Galaxy" },
-      { "id": "d", "text": "Whirlpool Galaxy" }
+      {
+        "id": "a",
+        "text": "Andromeda Galaxy"
+      },
+      {
+        "id": "b",
+        "text": "Triangulum Galaxy"
+      },
+      {
+        "id": "c",
+        "text": "Milky Way Galaxy"
+      },
+      {
+        "id": "d",
+        "text": "Whirlpool Galaxy"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 10
@@ -1321,10 +2400,22 @@
     "topicId": "astrophysics-basics",
     "text": "A light-year is a unit of:",
     "options": [
-      { "id": "a", "text": "Time" },
-      { "id": "b", "text": "Distance" },
-      { "id": "c", "text": "Speed" },
-      { "id": "d", "text": "Brightness" }
+      {
+        "id": "a",
+        "text": "Time"
+      },
+      {
+        "id": "b",
+        "text": "Distance"
+      },
+      {
+        "id": "c",
+        "text": "Speed"
+      },
+      {
+        "id": "d",
+        "text": "Brightness"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 11
@@ -1334,10 +2425,22 @@
     "topicId": "astrophysics-basics",
     "text": "The Hertzsprung-Russell (H-R) diagram plots stars based on their luminosity and:",
     "options": [
-      { "id": "a", "text": "Distance from Earth" },
-      { "id": "b", "text": "Mass" },
-      { "id": "c", "text": "Surface temperature (or spectral type)" },
-      { "id": "d", "text": "Age" }
+      {
+        "id": "a",
+        "text": "Distance from Earth"
+      },
+      {
+        "id": "b",
+        "text": "Mass"
+      },
+      {
+        "id": "c",
+        "text": "Surface temperature (or spectral type)"
+      },
+      {
+        "id": "d",
+        "text": "Age"
+      }
     ],
     "correctOptionId": "c",
     "difficulty": 17
@@ -1347,10 +2450,22 @@
     "topicId": "astrophysics-basics",
     "text": "What is believed to be at the center of most large galaxies, including our own?",
     "options": [
-      { "id": "a", "text": "A large star cluster" },
-      { "id": "b", "text": "A supermassive black hole" },
-      { "id": "c", "text": "A nebula" },
-      { "id": "d", "text": "An empty void" }
+      {
+        "id": "a",
+        "text": "A large star cluster"
+      },
+      {
+        "id": "b",
+        "text": "A supermassive black hole"
+      },
+      {
+        "id": "c",
+        "text": "A nebula"
+      },
+      {
+        "id": "d",
+        "text": "An empty void"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 16
@@ -1360,10 +2475,22 @@
     "topicId": "astrophysics-basics",
     "text": "The expansion of the universe is supported by the observation of:",
     "options": [
-      { "id": "a", "text": "Blueshift of distant galaxies" },
-      { "id": "b", "text": "Redshift of distant galaxies" },
-      { "id": "c", "text": "Constant brightness of Cepheid variables" },
-      { "id": "d", "text": "The presence of dark matter" }
+      {
+        "id": "a",
+        "text": "Blueshift of distant galaxies"
+      },
+      {
+        "id": "b",
+        "text": "Redshift of distant galaxies"
+      },
+      {
+        "id": "c",
+        "text": "Constant brightness of Cepheid variables"
+      },
+      {
+        "id": "d",
+        "text": "The presence of dark matter"
+      }
     ],
     "correctOptionId": "b",
     "difficulty": 18
