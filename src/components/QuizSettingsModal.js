@@ -26,12 +26,12 @@ function QuizSettingsModal({ open, onClose, onSubmit, topicName, accentColor }) 
 
   const handleNumQuestionsChange = (event) => {
     const value = event.target.value;
-    if (value === '' || (/^\d+$/.test(value) && Number(value) >= 1 && Number(value) <= 50)) {
+    if (value === '' || (/^\d+$/.test(value) && Number(value) >= 1 && Number(value) <= 1000)) {
       setNumQuestions(value === '' ? '' : Number(value));
       setNumQuestionsError('');
     } else {
       setNumQuestions(value);
-      if (value !== '' && (Number(value) < 1 || Number(value) > 50 || !/^\d+$/.test(value))) {
+      if (value !== '' && (Number(value) < 1 || Number(value) > 1000 || !/^\d+$/.test(value))) {
         setNumQuestionsError('Please enter a number between 1 and 50.');
       } else {
         setNumQuestionsError('');
@@ -41,7 +41,7 @@ function QuizSettingsModal({ open, onClose, onSubmit, topicName, accentColor }) 
 
   const handleSubmit = () => {
     const finalNumQuestions = numQuestions === '' ? 10 : Number(numQuestions);
-    if (finalNumQuestions < 1 || finalNumQuestions > 50 || isNaN(finalNumQuestions)) {
+    if (finalNumQuestions < 1 || finalNumQuestions > 1000 || isNaN(finalNumQuestions)) {
       setNumQuestionsError('Please enter a valid number between 1 and 50.');
       return;
     }
