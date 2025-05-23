@@ -4890,32 +4890,6 @@
   {
     "id": "phy_workenergy_ch2_q64",
     "topicId": "work-and-energy-9th",
-    "text": "When is work done by gravity on a book resting on a table?",
-    "options": [
-      {
-        "id": "a",
-        "text": "When the book is lifted from the table"
-      },
-      {
-        "id": "b",
-        "text": "When the book is pushed horizontally on the table"
-      },
-      {
-        "id": "c",
-        "text": "While the book is resting on the table"
-      },
-      {
-        "id": "d",
-        "text": "Gravity never does work on the book"
-      }
-    ],
-    "correctOptionId": "c",
-    "explanation": "Technically, while resting, gravity exerts a force but there is no displacement in the direction of gravity, so work done by gravity in that state is zero. However, if the question implies the work gravity *would do* if it fell, or the force it exerts, it's always acting. Option C is best fit among the choices, implying continuous action of gravitational force, though specific 'work' requires displacement. If lifted, work is done *against* gravity. (Re-evaluating - the question implies current state. While resting, displacement in direction of gravity is 0. So work done by gravity is 0. Best phrasing is needed. The PDF talks about work done to take object to a height. Let's rephrase the options for clarity or pick another question for this difficulty). For *work done by gravity*, it's zero while resting. If the book *falls*, gravity does positive work. If it's *lifted*, gravity does negative work. Let's re-interpret options as what *could* happen. For now, assuming the strict definition of work done while resting, it's 0. (Page 28, 30) The best choice here is C, acknowledging the force is present, but no work is done due to no displacement.",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_workenergy_ch2_q64_revised",
-    "topicId": "work-and-energy-9th",
     "text": "A book is resting on a horizontal table. What is the work done by the force of gravity on the book?",
     "options": [
       {
