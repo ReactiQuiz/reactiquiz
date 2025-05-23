@@ -1,93 +1,562 @@
 [
   {
-    "id": "phy_mech_q1",
-    "topicId": "mechanics",
-    "text": "A car accelerates from rest to 20 m/s in 5 seconds. What is its acceleration?",
+    "id": "phy_motion_ch1_q001",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is said to be happening to an object if its position is changing with respect to its surroundings?",
     "options": [
       {
         "id": "a",
-        "text": "2 m/s²"
+        "text": "It is at rest."
       },
       {
         "id": "b",
-        "text": "4 m/s²"
+        "text": "It is in motion."
       },
       {
         "id": "c",
-        "text": "5 m/s²"
+        "text": "It is undergoing displacement."
       },
       {
         "id": "d",
-        "text": "10 m/s²"
+        "text": "It is undergoing acceleration."
       }
     ],
     "correctOptionId": "b",
-    "difficulty": 12,
-    "explanation": "Acceleration = (Final Velocity - Initial Velocity) / Time = (20 - 0) / 5 = 4 m/s²."
-  },
-  {
-    "id": "phy_mech_q2",
-    "topicId": "mechanics",
-    "text": "Newton's second law of motion is often expressed as:",
-    "options": [
-      {
-        "id": "a",
-        "text": "F = ma"
-      },
-      {
-        "id": "b",
-        "text": "E = mc²"
-      },
-      {
-        "id": "c",
-        "text": "P = IV"
-      },
-      {
-        "id": "d",
-        "text": "Every action has an equal and opposite reaction"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 10,
-    "explanation": "F = ma (Force = mass × acceleration) is the mathematical formulation of Newton's second law."
-  },
-  {
-    "id": "phy_mech_q3",
-    "topicId": "mechanics",
-    "text": "What is the unit of work and energy in the SI system?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Watt (W)"
-      },
-      {
-        "id": "b",
-        "text": "Newton (N)"
-      },
-      {
-        "id": "c",
-        "text": "Joule (J)"
-      },
-      {
-        "id": "d",
-        "text": "Pascal (Pa)"
-      }
-    ],
-    "correctOptionId": "c",
+    "explanation": "If an object's position changes relative to its surroundings over time, it is described as being in motion. This is the fundamental definition of motion.",
     "difficulty": 11
   },
   {
-    "id": "phy_mech_q4",
-    "topicId": "mechanics",
-    "text": "If an object is moving at a constant velocity, its net force is:",
+    "id": "phy_motion_ch1_q002",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of the following is an example of motion that is often perceived indirectly rather than by direct observation of the moving substance itself?",
     "options": [
       {
         "id": "a",
-        "text": "Increasing"
+        "text": "A car driving on a road"
       },
       {
         "id": "b",
-        "text": "Decreasing"
+        "text": "A ball thrown in the air"
+      },
+      {
+        "id": "c",
+        "text": "The movement of air (wind) causing leaves to rustle"
+      },
+      {
+        "id": "d",
+        "text": "A person walking"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Sometimes we cannot see the motion of an object directly. For example, the movement of air (wind or breeze) is often inferred by observing the motion of other objects it affects, such as leaves rustling or flags waving.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q003",
+    "topicId": "laws-of-motion-9th",
+    "text": "If you are travelling in a bus, and the person sitting next to you is also in the bus, what can you say about their motion relative to you?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They are in motion."
+      },
+      {
+        "id": "b",
+        "text": "They are at rest."
+      },
+      {
+        "id": "c",
+        "text": "Their motion depends on the bus's speed."
+      },
+      {
+        "id": "d",
+        "text": "Their motion depends on the bus's direction."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Motion is a relative concept. If the position of the person next to you is not changing with respect to you (your immediate surroundings from your perspective within the bus), they are at rest relative to you, even though both of you are in motion relative to the ground.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q004",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is defined as the length of the actual path travelled by an object in motion from one point to another?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Displacement"
+      },
+      {
+        "id": "b",
+        "text": "Velocity"
+      },
+      {
+        "id": "c",
+        "text": "Distance"
+      },
+      {
+        "id": "d",
+        "text": "Speed"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Distance is a scalar quantity that refers to 'how much ground an object has covered' during its motion. It is the total length of the path travelled.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q005",
+    "topicId": "laws-of-motion-9th",
+    "text": "Displacement is defined as the minimum distance between which two points?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Any two points along the path"
+      },
+      {
+        "id": "b",
+        "text": "The starting and finishing points"
+      },
+      {
+        "id": "c",
+        "text": "The point of highest speed and lowest speed"
+      },
+      {
+        "id": "d",
+        "text": "The point of maximum acceleration and minimum acceleration"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Displacement is a vector quantity defined as the shortest straight-line distance between an object's initial (starting) position and its final (finishing) position, including the direction from start to finish.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q006",
+    "topicId": "laws-of-motion-9th",
+    "text": "An athlete runs from point A to point B, a distance of 100m east, then turns around and runs 30m west to point C. What is the athlete's displacement from point A?",
+    "options": [
+      {
+        "id": "a",
+        "text": "130 m East"
+      },
+      {
+        "id": "b",
+        "text": "70 m East"
+      },
+      {
+        "id": "c",
+        "text": "100 m East"
+      },
+      {
+        "id": "d",
+        "text": "30 m West"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Displacement is the net change in position from the starting point. The athlete moves 100m East (+100m) and then 30m West (-30m). The net displacement is +100m - 30m = +70m, which is 70m East.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q007",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object's displacement is zero, what can be said about the actual distance traversed by it?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The actual distance must also be zero."
+      },
+      {
+        "id": "b",
+        "text": "The actual distance must be non-zero."
+      },
+      {
+        "id": "c",
+        "text": "The actual distance may or may not be zero."
+      },
+      {
+        "id": "d",
+        "text": "The object must have been at rest."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If an object returns to its starting point, its displacement is zero. However, the distance travelled (the actual path length) would be non-zero. If the object never moved, both distance and displacement would be zero. Therefore, zero displacement does not necessarily mean zero distance.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q008",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of the following quantities is a vector quantity, meaning it has both magnitude and direction?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Distance"
+      },
+      {
+        "id": "b",
+        "text": "Speed"
+      },
+      {
+        "id": "c",
+        "text": "Time"
+      },
+      {
+        "id": "d",
+        "text": "Velocity"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Velocity is a vector quantity because it specifies both the speed of an object and its direction of motion. Distance, speed, and time are scalar quantities, having only magnitude.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q009",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the SI unit of speed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "cm/s"
+      },
+      {
+        "id": "b",
+        "text": "km/h"
+      },
+      {
+        "id": "c",
+        "text": "m/s"
+      },
+      {
+        "id": "d",
+        "text": "m/min"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The SI (International System of Units) unit for speed, which is distance divided by time, is meters per second (m/s).",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q010",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the CGS unit of velocity?",
+    "options": [
+      {
+        "id": "a",
+        "text": "m/s"
+      },
+      {
+        "id": "b",
+        "text": "cm/s"
+      },
+      {
+        "id": "c",
+        "text": "km/h"
+      },
+      {
+        "id": "d",
+        "text": "mm/s"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In the CGS (Centimeter-Gram-Second) system of units, the unit for velocity (displacement divided by time) is centimeters per second (cm/s).",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q011",
+    "topicId": "laws-of-motion-9th",
+    "text": "Velocity is defined as the rate of change of displacement. This means it incorporates both speed and:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Acceleration"
+      },
+      {
+        "id": "b",
+        "text": "Direction"
+      },
+      {
+        "id": "c",
+        "text": "Distance"
+      },
+      {
+        "id": "d",
+        "text": "Time"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Velocity is displacement (which has direction) per unit time. It describes how fast an object is moving and in what direction it is moving. So, velocity incorporates both speed (magnitude of velocity) and direction.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q012",
+    "topicId": "laws-of-motion-9th",
+    "text": "If a car is moving with constant speed along a straight road, its velocity will:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Change due to change in speed"
+      },
+      {
+        "id": "b",
+        "text": "Change due to change in direction"
+      },
+      {
+        "id": "c",
+        "text": "Remain constant"
+      },
+      {
+        "id": "d",
+        "text": "Change due to both speed and direction change"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Velocity has both magnitude (speed) and direction. If the speed is constant and the direction is also constant (straight road), then the velocity remains constant.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q013",
+    "topicId": "laws-of-motion-9th",
+    "text": "A car is moving at a constant speed of 60 km/h while navigating a circular turn. What happens to its velocity?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Velocity will remain constant."
+      },
+      {
+        "id": "b",
+        "text": "Velocity will change due to change in speed."
+      },
+      {
+        "id": "c",
+        "text": "Velocity will change due to change in direction."
+      },
+      {
+        "id": "d",
+        "text": "Velocity will change due to change in both speed and direction."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Velocity is a vector quantity, meaning it has both magnitude (speed) and direction. Even if the speed is constant (60 km/h), if the direction of motion changes (as in a circular turn), the velocity changes.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q014",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which early scientist is credited with formalizing the measurement of speed as the ratio of distance to time?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Isaac Newton"
+      },
+      {
+        "id": "b",
+        "text": "Galileo Galilei"
+      },
+      {
+        "id": "c",
+        "text": "Albert Einstein"
+      },
+      {
+        "id": "d",
+        "text": "Archimedes"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Galileo Galilei was a pioneer in the quantitative study of motion and is credited with being among the first to measure speed by considering the relationship between distance travelled and the time taken.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q015",
+    "topicId": "laws-of-motion-9th",
+    "text": "If you observe a lightning flash and then hear the thunder 5 seconds later, knowing the speed of sound in air is approximately 340 m/s, how can you estimate the distance to the lightning strike?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Distance = Speed of sound / Time delay"
+      },
+      {
+        "id": "b",
+        "text": "Distance = Time delay / Speed of sound"
+      },
+      {
+        "id": "c",
+        "text": "Distance = Speed of sound × Time delay"
+      },
+      {
+        "id": "d",
+        "text": "Distance = Speed of sound + Time delay"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The speed of light is much greater than the speed of sound, so the lightning flash is seen almost instantly. The sound of thunder travels at approximately 340 m/s. The distance to the strike can be estimated by multiplying the speed of sound by the time delay between seeing the flash and hearing the thunder (Distance = Speed × Time). In this case, 340 m/s × 5 s = 1700 m.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q016",
+    "topicId": "laws-of-motion-9th",
+    "text": "When is an object said to be moving with uniform speed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "When it covers unequal distances in equal time intervals."
+      },
+      {
+        "id": "b",
+        "text": "When it covers equal distances in unequal time intervals."
+      },
+      {
+        "id": "c",
+        "text": "When it covers equal distances in equal time intervals."
+      },
+      {
+        "id": "d",
+        "text": "When its velocity changes at a constant rate."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "An object is said to be moving with uniform speed if it travels equal distances in equal intervals of time, no matter how small these intervals may be.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q017",
+    "topicId": "laws-of-motion-9th",
+    "text": "Non-uniform speed is observed when an object covers:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Equal distances in equal time intervals."
+      },
+      {
+        "id": "b",
+        "text": "Unequal distances in equal time intervals."
+      },
+      {
+        "id": "c",
+        "text": "Equal distances in unequal time intervals."
+      },
+      {
+        "id": "d",
+        "text": "Constant speed in a non-linear path."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "An object is said to be moving with non-uniform speed if it travels unequal distances in equal intervals of time. An example is a car moving in city traffic.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q018",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is defined as the rate of change of velocity?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Speed"
+      },
+      {
+        "id": "b",
+        "text": "Displacement"
+      },
+      {
+        "id": "c",
+        "text": "Momentum"
+      },
+      {
+        "id": "d",
+        "text": "Acceleration"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Acceleration is a vector quantity defined as the rate at which an object's velocity changes over time. This change can be in speed, direction, or both.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q019",
+    "topicId": "laws-of-motion-9th",
+    "text": "If the initial velocity of an object is 'u' and it changes to final velocity 'v' in time 't', the formula for acceleration 'a' is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "a = (v+u)/t"
+      },
+      {
+        "id": "b",
+        "text": "a = (u-v)/t"
+      },
+      {
+        "id": "c",
+        "text": "a = (v-u)/t"
+      },
+      {
+        "id": "d",
+        "text": "a = ut + 1/2at^2"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Acceleration is the change in velocity (final velocity 'v' minus initial velocity 'u') divided by the time 't' taken for that change. So, the formula is a = (v-u)/t.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q020",
+    "topicId": "laws-of-motion-9th",
+    "text": "When is an object said to be in uniformly accelerated motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "If its velocity changes by unequal amounts in equal time intervals."
+      },
+      {
+        "id": "b",
+        "text": "If its speed is constant but direction changes."
+      },
+      {
+        "id": "c",
+        "text": "If its velocity changes by equal amounts in equal time intervals."
+      },
+      {
+        "id": "d",
+        "text": "If its acceleration is zero."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Uniformly accelerated motion occurs when the velocity of an object changes by equal amounts in equal intervals of time. This means the acceleration is constant.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q021",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is negative acceleration also called?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform acceleration"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform acceleration"
+      },
+      {
+        "id": "c",
+        "text": "Deceleration or Retardation"
+      },
+      {
+        "id": "d",
+        "text": "Zero acceleration"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Negative acceleration, where the acceleration is in the opposite direction to the velocity (causing the object to slow down if moving in the positive direction), is also commonly called deceleration or retardation.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q022",
+    "topicId": "laws-of-motion-9th",
+    "text": "If the velocity of an object does not change with time, what is its acceleration?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Positive"
+      },
+      {
+        "id": "b",
+        "text": "Negative"
       },
       {
         "id": "c",
@@ -95,21 +564,229 @@
       },
       {
         "id": "d",
-        "text": "Equal to its weight"
+        "text": "Constant (but not zero)"
       }
     ],
     "correctOptionId": "c",
-    "difficulty": 14,
-    "explanation": "According to Newton's first law, if velocity is constant (acceleration is zero), the net force must be zero."
+    "explanation": "Acceleration is the rate of change of velocity. If the velocity does not change (i.e., it is constant in both magnitude and direction), then the change in velocity is zero, and therefore the acceleration is zero.",
+    "difficulty": 11
   },
   {
-    "id": "phy_mech_q5",
-    "topicId": "mechanics",
-    "text": "The tendency of an object to resist changes in its state of motion is called:",
+    "id": "phy_motion_ch1_q023",
+    "topicId": "laws-of-motion-9th",
+    "text": "For a uniformly accelerated motion, what is the shape of the velocity-time graph?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A horizontal line"
+      },
+      {
+        "id": "b",
+        "text": "A straight line with a non-zero slope"
+      },
+      {
+        "id": "c",
+        "text": "A curved line"
+      },
+      {
+        "id": "d",
+        "text": "A vertical line"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In uniformly accelerated motion, the velocity changes by equal amounts in equal time intervals. This constant rate of change of velocity results in a velocity-time graph that is a straight line with a constant, non-zero slope. The slope itself represents the constant acceleration.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q024",
+    "topicId": "laws-of-motion-9th",
+    "text": "What does the area under the velocity-time graph represent?",
     "options": [
       {
         "id": "a",
         "text": "Acceleration"
+      },
+      {
+        "id": "b",
+        "text": "Average velocity"
+      },
+      {
+        "id": "c",
+        "text": "Displacement (or distance travelled in a specific direction)"
+      },
+      {
+        "id": "d",
+        "text": "Total time taken"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The area enclosed between the velocity-time graph and the time axis gives the magnitude of the displacement of the object during that time interval. If motion is in one direction, this also equals distance.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q025",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of Newton's equations of motion relates displacement (s), initial velocity (u), time (t), and uniform acceleration (a)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "v = u + at"
+      },
+      {
+        "id": "b",
+        "text": "s = ut + 1/2 at^2"
+      },
+      {
+        "id": "c",
+        "text": "v^2 = u^2 + 2as"
+      },
+      {
+        "id": "d",
+        "text": "P = mv"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The second equation of motion, s = ut + 1/2 at^2, describes the displacement 's' of an object in terms of its initial velocity 'u', the time 't' for which it moves, and its constant acceleration 'a'.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q026",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of Newton's equations of motion relates final velocity (v), initial velocity (u), uniform acceleration (a), and displacement (s)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "v = u + at"
+      },
+      {
+        "id": "b",
+        "text": "s = ut + 1/2 at^2"
+      },
+      {
+        "id": "c",
+        "text": "v^2 = u^2 + 2as"
+      },
+      {
+        "id": "d",
+        "text": "F = ma"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The third equation of motion, v^2 = u^2 + 2as, provides a relationship between the final velocity 'v', initial velocity 'u', constant acceleration 'a', and displacement 's', without directly involving time.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q027",
+    "topicId": "laws-of-motion-9th",
+    "text": "The rate of change of velocity is also described graphically. If velocity is plotted on the Y-axis and time on the X-axis, what property of the graph represents acceleration?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Area under the graph"
+      },
+      {
+        "id": "b",
+        "text": "Y-intercept"
+      },
+      {
+        "id": "c",
+        "text": "X-intercept"
+      },
+      {
+        "id": "d",
+        "text": "Slope of the graph"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Acceleration is defined as the change in velocity divided by the change in time (Δv/Δt). On a velocity-time graph, this ratio (rise over run) corresponds to the slope of the line or curve.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q028",
+    "topicId": "laws-of-motion-9th",
+    "text": "In uniform circular motion, the speed of the object is constant, but its velocity changes. Why is the velocity changing?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Due to change in speed"
+      },
+      {
+        "id": "b",
+        "text": "Due to change in direction of motion"
+      },
+      {
+        "id": "c",
+        "text": "Due to change in both speed and direction"
+      },
+      {
+        "id": "d",
+        "text": "Due to zero acceleration"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Velocity is a vector quantity, possessing both magnitude (speed) and direction. In uniform circular motion, the speed remains constant, but the direction of the object's motion is continuously changing as it moves along the circular path. This change in direction means the velocity is changing.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q029",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the direction of velocity of an object moving in uniform circular motion at any given point on its path?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Towards the center of the circle"
+      },
+      {
+        "id": "b",
+        "text": "Away from the center of the circle"
+      },
+      {
+        "id": "c",
+        "text": "Tangential to the circular path at that point"
+      },
+      {
+        "id": "d",
+        "text": "Perpendicular to the tangent and towards the center"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The instantaneous velocity of an object in uniform circular motion is always directed along the tangent to the circular path at that specific point. If the force causing the circular motion were to disappear, the object would fly off along this tangent.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q030",
+    "topicId": "laws-of-motion-9th",
+    "text": "In uniform circular motion, is the motion accelerated or non-accelerated?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-accelerated, because the speed is constant."
+      },
+      {
+        "id": "b",
+        "text": "Accelerated, because the direction of velocity is constantly changing."
+      },
+      {
+        "id": "c",
+        "text": "Non-accelerated, because the net force is zero."
+      },
+      {
+        "id": "d",
+        "text": "Accelerated, but only if the speed is also changing."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Uniform circular motion is an example of accelerated motion. Even though the speed (magnitude of velocity) is constant, the direction of the velocity vector is continuously changing. Since acceleration is the rate of change of velocity, a change in direction implies acceleration (known as centripetal acceleration).",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q031",
+    "topicId": "laws-of-motion-9th",
+    "text": "Newton's first law of motion is also known as the law of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Action and Reaction"
       },
       {
         "id": "b",
@@ -121,93 +798,2227 @@
       },
       {
         "id": "d",
-        "text": "Force"
+        "text": "Energy Conservation"
       }
     ],
     "correctOptionId": "c",
-    "difficulty": 10
+    "explanation": "Newton's first law of motion describes the concept of inertia, which is the tendency of an object to resist changes in its state of motion (whether at rest or moving with constant velocity).",
+    "difficulty": 11
   },
   {
-    "id": "phy_mech_q6",
-    "topicId": "mechanics",
-    "text": "Kinetic energy depends on an object's:",
+    "id": "phy_motion_ch1_q032",
+    "topicId": "laws-of-motion-9th",
+    "text": "What property does Newton's first law explain, stating an object's inability to change its state of motion on its own?",
     "options": [
       {
         "id": "a",
-        "text": "Mass and position"
+        "text": "Momentum"
       },
       {
         "id": "b",
-        "text": "Mass and velocity"
-      },
-      {
-        "id": "c",
-        "text": "Velocity and position"
-      },
-      {
-        "id": "d",
-        "text": "Force and displacement"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 13,
-    "explanation": "KE = 1/2 * m * v²"
-  },
-  {
-    "id": "phy_mech_q7",
-    "topicId": "mechanics",
-    "text": "Which of the following is a vector quantity?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Speed"
-      },
-      {
-        "id": "b",
-        "text": "Distance"
-      },
-      {
-        "id": "c",
-        "text": "Mass"
-      },
-      {
-        "id": "d",
         "text": "Velocity"
+      },
+      {
+        "id": "c",
+        "text": "Acceleration"
+      },
+      {
+        "id": "d",
+        "text": "Inertia"
       }
     ],
     "correctOptionId": "d",
-    "difficulty": 11,
-    "explanation": "Velocity has both magnitude and direction."
+    "explanation": "Newton's first law of motion explains the phenomenon of inertia. Inertia is the inherent property of an object that makes it resist any change in its state of rest or of uniform motion along a straight line.",
+    "difficulty": 12
   },
   {
-    "id": "phy_mech_q8",
-    "topicId": "mechanics",
-    "text": "The law of conservation of momentum states that in the absence of external forces, the total momentum of a system:",
+    "id": "phy_motion_ch1_q033",
+    "topicId": "laws-of-motion-9th",
+    "text": "According to Newton's First Law, if an object is moving with uniform motion along a straight line, what can be said about the external unbalanced force acting on it?",
     "options": [
       {
         "id": "a",
-        "text": "Always increases"
+        "text": "An unbalanced force is acting in the direction of motion."
       },
       {
         "id": "b",
-        "text": "Always decreases"
+        "text": "An unbalanced force is acting opposite to the direction of motion."
       },
       {
         "id": "c",
-        "text": "Remains constant"
+        "text": "The net external unbalanced force is zero."
       },
       {
         "id": "d",
-        "text": "Is proportional to the net force"
+        "text": "There are no forces acting on the object."
       }
     ],
     "correctOptionId": "c",
+    "explanation": "Newton's First Law states that an object continues in its state of rest or of uniform motion in a straight line unless acted upon by an external unbalanced force. This implies that if it's already in uniform motion, the net external unbalanced force acting on it must be zero. Forces might be present, but they balance each other out.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q034",
+    "topicId": "laws-of-motion-9th",
+    "text": "In a tug-of-war, when does the center of the rope remain static (not move)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "When the forces applied by both sides are unequal."
+      },
+      {
+        "id": "b",
+        "text": "When the forces applied by both sides are equal in magnitude and opposite in direction (balanced)."
+      },
+      {
+        "id": "c",
+        "text": "When a net force is applied in the direction of the greater force."
+      },
+      {
+        "id": "d",
+        "text": "Only when no forces are applied at all."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In a tug-of-war, the center of the rope remains static as long as the forces applied by both sides are equal in magnitude and opposite in direction. These are called balanced forces, and they result in no change in the state of motion of the rope's center.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q035",
+    "topicId": "laws-of-motion-9th",
+    "text": "Momentum (P) is defined as the product of which two quantities?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mass and acceleration"
+      },
+      {
+        "id": "b",
+        "text": "Force and velocity"
+      },
+      {
+        "id": "c",
+        "text": "Mass and velocity"
+      },
+      {
+        "id": "d",
+        "text": "Force and time"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Momentum (P) of an object is a physical quantity defined as the product of its mass (m) and its velocity (v). The formula is P = mv.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q036",
+    "topicId": "laws-of-motion-9th",
+    "text": "What type of physical quantity is momentum?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Scalar"
+      },
+      {
+        "id": "b",
+        "text": "Vector"
+      },
+      {
+        "id": "c",
+        "text": "Neither scalar nor vector"
+      },
+      {
+        "id": "d",
+        "text": "Tensor"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Momentum is a vector quantity. This is because it is the product of mass (a scalar) and velocity (a vector). Therefore, momentum has both magnitude and direction, the same as velocity.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q037",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the SI unit of momentum?",
+    "options": [
+      {
+        "id": "a",
+        "text": "kg m/s^2"
+      },
+      {
+        "id": "b",
+        "text": "g cm/s"
+      },
+      {
+        "id": "c",
+        "text": "kg m/s"
+      },
+      {
+        "id": "d",
+        "text": "N s (Newton-second)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The SI unit of momentum is derived from its definition (mass × velocity). Mass is in kilograms (kg) and velocity is in meters per second (m/s) in the SI system. Thus, the SI unit of momentum is kg m/s. Note that Newton-second (N s) is also an equivalent unit for momentum (and impulse).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q038",
+    "topicId": "laws-of-motion-9th",
+    "text": "According to Newton's second law of motion, the rate of change of momentum of an object is proportional to what?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Its initial velocity"
+      },
+      {
+        "id": "b",
+        "text": "Its final velocity"
+      },
+      {
+        "id": "c",
+        "text": "The applied unbalanced force"
+      },
+      {
+        "id": "d",
+        "text": "The time interval of the change"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Newton's second law of motion states that the rate of change of an object's momentum is directly proportional to the net (unbalanced) force applied to it and occurs in the direction of the force.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q039",
+    "topicId": "laws-of-motion-9th",
+    "text": "In the common form of Newton's Second Law, F = ma, the proportionality constant 'k' (from F ∝ ma) is taken as 1. What does this imply about the definition of the unit of force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Force is independent of mass and acceleration."
+      },
+      {
+        "id": "b",
+        "text": "The unit of force is defined such that k becomes 1."
+      },
+      {
+        "id": "c",
+        "text": "Mass and acceleration are always equal."
+      },
+      {
+        "id": "d",
+        "text": "The constant 'k' varies with the system of units."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Newton's second law is F ∝ ma, or F = kma. The units of force (like the Newton in SI) are defined in such a way that the constant of proportionality 'k' becomes equal to 1. For example, 1 Newton is the force that gives a 1 kg mass an acceleration of 1 m/s².",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q040",
+    "topicId": "laws-of-motion-9th",
+    "text": "If the same net force is applied to two different objects for the same duration of time, which of the following quantities will be the same for both objects?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Their acceleration"
+      },
+      {
+        "id": "b",
+        "text": "The change in their velocity"
+      },
+      {
+        "id": "c",
+        "text": "The change in their momentum (impulse)"
+      },
+      {
+        "id": "d",
+        "text": "Their final velocity"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "According to Newton's second law, Force = Rate of change of momentum (Δp/Δt). Therefore, Δp = Force × Δt. If the same force (F) acts for the same time interval (Δt) on different objects, the change in momentum (Δp), also known as impulse, will be the same for all objects. Their accelerations and changes in velocity would differ if their masses are different.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q041",
+    "topicId": "laws-of-motion-9th",
+    "text": "What fundamental concept, describing how forces occur in nature, is encapsulated by Newton's Third Law of Motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Inertia: objects resist changes in motion."
+      },
+      {
+        "id": "b",
+        "text": "Momentum: the product of mass and velocity."
+      },
+      {
+        "id": "c",
+        "text": "Forces always occur in pairs as a reciprocal action between two objects."
+      },
+      {
+        "id": "d",
+        "text": "Energy is conserved in interactions."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Newton's Third Law states that forces in nature always occur in pairs. For every action force, there is an equal and opposite reaction force. Force is a reciprocal interaction between two objects.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q042",
+    "topicId": "laws-of-motion-9th",
+    "text": "According to Newton's Third Law, what is the relationship between an action force and its reaction force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They are equal in magnitude and in the same direction."
+      },
+      {
+        "id": "b",
+        "text": "They are unequal in magnitude and in opposite directions."
+      },
+      {
+        "id": "c",
+        "text": "They are equal in magnitude and in opposite directions."
+      },
+      {
+        "id": "d",
+        "text": "They are unequal in magnitude and in the same direction."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Newton's Third Law of Motion states that for every action, there is an equal and opposite reaction. This means the action force and the reaction force are always equal in magnitude but act in opposite directions.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q043",
+    "topicId": "laws-of-motion-9th",
+    "text": "When do action and reaction forces act?",
+    "options": [
+      {
+        "id": "a",
+        "text": "At different times, action first then reaction."
+      },
+      {
+        "id": "b",
+        "text": "At the same time, simultaneously."
+      },
+      {
+        "id": "c",
+        "text": "Reaction acts before action."
+      },
+      {
+        "id": "d",
+        "text": "Only when the net force is unbalanced."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A key characteristic of action and reaction forces, as described by Newton's Third Law, is that they act simultaneously. There is no time delay between the action and the reaction.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q044",
+    "topicId": "laws-of-motion-9th",
+    "text": "A key characteristic of action and reaction forces is that they act on:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The same object, canceling each other out."
+      },
+      {
+        "id": "b",
+        "text": "Different objects, and therefore do not cancel each other out with respect to a single object's motion."
+      },
+      {
+        "id": "c",
+        "text": "The same object, reinforcing each other."
+      },
+      {
+        "id": "d",
+        "text": "Different objects, but they still cancel each other out globally."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Action and reaction forces always act on different objects. Because they act on different objects, they cannot cancel each other's effect on the motion of a single object. For example, if you push a wall (action on wall), the wall pushes you (reaction on you).",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q045",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of the following is a common example illustrating Newton's Third Law of Motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A ball rolling to a stop due to friction."
+      },
+      {
+        "id": "b",
+        "text": "A gun recoiling backward when a bullet is fired forward."
+      },
+      {
+        "id": "c",
+        "text": "An object remaining at rest unless a force acts on it."
+      },
+      {
+        "id": "d",
+        "text": "A planet orbiting the Sun due to gravity."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When a gun fires a bullet, the gun exerts a forward force on the bullet (action). Simultaneously, the bullet exerts an equal and opposite backward force on the gun (reaction), causing the gun to recoil. This is a direct application of Newton's Third Law.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q046",
+    "topicId": "laws-of-motion-9th",
+    "text": "The Law of Conservation of Momentum states that if no external force acts on a system of two interacting objects, their total momentum:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Increases over time."
+      },
+      {
+        "id": "b",
+        "text": "Decreases over time."
+      },
+      {
+        "id": "c",
+        "text": "Remains constant."
+      },
+      {
+        "id": "d",
+        "text": "Is zero at all times."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Law of Conservation of Momentum states that in an isolated system (where no net external force acts), the total momentum of the system remains constant, regardless of the interactions (like collisions) occurring within the system.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q047",
+    "topicId": "laws-of-motion-9th",
+    "text": "In a collision between two objects, according to the Law of Conservation of Momentum (assuming no external forces), the total momentum before the collision is equal to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The momentum of the first object after collision."
+      },
+      {
+        "id": "b",
+        "text": "The momentum of the second object after collision."
+      },
+      {
+        "id": "c",
+        "text": "The difference in momenta after collision."
+      },
+      {
+        "id": "d",
+        "text": "The total momentum after the collision."
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The Law of Conservation of Momentum specifically states that when two objects collide in an isolated system, their total momentum before the collision is equal to their total momentum after the collision.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q048",
+    "topicId": "laws-of-motion-9th",
+    "text": "The backward motion of a gun after firing a bullet is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Acceleration"
+      },
+      {
+        "id": "b",
+        "text": "Deceleration"
+      },
+      {
+        "id": "c",
+        "text": "Recoil"
+      },
+      {
+        "id": "d",
+        "text": "Impulse"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Recoil is the term used to describe the backward momentum or 'kick' experienced by a gun when it fires a projectile, such as a bullet. This phenomenon is a direct consequence of Newton's Third Law and the conservation of momentum.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q049",
+    "topicId": "laws-of-motion-9th",
+    "text": "In the gun recoil example, why is the velocity of the gun much smaller than the velocity of the bullet, even though the momenta are equal and opposite?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Because the gun has less momentum."
+      },
+      {
+        "id": "b",
+        "text": "Because the bullet has less momentum."
+      },
+      {
+        "id": "c",
+        "text": "Because the mass of the gun is much higher than the mass of the bullet."
+      },
+      {
+        "id": "d",
+        "text": "Because the force on the gun is smaller than the force on the bullet."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Due to conservation of momentum, the magnitude of the bullet's forward momentum (mass_bullet × velocity_bullet) is equal to the magnitude of the gun's backward momentum (mass_gun × velocity_gun). Since the mass of the gun is significantly larger than the mass of the bullet, its recoil velocity must be proportionally smaller to keep the momentum product equal.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q050",
+    "topicId": "laws-of-motion-9th",
+    "text": "When an object is in uniform motion along a straight line, its average velocity over any time interval is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Always greater than its instantaneous speed."
+      },
+      {
+        "id": "b",
+        "text": "Always less than its instantaneous speed."
+      },
+      {
+        "id": "c",
+        "text": "Equal to its instantaneous velocity (and its speed)."
+      },
+      {
+        "id": "d",
+        "text": "Constantly changing."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In uniform motion along a straight line, the velocity is constant (both speed and direction do not change). Therefore, the instantaneous velocity at any point is the same. The average velocity, calculated as total displacement divided by total time, will also be equal to this constant instantaneous velocity. Since direction is constant, speed is equal to the magnitude of velocity.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q051",
+    "topicId": "laws-of-motion-9th",
+    "text": "A stone lying on a hill is an example of an object that is primarily considered to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "In motion relative to the Sun"
+      },
+      {
+        "id": "b",
+        "text": "At rest relative to the hill"
+      },
+      {
+        "id": "c",
+        "text": "Undergoing constant acceleration"
+      },
+      {
+        "id": "d",
+        "text": "Undergoing large displacement"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "While the stone is in motion relative to distant objects like the Sun (due to Earth's rotation and orbit), in the context of local observation and typical physics problems, a stone lying on a hill is considered at rest relative to its immediate surroundings (the hill). Its position is not changing with respect to the hill.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q052",
+    "topicId": "laws-of-motion-9th",
+    "text": "An object moves in a complete circle, starting from point A and returning to point A. What is its total displacement?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Equal to the circumference of the circle."
+      },
+      {
+        "id": "b",
+        "text": "Equal to the radius of the circle."
+      },
+      {
+        "id": "c",
+        "text": "Zero."
+      },
+      {
+        "id": "d",
+        "text": "Twice the radius of the circle."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Displacement is the shortest straight-line distance between the initial and final positions, including direction. If an object completes a full circle and returns to its starting point, its initial and final positions are identical. Therefore, the net displacement is zero.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q053",
+    "topicId": "laws-of-motion-9th",
+    "text": "A car travels half the circumference of a circular track of radius 100m. What is the distance it has travelled? (Use π ≈ 3.14)",
+    "options": [
+      {
+        "id": "a",
+        "text": "100 m"
+      },
+      {
+        "id": "b",
+        "text": "200 m"
+      },
+      {
+        "id": "c",
+        "text": "314 m"
+      },
+      {
+        "id": "d",
+        "text": "628 m"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The circumference of a full circular track is given by C = 2πr. If the car travels half the circumference, the distance travelled is (1/2) × 2πr = πr. Given radius r = 100m and π ≈ 3.14, the distance = 3.14 × 100m = 314m.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q054",
+    "topicId": "laws-of-motion-9th",
+    "text": "The Earth revolves around the Sun in a nearly circular orbit. What is the approximate speed of the Earth in its orbit, a value often cited in physics?",
+    "options": [
+      {
+        "id": "a",
+        "text": "343.2 m/s (speed of sound)"
+      },
+      {
+        "id": "b",
+        "text": "3 x 10^8 m/s (speed of light)"
+      },
+      {
+        "id": "c",
+        "text": "29770 m/s (approx. 30 km/s)"
+      },
+      {
+        "id": "d",
+        "text": "100 m/minute"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Earth orbits the Sun at a very high average speed. A commonly cited approximate value for this orbital speed is about 29,770 meters per second, which is roughly 30 kilometers per second.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q055",
+    "topicId": "laws-of-motion-9th",
+    "text": "What type of motion is described as covering unequal distances in equal time intervals?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform velocity"
+      },
+      {
+        "id": "b",
+        "text": "Uniform acceleration"
+      },
+      {
+        "id": "c",
+        "text": "Uniform speed"
+      },
+      {
+        "id": "d",
+        "text": "Non-uniform speed"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "If an object covers unequal distances in equal intervals of time, its speed is not constant. This type of motion is referred to as non-uniform speed.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q056",
+    "topicId": "laws-of-motion-9th",
+    "text": "What does a straight line graph in a distance-time graph indicate, assuming the line is not horizontal or vertical?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-uniform speed"
+      },
+      {
+        "id": "b",
+        "text": "Uniform speed"
+      },
+      {
+        "id": "c",
+        "text": "Uniform acceleration"
+      },
+      {
+        "id": "d",
+        "text": "Zero velocity"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "An object in uniform motion (constant speed in a straight line) covers equal distances in equal time intervals. This results in a distance-time graph that is a straight line with a constant slope. The slope of this line represents the uniform speed.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q057",
+    "topicId": "laws-of-motion-9th",
+    "text": "What does the slope of a distance-time graph indicate?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Displacement"
+      },
+      {
+        "id": "b",
+        "text": "Acceleration"
+      },
+      {
+        "id": "c",
+        "text": "Speed (or magnitude of velocity if motion is in one direction)"
+      },
+      {
+        "id": "d",
+        "text": "Time"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The slope of a distance-time graph is calculated as the change in distance divided by the change in time (Δd/Δt). This ratio represents the speed of the object. If the graph plots displacement vs. time, the slope represents velocity.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q058",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the general shape of a distance-time graph for an object moving with non-uniform speed (e.g., accelerating or decelerating)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A straight line with a non-zero slope"
+      },
+      {
+        "id": "b",
+        "text": "A horizontal line"
+      },
+      {
+        "id": "c",
+        "text": "A curved line"
+      },
+      {
+        "id": "d",
+        "text": "A vertical line"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "For non-uniform motion, where the speed is changing, the object covers unequal distances in equal time intervals. This means the slope of the distance-time graph is not constant, resulting in a curved line. For example, if an object is accelerating, the distance covered per unit time increases, leading to an upward-curving line.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q059",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object is moving with uniform velocity, what is the shape of its velocity-time graph?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A straight line with a positive slope"
+      },
+      {
+        "id": "b",
+        "text": "A curved line"
+      },
+      {
+        "id": "c",
+        "text": "A horizontal line parallel to the time axis"
+      },
+      {
+        "id": "d",
+        "text": "A vertical line parallel to the velocity axis"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Uniform velocity means the velocity is constant (both speed and direction are unchanged). On a velocity-time graph, a constant velocity is represented by a horizontal straight line parallel to the time axis, indicating that the velocity value does not change over time.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q060",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object's initial velocity is zero and it undergoes uniform acceleration, what is the relationship between its final velocity (v) and time (t)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "v is inversely proportional to t"
+      },
+      {
+        "id": "b",
+        "text": "v is directly proportional to t"
+      },
+      {
+        "id": "c",
+        "text": "v is proportional to t^2"
+      },
+      {
+        "id": "d",
+        "text": "v is constant"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The first equation of motion is v = u + at. If the initial velocity u = 0 (starts from rest), then v = at. Since acceleration 'a' is uniform (constant), the final velocity 'v' is directly proportional to the time 't'.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q061",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object starts from rest and moves with uniform acceleration 'a', the distance 's' covered in time 't' is given by which equation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "s = vt"
+      },
+      {
+        "id": "b",
+        "text": "s = ut"
+      },
+      {
+        "id": "c",
+        "text": "s = 1/2 at^2"
+      },
+      {
+        "id": "d",
+        "text": "s = v^2 / (2a)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The second equation of motion is s = ut + 1/2 at^2. If the object starts from rest, its initial velocity u = 0. Substituting u=0 into the equation gives s = (0)t + 1/2 at^2, which simplifies to s = 1/2 at^2.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q062",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the displacement of an object in uniform circular motion after completing half a circle of radius 'r'?",
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "πr (pi times radius)"
+      },
+      {
+        "id": "c",
+        "text": "2r (diameter)"
+      },
+      {
+        "id": "d",
+        "text": "2πr (circumference)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Displacement is the shortest straight-line distance between the initial and final positions. After completing half a circle, the object is at a point diametrically opposite to its starting point. The straight-line distance between these two points is the diameter of the circle, which is 2r.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q063",
+    "topicId": "laws-of-motion-9th",
+    "text": "In uniform circular motion, the speed is calculated using the circumference and time period. What formula gives the speed (v) of an object moving in a circle of radius 'r' if it completes one revolution in time 'T' (period)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "v = πr/T"
+      },
+      {
+        "id": "b",
+        "text": "v = r/T"
+      },
+      {
+        "id": "c",
+        "text": "v = 2πr/T"
+      },
+      {
+        "id": "d",
+        "text": "v = 2r/T"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In one complete revolution, the distance travelled by the object is the circumference of the circle, which is 2πr. If the time taken for one revolution (the period) is T, then the speed v = Distance/Time = 2πr/T.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q064",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object's velocity is changing in either magnitude or direction, or both, what is it said to be undergoing?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform motion"
+      },
+      {
+        "id": "b",
+        "text": "Zero acceleration"
+      },
+      {
+        "id": "c",
+        "text": "Accelerated motion"
+      },
+      {
+        "id": "d",
+        "text": "Constant momentum"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Acceleration is defined as the rate of change of velocity. Since velocity is a vector with both magnitude (speed) and direction, a change in either speed, or direction, or both, constitutes a change in velocity, and thus the object is undergoing accelerated motion.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q065",
+    "topicId": "laws-of-motion-9th",
+    "text": "According to Newton's First Law, a static object will remain at rest unless acted upon by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A balanced force"
+      },
+      {
+        "id": "b",
+        "text": "A gravitational force"
+      },
+      {
+        "id": "c",
+        "text": "An external unbalanced force"
+      },
+      {
+        "id": "d",
+        "text": "Any kind of internal force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Newton's First Law of Motion states that an object at rest will remain at rest, and an object in motion will continue in motion with constant velocity, unless it is acted upon by a net external unbalanced force.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q066",
+    "topicId": "laws-of-motion-9th",
+    "text": "Why does a book placed on a table not move on its own, even though the force of gravity is acting downwards on it?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Because the net force on the book is zero, as the table exerts an equal upward normal force."
+      },
+      {
+        "id": "b",
+        "text": "Because gravity is a balanced force by itself."
+      },
+      {
+        "id": "c",
+        "text": "Because the book has zero inertia."
+      },
+      {
+        "id": "d",
+        "text": "Because there are no other horizontal forces acting on the book."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "A book on a table has gravity pulling it down. However, the table exerts an equal and opposite upward force (normal force) on the book. These two forces balance each other, resulting in a net force of zero on the book. According to Newton's First Law, if the net force is zero, an object at rest (like the book) will remain at rest.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q067",
+    "topicId": "laws-of-motion-9th",
+    "text": "Momentum is described as a property related to both mass and velocity that quantifies the 'quantity of motion' an object possesses and affects the outcome of collisions. This concept helps understand:",
+    "options": [
+      {
+        "id": "a",
+        "text": "How far an object travels."
+      },
+      {
+        "id": "b",
+        "text": "How fast an object accelerates."
+      },
+      {
+        "id": "c",
+        "text": "The impact an object can have when it strikes another."
+      },
+      {
+        "id": "d",
+        "text": "The thermal energy of an object."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Momentum (P=mv) is a measure of an object's motion that combines its mass and velocity. A larger momentum implies a greater 'quantity of motion', meaning it is harder to stop or change its motion, and it will have a greater impact in a collision.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q068",
+    "topicId": "laws-of-motion-9th",
+    "text": "A force of 1 Newton applied to an object of mass 1 kg will cause an acceleration of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "1 m/s"
+      },
+      {
+        "id": "b",
+        "text": "1 m/s^2"
+      },
+      {
+        "id": "c",
+        "text": "9.8 m/s^2"
+      },
+      {
+        "id": "d",
+        "text": "10 m/s^2"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Newton (N) is the SI unit of force. It is defined such that 1 Newton is the force required to give a mass of 1 kilogram an acceleration of 1 meter per second squared (1 m/s²). This definition comes directly from Newton's Second Law, F=ma.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q069",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the CGS unit of force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Newton"
+      },
+      {
+        "id": "b",
+        "text": "Joule"
+      },
+      {
+        "id": "c",
+        "text": "Erg"
+      },
+      {
+        "id": "d",
+        "text": "Dyne"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "In the CGS (Centimeter-Gram-Second) system of units, the unit of force is the dyne. One dyne is the force required to give a mass of 1 gram an acceleration of 1 centimeter per second squared.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q070",
+    "topicId": "laws-of-motion-9th",
+    "text": "The force required to cause an acceleration of 1 cm/s^2 in an object of mass 1 gram is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "1 Newton"
+      },
+      {
+        "id": "b",
+        "text": "1 Joule"
+      },
+      {
+        "id": "c",
+        "text": "1 Erg"
+      },
+      {
+        "id": "d",
+        "text": "1 Dyne"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "This is the definition of the dyne, the unit of force in the CGS system. 1 dyne = 1 g × 1 cm/s².",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q071",
+    "topicId": "laws-of-motion-9th",
+    "text": "What is the relationship between 1 Newton (SI unit of force) and Dynes (CGS unit of force)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "1 N = 10^3 dyne"
+      },
+      {
+        "id": "b",
+        "text": "1 N = 10^5 dyne"
+      },
+      {
+        "id": "c",
+        "text": "1 N = 10^7 dyne"
+      },
+      {
+        "id": "d",
+        "text": "1 N = 10 dyne"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "1 Newton = 1 kg × 1 m/s². Since 1 kg = 1000 g (10³ g) and 1 m = 100 cm (10² cm), then 1 N = (10³ g) × (10² cm/s²) = 10⁵ g cm/s². As 1 dyne = 1 g cm/s², it follows that 1 N = 10⁵ dyne.",
     "difficulty": 15
   },
   {
-    "id": "phy_mech_q9",
-    "topicId": "mechanics",
-    "text": "A force of 10 N is applied to an object of mass 2 kg. What is the acceleration of the object?",
+    "id": "phy_motion_ch1_q072",
+    "topicId": "laws-of-motion-9th",
+    "text": "According to the characteristics of action and reaction forces described by Newton's Third Law, which statement is INCORRECT?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They are equal in magnitude."
+      },
+      {
+        "id": "b",
+        "text": "They act in opposite directions."
+      },
+      {
+        "id": "c",
+        "text": "They act on the same object, leading to equilibrium."
+      },
+      {
+        "id": "d",
+        "text": "They act simultaneously."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A fundamental characteristic of action and reaction forces is that they act on different objects. Therefore, they cannot cancel each other out on a single object to cause equilibrium of that object. They are equal in magnitude, opposite in direction, and act simultaneously.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q073",
+    "topicId": "laws-of-motion-9th",
+    "text": "The law of conservation of momentum is a direct consequence or corollary of which of Newton's laws of motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Newton's First Law"
+      },
+      {
+        "id": "b",
+        "text": "Newton's Second Law"
+      },
+      {
+        "id": "c",
+        "text": "Newton's Second and Third Laws combined"
+      },
+      {
+        "id": "d",
+        "text": "It is an independent fundamental law."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Law of Conservation of Momentum can be derived from Newton's Second Law (Force = rate of change of momentum) and Newton's Third Law (action-reaction forces are equal and opposite). For a system of interacting particles with no external forces, the internal action-reaction forces lead to the total momentum remaining constant.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q074",
+    "topicId": "laws-of-motion-9th",
+    "text": "In a collision between two isolated objects (no external forces), if the momentum of one object decreases by a certain amount, what happens to the momentum of the other object?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It also decreases by the same amount."
+      },
+      {
+        "id": "b",
+        "text": "It increases by the same amount."
+      },
+      {
+        "id": "c",
+        "text": "It remains constant."
+      },
+      {
+        "id": "d",
+        "text": "It becomes zero."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "According to the Law of Conservation of Momentum, the total momentum of an isolated system remains constant. If the momentum of one object in the system decreases, the momentum of another object (or other objects) in the system must increase by an equivalent amount to ensure the total momentum is conserved.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q075",
+    "topicId": "laws-of-motion-9th",
+    "text": "When a net force is applied on an object in the direction of its existing velocity, its velocity will:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Decrease in magnitude."
+      },
+      {
+        "id": "b",
+        "text": "Increase in magnitude."
+      },
+      {
+        "id": "c",
+        "text": "Remain constant in magnitude."
+      },
+      {
+        "id": "d",
+        "text": "Change direction only."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Applying a net force in the direction of an object's velocity causes positive acceleration in that same direction. This results in an increase in the magnitude of the velocity (i.e., the object speeds up).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q076",
+    "topicId": "laws-of-motion-9th",
+    "text": "When a net force is applied on an object opposite to the direction of its existing velocity, its velocity will primarily:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Decrease in magnitude."
+      },
+      {
+        "id": "b",
+        "text": "Increase in magnitude."
+      },
+      {
+        "id": "c",
+        "text": "Remain constant in magnitude."
+      },
+      {
+        "id": "d",
+        "text": "Become zero immediately regardless of force magnitude."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Applying a net force opposite to the direction of an object's velocity causes acceleration in the direction opposite to the velocity (negative acceleration or deceleration). This results in a decrease in the magnitude of the velocity (i.e., the object slows down).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q077",
+    "topicId": "laws-of-motion-9th",
+    "text": "An athlete completes a 400 m race on a circular track in 50 seconds. What is the athlete's average speed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "0 m/s"
+      },
+      {
+        "id": "b",
+        "text": "8 m/s"
+      },
+      {
+        "id": "c",
+        "text": "4 m/s"
+      },
+      {
+        "id": "d",
+        "text": "400 m/s"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Average speed is calculated as the total distance travelled divided by the total time taken. Here, total distance = 400 m and total time = 50 s. So, Average Speed = 400 m / 50 s = 8 m/s.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q078",
+    "topicId": "laws-of-motion-9th",
+    "text": "An athlete runs around a 400m circular track and finishes at the starting point after 50 seconds. What is the athlete's average velocity for the entire run?",
+    "options": [
+      {
+        "id": "a",
+        "text": "8 m/s"
+      },
+      {
+        "id": "b",
+        "text": "0 m/s"
+      },
+      {
+        "id": "c",
+        "text": "400 m/s"
+      },
+      {
+        "id": "d",
+        "text": "Depends on the track's radius"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Average velocity is defined as total displacement divided by total time. Since the athlete starts and finishes at the same point on the circular track, the total displacement is zero. Therefore, the average velocity is 0 m / 50 s = 0 m/s.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q079",
+    "topicId": "laws-of-motion-9th",
+    "text": "An aeroplane taxies on the runway for 30 s with an acceleration of 3.2 m/s^2. If it is stated that it is 'starting from rest', what is its initial velocity?",
+    "options": [
+      {
+        "id": "a",
+        "text": "3.2 m/s"
+      },
+      {
+        "id": "b",
+        "text": "30 m/s"
+      },
+      {
+        "id": "c",
+        "text": "0 m/s"
+      },
+      {
+        "id": "d",
+        "text": "Cannot be determined without final velocity."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When an object is described as 'starting from rest', it means its velocity at the beginning of the observed motion (its initial velocity, denoted by 'u') is 0 m/s.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q080",
+    "topicId": "laws-of-motion-9th",
+    "text": "A car starts from rest and accelerates uniformly at 2 m/s² for 10 seconds. How much distance does it cover in this time?",
+    "options": [
+      {
+        "id": "a",
+        "text": "20 m"
+      },
+      {
+        "id": "b",
+        "text": "50 m"
+      },
+      {
+        "id": "c",
+        "text": "100 m"
+      },
+      {
+        "id": "d",
+        "text": "200 m"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The distance covered (s) by an object undergoing uniform acceleration can be found using the equation s = ut + (1/2)at², where u is initial velocity, t is time, and a is acceleration. Here, u=0 m/s (starts from rest), a=2 m/s², and t=10 s. So, s = (0)(10) + (1/2)(2)(10)² = 0 + (1)(100) = 100 m.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q081",
+    "topicId": "laws-of-motion-9th",
+    "text": "When an object is thrown vertically upwards, what is its instantaneous vertical velocity at the highest point of its trajectory?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Equal to its initial upward velocity"
+      },
+      {
+        "id": "b",
+        "text": "Equal to the acceleration due to gravity"
+      },
+      {
+        "id": "c",
+        "text": "0 m/s"
+      },
+      {
+        "id": "d",
+        "text": "Maximum downward velocity"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "At the peak of its upward trajectory, an object thrown vertically upwards momentarily stops moving in the vertical direction before it begins to fall back down. At this precise instant, its instantaneous vertical velocity is 0 m/s, although it is still under the influence of gravitational acceleration.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q082",
+    "topicId": "laws-of-motion-9th",
+    "text": "An object is thrown upwards and reaches a maximum height 'h'. Its velocity at this maximum height is zero. If 'g' is the acceleration due to gravity (acting downwards), which equation of motion correctly relates its initial upward velocity 'u' to 'h' and 'g'?",
+    "options": [
+      {
+        "id": "a",
+        "text": "v = u + gt"
+      },
+      {
+        "id": "b",
+        "text": "s = ut + 1/2 gt^2"
+      },
+      {
+        "id": "c",
+        "text": "0 = u^2 - 2gh  (derived from v^2 = u^2 + 2as)"
+      },
+      {
+        "id": "d",
+        "text": "u = gt"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "We use the equation of motion v² = u² + 2as. Here, the final velocity 'v' at maximum height is 0. The displacement 's' is the height 'h'. The acceleration 'a' is -g (negative because gravity acts downwards, opposite to the initial upward velocity). So, 0² = u² + 2(-g)h, which simplifies to 0 = u² - 2gh, or u² = 2gh.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q083",
+    "topicId": "laws-of-motion-9th",
+    "text": "A motorboat starts from rest and moves with uniform acceleration. It attains a velocity of 15 m/s in 5 s. What is its acceleration?",
+    "options": [
+      {
+        "id": "a",
+        "text": "15 m/s^2"
+      },
+      {
+        "id": "b",
+        "text": "5 m/s^2"
+      },
+      {
+        "id": "c",
+        "text": "3 m/s^2"
+      },
+      {
+        "id": "d",
+        "text": "0.33 m/s^2"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Acceleration (a) can be calculated using the formula a = (v-u)/t, where 'v' is final velocity, 'u' is initial velocity, and 't' is time. Here, u=0 m/s (starts from rest), v=15 m/s, and t=5 s. So, a = (15 - 0) / 5 = 15 / 5 = 3 m/s².",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q084",
+    "topicId": "laws-of-motion-9th",
+    "text": "A car accelerates uniformly from rest at an acceleration of 2 m/s² for 5 seconds. What distance does the car cover during this time?",
+    "options": [
+      {
+        "id": "a",
+        "text": "10 m"
+      },
+      {
+        "id": "b",
+        "text": "25 m"
+      },
+      {
+        "id": "c",
+        "text": "50 m"
+      },
+      {
+        "id": "d",
+        "text": "5 m"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The distance 's' covered can be found using the equation s = ut + 1/2 at². Given initial velocity u=0 (from rest), acceleration a=2 m/s², and time t=5 s. So, s = (0)(5) + 1/2 × (2) × (5)² = 0 + 1/2 × 2 × 25 = 1 × 25 = 25 m.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q085",
+    "topicId": "laws-of-motion-9th",
+    "text": "Why does an electric fan keep rotating for some time even after it is switched off and the electric power is cut?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Due to balanced forces continuing to act."
+      },
+      {
+        "id": "b",
+        "text": "Due to the force of gravity on the blades."
+      },
+      {
+        "id": "c",
+        "text": "Due to an unbalanced force from the motor still present."
+      },
+      {
+        "id": "d",
+        "text": "Due to inertia of motion, which makes the blades resist stopping."
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "This phenomenon is due to inertia of motion, a concept from Newton's First Law. Once the fan blades are rotating, they possess inertia of motion and tend to continue rotating. They only slow down and stop due to opposing forces like air resistance and friction in the bearings.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q086",
+    "topicId": "laws-of-motion-9th",
+    "text": "It is easier to lift a small book from a table than to lift the entire heavy table. This difference in the effort required is primarily related to which property of the objects?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Their acceleration when lifted"
+      },
+      {
+        "id": "b",
+        "text": "Their velocity after being lifted"
+      },
+      {
+        "id": "c",
+        "text": "Their inertia, which is related to their mass"
+      },
+      {
+        "id": "d",
+        "text": "Their momentum while on the table"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The difficulty in changing an object's state of rest (lifting it) is related to its inertia. Inertia is directly proportional to mass. The heavy table has a much larger mass and therefore greater inertia than the small book, requiring a larger force to overcome its inertia and lift it.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q087",
+    "topicId": "laws-of-motion-9th",
+    "text": "Consider a system consisting of a gun and a bullet. If both are initially at rest, what is the total momentum of the gun-bullet system before firing?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Equal to the mass of the bullet."
+      },
+      {
+        "id": "b",
+        "text": "Equal to the mass of the gun."
+      },
+      {
+        "id": "c",
+        "text": "Zero."
+      },
+      {
+        "id": "d",
+        "text": "Cannot be determined without knowing the bullet's potential velocity."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Momentum is the product of mass and velocity (P=mv). If an object is at rest, its velocity is zero, and therefore its momentum is zero. Since both the gun and the bullet are initially at rest, their individual momenta are zero, making the total momentum of the system zero before firing.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q088",
+    "topicId": "laws-of-motion-9th",
+    "text": "In the gun firing example, if the total momentum of the gun-bullet system before firing is zero, what must the total momentum of the gun and bullet be immediately after firing, according to the law of conservation of momentum (assuming no external forces)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Greater than zero, in the direction of the bullet."
+      },
+      {
+        "id": "b",
+        "text": "Less than zero (negative), if the gun's mass is large."
+      },
+      {
+        "id": "c",
+        "text": "Zero."
+      },
+      {
+        "id": "d",
+        "text": "It depends on the speed of the bullet."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Law of Conservation of Momentum states that if no net external force acts on a system, its total momentum remains constant. Since the total momentum of the gun-bullet system was zero before firing, it must also be zero immediately after firing. The bullet's forward momentum and the gun's backward (recoil) momentum will be equal in magnitude and opposite in direction, summing to zero.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q089",
+    "topicId": "laws-of-motion-9th",
+    "text": "The formula for gun recoil velocity (v_gun) can be expressed in terms of bullet velocity (v_bullet) and their masses (m_bullet, m_gun) as: m_gun * v_gun = - (m_bullet * v_bullet). What does the negative sign in this relationship signify?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The gun is decelerating after firing."
+      },
+      {
+        "id": "b",
+        "text": "The bullet has negative momentum before firing."
+      },
+      {
+        "id": "c",
+        "text": "The gun moves in the direction opposite to the bullet's motion."
+      },
+      {
+        "id": "d",
+        "text": "The total momentum of the system is negative after firing."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In the conservation of momentum equation for gun recoil (where initial total momentum is zero), the negative sign indicates that the direction of the gun's velocity (recoil) is opposite to the direction of the bullet's velocity. If the bullet moves forward (positive velocity), the gun moves backward (negative velocity).",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q090",
+    "topicId": "laws-of-motion-9th",
+    "text": "When two objects collide, and no net external forces are acting on the system of these two objects, their individual momenta may change, but their total momentum:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Always increases."
+      },
+      {
+        "id": "b",
+        "text": "Remains the same (is conserved)."
+      },
+      {
+        "id": "c",
+        "text": "Always becomes zero after collision."
+      },
+      {
+        "id": "d",
+        "text": "Is transferred entirely from the heavier object to the lighter one."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "This is the core principle of the Law of Conservation of Momentum. In an isolated system (no net external forces), the total momentum of the system before a collision is equal to the total momentum of the system after the collision, even though the individual momenta of the colliding objects may change.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q091",
+    "topicId": "laws-of-motion-9th",
+    "text": "Imagine a marble released from rest and rolling down a gentle, straight, uniform slope on a flat surface. Neglecting friction and air resistance, its motion is likely to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion (constant velocity)"
+      },
+      {
+        "id": "b",
+        "text": "Uniform circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniformly accelerated linear motion"
+      },
+      {
+        "id": "d",
+        "text": "Non-uniform accelerated motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "As the marble rolls down a uniform slope, the component of gravitational force acting along the slope is constant. This constant net force (neglecting friction) will cause a constant acceleration according to Newton's Second Law. Since it moves in a straight line with constant acceleration, it's uniformly accelerated linear motion.",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_motion_ch1_q092",
+    "topicId": "laws-of-motion-9th",
+    "text": "Consider a child on a swing. As the swing moves back and forth, its speed changes continuously (being zero at the highest points and maximum at the lowest point). Is the motion of the swing uniform or non-uniform?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform, because it follows the same path repeatedly."
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform, because its speed changes throughout the swing."
+      },
+      {
+        "id": "c",
+        "text": "Uniform, if the child does not pump their legs."
+      },
+      {
+        "id": "d",
+        "text": "Non-uniform, only if an external push is applied."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The motion of a swing is non-uniform because its speed is constantly changing. It is slowest (momentarily zero) at the highest points of its arc and fastest at the lowest point. Since speed changes, the motion is non-uniform, and it is also accelerated.",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_motion_ch1_q093",
+    "topicId": "laws-of-motion-9th",
+    "text": "A bullet of mass 10 g (0.01 kg) is fired from a gun of mass 1 kg. If the bullet moves with a speed of 300 m/s, what is the magnitude of the recoil velocity of the gun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "30 m/s"
+      },
+      {
+        "id": "b",
+        "text": "3 m/s"
+      },
+      {
+        "id": "c",
+        "text": "0.3 m/s"
+      },
+      {
+        "id": "d",
+        "text": "0.03 m/s"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "By conservation of momentum, (mass_bullet × velocity_bullet) + (mass_gun × velocity_gun) = 0. Let v_gun be recoil velocity. (0.01 kg)(300 m/s) + (1 kg)v_gun = 0. So, 3 kg m/s + (1 kg)v_gun = 0. This gives v_gun = -3 kg m/s / 1 kg = -3 m/s. The magnitude is 3 m/s.",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_motion_ch1_q094",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object is thrown vertically upwards, its speed decreases as it goes up due to gravity. This decrease in speed while moving upwards is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Positive acceleration in the upward direction"
+      },
+      {
+        "id": "b",
+        "text": "Zero acceleration at the peak"
+      },
+      {
+        "id": "c",
+        "text": "Deceleration (or negative acceleration relative to upward motion)"
+      },
+      {
+        "id": "d",
+        "text": "Uniform velocity throughout the upward motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When an object is thrown upwards, gravity exerts a constant downward force, causing a constant downward acceleration. Since this acceleration is opposite to the direction of upward motion, the object's upward speed decreases. This is known as deceleration or negative acceleration if the upward direction is considered positive.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q095",
+    "topicId": "laws-of-motion-9th",
+    "text": "The graphical method for deriving the equations of motion often uses a velocity-time graph. What physical quantity is typically plotted on the Y-axis (vertical axis) of this graph?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Distance"
+      },
+      {
+        "id": "b",
+        "text": "Displacement"
+      },
+      {
+        "id": "c",
+        "text": "Velocity"
+      },
+      {
+        "id": "d",
+        "text": "Acceleration"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In a standard velocity-time graph used for analyzing motion and deriving equations of motion, velocity is plotted on the Y-axis (ordinate) and time is plotted on the X-axis (abscissa).",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q096",
+    "topicId": "laws-of-motion-9th",
+    "text": "In the graphical derivation of the equation s = ut + 1/2 at² (displacement = initial velocity × time + half × acceleration × time squared), the displacement 's' is represented by the area under the velocity-time graph. If the initial velocity 'u' is non-zero and there's uniform acceleration 'a', this area can be visualized as the sum of which two basic geometric shapes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Two triangles"
+      },
+      {
+        "id": "b",
+        "text": "A rectangle and a triangle"
+      },
+      {
+        "id": "c",
+        "text": "Two rectangles"
+      },
+      {
+        "id": "d",
+        "text": "A square and a triangle"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "On a velocity-time graph for uniform acceleration with initial velocity 'u', the area under the graph for time 't' forms a trapezium. This trapezium can be divided into a rectangle (base 't', height 'u', area 'ut') and a triangle (base 't', height 'at' which is v-u, area '1/2 × t × at = 1/2 at²'). The sum gives s = ut + 1/2 at².",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q097",
+    "topicId": "laws-of-motion-9th",
+    "text": "In a standard velocity-time graph used to derive equations of motion, what does the length of the segment along the time-axis (horizontal X-axis) typically represent for the duration of motion being analyzed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Initial velocity (u)"
+      },
+      {
+        "id": "b",
+        "text": "Final velocity (v)"
+      },
+      {
+        "id": "c",
+        "text": "Time interval (t)"
+      },
+      {
+        "id": "d",
+        "text": "Displacement (s)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The horizontal axis (X-axis) in a velocity-time graph represents time. A segment along this axis from the origin (t=0) to a point 't' represents the time interval over which the motion is considered.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q098",
+    "topicId": "laws-of-motion-9th",
+    "text": "On a velocity-time graph, what does the intercept on the velocity-axis (vertical Y-axis) at the point where time t=0 represent?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Initial velocity (u)"
+      },
+      {
+        "id": "b",
+        "text": "Final velocity (v)"
+      },
+      {
+        "id": "c",
+        "text": "Average time (t_avg)"
+      },
+      {
+        "id": "d",
+        "text": "Acceleration (a)"
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "The Y-intercept of a velocity-time graph is the value of velocity when time (the X-axis value) is zero. This corresponds to the velocity of the object at the beginning of the observation period, which is defined as the initial velocity (u).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q099",
+    "topicId": "laws-of-motion-9th",
+    "text": "On a velocity-time graph for uniformly accelerated motion, what does the velocity value corresponding to the final time 't' of the motion represent?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Initial velocity (u)"
+      },
+      {
+        "id": "b",
+        "text": "Final velocity (v)"
+      },
+      {
+        "id": "c",
+        "text": "Average velocity"
+      },
+      {
+        "id": "d",
+        "text": "Constant acceleration (a)"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "If a period of motion is considered over a time interval from t=0 to a final time 't', the velocity of the object at this final time 't' is known as its final velocity (v). This is represented by the Y-coordinate on the graph at that specific X-coordinate 't'.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q100",
+    "topicId": "laws-of-motion-9th",
+    "text": "In uniform circular motion, the acceleration is directed towards the center of the circle (centripetal acceleration). This acceleration is primarily due to the continuous change in:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The object's speed"
+      },
+      {
+        "id": "b",
+        "text": "The object's mass"
+      },
+      {
+        "id": "c",
+        "text": "The direction of the object's velocity"
+      },
+      {
+        "id": "d",
+        "text": "The magnitude of the centripetal force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In uniform circular motion, the speed of the object is constant, but its velocity is continuously changing because its direction of motion is continuously changing. Acceleration is the rate of change of velocity. The centripetal acceleration, directed towards the center, arises from this continuous change in the direction of the velocity vector.",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_motion_ch1_q101",
+    "topicId": "laws-of-motion-9th",
+    "text": "A satellite moving around the Earth in a stable circular orbit at a constant speed is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Non-uniform circular motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Uniform circular motion is defined as the motion of an object traveling at a constant (uniform) speed along a circular path. A satellite in a stable circular orbit maintains a constant speed, thus fitting this definition.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q102",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object is dropped and falls freely towards the ground, neglecting air resistance, its motion is characterized by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform velocity (constant speed and direction)"
+      },
+      {
+        "id": "b",
+        "text": "Uniform acceleration (constant acceleration)"
+      },
+      {
+        "id": "c",
+        "text": "Non-uniform acceleration (changing acceleration)"
+      },
+      {
+        "id": "d",
+        "text": "Zero acceleration"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Objects in free fall (where only gravity acts, and air resistance is neglected) experience a constant downward acceleration due to gravity, typically denoted as 'g' (approximately 9.8 m/s² near Earth's surface). This is an example of uniformly accelerated motion.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q103",
+    "topicId": "laws-of-motion-9th",
+    "text": "In the analysis of an object in free fall, if the ground level is taken as the reference point for zero height, what is the value of its gravitational potential energy when the object reaches the ground?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Maximum possible value"
+      },
+      {
+        "id": "b",
+        "text": "Minimum value (zero)"
+      },
+      {
+        "id": "c",
+        "text": "Equal to its kinetic energy at that point"
+      },
+      {
+        "id": "d",
+        "text": "Equal to its total mechanical energy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Gravitational potential energy (P.E.) is given by the formula P.E. = mgh, where 'm' is mass, 'g' is acceleration due to gravity, and 'h' is the height above a reference level. If the ground is chosen as the reference level where h=0, then the potential energy of the object upon reaching the ground is m × g × 0 = 0.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q104",
+    "topicId": "laws-of-motion-9th",
+    "text": "According to the principle of conservation of mechanical energy, what happens to the total energy (Kinetic Energy + Potential Energy) of an object in free fall, assuming air resistance is negligible?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Total mechanical energy decreases as it falls."
+      },
+      {
+        "id": "b",
+        "text": "Total mechanical energy increases as it falls."
+      },
+      {
+        "id": "c",
+        "text": "Total mechanical energy is converted entirely to heat upon impact."
+      },
+      {
+        "id": "d",
+        "text": "Total mechanical energy remains constant at all points during the fall."
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "In the absence of non-conservative forces like air resistance, the total mechanical energy (sum of kinetic energy and potential energy) of a freely falling object is conserved. As the object falls, its potential energy decreases (as height decreases) while its kinetic energy increases (as speed increases), but their sum remains constant.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q105",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object is thrown vertically upwards, what is the direction of the gravitational acceleration acting on it throughout its upward and downward motion (neglecting air resistance)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Upwards during upward motion, downwards during downward motion."
+      },
+      {
+        "id": "b",
+        "text": "Downwards, consistently throughout the entire motion."
+      },
+      {
+        "id": "c",
+        "text": "Zero at the highest point, then downwards."
+      },
+      {
+        "id": "d",
+        "text": "It changes direction depending on the object's velocity."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The acceleration due to gravity always acts downwards towards the center of the Earth, regardless of the direction of the object's motion. So, whether the object is moving upwards, is momentarily at its highest point, or is falling downwards, the gravitational acceleration is constant and directed downwards (assuming air resistance is negligible and it's close to Earth's surface).",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q106",
+    "topicId": "laws-of-motion-9th",
+    "text": "In a tug-of-war, if the forces applied by the two opposing teams become unequal, what happens to the center of the rope?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It remains static due to inertia."
+      },
+      {
+        "id": "b",
+        "text": "It accelerates and shifts in the direction of the greater applied force."
+      },
+      {
+        "id": "c",
+        "text": "It accelerates and shifts in the direction of the smaller applied force."
+      },
+      {
+        "id": "d",
+        "text": "The rope is likely to break immediately."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When the forces applied by the two teams in a tug-of-war are unequal, there is a net unbalanced force acting on the rope. According to Newton's Second Law, this net force will cause the rope (and its center) to accelerate in the direction of the stronger force.",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q107",
+    "topicId": "laws-of-motion-9th",
+    "text": "A net force 'F' acts on an object of mass 'm' causing an acceleration 'a'. According to Newton's Second Law (F=ma), if the applied net force is doubled while the mass of the object is kept constant, the new acceleration will be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The same as the original acceleration (a)."
+      },
+      {
+        "id": "b",
+        "text": "Half of the original acceleration (a/2)."
+      },
+      {
+        "id": "c",
+        "text": "Double the original acceleration (2a)."
+      },
+      {
+        "id": "d",
+        "text": "Four times the original acceleration (4a)."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Newton's Second Law states F = ma. If mass 'm' is constant, then acceleration 'a' is directly proportional to the net force 'F'. If the force is doubled (becomes 2F), then the new acceleration will also be doubled (2a), because (2F) = m(2a).",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q108",
+    "topicId": "laws-of-motion-9th",
+    "text": "A net force 'F' acts on an object of mass 'm' causing an acceleration 'a'. If the mass 'm' of the object is doubled (to 2m) while the applied net force 'F' is kept constant, the new acceleration will be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The same as the original acceleration (a)."
+      },
+      {
+        "id": "b",
+        "text": "Half of the original acceleration (a/2)."
+      },
+      {
+        "id": "c",
+        "text": "Double the original acceleration (2a)."
+      },
+      {
+        "id": "d",
+        "text": "Four times the original acceleration (4a)."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Newton's Second Law states F = ma, which can be rearranged to a = F/m. If the net force 'F' is constant, then acceleration 'a' is inversely proportional to the mass 'm'. If the mass is doubled (becomes 2m), then the new acceleration will be halved (a/2), because a_new = F/(2m) = (1/2)(F/m) = a/2.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q109",
+    "topicId": "laws-of-motion-9th",
+    "text": "When you push against a wall, you feel the wall pushing back on you. This pair of forces is an illustration of which of Newton's laws?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Newton's First Law (Law of Inertia)"
+      },
+      {
+        "id": "b",
+        "text": "Newton's Second Law (F=ma)"
+      },
+      {
+        "id": "c",
+        "text": "Newton's Third Law (Action-Reaction)"
+      },
+      {
+        "id": "d",
+        "text": "Law of Universal Gravitation"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "This scenario is a classic example of Newton's Third Law of Motion. Your push on the wall is the 'action' force, and the wall's push back on you is the 'reaction' force. These forces are equal in magnitude and opposite in direction, acting on different objects (you and the wall).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q110",
+    "topicId": "laws-of-motion-9th",
+    "text": "Why is it generally more difficult and potentially more painful to catch a hard cricket ball travelling at a high speed compared to a lighter tennis ball moving at the same high speed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The cricket ball has less inertia and is harder to control."
+      },
+      {
+        "id": "b",
+        "text": "The cricket ball has significantly greater mass, thus greater momentum, requiring a larger impulse to stop."
+      },
+      {
+        "id": "c",
+        "text": "The cricket ball experiences less air resistance, so it maintains its speed better."
+      },
+      {
+        "id": "d",
+        "text": "The tennis ball has greater momentum due to its bounciness."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The difficulty in stopping an object depends on its momentum (mass × velocity). A cricket ball has a significantly larger mass than a tennis ball. If both are moving at the same high speed, the cricket ball will have much greater momentum. To stop it, a larger change in momentum (impulse) is required over the same time, or the same impulse over a shorter time, resulting in a larger average force experienced by the catcher.",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_motion_ch1_q111",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object is thrown vertically upwards and reaches its highest point before falling back, what is its instantaneous vertical velocity at that highest point?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Maximum upward velocity"
+      },
+      {
+        "id": "b",
+        "text": "Zero"
+      },
+      {
+        "id": "c",
+        "text": "Maximum downward velocity"
+      },
+      {
+        "id": "d",
+        "text": "Equal to the acceleration due to gravity"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "At the very peak of its upward trajectory, an object thrown vertically upwards momentarily stops its upward motion before it begins to descend. At this instant, its vertical velocity is zero, even though it is still under the influence of gravity (and thus accelerating downwards).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_motion_ch1_q112",
+    "topicId": "laws-of-motion-9th",
+    "text": "An object moves along a straight path, covering 18 m in the first 3 seconds, then 22 m in the next 3 seconds, and finally 14 m in the last 3 seconds. What type of motion is this?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform motion (constant velocity)"
+      },
+      {
+        "id": "b",
+        "text": "Uniformly accelerated motion"
+      },
+      {
+        "id": "c",
+        "text": "Non-uniform motion (specifically, non-uniform speed)"
+      },
+      {
+        "id": "d",
+        "text": "Uniform circular motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The object covers different distances (18m, 22m, 14m) in equal consecutive time intervals (3s each). Since the distance covered per unit time (speed) is not constant, the motion is non-uniform. More specifically, it has non-uniform speed.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q113",
+    "topicId": "laws-of-motion-9th",
+    "text": "An object moves for 5 seconds, then for another 10 seconds, and finally for 7 seconds. What is the total duration of its motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "15 s"
+      },
+      {
+        "id": "b",
+        "text": "17 s"
+      },
+      {
+        "id": "c",
+        "text": "22 s"
+      },
+      {
+        "id": "d",
+        "text": "Can't be determined without knowing speeds."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The total time taken for the motion is simply the sum of the individual time intervals during which the object moved. Total time = 5 s + 10 s + 7 s = 22 s.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q114",
+    "topicId": "laws-of-motion-9th",
+    "text": "A person walks 50 m East, then 30 m West, and finally 20 m East. What is the total distance covered by the person?",
+    "options": [
+      {
+        "id": "a",
+        "text": "40 m"
+      },
+      {
+        "id": "b",
+        "text": "60 m"
+      },
+      {
+        "id": "c",
+        "text": "100 m"
+      },
+      {
+        "id": "d",
+        "text": "0 m"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Total distance is the sum of the lengths of all segments of the path travelled, regardless of direction. In this case, total distance = 50 m + 30 m + 20 m = 100 m.",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_motion_ch1_q115",
+    "topicId": "laws-of-motion-9th",
+    "text": "A car travels 60 km in the first hour and 90 km in the next two hours. What is its average speed for the entire 3-hour journey?",
+    "options": [
+      {
+        "id": "a",
+        "text": "50 km/h"
+      },
+      {
+        "id": "b",
+        "text": "60 km/h"
+      },
+      {
+        "id": "c",
+        "text": "75 km/h"
+      },
+      {
+        "id": "d",
+        "text": "150 km/h"
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Average speed is calculated as the total distance travelled divided by the total time taken. Total distance = 60 km + 90 km = 150 km. Total time = 1 hour + 2 hours = 3 hours. Therefore, Average speed = 150 km / 3 hours = 50 km/h.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q116",
+    "topicId": "laws-of-motion-9th",
+    "text": "An object of mass 16 kg is moving with an acceleration of 3 m/s^2. What is the magnitude of the net force acting on the object?",
+    "options": [
+      {
+        "id": "a",
+        "text": "5.33 N"
+      },
+      {
+        "id": "b",
+        "text": "19 N"
+      },
+      {
+        "id": "c",
+        "text": "48 N"
+      },
+      {
+        "id": "d",
+        "text": "13 N"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "According to Newton's Second Law of Motion, Force (F) = mass (m) × acceleration (a). Given mass m = 16 kg and acceleration a = 3 m/s², the net force F = 16 kg × 3 m/s² = 48 N.",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_motion_ch1_q117",
+    "topicId": "laws-of-motion-9th",
+    "text": "A net force of 100 N is applied to an object of mass 20 kg. What is the acceleration produced in the object?",
     "options": [
       {
         "id": "a",
@@ -219,2280 +3030,223 @@
       },
       {
         "id": "c",
-        "text": "12 m/s²"
+        "text": "2000 m/s²"
       },
       {
         "id": "d",
-        "text": "20 m/s²"
+        "text": "80 m/s²"
       }
     ],
     "correctOptionId": "b",
-    "difficulty": 12,
-    "explanation": "F = ma  => a = F/m = 10N / 2kg = 5 m/s²."
-  },
-  {
-    "id": "phy_mech_q10",
-    "topicId": "mechanics",
-    "text": "Potential energy stored in a stretched or compressed spring is an example of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Gravitational potential energy"
-      },
-      {
-        "id": "b",
-        "text": "Elastic potential energy"
-      },
-      {
-        "id": "c",
-        "text": "Kinetic energy"
-      },
-      {
-        "id": "d",
-        "text": "Chemical energy"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_mech_q11",
-    "topicId": "mechanics",
-    "text": "The rate at which work is done is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Energy"
-      },
-      {
-        "id": "b",
-        "text": "Power"
-      },
-      {
-        "id": "c",
-        "text": "Force"
-      },
-      {
-        "id": "d",
-        "text": "Momentum"
-      }
-    ],
-    "correctOptionId": "b",
+    "explanation": "According to Newton's second law, Force (F) = mass (m) × acceleration (a). This can be rearranged to find acceleration: a = F/m. Given F = 100 N and m = 20 kg, the acceleration a = 100 N / 20 kg = 5 m/s².",
     "difficulty": 13
   },
   {
-    "id": "phy_mech_q12",
-    "topicId": "mechanics",
-    "text": "For an object in uniform circular motion, the direction of the centripetal acceleration is:",
+    "id": "phy_motion_ch1_q118",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of the following statements is correct regarding balanced forces acting on an object?",
     "options": [
       {
         "id": "a",
-        "text": "Tangent to the circle"
+        "text": "They always cause a change in the state of motion of an object."
       },
       {
         "id": "b",
-        "text": "Away from the center of the circle"
+        "text": "The net force resulting from them is non-zero."
       },
       {
         "id": "c",
-        "text": "Towards the center of the circle"
+        "text": "They result in a net force of zero, causing no change in the object's state of motion."
       },
       {
         "id": "d",
-        "text": "In the direction of motion"
+        "text": "They always cause the object to accelerate uniformly."
       }
     ],
     "correctOptionId": "c",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_mech_q13",
-    "topicId": "mechanics",
-    "text": "An object is dropped from rest. Ignoring air resistance, how far does it fall in 3 seconds? (g ≈ 10 m/s²)",
-    "options": [
-      {
-        "id": "a",
-        "text": "15 m"
-      },
-      {
-        "id": "b",
-        "text": "30 m"
-      },
-      {
-        "id": "c",
-        "text": "45 m"
-      },
-      {
-        "id": "d",
-        "text": "90 m"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 17,
-    "explanation": "d = v₀t + (1/2)at². Since v₀=0, d = (1/2) * 10 * 3² = 5 * 9 = 45 m."
-  },
-  {
-    "id": "phy_mech_q14",
-    "topicId": "mechanics",
-    "text": "The product of an object's mass and its velocity is known as its:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Impulse"
-      },
-      {
-        "id": "b",
-        "text": "Kinetic Energy"
-      },
-      {
-        "id": "c",
-        "text": "Momentum"
-      },
-      {
-        "id": "d",
-        "text": "Work"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 12
-  },
-  {
-    "id": "phy_mech_q15",
-    "topicId": "mechanics",
-    "text": "A simple pendulum completes one full swing (back and forth) in 2 seconds. What is its frequency?",
-    "options": [
-      {
-        "id": "a",
-        "text": "0.5 Hz"
-      },
-      {
-        "id": "b",
-        "text": "1 Hz"
-      },
-      {
-        "id": "c",
-        "text": "2 Hz"
-      },
-      {
-        "id": "d",
-        "text": "4 Hz"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 14,
-    "explanation": "Frequency (f) = 1 / Period (T). T = 2s, so f = 1/2s = 0.5 Hz."
-  },
-  {
-    "id": "phy_thermo_q1",
-    "topicId": "thermodynamics",
-    "text": "The transfer of heat through direct contact between particles is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Conduction"
-      },
-      {
-        "id": "b",
-        "text": "Convection"
-      },
-      {
-        "id": "c",
-        "text": "Radiation"
-      },
-      {
-        "id": "d",
-        "text": "Evaporation"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_thermo_q2",
-    "topicId": "thermodynamics",
-    "text": "The first law of thermodynamics is a statement of the conservation of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Mass"
-      },
-      {
-        "id": "b",
-        "text": "Energy"
-      },
-      {
-        "id": "c",
-        "text": "Momentum"
-      },
-      {
-        "id": "d",
-        "text": "Charge"
-      }
-    ],
-    "correctOptionId": "b",
+    "explanation": "Balanced forces are two or more forces acting on an object that are equal in magnitude and opposite in direction. Their combined effect (net force) is zero. According to Newton's First Law, a zero net force means there will be no change in the object's state of motion (it will remain at rest if initially at rest, or continue moving with constant velocity if initially in motion).",
     "difficulty": 13
   },
   {
-    "id": "phy_thermo_q3",
-    "topicId": "thermodynamics",
-    "text": "Absolute zero (0 Kelvin) is the temperature at which:",
+    "id": "phy_motion_ch1_q119",
+    "topicId": "laws-of-motion-9th",
+    "text": "Why is a thick bed of sand or a soft mat used for high jumpers to land on during competitions?",
     "options": [
       {
         "id": "a",
-        "text": "Water freezes"
+        "text": "To increase the total change in momentum during landing."
       },
       {
         "id": "b",
-        "text": "All molecular motion theoretically ceases"
+        "text": "To decrease the total change in momentum during landing."
       },
       {
         "id": "c",
-        "text": "Water boils"
+        "text": "To increase the time taken for the jumper to come to rest, thereby reducing the impact force."
       },
       {
         "id": "d",
-        "text": "Substances become superconductors"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_thermo_q4",
-    "topicId": "thermodynamics",
-    "text": "Heat naturally flows from:",
-    "options": [
-      {
-        "id": "a",
-        "text": "A colder object to a hotter object"
-      },
-      {
-        "id": "b",
-        "text": "A hotter object to a colder object"
-      },
-      {
-        "id": "c",
-        "text": "Objects with lower specific heat to objects with higher specific heat"
-      },
-      {
-        "id": "d",
-        "text": "Objects with less mass to objects with more mass"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_thermo_q5",
-    "topicId": "thermodynamics",
-    "text": "The measure of the disorder or randomness of a system is known as:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Enthalpy"
-      },
-      {
-        "id": "b",
-        "text": "Internal Energy"
-      },
-      {
-        "id": "c",
-        "text": "Entropy"
-      },
-      {
-        "id": "d",
-        "text": "Specific Heat"
+        "text": "To decrease the time taken for the jumper to come to rest, thereby increasing the jump height."
       }
     ],
     "correctOptionId": "c",
+    "explanation": "When a high jumper lands, their momentum must be reduced to zero. The change in momentum (impulse) is equal to Force × Time (FΔt = Δp). A soft landing surface like sand or a mat deforms upon impact, increasing the time interval (Δt) over which the jumper's momentum changes. For a given change in momentum, increasing the time of impact reduces the average force (F = Δp/Δt) exerted on the jumper, making the landing safer and less injurious.",
     "difficulty": 15
   },
   {
-    "id": "phy_thermo_q6",
-    "topicId": "thermodynamics",
-    "text": "Which of these processes is an example of convection?",
+    "id": "phy_motion_ch1_q120",
+    "topicId": "laws-of-motion-9th",
+    "text": "Which of the following is NOT a characteristic of action and reaction forces as described by Newton's Third Law?",
     "options": [
       {
         "id": "a",
-        "text": "Sunlight warming the Earth"
+        "text": "They have equal magnitude."
       },
       {
         "id": "b",
-        "text": "A metal spoon getting hot when placed in hot soup"
+        "text": "They are opposite in direction."
       },
       {
         "id": "c",
-        "text": "Warm air rising above a heater"
+        "text": "They act on different objects."
       },
       {
         "id": "d",
-        "text": "Feeling the heat from a campfire without touching it"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_thermo_q7",
-    "topicId": "thermodynamics",
-    "text": "The efficiency of a heat engine is always:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Greater than 1 (or 100%)"
-      },
-      {
-        "id": "b",
-        "text": "Equal to 1 (or 100%)"
-      },
-      {
-        "id": "c",
-        "text": "Less than 1 (or 100%)"
-      },
-      {
-        "id": "d",
-        "text": "Zero"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 16,
-    "explanation": "Due to the second law of thermodynamics, no heat engine can be 100% efficient."
-  },
-  {
-    "id": "phy_thermo_q8",
-    "topicId": "thermodynamics",
-    "text": "A process that occurs at constant temperature is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Adiabatic"
-      },
-      {
-        "id": "b",
-        "text": "Isobaric"
-      },
-      {
-        "id": "c",
-        "text": "Isochoric (Isovolumetric)"
-      },
-      {
-        "id": "d",
-        "text": "Isothermal"
+        "text": "They act on the same object and thus cancel each other out."
       }
     ],
     "correctOptionId": "d",
+    "explanation": "Action and reaction forces, according to Newton's Third Law, are always equal in magnitude and opposite in direction. Crucially, they act on different objects. Because they act on different objects, they do not cancel each other's effect on any single object. For example, if object A pushes object B, object B pushes back on object A.",
     "difficulty": 14
   },
   {
-    "id": "phy_thermo_q9",
-    "topicId": "thermodynamics",
-    "text": "The specific heat capacity of water is relatively high. This means that water:",
+    "id": "phy_motion_ch1_q121",
+    "topicId": "laws-of-motion-9th",
+    "text": "When an object is moving in uniform circular motion, the net force acting on it, known as the centripetal force, is directed:",
     "options": [
       {
         "id": "a",
-        "text": "Heats up and cools down very quickly"
+        "text": "Tangentially, in the direction of instantaneous velocity."
       },
       {
         "id": "b",
-        "text": "Requires a large amount of energy to change its temperature"
+        "text": "Towards the center of the circular path."
       },
       {
         "id": "c",
-        "text": "Is a very good conductor of heat"
+        "text": "Away from the center of the circular path (radially outward)."
       },
       {
         "id": "d",
-        "text": "Has a low boiling point"
+        "text": "Zero, because the speed is constant."
       }
     ],
     "correctOptionId": "b",
+    "explanation": "For an object to move in a circular path, even at constant speed (uniform circular motion), there must be a net force acting on it to continuously change its direction of velocity. This net force, called the centripetal force, is always directed towards the center of the circle. It causes the centripetal acceleration.",
     "difficulty": 15
   },
   {
-    "id": "phy_thermo_q10",
-    "topicId": "thermodynamics",
-    "text": "The second law of thermodynamics implies that the total entropy of an isolated system:",
+    "id": "phy_motion_ch1_q122",
+    "topicId": "laws-of-motion-9th",
+    "text": "If an object starts from rest and accelerates uniformly in a straight line, which of the following statements about its motion is FALSE?",
     "options": [
       {
         "id": "a",
-        "text": "Can only decrease or stay the same"
+        "text": "Its speed increases linearly with time (v ∝ t)."
       },
       {
         "id": "b",
-        "text": "Can only increase or stay the same"
+        "text": "Its velocity increases linearly with time."
       },
       {
         "id": "c",
-        "text": "Always remains constant"
+        "text": "The distance covered is proportional to the square of the time (s ∝ t²)."
       },
       {
         "id": "d",
-        "text": "Always decreases"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 18
-  },
-  {
-    "id": "phy_em_q1",
-    "topicId": "electromagnetism",
-    "text": "Like charges ______, and opposite charges ______.",
-    "options": [
-      {
-        "id": "a",
-        "text": "attract, repel"
-      },
-      {
-        "id": "b",
-        "text": "repel, attract"
-      },
-      {
-        "id": "c",
-        "text": "attract, attract"
-      },
-      {
-        "id": "d",
-        "text": "repel, repel"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_em_q2",
-    "topicId": "electromagnetism",
-    "text": "The unit of electric current is:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Volt (V)"
-      },
-      {
-        "id": "b",
-        "text": "Ohm (Ω)"
-      },
-      {
-        "id": "c",
-        "text": "Ampere (A)"
-      },
-      {
-        "id": "d",
-        "text": "Watt (W)"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_em_q3",
-    "topicId": "electromagnetism",
-    "text": "Ohm's Law states the relationship between voltage (V), current (I), and resistance (R) as:",
-    "options": [
-      {
-        "id": "a",
-        "text": "V = I/R"
-      },
-      {
-        "id": "b",
-        "text": "V = IR"
-      },
-      {
-        "id": "c",
-        "text": "I = VR"
-      },
-      {
-        "id": "d",
-        "text": "R = VI"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_em_q4",
-    "topicId": "electromagnetism",
-    "text": "A material that strongly resists the flow of electric current is called a(n):",
-    "options": [
-      {
-        "id": "a",
-        "text": "Conductor"
-      },
-      {
-        "id": "b",
-        "text": "Semiconductor"
-      },
-      {
-        "id": "c",
-        "text": "Insulator"
-      },
-      {
-        "id": "d",
-        "text": "Superconductor"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_em_q5",
-    "topicId": "electromagnetism",
-    "text": "Magnetic field lines around a bar magnet emerge from the:",
-    "options": [
-      {
-        "id": "a",
-        "text": "North pole and enter the South pole"
-      },
-      {
-        "id": "b",
-        "text": "South pole and enter the North pole"
-      },
-      {
-        "id": "c",
-        "text": "Center of the magnet and go outwards"
-      },
-      {
-        "id": "d",
-        "text": "Edges of the magnet only"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 12
-  },
-  {
-    "id": "phy_em_q6",
-    "topicId": "electromagnetism",
-    "text": "Electromagnetic induction is the production of an electromotive force (voltage) across an electrical conductor in a changing:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Electric field"
-      },
-      {
-        "id": "b",
-        "text": "Gravitational field"
-      },
-      {
-        "id": "c",
-        "text": "Magnetic field"
-      },
-      {
-        "id": "d",
-        "text": "Temperature gradient"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 16,
-    "explanation": "This is the principle behind electric generators (Faraday's Law)."
-  },
-  {
-    "id": "phy_em_q7",
-    "topicId": "electromagnetism",
-    "text": "In a series circuit, the total resistance is the ______ of individual resistances.",
-    "options": [
-      {
-        "id": "a",
-        "text": "Sum"
-      },
-      {
-        "id": "b",
-        "text": "Product"
-      },
-      {
-        "id": "c",
-        "text": "Reciprocal of the sum of reciprocals"
-      },
-      {
-        "id": "d",
-        "text": "Average"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_em_q8",
-    "topicId": "electromagnetism",
-    "text": "A capacitor is a device used to store:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Electric current"
-      },
-      {
-        "id": "b",
-        "text": "Magnetic energy"
-      },
-      {
-        "id": "c",
-        "text": "Electric charge (and thus electrical energy)"
-      },
-      {
-        "id": "d",
-        "text": "Kinetic energy"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_em_q9",
-    "topicId": "electromagnetism",
-    "text": "Which of the following is NOT a part of the electromagnetic spectrum?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Radio waves"
-      },
-      {
-        "id": "b",
-        "text": "Microwaves"
-      },
-      {
-        "id": "c",
-        "text": "Sound waves"
-      },
-      {
-        "id": "d",
-        "text": "Gamma rays"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 12,
-    "explanation": "Sound waves are mechanical waves, not electromagnetic."
-  },
-  {
-    "id": "phy_em_q10",
-    "topicId": "electromagnetism",
-    "text": "The force between two point charges is described by:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Newton's Law of Universal Gravitation"
-      },
-      {
-        "id": "b",
-        "text": "Ohm's Law"
-      },
-      {
-        "id": "c",
-        "text": "Coulomb's Law"
-      },
-      {
-        "id": "d",
-        "text": "Faraday's Law of Induction"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_opt_q1",
-    "topicId": "optics",
-    "text": "The phenomenon of light bouncing off a surface is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Refraction"
-      },
-      {
-        "id": "b",
-        "text": "Reflection"
-      },
-      {
-        "id": "c",
-        "text": "Diffraction"
-      },
-      {
-        "id": "d",
-        "text": "Interference"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_opt_q2",
-    "topicId": "optics",
-    "text": "The bending of light as it passes from one medium to another is known as:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Reflection"
-      },
-      {
-        "id": "b",
-        "text": "Dispersion"
-      },
-      {
-        "id": "c",
-        "text": "Refraction"
-      },
-      {
-        "id": "d",
-        "text": "Polarization"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_opt_q3",
-    "topicId": "optics",
-    "text": "A lens that is thicker at the center than at the edges is a:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Concave lens (diverging)"
-      },
-      {
-        "id": "b",
-        "text": "Convex lens (converging)"
-      },
-      {
-        "id": "c",
-        "text": "Plane mirror"
-      },
-      {
-        "id": "d",
-        "text": "Prism"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 12
-  },
-  {
-    "id": "phy_opt_q4",
-    "topicId": "optics",
-    "text": "The separation of white light into its constituent colors by a prism is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Diffraction"
-      },
-      {
-        "id": "b",
-        "text": "Interference"
-      },
-      {
-        "id": "c",
-        "text": "Dispersion"
-      },
-      {
-        "id": "d",
-        "text": "Polarization"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_opt_q5",
-    "topicId": "optics",
-    "text": "Which color of visible light has the longest wavelength?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Violet"
-      },
-      {
-        "id": "b",
-        "text": "Blue"
-      },
-      {
-        "id": "c",
-        "text": "Green"
-      },
-      {
-        "id": "d",
-        "text": "Red"
+        "text": "Its acceleration changes linearly with time."
       }
     ],
     "correctOptionId": "d",
-    "difficulty": 14
+    "explanation": "Uniform acceleration means the acceleration itself is constant; it does not change with time. If starting from rest (u=0): 1. Velocity v = at, so velocity (and speed) increases linearly with time. 2. Distance s = (1/2)at², so distance is proportional to the square of time. The statement that acceleration changes linearly with time is false for uniform acceleration.",
+    "difficulty": 16
   },
   {
-    "id": "phy_opt_q6",
-    "topicId": "optics",
-    "text": "The law of reflection states that the angle of incidence is equal to the:",
+    "id": "phy_motion_ch1_q123",
+    "topicId": "laws-of-motion-9th",
+    "text": "Consider an object moving with uniform velocity. Its acceleration is zero. What does this imply about the net external force acting on the object?",
     "options": [
       {
         "id": "a",
-        "text": "Angle of refraction"
+        "text": "The net force is constant and in the direction of motion."
       },
       {
         "id": "b",
-        "text": "Angle of reflection"
+        "text": "The net force is constant and opposite to the direction of motion."
       },
       {
         "id": "c",
-        "text": "Critical angle"
+        "text": "The net force is zero."
       },
       {
         "id": "d",
-        "text": "Brewster's angle"
+        "text": "The net force must be gravitational."
       }
     ],
-    "correctOptionId": "b",
+    "correctOptionId": "c",
+    "explanation": "According to Newton's Second Law of Motion (F_net = ma), if the acceleration (a) of an object is zero (which is the case for uniform velocity), then the net external force (F_net) acting on the object must also be zero. This is consistent with Newton's First Law.",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_motion_ch1_q124",
+    "topicId": "laws-of-motion-9th",
+    "text": "The statement \"Every action force has an equal and opposite reaction force which acts simultaneously\" is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Newton's First Law"
+      },
+      {
+        "id": "b",
+        "text": "Newton's Second Law"
+      },
+      {
+        "id": "c",
+        "text": "Newton's Third Law"
+      },
+      {
+        "id": "d",
+        "text": "The Law of Conservation of Momentum"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "This is the direct statement of Newton's Third Law (Page 24).",
     "difficulty": 11
   },
   {
-    "id": "phy_opt_q7",
-    "topicId": "optics",
-    "text": "Nearsightedness (myopia) can be corrected using a:",
+    "id": "phy_motion_ch1_q125",
+    "topicId": "laws-of-motion-9th",
+    "text": "A heavy truck and a light car are both moving with the same kinetic energy. If they are stopped by applying the same braking force, which vehicle will travel a shorter distance before stopping?",
     "options": [
       {
         "id": "a",
-        "text": "Convex lens"
+        "text": "The truck"
       },
       {
         "id": "b",
-        "text": "Concave lens"
+        "text": "The car"
       },
       {
         "id": "c",
-        "text": "Cylindrical lens"
+        "text": "Both will travel the same distance"
       },
       {
         "id": "d",
-        "text": "Bifocal lens"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_opt_q8",
-    "topicId": "optics",
-    "text": "The wave nature of light is demonstrated by which phenomenon?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Photoelectric effect"
-      },
-      {
-        "id": "b",
-        "text": "Compton scattering"
-      },
-      {
-        "id": "c",
-        "text": "Diffraction and Interference"
-      },
-      {
-        "id": "d",
-        "text": "Blackbody radiation"
+        "text": "It depends on the coefficient of friction."
       }
     ],
     "correctOptionId": "c",
-    "difficulty": 17
-  },
-  {
-    "id": "phy_mod_q1",
-    "topicId": "modern-physics",
-    "text": "Who proposed the theory of special relativity?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Max Planck"
-      },
-      {
-        "id": "b",
-        "text": "Niels Bohr"
-      },
-      {
-        "id": "c",
-        "text": "Albert Einstein"
-      },
-      {
-        "id": "d",
-        "text": "Erwin Schrödinger"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_mod_q2",
-    "topicId": "modern-physics",
-    "text": "The equation E=mc² relates energy (E) to mass (m) and the speed of light (c). This equation is a consequence of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Newtonian mechanics"
-      },
-      {
-        "id": "b",
-        "text": "Special Relativity"
-      },
-      {
-        "id": "c",
-        "text": "Quantum mechanics"
-      },
-      {
-        "id": "d",
-        "text": "Thermodynamics"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_mod_q3",
-    "topicId": "modern-physics",
-    "text": "The photoelectric effect demonstrates that light can behave as a:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Wave only"
-      },
-      {
-        "id": "b",
-        "text": "Particle only (photon)"
-      },
-      {
-        "id": "c",
-        "text": "Wave and a particle simultaneously"
-      },
-      {
-        "id": "d",
-        "text": "Form of heat"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16,
-    "explanation": "Specifically, it shows the particle nature of light, where light energy is quantized into photons."
-  },
-  {
-    "id": "phy_mod_q4",
-    "topicId": "modern-physics",
-    "text": "According to quantum mechanics, electrons in an atom can only exist in discrete:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Velocities"
-      },
-      {
-        "id": "b",
-        "text": "Temperatures"
-      },
-      {
-        "id": "c",
-        "text": "Energy levels"
-      },
-      {
-        "id": "d",
-        "text": "Masses"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_mod_q5",
-    "topicId": "modern-physics",
-    "text": "Heisenberg's Uncertainty Principle states that it is impossible to simultaneously know with perfect accuracy both the ______ and ______ of a particle.",
-    "options": [
-      {
-        "id": "a",
-        "text": "Mass, charge"
-      },
-      {
-        "id": "b",
-        "text": "Position, momentum (or velocity)"
-      },
-      {
-        "id": "c",
-        "text": "Energy, time (in some contexts)"
-      },
-      {
-        "id": "d",
-        "text": "Both b and c can be formulations"
-      }
-    ],
-    "correctOptionId": "d",
-    "difficulty": 18
-  },
-  {
-    "id": "phy_mod_q6",
-    "topicId": "modern-physics",
-    "text": "The Bohr model of the atom proposed that electrons:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Are spread throughout the atom like a cloud"
-      },
-      {
-        "id": "b",
-        "text": "Orbit the nucleus in any possible path"
-      },
-      {
-        "id": "c",
-        "text": "Orbit the nucleus only in specific, quantized energy levels"
-      },
-      {
-        "id": "d",
-        "text": "Are located within the nucleus along with protons"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_ws_q1",
-    "topicId": "waves-sound",
-    "text": "The distance between two consecutive crests or troughs of a wave is called its:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Amplitude"
-      },
-      {
-        "id": "b",
-        "text": "Frequency"
-      },
-      {
-        "id": "c",
-        "text": "Wavelength"
-      },
-      {
-        "id": "d",
-        "text": "Period"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_ws_q2",
-    "topicId": "waves-sound",
-    "text": "The number of waves passing a point in one second is known as the wave's:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Wavelength"
-      },
-      {
-        "id": "b",
-        "text": "Period"
-      },
-      {
-        "id": "c",
-        "text": "Amplitude"
-      },
-      {
-        "id": "d",
-        "text": "Frequency"
-      }
-    ],
-    "correctOptionId": "d",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_ws_q3",
-    "topicId": "waves-sound",
-    "text": "Sound waves are an example of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Transverse waves"
-      },
-      {
-        "id": "b",
-        "text": "Longitudinal waves"
-      },
-      {
-        "id": "c",
-        "text": "Electromagnetic waves"
-      },
-      {
-        "id": "d",
-        "text": "Surface waves"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 13,
-    "explanation": "In longitudinal waves, particle displacement is parallel to the direction of wave propagation."
-  },
-  {
-    "id": "phy_ws_q4",
-    "topicId": "waves-sound",
-    "text": "The Doppler effect explains the change in observed ______ of a wave due to relative motion between the source and the observer.",
-    "options": [
-      {
-        "id": "a",
-        "text": "Amplitude"
-      },
-      {
-        "id": "b",
-        "text": "Speed"
-      },
-      {
-        "id": "c",
-        "text": "Frequency (and wavelength)"
-      },
-      {
-        "id": "d",
-        "text": "Phase"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_ws_q5",
-    "topicId": "waves-sound",
-    "text": "Constructive interference occurs when two waves meet and their displacements are in the:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Same direction, resulting in a smaller amplitude"
-      },
-      {
-        "id": "b",
-        "text": "Opposite directions, resulting in a larger amplitude"
-      },
-      {
-        "id": "c",
-        "text": "Same direction, resulting in a larger amplitude"
-      },
-      {
-        "id": "d",
-        "text": "Opposite directions, resulting in a smaller amplitude"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_ws_q6",
-    "topicId": "waves-sound",
-    "text": "The speed of sound is generally fastest in:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Gases"
-      },
-      {
-        "id": "b",
-        "text": "Liquids"
-      },
-      {
-        "id": "c",
-        "text": "Solids"
-      },
-      {
-        "id": "d",
-        "text": "Vacuum"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 13,
-    "explanation": "Sound travels faster in denser media where particles are closer together."
-  },
-  {
-    "id": "phy_fm_q1",
-    "topicId": "fluid-mechanics",
-    "text": "Pressure in a fluid is defined as:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Force times area (F × A)"
-      },
-      {
-        "id": "b",
-        "text": "Force per unit area (F/A)"
-      },
-      {
-        "id": "c",
-        "text": "Mass per unit volume (m/V)"
-      },
-      {
-        "id": "d",
-        "text": "Work done per unit time (W/t)"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_fm_q2",
-    "topicId": "fluid-mechanics",
-    "text": "Archimedes' principle states that the buoyant force on an object submerged in a fluid is equal to the:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Weight of the object"
-      },
-      {
-        "id": "b",
-        "text": "Volume of the fluid displaced by the object"
-      },
-      {
-        "id": "c",
-        "text": "Weight of the fluid displaced by the object"
-      },
-      {
-        "id": "d",
-        "text": "Density of the object times its volume"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_fm_q3",
-    "topicId": "fluid-mechanics",
-    "text": "Pascal's principle is the basis for the operation of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "A thermometer"
-      },
-      {
-        "id": "b",
-        "text": "An electric motor"
-      },
-      {
-        "id": "c",
-        "text": "A hydraulic lift"
-      },
-      {
-        "id": "d",
-        "text": "A telescope"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14,
-    "explanation": "Pressure applied to an enclosed fluid is transmitted undiminished to every part of the fluid."
-  },
-  {
-    "id": "phy_fm_q4",
-    "topicId": "fluid-mechanics",
-    "text": "Bernoulli's principle relates the pressure, speed, and height of a moving fluid. It implies that where the speed of a fluid is higher, the pressure is:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Higher"
-      },
-      {
-        "id": "b",
-        "text": "Lower"
-      },
-      {
-        "id": "c",
-        "text": "Unchanged"
-      },
-      {
-        "id": "d",
-        "text": "Dependent only on density"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 17
-  },
-  {
-    "id": "phy_fm_q5",
-    "topicId": "fluid-mechanics",
-    "text": "The property of a fluid that describes its resistance to flow is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Density"
-      },
-      {
-        "id": "b",
-        "text": "Viscosity"
-      },
-      {
-        "id": "c",
-        "text": "Surface tension"
-      },
-      {
-        "id": "d",
-        "text": "Buoyancy"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_fm_q6",
-    "topicId": "fluid-mechanics",
-    "text": "For an object to float in a fluid, its average density must be:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Greater than the density of the fluid"
-      },
-      {
-        "id": "b",
-        "text": "Equal to the density of the fluid"
-      },
-      {
-        "id": "c",
-        "text": "Less than or equal to the density of the fluid"
-      },
-      {
-        "id": "d",
-        "text": "Irrelevant to whether it floats"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_mech_q16",
-    "topicId": "mechanics",
-    "text": "What is the work done by a force if the displacement is perpendicular to the force?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Maximum positive work"
-      },
-      {
-        "id": "b",
-        "text": "Maximum negative work"
-      },
-      {
-        "id": "c",
-        "text": "Zero"
-      },
-      {
-        "id": "d",
-        "text": "Equal to the force magnitude"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15,
-    "explanation": "Work = F * d * cos(θ). If θ = 90°, cos(90°) = 0, so Work = 0."
-  },
-  {
-    "id": "phy_mech_q17",
-    "topicId": "mechanics",
-    "text": "The rotational equivalent of mass is:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Torque"
-      },
-      {
-        "id": "b",
-        "text": "Angular velocity"
-      },
-      {
-        "id": "c",
-        "text": "Moment of inertia"
-      },
-      {
-        "id": "d",
-        "text": "Angular momentum"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_mech_q18",
-    "topicId": "mechanics",
-    "text": "If the net torque on an object is zero, its angular momentum:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Increases"
-      },
-      {
-        "id": "b",
-        "text": "Decreases"
-      },
-      {
-        "id": "c",
-        "text": "Remains constant"
-      },
-      {
-        "id": "d",
-        "text": "Becomes zero"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 17,
-    "explanation": "This is the law of conservation of angular momentum."
-  },
-  {
-    "id": "phy_mech_q19",
-    "topicId": "mechanics",
-    "text": "Hooke's Law describes the force exerted by a spring as F = -kx. What does 'k' represent?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Displacement from equilibrium"
-      },
-      {
-        "id": "b",
-        "text": "Spring constant (stiffness)"
-      },
-      {
-        "id": "c",
-        "text": "Mass attached to the spring"
-      },
-      {
-        "id": "d",
-        "text": "Period of oscillation"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_thermo_q11",
-    "topicId": "thermodynamics",
-    "text": "A process that occurs without any heat transfer between the system and its surroundings is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Isothermal"
-      },
-      {
-        "id": "b",
-        "text": "Isobaric"
-      },
-      {
-        "id": "c",
-        "text": "Adiabatic"
-      },
-      {
-        "id": "d",
-        "text": "Isochoric"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_thermo_q12",
-    "topicId": "thermodynamics",
-    "text": "The Zeroth Law of Thermodynamics defines:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Conservation of energy"
-      },
-      {
-        "id": "b",
-        "text": "The direction of heat flow"
-      },
-      {
-        "id": "c",
-        "text": "Thermal equilibrium and temperature"
-      },
-      {
-        "id": "d",
-        "text": "Absolute zero"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 17
-  },
-  {
-    "id": "phy_thermo_q13",
-    "topicId": "thermodynamics",
-    "text": "What is the primary mode of heat transfer from the Sun to Earth?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Conduction"
-      },
-      {
-        "id": "b",
-        "text": "Convection"
-      },
-      {
-        "id": "c",
-        "text": "Radiation"
-      },
-      {
-        "id": "d",
-        "text": "Advection"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 12
-  },
-  {
-    "id": "phy_thermo_q14",
-    "topicId": "thermodynamics",
-    "text": "The ideal gas law is typically written as PV = nRT. What does 'R' represent?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Specific heat capacity"
-      },
-      {
-        "id": "b",
-        "text": "Ideal gas constant"
-      },
-      {
-        "id": "c",
-        "text": "Rate of reaction"
-      },
-      {
-        "id": "d",
-        "text": "Resistance"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_em_q11",
-    "topicId": "electromagnetism",
-    "text": "The unit of capacitance is the:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Henry (H)"
-      },
-      {
-        "id": "b",
-        "text": "Farad (F)"
-      },
-      {
-        "id": "c",
-        "text": "Tesla (T)"
-      },
-      {
-        "id": "d",
-        "text": "Weber (Wb)"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_em_q12",
-    "topicId": "electromagnetism",
-    "text": "A transformer works on the principle of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Electrostatic induction"
-      },
-      {
-        "id": "b",
-        "text": "Mutual induction"
-      },
-      {
-        "id": "c",
-        "text": "Self-induction"
-      },
-      {
-        "id": "d",
-        "text": "Ohm's Law"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_em_q13",
-    "topicId": "electromagnetism",
-    "text": "The direction of the magnetic force on a moving charge can be determined using the:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Left-hand rule"
-      },
-      {
-        "id": "b",
-        "text": "Right-hand rule (for positive charges)"
-      },
-      {
-        "id": "c",
-        "text": "Coulomb's Law"
-      },
-      {
-        "id": "d",
-        "text": "Gauss's Law"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_em_q14",
-    "topicId": "electromagnetism",
-    "text": "Which of these materials is ferromagnetic?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Copper"
-      },
-      {
-        "id": "b",
-        "text": "Aluminum"
-      },
-      {
-        "id": "c",
-        "text": "Iron"
-      },
-      {
-        "id": "d",
-        "text": "Glass"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_em_q15",
-    "topicId": "electromagnetism",
-    "text": "What is the SI unit of magnetic flux density (magnetic field strength)?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Weber (Wb)"
-      },
-      {
-        "id": "b",
-        "text": "Henry (H)"
-      },
-      {
-        "id": "c",
-        "text": "Tesla (T)"
-      },
-      {
-        "id": "d",
-        "text": "Farad (F)"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_opt_q9",
-    "topicId": "optics",
-    "text": "Total internal reflection can occur when light travels from:",
-    "options": [
-      {
-        "id": "a",
-        "text": "A rarer medium to a denser medium at any angle"
-      },
-      {
-        "id": "b",
-        "text": "A denser medium to a rarer medium, if the angle of incidence exceeds the critical angle"
-      },
-      {
-        "id": "c",
-        "text": "A denser medium to a rarer medium, at any angle less than the critical angle"
-      },
-      {
-        "id": "d",
-        "text": "Air to glass only"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 18
-  },
-  {
-    "id": "phy_opt_q10",
-    "topicId": "optics",
-    "text": "The power of a lens is measured in:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Meters (m)"
-      },
-      {
-        "id": "b",
-        "text": "Diopters (D)"
-      },
-      {
-        "id": "c",
-        "text": "Watts (W)"
-      },
-      {
-        "id": "d",
-        "text": "Lumens (lm)"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_opt_q11",
-    "topicId": "optics",
-    "text": "Huygens' principle is used to explain:",
-    "options": [
-      {
-        "id": "a",
-        "text": "The particle nature of light"
-      },
-      {
-        "id": "b",
-        "text": "The quantization of energy"
-      },
-      {
-        "id": "c",
-        "text": "Wave propagation, including diffraction and refraction"
-      },
-      {
-        "id": "d",
-        "text": "The photoelectric effect"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 17
-  },
-  {
-    "id": "phy_opt_q12",
-    "topicId": "optics",
-    "text": "A virtual image formed by a lens or mirror is one that:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Can be projected onto a screen"
-      },
-      {
-        "id": "b",
-        "text": "Is always inverted"
-      },
-      {
-        "id": "c",
-        "text": "Appears to be located where light rays do not actually converge"
-      },
-      {
-        "id": "d",
-        "text": "Is always larger than the object"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_mod_q7",
-    "topicId": "modern-physics",
-    "text": "The de Broglie wavelength of a particle is inversely proportional to its:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Mass"
-      },
-      {
-        "id": "b",
-        "text": "Charge"
-      },
-      {
-        "id": "c",
-        "text": "Momentum"
-      },
-      {
-        "id": "d",
-        "text": "Energy"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 17,
-    "explanation": "λ = h/p, where h is Planck's constant and p is momentum."
-  },
-  {
-    "id": "phy_mod_q8",
-    "topicId": "modern-physics",
-    "text": "Which fundamental force is responsible for holding quarks together within protons and neutrons?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Gravitational force"
-      },
-      {
-        "id": "b",
-        "text": "Electromagnetic force"
-      },
-      {
-        "id": "c",
-        "text": "Weak nuclear force"
-      },
-      {
-        "id": "d",
-        "text": "Strong nuclear force"
-      }
-    ],
-    "correctOptionId": "d",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_mod_q9",
-    "topicId": "modern-physics",
-    "text": "An electron, a proton, and a neutron are fundamental particles. Which of these are leptons?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Electron only"
-      },
-      {
-        "id": "b",
-        "text": "Proton and Neutron"
-      },
-      {
-        "id": "c",
-        "text": "Electron and Proton"
-      },
-      {
-        "id": "d",
-        "text": "All three"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 15,
-    "explanation": "Electrons are leptons. Protons and neutrons are baryons (made of quarks)."
-  },
-  {
-    "id": "phy_mod_q10",
-    "topicId": "modern-physics",
-    "text": "What is the name given to a quantum of the electromagnetic field, often described as a particle of light?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Electron"
-      },
-      {
-        "id": "b",
-        "text": "Proton"
-      },
-      {
-        "id": "c",
-        "text": "Photon"
-      },
-      {
-        "id": "d",
-        "text": "Neutrino"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 12
-  },
-  {
-    "id": "phy_ws_q7",
-    "topicId": "waves-sound",
-    "text": "The phenomenon where a wave bends around the edges of an obstacle is called:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Reflection"
-      },
-      {
-        "id": "b",
-        "text": "Refraction"
-      },
-      {
-        "id": "c",
-        "text": "Diffraction"
-      },
-      {
-        "id": "d",
-        "text": "Interference"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_ws_q8",
-    "topicId": "waves-sound",
-    "text": "The perceived loudness of a sound is most closely related to its:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Frequency"
-      },
-      {
-        "id": "b",
-        "text": "Wavelength"
-      },
-      {
-        "id": "c",
-        "text": "Amplitude (or intensity)"
-      },
-      {
-        "id": "d",
-        "text": "Speed"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 12
-  },
-  {
-    "id": "phy_ws_q9",
-    "topicId": "waves-sound",
-    "text": "Resonance occurs when an object is forced to vibrate at its:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Lowest possible frequency"
-      },
-      {
-        "id": "b",
-        "text": "Highest possible frequency"
-      },
-      {
-        "id": "c",
-        "text": "Natural frequency"
-      },
-      {
-        "id": "d",
-        "text": "Harmonic frequency only"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_ws_q10",
-    "topicId": "waves-sound",
-    "text": "The speed of a wave (v) is related to its frequency (f) and wavelength (λ) by the equation:",
-    "options": [
-      {
-        "id": "a",
-        "text": "v = f/λ"
-      },
-      {
-        "id": "b",
-        "text": "v = λ/f"
-      },
-      {
-        "id": "c",
-        "text": "v = fλ"
-      },
-      {
-        "id": "d",
-        "text": "v = f + λ"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_fm_q7",
-    "topicId": "fluid-mechanics",
-    "text": "Surface tension in a liquid is caused by:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Gravitational forces"
-      },
-      {
-        "id": "b",
-        "text": "Cohesive forces between liquid molecules"
-      },
-      {
-        "id": "c",
-        "text": "Adhesive forces between liquid and container"
-      },
-      {
-        "id": "d",
-        "text": "The viscosity of the liquid"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_fm_q8",
-    "topicId": "fluid-mechanics",
-    "text": "The continuity equation for an incompressible fluid relates the fluid's speed and the cross-sectional area of the pipe it flows through. It states that A₁v₁ = A₂v₂. This is a consequence of conservation of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Energy"
-      },
-      {
-        "id": "b",
-        "text": "Momentum"
-      },
-      {
-        "id": "c",
-        "text": "Mass"
-      },
-      {
-        "id": "d",
-        "text": "Pressure"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 18
-  },
-  {
-    "id": "phy_fm_q9",
-    "topicId": "fluid-mechanics",
-    "text": "What happens to the pressure at a certain depth in a liquid if the density of the liquid increases (assuming depth and g are constant)?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Increases"
-      },
-      {
-        "id": "b",
-        "text": "Decreases"
-      },
-      {
-        "id": "c",
-        "text": "Remains the same"
-      },
-      {
-        "id": "d",
-        "text": "Becomes zero"
-      }
-    ],
-    "correctOptionId": "a",
-    "difficulty": 14,
-    "explanation": "Pressure (P) = ρgh, where ρ is density."
-  },
-  {
-    "id": "phy_fm_q10",
-    "topicId": "fluid-mechanics",
-    "text": "A ship floats higher in saltwater than in freshwater because saltwater is:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Less dense than freshwater"
-      },
-      {
-        "id": "b",
-        "text": "More dense than freshwater"
-      },
-      {
-        "id": "c",
-        "text": "Warmer than freshwater"
-      },
-      {
-        "id": "d",
-        "text": "Colder than freshwater"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 15
-  },
-  {
-    "id": "phy_np_q1",
-    "topicId": "nuclear-physics",
-    "text": "Which type of radiation is the most penetrating?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Alpha (α) particles"
-      },
-      {
-        "id": "b",
-        "text": "Beta (β) particles"
-      },
-      {
-        "id": "c",
-        "text": "Gamma (γ) rays"
-      },
-      {
-        "id": "d",
-        "text": "Neutrons"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 14
-  },
-  {
-    "id": "phy_np_q2",
-    "topicId": "nuclear-physics",
-    "text": "Nuclear fission is the process where:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Light nuclei combine to form a heavier nucleus"
-      },
-      {
-        "id": "b",
-        "text": "A heavy nucleus splits into two or more lighter nuclei"
-      },
-      {
-        "id": "c",
-        "text": "An electron is emitted from the nucleus"
-      },
-      {
-        "id": "d",
-        "text": "An atom gains an electron"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 13
-  },
-  {
-    "id": "phy_np_q3",
-    "topicId": "nuclear-physics",
-    "text": "What is the charge of an alpha particle?",
-    "options": [
-      {
-        "id": "a",
-        "text": "-1e"
-      },
-      {
-        "id": "b",
-        "text": "0"
-      },
-      {
-        "id": "c",
-        "text": "+1e"
-      },
-      {
-        "id": "d",
-        "text": "+2e"
-      }
-    ],
-    "correctOptionId": "d",
-    "difficulty": 15,
-    "explanation": "An alpha particle is a helium nucleus (2 protons, 2 neutrons)."
-  },
-  {
-    "id": "phy_np_q4",
-    "topicId": "nuclear-physics",
-    "text": "The process that powers the Sun and other stars is primarily:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Nuclear fission"
-      },
-      {
-        "id": "b",
-        "text": "Nuclear fusion"
-      },
-      {
-        "id": "c",
-        "text": "Chemical combustion"
-      },
-      {
-        "id": "d",
-        "text": "Radioactive decay"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_astro_q1",
-    "topicId": "astrophysics-basics",
-    "text": "What is the name of the galaxy that contains our Solar System?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Andromeda Galaxy"
-      },
-      {
-        "id": "b",
-        "text": "Triangulum Galaxy"
-      },
-      {
-        "id": "c",
-        "text": "Milky Way Galaxy"
-      },
-      {
-        "id": "d",
-        "text": "Whirlpool Galaxy"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 10
-  },
-  {
-    "id": "phy_astro_q2",
-    "topicId": "astrophysics-basics",
-    "text": "A light-year is a unit of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Time"
-      },
-      {
-        "id": "b",
-        "text": "Distance"
-      },
-      {
-        "id": "c",
-        "text": "Speed"
-      },
-      {
-        "id": "d",
-        "text": "Brightness"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 11
-  },
-  {
-    "id": "phy_astro_q3",
-    "topicId": "astrophysics-basics",
-    "text": "The Hertzsprung-Russell (H-R) diagram plots stars based on their luminosity and:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Distance from Earth"
-      },
-      {
-        "id": "b",
-        "text": "Mass"
-      },
-      {
-        "id": "c",
-        "text": "Surface temperature (or spectral type)"
-      },
-      {
-        "id": "d",
-        "text": "Age"
-      }
-    ],
-    "correctOptionId": "c",
-    "difficulty": 17
-  },
-  {
-    "id": "phy_astro_q4",
-    "topicId": "astrophysics-basics",
-    "text": "What is believed to be at the center of most large galaxies, including our own?",
-    "options": [
-      {
-        "id": "a",
-        "text": "A large star cluster"
-      },
-      {
-        "id": "b",
-        "text": "A supermassive black hole"
-      },
-      {
-        "id": "c",
-        "text": "A nebula"
-      },
-      {
-        "id": "d",
-        "text": "An empty void"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 16
-  },
-  {
-    "id": "phy_astro_q5",
-    "topicId": "astrophysics-basics",
-    "text": "The expansion of the universe is supported by the observation of:",
-    "options": [
-      {
-        "id": "a",
-        "text": "Blueshift of distant galaxies"
-      },
-      {
-        "id": "b",
-        "text": "Redshift of distant galaxies"
-      },
-      {
-        "id": "c",
-        "text": "Constant brightness of Cepheid variables"
-      },
-      {
-        "id": "d",
-        "text": "The presence of dark matter"
-      }
-    ],
-    "correctOptionId": "b",
-    "difficulty": 18
+    "explanation": "This problem requires applying the Work-Energy theorem (covered in Chapter 2, but based on force and distance from Chapter 1). Work done by the braking force (F * distance) equals the change in kinetic energy (which is equal to the initial KE since the final KE is zero). If the initial kinetic energy is the same for both, and the braking force is the same, then the stopping distance (distance = KE / Force) must be the same for both vehicles.",
+    "difficulty": 19
   }
 ]

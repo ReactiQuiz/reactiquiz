@@ -9,7 +9,8 @@
       { "id": "c", "text": "Ribosome" }
     ],
     "correctOptionId": "b",
-    "difficulty": 10
+    "difficulty": 10,
+    "explanation": "1234"
   },
   {
     "id": "bio_q2",

@@ -1,81 +1,57 @@
+// src/components/TopicCard.js
 import React from 'react';
-import { Card, CardContent, CardActions, Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // <<< IMPORT useNavigate
-import { lighten, useTheme } from '@mui/material/styles';
+import { Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box } from '@mui/material'; // Added Box
+import { lighten, darken } from '@mui/material/styles';
 
-function TopicCard({ topic, onStartQuiz, accentColor = null, subjectBasePath }) { // Added subjectBasePath
-  const navigate = useNavigate(); // <<< INITIALIZE useNavigate
+function TopicCard({ topic, onStartQuiz, accentColor }) {
   const theme = useTheme();
+  const { name, description, id, class: topicClass } = topic; // Destructure class as topicClass
 
-  const buttonStyles = accentColor
-    ? {
-        backgroundColor: accentColor,
-        color: theme.palette.getContrastText(accentColor),
-        '&:hover': {
-          backgroundColor: lighten(accentColor, 0.15),
-        },
-      }
-    : {};
+  const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
-  const handleStartQuizClick = () => {
-    // Use the onStartQuiz prop IF IT'S JUST FOR LOGGING (as it was before)
-    // OR directly navigate. For this step, let's navigate.
-    // The onStartQuiz prop becomes less relevant if the card itself navigates.
-    if (onStartQuiz) { // Keep for backward compatibility or other actions
-        onStartQuiz(topic.id);
+  const cardStyle = {
+    border: `1px solid ${alpha(effectiveAccentColor, 0.5)}`,
+    borderRadius: theme.shape.borderRadius * 2,
+    boxShadow: theme.shadows[2],
+    transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+    '&:hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: theme.shadows[6],
     }
-    // Construct the path: e.g., /quiz/chemistry/periodic-table
-    // subjectBasePath should be like 'chemistry', 'physics', etc.
-    // topic.id is like 'periodic-table'
-    navigate(`/quiz/${subjectBasePath}/${topic.id}`);
   };
 
   return (
-    <Card
-      sx={{
-        border: accentColor ? `1px solid ${accentColor}` : '1px solid white',
-        backgroundColor: 'background.paper',
-        display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-        alignItems: { sm: 'center' },
-        minHeight: { xs: 'auto', sm: '120px' },
-        '&:hover': {
-          boxShadow: (theme) => theme.shadows[4],
-          transition: 'box-shadow 0.2s ease-in-out',
-        }
-      }}
-    >
-      <CardContent
-        sx={{
-          flexGrow: 1,
-          overflow: 'hidden',
-          py: { xs: 1.5, sm: 2 },
-          px: 2,
-        }}
-      >
-        <Typography /* ... title ... */ >{topic.name}</Typography>
-        <Typography /* ... description ... */ >{topic.description}</Typography>
-      </CardContent>
-      <CardActions
-        sx={{ /* ... styles ... */ }}
-      >
+    <Card sx={cardStyle}>
+      <CardContent sx={{ p: 2.5 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}> {/* Box was used here */}
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: effectiveAccentColor }}>
+            {name}
+          </Typography>
+          {topicClass && (
+            <Chip label={`Class ${topicClass}`} size="small" sx={{ backgroundColor: alpha(theme.palette.text.secondary, 0.2), color: theme.palette.text.secondary }} />
+          )}
+        </Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2, minHeight: '40px' }}>
+          {description}
+        </Typography>
         <Button
-          variant="contained"
-          color={accentColor ? undefined : "primary"}
-          onClick={handleStartQuizClick} // <<< USE NEW HANDLER
+          variant="outlined"
+          onClick={onStartQuiz}
           sx={{
-            fontWeight: 'bold',
-            width: '100%',
-            ...buttonStyles,
+            borderColor: effectiveAccentColor,
+            color: effectiveAccentColor,
+            fontWeight: 'medium',
+            '&:hover': {
+              backgroundColor: alpha(effectiveAccentColor, 0.1),
+              borderColor: effectiveAccentColor,
+            },
           }}
         >
           Start Quiz
         </Button>
-      </CardActions>
+      </CardContent>
     </Card>
   );
 }
-// Ensure Typography for title and description have their full sx props from previous versions.
-// For brevity, I've shortened them here.
 
 export default TopicCard;

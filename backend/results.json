@@ -1,0 +1,287 @@
+[
+  {
+    "id": 15,
+    "subject": "physics",
+    "topicId": "laws-of-motion-9th",
+    "score": 9,
+    "totalQuestions": 10,
+    "percentage": 90,
+    "timestamp": "2025-05-21T11:21:17.818Z",
+    "difficulty": "mixed",
+    "numQuestionsConfigured": 10,
+    "questionsAttempted": [
+      {
+        "id": "phy_motion_ch1_q064",
+        "topicId": "laws-of-motion-9th",
+        "text": "If an object's velocity is changing in either magnitude or direction, or both, what is it said to be undergoing?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Uniform motion"
+          },
+          {
+            "id": "b",
+            "text": "Zero acceleration"
+          },
+          {
+            "id": "c",
+            "text": "Accelerated motion"
+          },
+          {
+            "id": "d",
+            "text": "Constant momentum"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "Acceleration is defined as the rate of change of velocity. Since velocity is a vector with both magnitude (speed) and direction, a change in either speed, or direction, or both, constitutes a change in velocity, and thus the object is undergoing accelerated motion.",
+        "difficulty": 13
+      },
+      {
+        "id": "phy_motion_ch1_q015",
+        "topicId": "laws-of-motion-9th",
+        "text": "If you observe a lightning flash and then hear the thunder 5 seconds later, knowing the speed of sound in air is approximately 340 m/s, how can you estimate the distance to the lightning strike?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Distance = Speed of sound / Time delay"
+          },
+          {
+            "id": "b",
+            "text": "Distance = Time delay / Speed of sound"
+          },
+          {
+            "id": "c",
+            "text": "Distance = Speed of sound × Time delay"
+          },
+          {
+            "id": "d",
+            "text": "Distance = Speed of sound + Time delay"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "The speed of light is much greater than the speed of sound, so the lightning flash is seen almost instantly. The sound of thunder travels at approximately 340 m/s. The distance to the strike can be estimated by multiplying the speed of sound by the time delay between seeing the flash and hearing the thunder (Distance = Speed × Time). In this case, 340 m/s × 5 s = 1700 m.",
+        "difficulty": 14
+      },
+      {
+        "id": "phy_motion_ch1_q095",
+        "topicId": "laws-of-motion-9th",
+        "text": "The graphical method for deriving the equations of motion often uses a velocity-time graph. What physical quantity is typically plotted on the Y-axis (vertical axis) of this graph?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Distance"
+          },
+          {
+            "id": "b",
+            "text": "Displacement"
+          },
+          {
+            "id": "c",
+            "text": "Velocity"
+          },
+          {
+            "id": "d",
+            "text": "Acceleration"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "In a standard velocity-time graph used for analyzing motion and deriving equations of motion, velocity is plotted on the Y-axis (ordinate) and time is plotted on the X-axis (abscissa).",
+        "difficulty": 11
+      },
+      {
+        "id": "phy_motion_ch1_q083",
+        "topicId": "laws-of-motion-9th",
+        "text": "A motorboat starts from rest and moves with uniform acceleration. It attains a velocity of 15 m/s in 5 s. What is its acceleration?",
+        "options": [
+          {
+            "id": "a",
+            "text": "15 m/s^2"
+          },
+          {
+            "id": "b",
+            "text": "5 m/s^2"
+          },
+          {
+            "id": "c",
+            "text": "3 m/s^2"
+          },
+          {
+            "id": "d",
+            "text": "0.33 m/s^2"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "Acceleration (a) can be calculated using the formula a = (v-u)/t, where 'v' is final velocity, 'u' is initial velocity, and 't' is time. Here, u=0 m/s (starts from rest), v=15 m/s, and t=5 s. So, a = (15 - 0) / 5 = 15 / 5 = 3 m/s².",
+        "difficulty": 13
+      },
+      {
+        "id": "phy_motion_ch1_q094",
+        "topicId": "laws-of-motion-9th",
+        "text": "If an object is thrown vertically upwards, its speed decreases as it goes up due to gravity. This decrease in speed while moving upwards is an example of:",
+        "options": [
+          {
+            "id": "a",
+            "text": "Positive acceleration in the upward direction"
+          },
+          {
+            "id": "b",
+            "text": "Zero acceleration at the peak"
+          },
+          {
+            "id": "c",
+            "text": "Deceleration (or negative acceleration relative to upward motion)"
+          },
+          {
+            "id": "d",
+            "text": "Uniform velocity throughout the upward motion"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "When an object is thrown upwards, gravity exerts a constant downward force, causing a constant downward acceleration. Since this acceleration is opposite to the direction of upward motion, the object's upward speed decreases. This is known as deceleration or negative acceleration if the upward direction is considered positive.",
+        "difficulty": 13
+      },
+      {
+        "id": "phy_motion_ch1_q053",
+        "topicId": "laws-of-motion-9th",
+        "text": "A car travels half the circumference of a circular track of radius 100m. What is the distance it has travelled? (Use π ≈ 3.14)",
+        "options": [
+          {
+            "id": "a",
+            "text": "100 m"
+          },
+          {
+            "id": "b",
+            "text": "200 m"
+          },
+          {
+            "id": "c",
+            "text": "314 m"
+          },
+          {
+            "id": "d",
+            "text": "628 m"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "The circumference of a full circular track is given by C = 2πr. If the car travels half the circumference, the distance travelled is (1/2) × 2πr = πr. Given radius r = 100m and π ≈ 3.14, the distance = 3.14 × 100m = 314m.",
+        "difficulty": 14
+      },
+      {
+        "id": "phy_motion_ch1_q067",
+        "topicId": "laws-of-motion-9th",
+        "text": "Momentum is described as a property related to both mass and velocity that quantifies the 'quantity of motion' an object possesses and affects the outcome of collisions. This concept helps understand:",
+        "options": [
+          {
+            "id": "a",
+            "text": "How far an object travels."
+          },
+          {
+            "id": "b",
+            "text": "How fast an object accelerates."
+          },
+          {
+            "id": "c",
+            "text": "The impact an object can have when it strikes another."
+          },
+          {
+            "id": "d",
+            "text": "The thermal energy of an object."
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "Momentum (P=mv) is a measure of an object's motion that combines its mass and velocity. A larger momentum implies a greater 'quantity of motion', meaning it is harder to stop or change its motion, and it will have a greater impact in a collision.",
+        "difficulty": 11
+      },
+      {
+        "id": "phy_motion_ch1_q092",
+        "topicId": "laws-of-motion-9th",
+        "text": "Consider a child on a swing. As the swing moves back and forth, its speed changes continuously (being zero at the highest points and maximum at the lowest point). Is the motion of the swing uniform or non-uniform?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Uniform, because it follows the same path repeatedly."
+          },
+          {
+            "id": "b",
+            "text": "Non-uniform, because its speed changes throughout the swing."
+          },
+          {
+            "id": "c",
+            "text": "Uniform, if the child does not pump their legs."
+          },
+          {
+            "id": "d",
+            "text": "Non-uniform, only if an external push is applied."
+          }
+        ],
+        "correctOptionId": "b",
+        "explanation": "The motion of a swing is non-uniform because its speed is constantly changing. It is slowest (momentarily zero) at the highest points of its arc and fastest at the lowest point. Since speed changes, the motion is non-uniform, and it is also accelerated.",
+        "difficulty": 15
+      },
+      {
+        "id": "phy_motion_ch1_q003",
+        "topicId": "laws-of-motion-9th",
+        "text": "If you are travelling in a bus, and the person sitting next to you is also in the bus, what can you say about their motion relative to you?",
+        "options": [
+          {
+            "id": "a",
+            "text": "They are in motion."
+          },
+          {
+            "id": "b",
+            "text": "They are at rest."
+          },
+          {
+            "id": "c",
+            "text": "Their motion depends on the bus's speed."
+          },
+          {
+            "id": "d",
+            "text": "Their motion depends on the bus's direction."
+          }
+        ],
+        "correctOptionId": "b",
+        "explanation": "Motion is a relative concept. If the position of the person next to you is not changing with respect to you (your immediate surroundings from your perspective within the bus), they are at rest relative to you, even though both of you are in motion relative to the ground.",
+        "difficulty": 12
+      },
+      {
+        "id": "phy_motion_ch1_q086",
+        "topicId": "laws-of-motion-9th",
+        "text": "It is easier to lift a small book from a table than to lift the entire heavy table. This difference in the effort required is primarily related to which property of the objects?",
+        "options": [
+          {
+            "id": "a",
+            "text": "Their acceleration when lifted"
+          },
+          {
+            "id": "b",
+            "text": "Their velocity after being lifted"
+          },
+          {
+            "id": "c",
+            "text": "Their inertia, which is related to their mass"
+          },
+          {
+            "id": "d",
+            "text": "Their momentum while on the table"
+          }
+        ],
+        "correctOptionId": "c",
+        "explanation": "The difficulty in changing an object's state of rest (lifting it) is related to its inertia. Inertia is directly proportional to mass. The heavy table has a much larger mass and therefore greater inertia than the small book, requiring a larger force to overcome its inertia and lift it.",
+        "difficulty": 13
+      }
+    ],
+    "userAnswersSnapshot": {
+      "phy_motion_ch1_q064": "c",
+      "phy_motion_ch1_q015": "c",
+      "phy_motion_ch1_q095": "c",
+      "phy_motion_ch1_q083": "c",
+      "phy_motion_ch1_q094": "c",
+      "phy_motion_ch1_q053": "c",
+      "phy_motion_ch1_q067": "c",
+      "phy_motion_ch1_q092": "b",
+      "phy_motion_ch1_q003": "b",
+      "phy_motion_ch1_q086": "d"
+    }
+  }
+]

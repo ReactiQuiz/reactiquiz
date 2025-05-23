@@ -1,58 +1,74 @@
-// src/pages/chemistry/chemistryTopics.js
 export const chemistryTopics = [
   {
-    id: 'periodic-table',
-    name: 'Periodic Table',
-    description: 'Elements, groups, periods, and trends.',
+    id: 'substances-in-the-surroundings-their-states-and-properties-6th',
+    name: 'Substances in the Surroundings – Their States and Properties',
+    description: 'Identifying different materials, their states (solid, liquid, gas), and characteristics.',
+    class: '6th'
   },
   {
-    id: 'chemical-bonding',
-    name: 'Chemical Bonding',
-    description: 'Ionic, covalent, and metallic bonds, VSEPR theory.',
+    id: 'substances-in-daily-use-6th',
+    name: 'Substances in Daily Use',
+    description: 'Learning about common substances used in everyday life, their properties and uses.',
+    class: '6th'
   },
   {
-    id: 'stoichiometry',
-    name: 'Stoichiometry',
-    description: 'Mole concept, empirical formulas, and chemical calculations.',
+    id: "composition-of-matter-8th",
+    "name": "Composition of Matter",
+    "description": "Understanding the components of matter.",
+    "class": "8th"
   },
   {
-    id: 'organic-basics',
-    name: 'Organic Chemistry Basics',
-    description: 'Introduction to hydrocarbons and functional groups.',
+    id: "metals-and-nonmetals-8th",
+    "name": "Metals and Nonmetals",
+    "description": "Properties and differences between metals and nonmetals.",
+    "class": "8th"
   },
   {
-    id: 'acids-bases',
-    name: 'Acids and Bases',
-    description: 'Definitions, pH scale, and common reactions.',
+    id: "introduction-to-acid-and-base-8th",
+    "name": "Introduction to Acid and Base",
+    "description": "Basic concepts of acids and bases.",
+    "class": "8th"
   },
   {
-    id: 'thermo-chem',
-    name: 'Thermochemistry',
-    description: 'Enthalpy, entropy, and Gibbs free energy basics.',
+    id: "chemical-change-and-chemical-bond-8th",
+    "name": "Chemical Change and Chemical Bond",
+    "description": "Types of chemical changes and chemical bonding.",
+    "class": "8th"
   },
   {
-    id: 'redox-reactions',
-    name: 'Redox Reactions',
-    description: 'Oxidation states, balancing redox equations.',
+    id: "man-made-materials-8th",
+    "name": "Man made Materials",
+    "description": "Properties and uses of synthetic materials.",
+    "class": "8th"
   },
   {
-    id: 'solutions',
-    name: 'Solutions & Mixtures',
-    description: 'Solubility, concentration, and colligative properties.',
+    id: "inside-the-atom-8th",
+    name: "Inside the Atom",
+    description: "Structure and components of an atom.",
+    class: "8th"
   },
   {
-    id: 'kinetics',
-    name: 'Chemical Kinetics',
-    description: 'Reaction rates, rate laws, and factors affecting rates.',
+    id: "measurement-of-matter-9th",
+    name: "Measurement of Matter",
+    description: "Concepts related to measuring mass, volume, and density.",
+    class: "9th"
   },
   {
-    id: 'equilibrium',
-    name: 'Chemical Equilibrium',
-    description: 'Equilibrium constants and Le Chatelier\'s Principle.',
+    id: "acids-bases-and-salts-9th",
+    name: "Acids, Bases and Salts",
+    description: "Properties and reactions of acids, bases, and salts.",
+    class: "9th"
   },
   {
-    id: 'nuclear-chemistry',
-    name: 'Nuclear Chemistry',
-    description: 'Radioactivity, nuclear reactions, and half-life.',
+    id: "carbon-an-important-element-9th",
+    name: "Carbon : An important element",
+    description: "Introduction to the element carbon and its forms.",
+    class: "9th"
+  },
+  {
+    id: "substances-in-common-use-9th",
+    name: "Substances in Common Use",
+    description: "Study of everyday chemical substances and their properties.",
+    class: "9th"
   }
 ];

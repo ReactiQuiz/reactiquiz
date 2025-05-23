@@ -23,13 +23,16 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
     "react-scripts": "5.0.1",
+    "sqlite3": "^5.1.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env HOST=0.0.0.0 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "node backend/server.js",
+    "server:dev": "nodemon backend/server.js"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +53,9 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
-  }
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.10"
+  },
+
+  "proxy": "http://localhost:3001"
 }
