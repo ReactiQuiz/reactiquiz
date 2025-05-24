@@ -16248,5 +16248,3255 @@
     "correctOptionId": "a",
     "explanation": "Frequency ν = 30 kHz = 30,000 Hz. Wavelength λ = v / ν = 1500 m/s / 30000 Hz = 0.05 m. (Page 129)",
     "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q001",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Who is credited with making the first telescope in 1609 and using it for space observations?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Hans Lippershey"
+      },
+      {
+        "id": "b",
+        "text": "Galileo Galilei"
+      },
+      {
+        "id": "c",
+        "text": "Isaac Newton"
+      },
+      {
+        "id": "d",
+        "text": "Subramanian Chandrashekhar"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Galileo made a telescope in 1609 and used it for space observations, realizing there were more stars than visible to the naked eye. (Page 209)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q002",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the approximate wavelength range of visible light that human eyes can detect?",
+    "options": [
+      {
+        "id": "a",
+        "text": "100 nm to 400 nm"
+      },
+      {
+        "id": "b",
+        "text": "400 nm to 800 nm"
+      },
+      {
+        "id": "c",
+        "text": "800 nm to 1200 nm"
+      },
+      {
+        "id": "d",
+        "text": "10 nm to 100 nm"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Our eyes can see only that light which has wavelengths between 400 nm to 800 nm. Such light is called visible radiation. (Page 209)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q003",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which type of telescope uses lenses to collect and focus light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflecting telescope"
+      },
+      {
+        "id": "b",
+        "text": "Refracting telescope"
+      },
+      {
+        "id": "c",
+        "text": "Radio telescope"
+      },
+      {
+        "id": "d",
+        "text": "X-ray telescope"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Refracting telescopes are made with two or more lenses. Light rays change their direction as they enter a lens (refraction). (Page 210)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q004",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is a major disadvantage of large lenses in refracting telescopes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They are very light and easy to break."
+      },
+      {
+        "id": "b",
+        "text": "They do not collect enough light."
+      },
+      {
+        "id": "c",
+        "text": "They are very heavy and tend to get distorted."
+      },
+      {
+        "id": "d",
+        "text": "They do not suffer from chromatic aberration."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "It is very difficult to make very large lenses. Also, large lenses are very heavy and tend to get distorted. (Page 210)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q005",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which type of telescope primarily uses a concave mirror to collect light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Refracting telescope"
+      },
+      {
+        "id": "b",
+        "text": "Reflecting telescope"
+      },
+      {
+        "id": "c",
+        "text": "Pinhole camera"
+      },
+      {
+        "id": "d",
+        "text": "Binoculars"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Reflecting telescopes are made using concave mirrors to overcome the difficulties of refracting telescopes. (Page 211)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q006",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Newtonian telescope uses a concave mirror and what other optical component to direct light to the eyepiece?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A convex lens"
+      },
+      {
+        "id": "b",
+        "text": "A small plane mirror"
+      },
+      {
+        "id": "c",
+        "text": "A small convex mirror"
+      },
+      {
+        "id": "d",
+        "text": "A prism"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In a Newtonian telescope, light rays coming from space are reflected by the concave mirror and then deflected again by a small plane mirror to the eyepiece. (Page 211)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q007",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the main advantage of reflecting telescopes over refracting telescopes regarding image quality?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They produce smaller images."
+      },
+      {
+        "id": "b",
+        "text": "They do not suffer from chromatic aberration."
+      },
+      {
+        "id": "c",
+        "text": "They are easier to use during the day."
+      },
+      {
+        "id": "d",
+        "text": "They use heavier optical components."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The images formed by mirrors do not have errors of colour (chromatic aberration), which is a problem with lenses. (Page 211)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q008",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Giant Meterwave Radio Telescope (GMRT) is located near which Indian city?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Bengaluru"
+      },
+      {
+        "id": "b",
+        "text": "Nainital"
+      },
+      {
+        "id": "c",
+        "text": "Pune"
+      },
+      {
+        "id": "d",
+        "text": "Mumbai"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A large radio telescope called the Giant Meterwave Radio Telescope (GMRT) has been erected at Narayangaon near Pune. (Page 212)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q009",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Why are optical telescopes often situated on top of mountains in uninhabited places?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To be closer to the stars."
+      },
+      {
+        "id": "b",
+        "text": "To reduce problems like city lights and atmospheric turbulence."
+      },
+      {
+        "id": "c",
+        "text": "Because the air is denser at high altitudes."
+      },
+      {
+        "id": "d",
+        "text": "To make them more accessible to the public."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "To reduce problems like atmospheric turbulence, city lights, and cloudy weather, optical telescopes are situated on top of mountains, at in uninhabited places. (Page 213)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q010",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which space telescope, launched by NASA in 1990, is an optical telescope with a 94-inch mirror?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Chandra X-ray Observatory"
+      },
+      {
+        "id": "b",
+        "text": "Hubble Space Telescope"
+      },
+      {
+        "id": "c",
+        "text": "Astrosat"
+      },
+      {
+        "id": "d",
+        "text": "James Webb Space Telescope"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In 1990, NASA launched the Hubble Space Telescope, an optical telescope with a mirror of diameter 94 inches. (Page 213)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q011",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Chandra X-ray Observatory is named after which famous Indian scientist?",
+    "options": [
+      {
+        "id": "a",
+        "text": "C.V. Raman"
+      },
+      {
+        "id": "b",
+        "text": "Homi J. Bhabha"
+      },
+      {
+        "id": "c",
+        "text": "Subramanian Chandrashekhar"
+      },
+      {
+        "id": "d",
+        "text": "A.P.J. Abdul Kalam"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Chandra X-ray telescope is named after the famous Indian scientist Subramanian Chandrashekhar. (Page 213)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q012",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "ISRO was established in which year?",
+    "options": [
+      {
+        "id": "a",
+        "text": "1947"
+      },
+      {
+        "id": "b",
+        "text": "1959"
+      },
+      {
+        "id": "c",
+        "text": "1969"
+      },
+      {
+        "id": "d",
+        "text": "1975"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Indian Space Research Organization (ISRO) was established in 1969. (Page 213)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q013",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which ISRO satellite series is used exclusively for education?",
+    "options": [
+      {
+        "id": "a",
+        "text": "INSAT"
+      },
+      {
+        "id": "b",
+        "text": "GSAT"
+      },
+      {
+        "id": "c",
+        "text": "IRS"
+      },
+      {
+        "id": "d",
+        "text": "EDUSAT"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The EDUSAT satellite in the INSAT/GSAT series is used exclusively for education. (Page 213)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q014",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Astrosat, launched by ISRO in 2015, primarily carries which types of telescopes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Optical and Radio telescopes"
+      },
+      {
+        "id": "b",
+        "text": "Infrared and Microwave telescopes"
+      },
+      {
+        "id": "c",
+        "text": "Ultraviolet and X-ray telescopes"
+      },
+      {
+        "id": "d",
+        "text": "Gamma-ray and Optical telescopes"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Astrosat, launched by ISRO in 2015, has ultraviolet and X-ray telescopes and detectors. (Page 214)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q015",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What does 'chromatic aberration' refer to in the context of telescopes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Distortion of image shape"
+      },
+      {
+        "id": "b",
+        "text": "Errors of colours in images formed by lenses"
+      },
+      {
+        "id": "c",
+        "text": "Inability to see distant objects"
+      },
+      {
+        "id": "d",
+        "text": "Shaking of the telescope"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The images formed by lenses have errors of colours. This is called chromatic aberration. (Page 210)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q016",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of the following electromagnetic radiations has the longest wavelength according to the table provided?",
+    "options": [
+      {
+        "id": "a",
+        "text": "X-rays"
+      },
+      {
+        "id": "b",
+        "text": "Visible light rays"
+      },
+      {
+        "id": "c",
+        "text": "Radio waves"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "According to the table on page 210, Radio waves have wavelengths longer than about 20 cm, which is the longest among the options. (Page 210)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q017",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "In a Cassegrain telescope, what is the role of the small convex mirror?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To collect initial light from space."
+      },
+      {
+        "id": "b",
+        "text": "To reflect light rays from the concave mirror back towards a hole in the concave mirror."
+      },
+      {
+        "id": "c",
+        "text": "To act as the main objective mirror."
+      },
+      {
+        "id": "d",
+        "text": "To correct for chromatic aberration."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In a Cassegrain telescope, light rays, after reflection from the concave mirror, are reflected back towards it by a small convex mirror, passing through a hole in the concave mirror. (Page 211)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q018",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The GMRT works as a single dish with an effective diameter of approximately:",
+    "options": [
+      {
+        "id": "a",
+        "text": "45 meters"
+      },
+      {
+        "id": "b",
+        "text": "589 kilometers"
+      },
+      {
+        "id": "c",
+        "text": "25 kilometers"
+      },
+      {
+        "id": "d",
+        "text": "3.6 meters"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The arrangement of the 30 dishes of GMRT over an area which measures up to 25 km across, is made in such a way that it works as a single dish having a diameter of 25 km. (Page 212)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q019",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "One of the main reasons for placing telescopes in space is to avoid:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Earth's magnetic field."
+      },
+      {
+        "id": "b",
+        "text": "The Earth's gravitational pull."
+      },
+      {
+        "id": "c",
+        "text": "Disturbances and absorption by the Earth's atmosphere."
+      },
+      {
+        "id": "d",
+        "text": "The high cost of ground-based observatories."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Placing telescopes in space helps to avoid problems like atmospheric absorption, turbulence, city lights, and weather, which affect ground-based observations. (Page 213)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q020",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The IRS satellite series launched by ISRO is primarily used for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Telecommunication and TV broadcasting."
+      },
+      {
+        "id": "b",
+        "text": "Educational purposes only."
+      },
+      {
+        "id": "c",
+        "text": "Monitoring natural resources and disaster management."
+      },
+      {
+        "id": "d",
+        "text": "Studying X-rays from celestial objects."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The IRS satellite series is used for the monitoring and management of natural resources as well as disaster management. (Page 213)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q021",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Who discovered that looking through two lenses kept one behind the other brings objects closer, leading to the first telescope concept?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Galileo Galilei"
+      },
+      {
+        "id": "b",
+        "text": "Johannes Kepler"
+      },
+      {
+        "id": "c",
+        "text": "Hans Lippershey"
+      },
+      {
+        "id": "d",
+        "text": "Nicolaus Copernicus"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In 1608, spectacle maker and researcher, Hans Lippershey discovered that seeing through two lenses kept one behind the other, seems to bring objects closer to us. (Page 209)",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q022",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these electromagnetic waves has a wavelength shorter than visible light but longer than X-rays?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Infrared waves"
+      },
+      {
+        "id": "b",
+        "text": "Radio waves"
+      },
+      {
+        "id": "c",
+        "text": "Ultraviolet rays"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "According to the table: Visible light (400-800 nm), UV rays (300 pm - 400 nm), X-rays (3 pm - 300 pm). UV rays fit this description. (Page 210)",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q023",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "To obtain the brightest possible image of a distant object using a refracting telescope, the objective lens should ideally be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "As small as possible"
+      },
+      {
+        "id": "b",
+        "text": "Made of a very dense material"
+      },
+      {
+        "id": "c",
+        "text": "As large as possible"
+      },
+      {
+        "id": "d",
+        "text": "Having a very short focal length"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "To collect the maximum amount of light coming from a heavenly object, the objective lens should be made as large as possible. (Page 210)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q024",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The primary reason large mirrors are preferred over large lenses in modern astronomical telescopes is that mirrors:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Are more transparent than lenses."
+      },
+      {
+        "id": "b",
+        "text": "Can be made lighter and do not suffer from chromatic aberration."
+      },
+      {
+        "id": "c",
+        "text": "Refract light more efficiently than lenses."
+      },
+      {
+        "id": "d",
+        "text": "Are cheaper to manufacture in small sizes."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "It is easier to make large mirrors, they can be lighter, and images formed by mirrors do not have errors of colour (chromatic aberration). (Page 211)",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q025",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Aryabhatt Research Institute of Experimental Sciences (ARIES) houses India's largest optical telescope. Where is ARIES located?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Pune"
+      },
+      {
+        "id": "b",
+        "text": "Bengaluru"
+      },
+      {
+        "id": "c",
+        "text": "Nainital"
+      },
+      {
+        "id": "d",
+        "text": "Sriharikota"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The biggest optical telescope in India, having a mirror of 3.6 m diameter is situated in the Aryabhatt Research Institute of Experimental Sciences, Nainital. (Page 211)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q026",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the primary function of the radio receiver in a radio telescope?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To reflect radio waves towards the dish."
+      },
+      {
+        "id": "b",
+        "text": "To amplify visible light signals."
+      },
+      {
+        "id": "c",
+        "text": "To convert radio waves into analyzable information for a computer."
+      },
+      {
+        "id": "d",
+        "text": "To cool down the parabolic dishes."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A radio receiver is placed at the focal point. The information gathered by this receiver is passed on to a computer which analyses it and constructs an image of the source. (Page 212)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q027",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these is NOT a primary reason why observing from space provides clearer astronomical images?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Absence of atmospheric absorption of light."
+      },
+      {
+        "id": "b",
+        "text": "Absence of atmospheric turbulence."
+      },
+      {
+        "id": "c",
+        "text": "Ability to observe during the Earth's daytime."
+      },
+      {
+        "id": "d",
+        "text": "Closer proximity to the observed celestial objects."
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Space telescopes avoid atmospheric absorption, turbulence, and can observe 24/7 without issues of sunlight or city lights. Proximity is not the primary advantage for clarity compared to atmospheric effects. (Page 213)",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q028",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Hubble Space Telescope orbits the Earth at an approximate height of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "100 km"
+      },
+      {
+        "id": "b",
+        "text": "589 km"
+      },
+      {
+        "id": "c",
+        "text": "1000 km"
+      },
+      {
+        "id": "d",
+        "text": "36000 km (geostationary orbit)"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Hubble telescope... is orbiting the earth at a height of 589 km from it. (Page 213)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q029",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What type of mirrors are specifically designed to reflect X-rays in telescopes like Chandra?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Standard flat mirrors"
+      },
+      {
+        "id": "b",
+        "text": "Highly polished concave optical mirrors"
+      },
+      {
+        "id": "c",
+        "text": "Special mirrors designed for grazing incidence reflection"
+      },
+      {
+        "id": "d",
+        "text": "Lenses made of X-ray transparent material"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Chandra uses special mirrors which can reflect X-rays. X-rays are difficult to reflect with normal mirrors and require grazing incidence optics. (Page 213 & general knowledge on X-ray telescopes)",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q030",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which ISRO satellite series primarily supports telecommunication, TV broadcasting, and meteorological services?",
+    "options": [
+      {
+        "id": "a",
+        "text": "IRS series"
+      },
+      {
+        "id": "b",
+        "text": "Astrosat"
+      },
+      {
+        "id": "c",
+        "text": "EDUSAT"
+      },
+      {
+        "id": "d",
+        "text": "INSAT and GSAT series"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The INSAT and GSAT series of satellites support our telecommunication network, television broadcasting and meteorological services. (Page 213)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q031",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The term '1 pm (picometer)' is equal to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "10^-6 m"
+      },
+      {
+        "id": "b",
+        "text": "10^-9 m"
+      },
+      {
+        "id": "c",
+        "text": "10^-12 m"
+      },
+      {
+        "id": "d",
+        "text": "10^-15 m"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "1 pm (picometer) = 10^-12 m. (Page 210)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q032",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a spectacle maker in the early 17th century observed that two lenses make objects appear closer, this observation was fundamental to the development of which type of telescope?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Radio telescope"
+      },
+      {
+        "id": "b",
+        "text": "Reflecting telescope"
+      },
+      {
+        "id": "c",
+        "text": "Refracting telescope"
+      },
+      {
+        "id": "d",
+        "text": "X-ray telescope"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Hans Lippershey's discovery in 1608 involved using two lenses, which is the basis of a refracting telescope. (Page 209)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q033",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which type of electromagnetic radiation listed has the shortest wavelength?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Infrared waves"
+      },
+      {
+        "id": "b",
+        "text": "Ultraviolet rays"
+      },
+      {
+        "id": "c",
+        "text": "Micro waves"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Gamma rays have wavelengths shorter than 3pm, making them the shortest among the options listed in the table. (Page 210)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q034",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The ability of large reflecting telescopes to be made by combining several smaller mirror pieces offers an advantage in terms of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reducing the overall weight of the telescope."
+      },
+      {
+        "id": "b",
+        "text": "Overcoming the difficulty of manufacturing very large single mirrors."
+      },
+      {
+        "id": "c",
+        "text": "Eliminating the need for an eyepiece."
+      },
+      {
+        "id": "d",
+        "text": "Automatically correcting for atmospheric distortion."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Big mirrors can be made by combining several smaller pieces, which is easier than making a single large lens or mirror. (Page 211)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q035",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The GMRT's 30 dishes, each 45m in diameter, are spread over a large area to achieve the resolution of a single dish of what diameter?",
+    "options": [
+      {
+        "id": "a",
+        "text": "45 m"
+      },
+      {
+        "id": "b",
+        "text": "1 km"
+      },
+      {
+        "id": "c",
+        "text": "25 km"
+      },
+      {
+        "id": "d",
+        "text": "100 km"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The GMRT works as a single dish having a diameter of 25 km. (Page 212)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q036",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a heavenly body emits strongly in the X-ray part of the spectrum, which telescope would be most suitable for studying it?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Hubble Space Telescope"
+      },
+      {
+        "id": "b",
+        "text": "GMRT"
+      },
+      {
+        "id": "c",
+        "text": "Chandra X-ray Observatory"
+      },
+      {
+        "id": "d",
+        "text": "A large ground-based optical telescope"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Chandra X-ray telescope is specifically designed to study X-rays coming from heavenly objects. (Page 213)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q037",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Why can't optical telescopes be effectively used during the day from Earth's surface?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Earth's rotation moves the target out of view."
+      },
+      {
+        "id": "b",
+        "text": "The atmosphere becomes too transparent."
+      },
+      {
+        "id": "c",
+        "text": "Sunlight scatters in the atmosphere, making faint objects invisible."
+      },
+      {
+        "id": "d",
+        "text": "The lenses or mirrors get too hot from sunlight."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Because of Sunlight, we cannot use optical telescopes during the day. The scattered sunlight overwhelms the faint light from celestial objects. (Page 213)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q038",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Astrosat is unique because it:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Is the largest optical telescope in Asia."
+      },
+      {
+        "id": "b",
+        "text": "Was the first telescope used by Galileo."
+      },
+      {
+        "id": "c",
+        "text": "Has different kinds of telescopes on a single satellite."
+      },
+      {
+        "id": "d",
+        "text": "Is exclusively used for educational purposes."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Astrosat is a unique system having different kinds of telescopes (UV and X-ray) on a single satellite. (Page 214)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q039",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The diameter of India's largest optical telescope mirror located at ARIES, Nainital is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "94 inches"
+      },
+      {
+        "id": "b",
+        "text": "2 meters"
+      },
+      {
+        "id": "c",
+        "text": "3.6 meters"
+      },
+      {
+        "id": "d",
+        "text": "45 meters"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The biggest optical telescope in India, having a mirror of 3.6 m diameter is situated in the Aryabhatt Research Institute of Experimental Sciences, Nainital. (Page 211)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q040",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The main purpose of the eyepiece in a telescope is to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Collect light from the distant object."
+      },
+      {
+        "id": "b",
+        "text": "Magnify the image formed by the objective lens/mirror."
+      },
+      {
+        "id": "c",
+        "text": "Correct for atmospheric distortions."
+      },
+      {
+        "id": "d",
+        "text": "Filter out unwanted wavelengths of light."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Using the light collected by the objective, a smaller lens, called the eyepiece, produces a large image of the source. (Page 210 for refracting; similar function in reflecting telescopes, Page 211)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q041",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which technology is NOT directly mentioned as being supported by ISRO's INSAT and GSAT satellite series?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Television broadcasting"
+      },
+      {
+        "id": "b",
+        "text": "Internet services"
+      },
+      {
+        "id": "c",
+        "text": "GPS navigation"
+      },
+      {
+        "id": "d",
+        "text": "Meteorological services"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "INSAT and GSAT support telecommunication, TV broadcasting, and meteorological services. Internet services are also mentioned. GPS navigation, while related to space technology, is not explicitly listed for these series in the text. (Page 213)",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q042",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The phenomenon where light rays change their direction when passing from one medium to another (like air to glass lens) is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection"
+      },
+      {
+        "id": "b",
+        "text": "Refraction"
+      },
+      {
+        "id": "c",
+        "text": "Diffraction"
+      },
+      {
+        "id": "d",
+        "text": "Dispersion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Light rays change their direction as they enter a lens from the atmosphere and again when they enter the atmosphere after passing through the lens. This is called refraction. (Page 210)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q043",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What type of celestial phenomena is the GMRT particularly suited to study due to its operation in meter wavelengths?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Black holes using X-rays"
+      },
+      {
+        "id": "b",
+        "text": "The surface features of Mars using visible light"
+      },
+      {
+        "id": "c",
+        "text": "Solar winds and interstellar hydrogen clouds using radio waves"
+      },
+      {
+        "id": "d",
+        "text": "Distant galaxies using infrared radiation"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "GMRT uses radio waves... Scientists study the solar system, solar winds, pulsars, supernova, interstellar hydrogen clouds, etc. with the help of the GMRT. (Page 212)",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q044",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is a primary reason that radio telescopes can be effectively used from the Earth's surface?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Radio waves are not affected by city lights."
+      },
+      {
+        "id": "b",
+        "text": "Radio waves can pass through the Earth's atmosphere with minimal absorption."
+      },
+      {
+        "id": "c",
+        "text": "Radio dishes are easier to keep clean than optical mirrors."
+      },
+      {
+        "id": "d",
+        "text": "Radio waves are only emitted during the night."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Visible light and the radio waves emitted by heavenly bodies in space can pass through the earth’s atmosphere and reach the earth’s surface. So, optical and radio telescopes can be erected on the surface of the earth. (Page 212)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q045",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The 'shaking' of an astronomical image observed through ground-based telescopes is primarily caused by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Vibrations from nearby traffic."
+      },
+      {
+        "id": "b",
+        "text": "The Earth's rotation."
+      },
+      {
+        "id": "c",
+        "text": "Turbulence in the Earth's atmosphere due to pressure and temperature changes."
+      },
+      {
+        "id": "d",
+        "text": "Imperfections in the telescope's mirrors or lenses."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Changes in atmospheric pressure and temperature...cause turbulence in the atmosphere which in turn cause of the light rays to change their path slightly and thereby shake the position of the image. (Page 213)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q046",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Who is considered the 'father of experimental physics' and made significant early telescopic observations like the moons of Jupiter?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Hans Lippershey"
+      },
+      {
+        "id": "b",
+        "text": "Galileo Galilei"
+      },
+      {
+        "id": "c",
+        "text": "Tycho Brahe"
+      },
+      {
+        "id": "d",
+        "text": "Johannes Kepler"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Galileo used his telescope to discover the moons of Jupiter and black spots on the sun. He is often referred to as the 'father of experimental physics' or 'father of modern observational astronomy'. (Page 209 & general knowledge)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q047",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The objective lens/mirror of a telescope is primarily responsible for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnifying the image."
+      },
+      {
+        "id": "b",
+        "text": "Collecting light from the distant object."
+      },
+      {
+        "id": "c",
+        "text": "Correcting image orientation."
+      },
+      {
+        "id": "d",
+        "text": "Filtering specific colors."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "To collect the maximum amount of light coming from a heavenly object, the objective lens should be made as large as possible. (Page 210)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q048",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these is an advantage of using a Cassegrain telescope design over a Newtonian design?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It uses lenses instead of mirrors."
+      },
+      {
+        "id": "b",
+        "text": "It is generally more compact for a given focal length because the light path is folded."
+      },
+      {
+        "id": "c",
+        "text": "It does not require a secondary mirror."
+      },
+      {
+        "id": "d",
+        "text": "It is immune to atmospheric distortion."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Cassegrain design folds the light path, allowing for a more compact telescope tube compared to a Newtonian of similar focal length. The eyepiece is conveniently located at the back. (General knowledge related to telescope design, implied by construction on Page 211)",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q049",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a radio telescope receives signals with a wavelength of 21 cm, what part of the electromagnetic spectrum is it observing?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Visible light"
+      },
+      {
+        "id": "b",
+        "text": "X-rays"
+      },
+      {
+        "id": "c",
+        "text": "Radio waves"
+      },
+      {
+        "id": "d",
+        "text": "Infrared waves"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Radio waves are defined as having wavelengths longer than about 20 cm. 21 cm falls into this category. (Page 210)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q050",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What type of information can ISRO's IRS satellites provide that is crucial for agriculture?",
+    "options": [
+      {
+        "id": "a",
+        "text": "High-resolution images of distant galaxies."
+      },
+      {
+        "id": "b",
+        "text": "Data on crop health, soil moisture, and land use patterns."
+      },
+      {
+        "id": "c",
+        "text": "Real-time tracking of television broadcast signals."
+      },
+      {
+        "id": "d",
+        "text": "Detection of X-ray emissions from the Sun."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The IRS satellite series is used for the monitoring and management of natural resources. This includes applications in agriculture like assessing crop health and land use. (Page 213 & general knowledge of remote sensing)",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q051",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The 'black spots on the sun' were one of the early discoveries made by Galileo using his telescope. These are now known as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solar flares"
+      },
+      {
+        "id": "b",
+        "text": "Sunspots"
+      },
+      {
+        "id": "c",
+        "text": "Prominences"
+      },
+      {
+        "id": "d",
+        "text": "Coronal mass ejections"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Galileo... discovered... the black spots on the sun, etc. These are known as sunspots. (Page 209 & general astronomy knowledge)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q052",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which part of a refracting telescope is primarily responsible for the initial collection and focusing of light from a distant object?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The eyepiece"
+      },
+      {
+        "id": "b",
+        "text": "The objective lens"
+      },
+      {
+        "id": "c",
+        "text": "The focuser knob"
+      },
+      {
+        "id": "d",
+        "text": "The telescope tube"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In a refracting telescope, the objective lens is the large lens at the front that collects and focuses light from the object. (Page 210)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q053",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "One nanometer (nm) is equal to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "10^-3 meters"
+      },
+      {
+        "id": "b",
+        "text": "10^-6 meters"
+      },
+      {
+        "id": "c",
+        "text": "10^-9 meters"
+      },
+      {
+        "id": "d",
+        "text": "10^-12 meters"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "1 nm (nanometer) = 10^-9 m. (Page 210)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q054",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a telescope is designed to observe electromagnetic waves with wavelengths of a few millimeters, it would be classified as a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Visible light telescope"
+      },
+      {
+        "id": "b",
+        "text": "X-ray telescope"
+      },
+      {
+        "id": "c",
+        "text": "Microwave telescope"
+      },
+      {
+        "id": "d",
+        "text": "Gamma-ray telescope"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Microwaves have wavelengths from 0.3 mm to 20 cm. A few millimeters fall within this range. (Page 210)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q055",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The resolving power of a telescope, its ability to distinguish fine details, is primarily determined by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The length of the telescope tube."
+      },
+      {
+        "id": "b",
+        "text": "The diameter of its objective lens or mirror."
+      },
+      {
+        "id": "c",
+        "text": "The material of the eyepiece."
+      },
+      {
+        "id": "d",
+        "text": "The altitude at which it is placed."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The resolving power of a telescope is directly proportional to the diameter of its objective. Larger objectives gather more light and provide better resolution. (Out of PDF, but related to the importance of large objectives discussed on page 210 and 211).",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q056",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Adaptive optics is a technology used in modern ground-based telescopes to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Automatically track moving celestial objects."
+      },
+      {
+        "id": "b",
+        "text": "Correct for the blurring effects of Earth's atmosphere."
+      },
+      {
+        "id": "c",
+        "text": "Change the wavelength of light being observed."
+      },
+      {
+        "id": "d",
+        "text": "Cool the telescope's detectors to reduce noise."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Adaptive optics systems use deformable mirrors to compensate for atmospheric distortions in real-time, improving image clarity for ground-based telescopes. (Out of PDF, but highly relevant to overcoming limitations mentioned on page 213).",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q057",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The technique of combining signals from multiple, separated radio telescopes to achieve the resolution of a much larger single telescope is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Spectroscopy"
+      },
+      {
+        "id": "b",
+        "text": "Interferometry"
+      },
+      {
+        "id": "c",
+        "text": "Photometry"
+      },
+      {
+        "id": "d",
+        "text": "Polarimetry"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Interferometry is the technique used by arrays like the GMRT to synthesize a virtual telescope with a much larger aperture, thereby achieving higher angular resolution. (Out of PDF, but directly related to how GMRT works as described on page 212).",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q058",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The James Webb Space Telescope (JWST), successor to Hubble, is primarily designed to observe in which part of the electromagnetic spectrum?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Visible light"
+      },
+      {
+        "id": "b",
+        "text": "X-rays"
+      },
+      {
+        "id": "c",
+        "text": "Infrared"
+      },
+      {
+        "id": "d",
+        "text": "Ultraviolet"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The James Webb Space Telescope is optimized for infrared observations, allowing it to see very distant, early galaxies and stars forming inside dust clouds. (Out of PDF, but a very famous successor to Hubble mentioned on page 213).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q059",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the term for the point in a reflecting telescope where light rays converge after being reflected by the main mirror(s)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The aperture"
+      },
+      {
+        "id": "b",
+        "text": "The focal point (or focus)"
+      },
+      {
+        "id": "c",
+        "text": "The eyepiece holder"
+      },
+      {
+        "id": "d",
+        "text": "The baffle"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In reflecting telescopes, light rays converge at the focus after reflection. The GMRT description also mentions a radio receiver at the focal point. (Page 211 and 212).",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q060",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Light pollution from cities primarily affects which type of astronomical observation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Radio astronomy"
+      },
+      {
+        "id": "b",
+        "text": "X-ray astronomy"
+      },
+      {
+        "id": "c",
+        "text": "Optical (visible light) astronomy"
+      },
+      {
+        "id": "d",
+        "text": "Gamma-ray astronomy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "During the night too city lights and cloudy weather can cause difficulties in observing the heavenly bodies (using optical telescopes). (Page 213)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q061",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The process of launching artificial satellites is a key activity of which organization mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "NASA (National Aeronautics and Space Administration)"
+      },
+      {
+        "id": "b",
+        "text": "ARIES (Aryabhatt Research Institute of Experimental Sciences)"
+      },
+      {
+        "id": "c",
+        "text": "ISRO (Indian Space Research Organisation)"
+      },
+      {
+        "id": "d",
+        "text": "GMRT (Giant Meterwave Radio Telescope)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "ISRO was established with the aim of developing technology for making and launching of artificial satellites. (Page 213)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q062",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If an optical telescope uses a lens as its primary light-gathering component, it is called a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Newtonian telescope"
+      },
+      {
+        "id": "b",
+        "text": "Cassegrain telescope"
+      },
+      {
+        "id": "c",
+        "text": "Refracting telescope"
+      },
+      {
+        "id": "d",
+        "text": "Radio telescope"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Optical telescopes made from regular lenses...are called refracting telescopes. (Page 210)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q063",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the primary reason for the 'twinkling' of stars when observed from Earth?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Stars rapidly changing their brightness."
+      },
+      {
+        "id": "b",
+        "text": "Interference from city lights."
+      },
+      {
+        "id": "c",
+        "text": "Rapid movement of Earth through space."
+      },
+      {
+        "id": "d",
+        "text": "Turbulence in Earth's atmosphere causing light rays to bend unpredictably."
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Changes in atmospheric pressure and temperature cause turbulence...which in turn cause of the light rays to change their path slightly and thereby shake the position of the image. This is perceived as twinkling for point sources like stars. (Page 213)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q064",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these wavelengths is LONGER than visible light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ultraviolet rays (e.g., 350 nm)"
+      },
+      {
+        "id": "b",
+        "text": "X-rays (e.g., 100 pm)"
+      },
+      {
+        "id": "c",
+        "text": "Infrared waves (e.g., 1000 nm)"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays (e.g., 1 pm)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Visible light is 400-800 nm. Infrared waves are 800 nm - 0.3 mm. Thus, 1000 nm is infrared and longer than visible light. (Page 210)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q065",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The development of space science and technology is important not only for research but also for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Increasing Earth's gravitational field."
+      },
+      {
+        "id": "b",
+        "text": "Providing comforts and facilities in everyday life."
+      },
+      {
+        "id": "c",
+        "text": "Reducing the number of stars in the sky."
+      },
+      {
+        "id": "d",
+        "text": "Making agriculture independent of seasons."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Space science and technology are not only important for research purposes, but also to help provide us with many of the comforts and facilities we enjoy in our everyday life. (Page 209)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q066",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Segmented mirrors, often used in very large modern telescopes, are an example of technology primarily applied to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Refracting telescopes to reduce their length."
+      },
+      {
+        "id": "b",
+        "text": "Reflecting telescopes to create large primary mirrors."
+      },
+      {
+        "id": "c",
+        "text": "Radio telescopes to improve signal reception."
+      },
+      {
+        "id": "d",
+        "text": "Space telescopes to make them lighter for launch."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Big mirrors can be made by combining several smaller pieces. This refers to segmented mirror technology used in large reflecting telescopes. (Page 211 & general knowledge of modern telescopes)",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q067",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If an astronomer wants to study the very hot gas in a supernova remnant that emits strongly at wavelengths around 1 nm, which type of telescope would be most appropriate?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Optical telescope"
+      },
+      {
+        "id": "b",
+        "text": "Radio telescope"
+      },
+      {
+        "id": "c",
+        "text": "Infrared telescope"
+      },
+      {
+        "id": "d",
+        "text": "X-ray telescope"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "1 nm = 1000 pm. X-rays range from 3 pm to 300 pm (table uses 3pm-300pm, 1nm is within this range). Chandra is an X-ray telescope. (Page 210, 213). Very hot gas emits X-rays.",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q068",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Why is it generally easier to support a large mirror in a reflecting telescope compared to a large lens in a refracting telescope?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mirrors are always lighter than lenses of the same size."
+      },
+      {
+        "id": "b",
+        "text": "Lenses can only be supported around their edges, while mirrors can be supported from the back."
+      },
+      {
+        "id": "c",
+        "text": "Mirrors do not need to be perfectly shaped, unlike lenses."
+      },
+      {
+        "id": "d",
+        "text": "Lenses are more prone to cracking under their own weight."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Large lenses are heavy and tend to get distorted (Page 210). This is partly because lenses must be supported only at their edges to allow light to pass through, while mirrors can be supported across their entire back surface, preventing sagging and distortion. (Out of PDF, but related to the practical difficulties of large lenses).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q069",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The 'seeing' conditions for astronomical observations refer to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The clarity of the telescope's optics."
+      },
+      {
+        "id": "b",
+        "text": "The amount of light pollution at the observing site."
+      },
+      {
+        "id": "c",
+        "text": "The stability of the Earth's atmosphere (amount of turbulence)."
+      },
+      {
+        "id": "d",
+        "text": "The magnification power of the telescope."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Atmospheric turbulence (Page 213) is the primary factor determining 'seeing' conditions, which affects the sharpness and stability of astronomical images. (Out of PDF, common astronomical term related to atmospheric issues).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q070",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which scientist's work forms the basis for understanding how X-ray telescopes like Chandra can focus X-rays using special mirrors?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Isaac Newton, for his work on reflecting telescopes."
+      },
+      {
+        "id": "b",
+        "text": "Hans Lippershey, for the invention of the refracting telescope."
+      },
+      {
+        "id": "c",
+        "text": "Subramanian Chandrashekhar, for whom the telescope is named."
+      },
+      {
+        "id": "d",
+        "text": "Hans Wolter, who designed grazing incidence X-ray optics."
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "While Chandra is named after S. Chandrashekhar, the optics for focusing X-rays (which reflect at very shallow or 'grazing' angles) were developed by Hans Wolter. The text mentions 'special mirrors which can reflect X-rays'. (Page 213, and specialized knowledge out of PDF).",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q071",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a refracting telescope has an objective lens with a focal length of 1000mm and an eyepiece with a focal length of 25mm, what is its approximate magnification?",
+    "options": [
+      {
+        "id": "a",
+        "text": "25x"
+      },
+      {
+        "id": "b",
+        "text": "40x"
+      },
+      {
+        "id": "c",
+        "text": "1000x"
+      },
+      {
+        "id": "d",
+        "text": "0.025x"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The magnification of a refracting telescope is approximately the focal length of the objective divided by the focal length of the eyepiece (M = fo/fe). So, M = 1000mm / 25mm = 40x. (Out of PDF, but related to how telescopes produce a 'large image' using an eyepiece as mentioned on Page 210).",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q072",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The ability of the GMRT to study interstellar hydrogen clouds relies on detecting radio waves at which specific wavelength, often called the 'hydrogen line'?",
+    "options": [
+      {
+        "id": "a",
+        "text": "1 meter"
+      },
+      {
+        "id": "b",
+        "text": "21 centimeters"
+      },
+      {
+        "id": "c",
+        "text": "10 meters"
+      },
+      {
+        "id": "d",
+        "text": "45 meters"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Neutral hydrogen emits radio waves at a characteristic wavelength of 21 cm. The GMRT is well-suited to detect this. The text mentions GMRT studies interstellar hydrogen clouds and uses meter-wavelength radio waves, but the 21cm line is a specific key target. (Page 212 & specific astronomical knowledge out of PDF).",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q073",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of the following is NOT a type of error or difficulty associated with refracting telescopes mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Chromatic aberration"
+      },
+      {
+        "id": "b",
+        "text": "Difficulty in making large lenses"
+      },
+      {
+        "id": "c",
+        "text": "Large lenses being heavy and prone to distortion"
+      },
+      {
+        "id": "d",
+        "text": "Inability to see faint objects due to small aperture"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Chromatic aberration, difficulty in making large lenses, and large lenses being heavy/distorted are mentioned as difficulties (Page 210). The issue of aperture size relates to light collection, not an error specific to refractors vs reflectors in the same way as the others.",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q074",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The phenomenon of 'light' being an electromagnetic wave implies it has both:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mass and charge"
+      },
+      {
+        "id": "b",
+        "text": "Electric and magnetic field components"
+      },
+      {
+        "id": "c",
+        "text": "Sound and heat properties"
+      },
+      {
+        "id": "d",
+        "text": "A fixed wavelength and frequency regardless of medium"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Light is an electromagnetic wave, meaning it consists of oscillating electric and magnetic fields propagating through space. (Page 209)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q075",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The first systematic use of a telescope for astronomical observation significantly changed our understanding of the universe by revealing:",
+    "options": [
+      {
+        "id": "a",
+        "text": "That the Earth is flat."
+      },
+      {
+        "id": "b",
+        "text": "That there are many more stars than visible to the naked eye and features on celestial bodies."
+      },
+      {
+        "id": "c",
+        "text": "That all stars are the same distance from Earth."
+      },
+      {
+        "id": "d",
+        "text": "That the sun orbits the Earth."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Galileo realized that there are many more stars than what could be seen with naked eyes and discovered moons of Jupiter and sunspots. (Page 209)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q076",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a refracting telescope produces an image with colored fringes around bright objects, this defect is known as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Spherical aberration"
+      },
+      {
+        "id": "b",
+        "text": "Coma"
+      },
+      {
+        "id": "c",
+        "text": "Astigmatism"
+      },
+      {
+        "id": "d",
+        "text": "Chromatic aberration"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The images formed by lenses have errors of colours. This is called chromatic aberration. (Page 210)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q077",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of the following is a key advantage of radio telescopes over optical telescopes for observing certain astronomical phenomena?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Radio telescopes can provide much higher magnification."
+      },
+      {
+        "id": "b",
+        "text": "Radio waves can penetrate interstellar dust clouds that block visible light."
+      },
+      {
+        "id": "c",
+        "text": "Radio telescopes are much smaller and more portable."
+      },
+      {
+        "id": "d",
+        "text": "Radio observations are not affected by Earth's ionosphere."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Radio waves can penetrate dust and gas clouds in space that are opaque to visible light, allowing astronomers to study regions like the galactic center or star-forming nurseries. (Out of PDF, related to why different telescopes are needed, page 210).",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q078",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The location of the GMRT at Narayangaon, near Pune, was chosen partly due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Its high altitude, similar to optical observatories."
+      },
+      {
+        "id": "b",
+        "text": "Its proximity to major urban centers for easy access."
+      },
+      {
+        "id": "c",
+        "text": "Relatively low levels of man-made radio interference in that area at the time of construction."
+      },
+      {
+        "id": "d",
+        "text": "The presence of large natural parabolic depressions in the ground."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Radio telescopes are highly sensitive to man-made radio frequency interference (RFI). Sites for radio observatories are chosen for being 'radio quiet'. (Out of PDF, but related to practical considerations for radio telescopes like GMRT, page 212).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q079",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The main mirror of a Newtonian reflecting telescope is typically what shape?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Flat (plane)"
+      },
+      {
+        "id": "b",
+        "text": "Convex spherical"
+      },
+      {
+        "id": "c",
+        "text": "Concave parabolic or spherical"
+      },
+      {
+        "id": "d",
+        "text": "Cylindrical"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Reflecting telescopes are made using concave mirrors. Newtonian telescopes use a concave mirror as the primary objective. (Page 211). Parabolic shape is ideal for focusing parallel rays to a single point.",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q080",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "When ISRO launches a satellite like EDUSAT, what is its primary role in the satellite's operation after launch?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Manufacturing the educational content broadcast by the satellite."
+      },
+      {
+        "id": "b",
+        "text": "Operating the ground stations that receive signals from the satellite."
+      },
+      {
+        "id": "c",
+        "text": "Developing the technology for the satellite and its launch, and often managing its on-orbit operations."
+      },
+      {
+        "id": "d",
+        "text": "Selling access to the satellite's services to educational institutions."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "ISRO's role is developing technology for making and launching artificial satellites, and its progress has played a big role in national and social development, implying operational management. (Page 213)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q081",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the speed of light in a vacuum (approximately)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "300,000 km/hour"
+      },
+      {
+        "id": "b",
+        "text": "300,000 m/s"
+      },
+      {
+        "id": "c",
+        "text": "300,000 km/s"
+      },
+      {
+        "id": "d",
+        "text": "300,000 miles/s"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The speed of light in a vacuum is a fundamental physical constant, approximately 299,792,458 meters per second, often rounded to 300,000 km/s. (Out of PDF, but fundamental to understanding light and space).",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q082",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The term 'light-year' refers to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The time it takes light from the Sun to reach Earth."
+      },
+      {
+        "id": "b",
+        "text": "The distance light travels in one year."
+      },
+      {
+        "id": "c",
+        "text": "The average lifespan of a star."
+      },
+      {
+        "id": "d",
+        "text": "A unit of time used in astronomy."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A light-year is a unit of astronomical distance, specifically the distance that light travels in a vacuum in one Julian year. (Out of PDF, relevant to space observation).",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q083",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of Galileo's telescopic discoveries provided strong evidence against the geocentric model of the universe?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sunspots"
+      },
+      {
+        "id": "b",
+        "text": "The phases of Venus"
+      },
+      {
+        "id": "c",
+        "text": "The craters on the Moon"
+      },
+      {
+        "id": "d",
+        "text": "The Milky Way being composed of many stars"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Galileo's observation of the full set of phases of Venus was strong evidence that Venus orbits the Sun, not the Earth, which contradicted the Ptolemaic geocentric model. (Out of PDF, but directly related to Galileo's impact mentioned on page 209).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q084",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The use of an array of radio dishes, like in GMRT, to synthesize a larger aperture primarily improves the telescope's:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Light-gathering power"
+      },
+      {
+        "id": "b",
+        "text": "Angular resolution (ability to see fine detail)"
+      },
+      {
+        "id": "c",
+        "text": "Magnification"
+      },
+      {
+        "id": "d",
+        "text": "Sensitivity to shorter wavelengths"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Combining signals from multiple dishes in an interferometer array like GMRT allows it to achieve the angular resolution of a much larger single dish, meaning it can distinguish finer details. (Out of PDF, related to GMRT's functioning on page 212).",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q085",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Why are X-ray and Gamma-ray telescopes necessarily space-based?",
+    "options": [
+      {
+        "id": "a",
+        "text": "These radiations are too dangerous to observe from Earth's surface."
+      },
+      {
+        "id": "b",
+        "text": "Earth's atmosphere is opaque to (absorbs) most X-rays and Gamma rays."
+      },
+      {
+        "id": "c",
+        "text": "These telescopes require zero gravity to function correctly."
+      },
+      {
+        "id": "d",
+        "text": "The detectors for these radiations only work in the vacuum of space."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Earth's atmosphere absorbs most X-rays and Gamma rays from space, preventing them from reaching ground-based telescopes. Therefore, telescopes for these wavelengths must be placed in space. (Implied by the need for space telescopes for some radiations, page 210, 213).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q086",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Hubble Space Telescope has made significant contributions to astronomy despite having a smaller primary mirror than the largest ground-based telescopes. What is the main reason for its success?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It is much closer to the stars and galaxies it observes."
+      },
+      {
+        "id": "b",
+        "text": "It operates above the Earth's distorting atmosphere."
+      },
+      {
+        "id": "c",
+        "text": "Its mirror is made of a material that reflects 100% of light."
+      },
+      {
+        "id": "d",
+        "text": "It can observe all wavelengths of the electromagnetic spectrum equally well."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Being above the Earth's atmosphere eliminates the blurring and absorption effects, allowing Hubble to achieve much sharper images than ground-based telescopes of similar or even larger size. (Page 213)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q087",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which type of electromagnetic radiation has the highest energy per photon?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Radio waves"
+      },
+      {
+        "id": "b",
+        "text": "Visible light"
+      },
+      {
+        "id": "c",
+        "text": "Infrared waves"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The energy of a photon is inversely proportional to its wavelength (E = hc/λ). Gamma rays have the shortest wavelengths and therefore the highest energy per photon. (Table on page 210 shows Gamma rays have shortest wavelength).",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q088",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If an object is 10 light-years away, how long does it take for its light to reach us?",
+    "options": [
+      {
+        "id": "a",
+        "text": "10 minutes"
+      },
+      {
+        "id": "b",
+        "text": "10 hours"
+      },
+      {
+        "id": "c",
+        "text": "10 days"
+      },
+      {
+        "id": "d",
+        "text": "10 years"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "A light-year is the distance light travels in one year. Therefore, light from an object 10 light-years away takes 10 years to reach us. (Related to the concept of light travel time).",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q089",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Chandra X-ray Observatory helps astronomers study which kinds of energetic phenomena in the universe?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The formation of planets around nearby stars."
+      },
+      {
+        "id": "b",
+        "text": "The chemical composition of comets."
+      },
+      {
+        "id": "c",
+        "text": "Black holes, supernova remnants, and clusters of galaxies."
+      },
+      {
+        "id": "d",
+        "text": "The weather patterns on Jupiter and Saturn."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "X-rays are emitted by very hot and energetic objects and processes, such as material falling into black holes, the expanding shells of exploded stars (supernova remnants), and the hot gas in galaxy clusters. Chandra provides useful information about stars and galaxies. (Page 213 & general knowledge about X-ray astronomy).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q090",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The wavelength of ultraviolet rays is typically measured in:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Centimeters (cm)"
+      },
+      {
+        "id": "b",
+        "text": "Millimeters (mm)"
+      },
+      {
+        "id": "c",
+        "text": "Nanometers (nm) or picometers (pm)"
+      },
+      {
+        "id": "d",
+        "text": "Kilometers (km)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The table shows ultraviolet rays have wavelengths from 300 pm to 400 nm. (Page 210)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q091",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What is the term for the defect in vision where different colors of light are focused at slightly different points by a lens?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Spherical aberration"
+      },
+      {
+        "id": "b",
+        "text": "Astigmatism"
+      },
+      {
+        "id": "c",
+        "text": "Chromatic aberration"
+      },
+      {
+        "id": "d",
+        "text": "Myopia"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The images formed by lenses have errors of colours. This is called chromatic aberration. (Page 210)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q092",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The GMRT is an array of 30 dishes. What is the diameter of each individual dish?",
+    "options": [
+      {
+        "id": "a",
+        "text": "3.6 meters"
+      },
+      {
+        "id": "b",
+        "text": "25 kilometers"
+      },
+      {
+        "id": "c",
+        "text": "45 meters"
+      },
+      {
+        "id": "d",
+        "text": "94 inches"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "This telescope is actually a collection of 30 dishes, each having a diameter of 45 m. (Page 212)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q093",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "ISRO's achievements in space technology have significantly contributed to India's:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Literary arts and culture."
+      },
+      {
+        "id": "b",
+        "text": "Political stability."
+      },
+      {
+        "id": "c",
+        "text": "National and social development."
+      },
+      {
+        "id": "d",
+        "text": "Sporting achievements."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "India’s progress in space science has played a big role in national and social development. (Page 213)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q094",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Hubble telescope is primarily an:",
+    "options": [
+      {
+        "id": "a",
+        "text": "X-ray telescope"
+      },
+      {
+        "id": "b",
+        "text": "Optical telescope"
+      },
+      {
+        "id": "c",
+        "text": "Radio telescope"
+      },
+      {
+        "id": "d",
+        "text": "Infrared telescope"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In 1990, the National Aeronautics and Space Administration launched into space an optical telescope called the Hubble telescope. (Page 213)",
+    "difficulty": 11
+  },
+  {
+    "id": "phy_space_ch18_q095",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "A telescope that uses a parabolic dish to collect and focus radio waves is known as a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Refracting optical telescope"
+      },
+      {
+        "id": "b",
+        "text": "Newtonian reflecting telescope"
+      },
+      {
+        "id": "c",
+        "text": "Radio telescope"
+      },
+      {
+        "id": "d",
+        "text": "Cassegrain X-ray telescope"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A radio telescope is made from one or more dishes of a particular parabolic shape... incident radio waves are reflected by these dishes and converge at the focus. (Page 212)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q096",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these types of electromagnetic radiation can most easily penetrate Earth's atmosphere and be detected by ground-based telescopes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gamma rays"
+      },
+      {
+        "id": "b",
+        "text": "X-rays"
+      },
+      {
+        "id": "c",
+        "text": "Radio waves"
+      },
+      {
+        "id": "d",
+        "text": "Extreme Ultraviolet"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Visible light and the radio waves emitted by heavenly bodies in space can pass through the earth’s atmosphere and reach the earth’s surface. (Page 212)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q097",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Astrosat satellite is a multi-wavelength observatory. What does 'multi-wavelength' imply?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It can change the color of the light it observes."
+      },
+      {
+        "id": "b",
+        "text": "It has multiple identical telescopes for redundancy."
+      },
+      {
+        "id": "c",
+        "text": "It carries instruments capable of observing in different parts of the electromagnetic spectrum (e.g., UV and X-ray)."
+      },
+      {
+        "id": "d",
+        "text": "It can observe objects at many different distances."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Astrosat has ultraviolet and X-ray telescopes and detectors, making it a multi-wavelength observatory. (Page 214)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q098",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The largest optical telescopes currently use mirrors rather than lenses as their primary objective. One reason for this, not explicitly stated as a difficulty of lenses but an advantage of mirrors, is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mirrors can be made perfectly transparent."
+      },
+      {
+        "id": "b",
+        "text": "Only one surface of a mirror needs to be precisely figured and polished, unlike a lens which has two."
+      },
+      {
+        "id": "c",
+        "text": "Mirrors inherently magnify more than lenses."
+      },
+      {
+        "id": "d",
+        "text": "Mirrors do not require a telescope tube."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Lenses require two precision surfaces, whereas mirrors only require one. This, along with support issues and chromatic aberration, makes large mirrors more practical. (Out of PDF, general knowledge about telescope optics related to why mirrors are preferred for large telescopes, complementing page 211).",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q099",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "A device that disperses light into its component colors (spectrum) for analysis is called a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Photometer"
+      },
+      {
+        "id": "b",
+        "text": "Spectrograph or spectrometer"
+      },
+      {
+        "id": "c",
+        "text": "CCD camera"
+      },
+      {
+        "id": "d",
+        "text": "Barometer"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A spectrograph is an instrument used in telescopes to separate incoming light into its constituent wavelengths (its spectrum), which can then be analyzed to determine properties of the light source. (Out of PDF, very common astronomical instrument).",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q100",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of the following discoveries by Galileo directly challenged the Aristotelian idea of perfect, unchanging celestial bodies?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The vast number of stars in the Milky Way."
+      },
+      {
+        "id": "b",
+        "text": "The moons of Jupiter orbiting Jupiter."
+      },
+      {
+        "id": "c",
+        "text": "The mountains and craters on the Moon, and sunspots."
+      },
+      {
+        "id": "d",
+        "text": "The phases of Venus."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Aristotelian view was that celestial bodies were perfect spheres. Galileo's observations of imperfections like lunar craters and sunspots directly contradicted this. (Out of PDF, related to Galileo's impact on page 209).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q101",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The 'focal length' of a lens or mirror in a telescope determines its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Light-gathering ability."
+      },
+      {
+        "id": "b",
+        "text": "Magnification (in conjunction with the eyepiece) and the physical length of the telescope."
+      },
+      {
+        "id": "c",
+        "text": "Ability to correct for atmospheric distortion."
+      },
+      {
+        "id": "d",
+        "text": "Weight and manufacturing cost."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Focal length is a key parameter that influences magnification (when combined with an eyepiece) and the overall physical dimensions of the telescope. (Out of PDF, general optics principle relevant to telescope function discussed on page 210, 211).",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q102",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Most large professional radio telescopes use what kind of surface for their main reflector (dish)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A finely polished glass surface coated with silver."
+      },
+      {
+        "id": "b",
+        "text": "A solid metal sheet shaped into a parabola."
+      },
+      {
+        "id": "c",
+        "text": "A wire mesh or perforated metal panels shaped into a parabola."
+      },
+      {
+        "id": "d",
+        "text": "A large, specially shaped lens made of plastic."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "For long radio wavelengths, the reflecting surface of a radio dish doesn't need to be a solid sheet. A wire mesh or perforated panels can effectively reflect radio waves as long as the holes are smaller than the wavelength being observed, which reduces weight and wind load. (Out of PDF, related to GMRT's dishes mentioned on page 212).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q103",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The angular resolution of a telescope refers to its ability to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Collect a large amount of light."
+      },
+      {
+        "id": "b",
+        "text": "Magnify an image to a very large size."
+      },
+      {
+        "id": "c",
+        "text": "Distinguish between two closely spaced objects or see fine detail."
+      },
+      {
+        "id": "d",
+        "text": "Observe objects at very great distances."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Angular resolution is the ability of an imaging device to separate (i.e., to distinguish between) two points that are close together or to see fine details. (Out of PDF, a fundamental concept in telescope performance).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q104",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Earth's ionosphere, a layer of charged particles in the upper atmosphere, primarily affects which type of astronomical observations from the ground?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Visible light astronomy"
+      },
+      {
+        "id": "b",
+        "text": "Long-wavelength radio astronomy"
+      },
+      {
+        "id": "c",
+        "text": "X-ray astronomy"
+      },
+      {
+        "id": "d",
+        "text": "Infrared astronomy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The ionosphere can reflect or absorb long-wavelength radio waves (typically below a few tens of MHz), making ground-based observations at these frequencies difficult or impossible. (Out of PDF, relevant to limitations of ground-based radio astronomy mentioned on page 212).",
+    "difficulty": 20
+  },
+  {
+    "id": "phy_space_ch18_q105",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The primary advantage of a Charge-Coupled Device (CCD) over photographic film in astronomical imaging is its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ability to record color images directly."
+      },
+      {
+        "id": "b",
+        "text": "Much higher quantum efficiency (sensitivity to light) and digital output."
+      },
+      {
+        "id": "c",
+        "text": "Larger physical size for capturing wider fields of view."
+      },
+      {
+        "id": "d",
+        "text": "Lower cost and simpler manufacturing process."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "CCDs are significantly more sensitive to light (higher quantum efficiency) than photographic film, and their digital output allows for immediate computer analysis. (Out of PDF, common detector technology in modern astronomy).",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q106",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The technique of spectroscopy in astronomy is crucial for determining a star's:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Exact distance from Earth."
+      },
+      {
+        "id": "b",
+        "text": "Apparent brightness (magnitude)."
+      },
+      {
+        "id": "c",
+        "text": "Chemical composition, temperature, and radial velocity."
+      },
+      {
+        "id": "d",
+        "text": "Age and rotational period."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "By analyzing the spectrum of light from a star, astronomers can determine its chemical composition (from absorption/emission lines), temperature (from the peak wavelength), and motion towards or away from us (Doppler shift). (Out of PDF, key application of astronomical observation).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q107",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these is NOT typically considered a part of the 'Solar System' that GMRT might study?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solar winds"
+      },
+      {
+        "id": "b",
+        "text": "Pulsars"
+      },
+      {
+        "id": "c",
+        "text": "Planets"
+      },
+      {
+        "id": "d",
+        "text": "Interstellar hydrogen clouds within the Milky Way Galaxy"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The text mentions GMRT studies the solar system, solar winds, pulsars, supernova, interstellar hydrogen clouds. While interstellar hydrogen clouds are within our galaxy, they are not strictly part of the 'solar system' (Sun and its orbiting bodies). Pulsars and supernova are also stellar phenomena, often beyond the solar system. The question is slightly tricky, but 'solar system' strictly refers to our Sun and its planets/moons/asteroids etc. (Page 212)",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q108",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "If a telescope has a primary mirror with a diameter of 4 meters, its light-gathering power is how many times greater than a telescope with a 1-meter diameter mirror?",
+    "options": [
+      {
+        "id": "a",
+        "text": "2 times"
+      },
+      {
+        "id": "b",
+        "text": "4 times"
+      },
+      {
+        "id": "c",
+        "text": "8 times"
+      },
+      {
+        "id": "d",
+        "text": "16 times"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Light-gathering power is proportional to the area of the objective, which is proportional to the square of its diameter (Area = π(D/2)^2). So, (4m)^2 / (1m)^2 = 16/1 = 16 times. (Out of PDF, fundamental principle related to large objectives discussed on page 210-211).",
+    "difficulty": 18
+  },
+  {
+    "id": "phy_space_ch18_q109",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The 'Chandrasekhar Limit' is a famous concept in astrophysics related to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The maximum size of a radio telescope dish."
+      },
+      {
+        "id": "b",
+        "text": "The maximum mass of a stable white dwarf star."
+      },
+      {
+        "id": "c",
+        "text": "The minimum distance for resolving two stars."
+      },
+      {
+        "id": "d",
+        "text": "The ideal orbital height for a space telescope."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Chandrasekhar Limit, for which Subramanian Chandrashekhar won the Nobel Prize, defines the maximum mass a white dwarf star can have before collapsing further. Chandra X-ray observatory is named after him. (Out of PDF, but highly relevant to the scientist mentioned on page 213).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q110",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which of these ISRO launch vehicles is known for launching communication satellites into geostationary transfer orbit?",
+    "options": [
+      {
+        "id": "a",
+        "text": "SLV (Satellite Launch Vehicle)"
+      },
+      {
+        "id": "b",
+        "text": "ASLV (Augmented Satellite Launch Vehicle)"
+      },
+      {
+        "id": "c",
+        "text": "PSLV (Polar Satellite Launch Vehicle)"
+      },
+      {
+        "id": "d",
+        "text": "GSLV (Geosynchronous Satellite Launch Vehicle)"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "GSLV is ISRO's launch vehicle primarily designed to launch communication satellites (like INSAT/GSAT series) into Geosynchronous Transfer Orbits (GTO) and then to Geostationary orbit. (Out of PDF, related to ISRO's activities on page 213).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q111",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The primary reason for using a small flat secondary mirror in a Newtonian telescope, angled at 45 degrees, is to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnify the image further."
+      },
+      {
+        "id": "b",
+        "text": "Correct for chromatic aberration."
+      },
+      {
+        "id": "c",
+        "text": "Direct the focused light path out the side of the telescope tube to an eyepiece."
+      },
+      {
+        "id": "d",
+        "text": "Increase the light-gathering power of the primary mirror."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In a Newtonian telescope, the small plane mirror deflects the converging light from the primary mirror to the side of the tube where the eyepiece is located. (Page 211)",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q112",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "What property of light allows it to be focused by a concave mirror?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Its ability to refract when passing through glass."
+      },
+      {
+        "id": "b",
+        "text": "Its ability to travel in straight lines (rectilinear propagation)."
+      },
+      {
+        "id": "c",
+        "text": "Its ability to be reflected according to the laws of reflection."
+      },
+      {
+        "id": "d",
+        "text": "Its wave-particle duality."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Concave mirrors focus light because parallel rays of light are reflected by the curved surface to converge at a focal point, following the laws of reflection. (Page 211)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q113",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The term 'astronomical seeing' improves (i.e., images become sharper) when:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The atmospheric turbulence decreases."
+      },
+      {
+        "id": "b",
+        "text": "The amount of light pollution increases."
+      },
+      {
+        "id": "c",
+        "text": "The telescope's magnification is increased significantly."
+      },
+      {
+        "id": "d",
+        "text": "The humidity of the air decreases."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Good 'seeing' means the atmosphere is stable and calm, leading to less turbulence and sharper images. 'Shaking of the image' due to turbulence is a problem. (Page 213 and general astronomical knowledge).",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q114",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The unit 'nanometer' (nm) is commonly used to measure the wavelength of which type of electromagnetic radiation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Radio waves"
+      },
+      {
+        "id": "b",
+        "text": "Microwaves"
+      },
+      {
+        "id": "c",
+        "text": "Visible light and Ultraviolet rays"
+      },
+      {
+        "id": "d",
+        "text": "Gamma rays"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The table shows visible light (400-800 nm) and UV rays (300 pm - 400 nm, which can also be expressed in nm) are measured in nanometers. (Page 210)",
+    "difficulty": 12
+  },
+  {
+    "id": "phy_space_ch18_q115",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The effective 'aperture' of a telescope refers to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The length of its tube."
+      },
+      {
+        "id": "b",
+        "text": "The diameter of its primary light-collecting element (lens or mirror)."
+      },
+      {
+        "id": "c",
+        "text": "The magnification power of its eyepiece."
+      },
+      {
+        "id": "d",
+        "text": "The type of mount it uses."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Aperture is the diameter of the objective lens or primary mirror of a telescope, which determines its light-gathering power and resolving power. (Out of PDF, fundamental telescope terminology).",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q116",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "Which part of the electromagnetic spectrum has wavelengths just shorter than visible light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Infrared"
+      },
+      {
+        "id": "b",
+        "text": "Ultraviolet"
+      },
+      {
+        "id": "c",
+        "text": "X-rays"
+      },
+      {
+        "id": "d",
+        "text": "Microwaves"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Visible light is 400-800 nm. Ultraviolet rays are 300 pm - 400 nm. Therefore, UV rays have wavelengths just shorter than visible light. (Page 210)",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q117",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The main purpose of placing a telescope on a very high mountain is to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Get above most of the clouds and reduce atmospheric water vapor which absorbs infrared."
+      },
+      {
+        "id": "b",
+        "text": "Be closer to the stars to get a brighter image."
+      },
+      {
+        "id": "c",
+        "text": "Avoid radio interference from cities."
+      },
+      {
+        "id": "d",
+        "text": "Experience stronger gravitational pull for stability."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "High mountains get telescopes above a significant portion of the Earth's atmosphere, reducing turbulence, light absorption (especially water vapor for infrared), and light pollution. (Page 213)",
+    "difficulty": 16
+  },
+  {
+    "id": "phy_space_ch18_q118",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The ability of ISRO to launch satellites for disaster management is part of which satellite series' application?",
+    "options": [
+      {
+        "id": "a",
+        "text": "EDUSAT series"
+      },
+      {
+        "id": "b",
+        "text": "GSAT series"
+      },
+      {
+        "id": "c",
+        "text": "IRS series"
+      },
+      {
+        "id": "d",
+        "text": "Astrosat series"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The IRS satellite series is used for the monitoring and management of natural resources as well as disaster management. (Page 213)",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q119",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "In a reflecting telescope, if the primary mirror is spherical instead of perfectly parabolic, it can lead to an image defect called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Chromatic aberration"
+      },
+      {
+        "id": "b",
+        "text": "Spherical aberration"
+      },
+      {
+        "id": "c",
+        "text": "Coma"
+      },
+      {
+        "id": "d",
+        "text": "Field curvature"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Spherical aberration occurs when light rays reflecting off a spherical mirror do not all converge at a single focal point, leading to a blurry image. Parabolic mirrors correct this. (Out of PDF, common optical aberration).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q120",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The Very Large Telescope (VLT) in Chile, one of the world's most advanced optical telescopes, consists of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A single giant refracting lens."
+      },
+      {
+        "id": "b",
+        "text": "An array of radio dishes similar to GMRT."
+      },
+      {
+        "id": "c",
+        "text": "Four large reflecting telescopes that can work together."
+      },
+      {
+        "id": "d",
+        "text": "A space-based X-ray observatory."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The VLT is an array of four 8.2-meter reflecting telescopes that can be used individually or combined interferometrically. (Out of PDF, famous modern observatory).",
+    "difficulty": 17
+  },
+  {
+    "id": "phy_space_ch18_q121",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The phenomenon where the observed frequency (and wavelength) of light from a source changes due to its motion relative to the observer is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The photoelectric effect"
+      },
+      {
+        "id": "b",
+        "text": "The Compton effect"
+      },
+      {
+        "id": "c",
+        "text": "The Doppler effect"
+      },
+      {
+        "id": "d",
+        "text": "The Zeeman effect"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Doppler effect describes the change in frequency or wavelength of a wave in relation to an observer who is moving relative to the wave source. It's used in astronomy to measure radial velocities of stars and galaxies. (Out of PDF, fundamental physics principle applied in astronomy).",
+    "difficulty": 15
+  },
+  {
+    "id": "phy_space_ch18_q122",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The largest single-dish steerable radio telescope in the world (as of early 2020s) is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Arecibo Observatory (before its collapse)"
+      },
+      {
+        "id": "b",
+        "text": "The Green Bank Telescope (GBT)"
+      },
+      {
+        "id": "c",
+        "text": "The Five-hundred-meter Aperture Spherical Telescope (FAST)"
+      },
+      {
+        "id": "d",
+        "text": "The GMRT"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Green Bank Telescope (GBT) in West Virginia, USA, is the world's largest fully steerable radio telescope. FAST is larger but has limited steerability. Arecibo was larger but not fully steerable and collapsed. GMRT is an array. (Out of PDF, general knowledge of large radio telescopes).",
+    "difficulty": 19
+  },
+  {
+    "id": "phy_space_ch18_q123",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "An astronomical unit (AU) is defined as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The distance from the Earth to the Moon."
+      },
+      {
+        "id": "b",
+        "text": "The average distance from the Earth to the Sun."
+      },
+      {
+        "id": "c",
+        "text": "The diameter of the Sun."
+      },
+      {
+        "id": "d",
+        "text": "The distance light travels in one minute."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "An astronomical unit (AU) is a unit of length, roughly the distance from Earth to the Sun, and equal to about 150 million kilometers. (Out of PDF, common unit in astronomy).",
+    "difficulty": 13
+  },
+  {
+    "id": "phy_space_ch18_q124",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The study of the origin, evolution, and eventual fate of the universe is known as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Astrophysics"
+      },
+      {
+        "id": "b",
+        "text": "Cosmology"
+      },
+      {
+        "id": "c",
+        "text": "Planetology"
+      },
+      {
+        "id": "d",
+        "text": "Stellar astronomy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Cosmology is the branch of astronomy concerned with the studies of the origin and evolution of the universe, from the Big Bang to today and on into the future. (Out of PDF, branch of astronomy).",
+    "difficulty": 14
+  },
+  {
+    "id": "phy_space_ch18_q125",
+    "topicId": "observing-space-telescopes-9th",
+    "text": "The 'event horizon' is a term most commonly associated with which astronomical object?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A comet"
+      },
+      {
+        "id": "b",
+        "text": "A red giant star"
+      },
+      {
+        "id": "c",
+        "text": "A black hole"
+      },
+      {
+        "id": "d",
+        "text": "A spiral galaxy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The event horizon is the boundary around a black hole beyond which no light or other radiation can escape. (Out of PDF, common astronomical term).",
+    "difficulty": 15
   }
 ]
