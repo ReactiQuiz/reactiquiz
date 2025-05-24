@@ -5,13 +5,13 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { darken, useTheme } from '@mui/material/styles';
 
 // Import all possible question files
-import allChemistryQuestions from '../../questions/chemistry.json';
-import allPhysicsQuestions from '../../questions/physics.json';
-import allMathematicsQuestions from '../../questions/mathematics.json';
-import allBiologyQuestions from '../../questions/biology.json';
+import allChemistryQuestions from '../questions/chemistry.json';
+import allPhysicsQuestions from '../questions/physics.json';
+import allMathematicsQuestions from '../questions/mathematics.json';
+import allBiologyQuestions from '../questions/biology.json';
 
-import { subjectAccentColors as themeSubjectAccentColors } from '../../theme';
-import QuestionItem from './QuestionItem';
+import { subjectAccentColors as themeSubjectAccentColors } from '../theme';
+import QuestionItem from '../components/QuestionItem';
 
 // Log the .env variables to see if they are being picked up
 // These are primarily for build-time configuration or if you were using a more dynamic loader

@@ -8,11 +8,11 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 
 import HomePage from './pages/HomePage';
-import ChemistryPage from './pages/chemistry/ChemistryPage';
-import PhysicsPage from './pages/physics/PhysicsPage';
-import MathematicsPage from './pages/mathematics/MathematicsPage';
-import BiologyPage from './pages/biology/BiologyPage';
-import QuizPage from './pages/quiz/QuizPage'; // <<< ENSURE THIS PATH IS CORRECT
+import ChemistryPage from './pages/ChemistryPage';
+import PhysicsPage from './pages/PhysicsPage';
+import MathematicsPage from './pages/MathematicsPage';
+import BiologyPage from './pages/BiologyPage';
+import QuizPage from './pages/QuizPage'; // <<< ENSURE THIS PATH IS CORRECT
 import ResultsPage from './pages/ResultsPage';
 import AppDrawer from './components/AppDrawer';
 

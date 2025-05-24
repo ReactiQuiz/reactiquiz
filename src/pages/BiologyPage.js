@@ -1,20 +1,20 @@
-// src/pages/physics/PhysicsPage.js
+// src/pages/biology/BiologyPage.js
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { physicsTopics } from './physicsTopics';
-import TopicCard from '../../components/TopicCard';
-import QuizSettingsModal from '../../components/QuizSettingsModal';
-import { subjectAccentColors } from '../../theme';
+import { biologyTopics } from '../components/BiologyTopics';
+import TopicCard from '../components/TopicCard';
+import QuizSettingsModal from '../components/QuizSettingsModal';
+import { subjectAccentColors } from '../theme';
 
-function PhysicsPage() {
+function BiologyPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
-  const PHYSICS_ACCENT_COLOR = subjectAccentColors.physics;
+  const BIOLOGY_ACCENT_COLOR = subjectAccentColors.biology;
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -28,13 +28,13 @@ function PhysicsPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Physics quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/physics/${selectedTopic.id}`, {
+      console.log(`Starting Biology quiz for ${selectedTopic.name} with settings:`, settings);
+      navigate(`/quiz/biology/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
-          accentColor: PHYSICS_ACCENT_COLOR,
+          accentColor: BIOLOGY_ACCENT_COLOR,
         }
       });
     }
@@ -42,12 +42,12 @@ function PhysicsPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = physicsTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = biologyTopics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
-  }, []); // physicsTopics is stable, so empty dependency array is fine here if it's a top-level import
+  }, []);
 
   const filteredTopics = useMemo(() => {
-    let topics = physicsTopics;
+    let topics = biologyTopics;
 
     if (selectedClass) {
       topics = topics.filter(topic => topic.class === selectedClass);
@@ -61,19 +61,19 @@ function PhysicsPage() {
       );
     }
     return topics;
-  }, [searchTerm, selectedClass]); // physicsTopics is stable
+  }, [searchTerm, selectedClass]);
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ color: PHYSICS_ACCENT_COLOR }}
+        sx={{ color: BIOLOGY_ACCENT_COLOR }}
       >
-        Physics Quiz Topics
+        Biology Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Physics quiz.
+        Select a topic below to customize and start your Biology quiz.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -111,8 +111,8 @@ function PhysicsPage() {
               <TopicCard
                 topic={topic}
                 onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={PHYSICS_ACCENT_COLOR}
-                subjectBasePath="physics"
+                accentColor={BIOLOGY_ACCENT_COLOR}
+                subjectBasePath="biology"
               />
             </Box>
           ))
@@ -127,11 +127,11 @@ function PhysicsPage() {
           onClose={handleCloseModal}
           onSubmit={handleStartQuizWithSettings}
           topicName={selectedTopic.name}
-          accentColor={PHYSICS_ACCENT_COLOR}
+          accentColor={BIOLOGY_ACCENT_COLOR}
         />
       )}
     </Box>
   );
 }
 
-export default PhysicsPage;
+export default BiologyPage;

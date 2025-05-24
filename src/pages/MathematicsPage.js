@@ -1,20 +1,20 @@
-// src/pages/chemistry/ChemistryPage.js
+// src/pages/mathematics/MathematicsPage.js
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { chemistryTopics } from './chemistryTopics';
-import TopicCard from '../../components/TopicCard';
-import QuizSettingsModal from '../../components/QuizSettingsModal';
-import { subjectAccentColors } from '../../theme';
+import { mathematicsTopics } from '../components/MathematicsTopics';
+import TopicCard from '../components/TopicCard';
+import QuizSettingsModal from '../components/QuizSettingsModal';
+import { subjectAccentColors } from '../theme';
 
-function ChemistryPage() {
+function MathematicsPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
-  const CHEMISTRY_ACCENT_COLOR = subjectAccentColors.chemistry;
+  const MATHEMATICS_ACCENT_COLOR = subjectAccentColors.mathematics;
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -28,13 +28,13 @@ function ChemistryPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Chemistry quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/chemistry/${selectedTopic.id}`, {
+      console.log(`Starting Mathematics quiz for ${selectedTopic.name} with settings:`, settings);
+      navigate(`/quiz/mathematics/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
-          accentColor: CHEMISTRY_ACCENT_COLOR,
+          accentColor: MATHEMATICS_ACCENT_COLOR,
         }
       });
     }
@@ -42,12 +42,12 @@ function ChemistryPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = chemistryTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = mathematicsTopics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
   }, []);
 
   const filteredTopics = useMemo(() => {
-    let topics = chemistryTopics;
+    let topics = mathematicsTopics;
 
     if (selectedClass) {
       topics = topics.filter(topic => topic.class === selectedClass);
@@ -68,12 +68,12 @@ function ChemistryPage() {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ color: CHEMISTRY_ACCENT_COLOR }}
+        sx={{ color: MATHEMATICS_ACCENT_COLOR }}
       >
-        Chemistry Quiz Topics
+        Mathematics Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Chemistry quiz.
+        Select a topic below to customize and start your Mathematics quiz.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -111,8 +111,8 @@ function ChemistryPage() {
               <TopicCard
                 topic={topic}
                 onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={CHEMISTRY_ACCENT_COLOR}
-                subjectBasePath="chemistry"
+                accentColor={MATHEMATICS_ACCENT_COLOR}
+                subjectBasePath="mathematics"
               />
             </Box>
           ))
@@ -127,11 +127,11 @@ function ChemistryPage() {
           onClose={handleCloseModal}
           onSubmit={handleStartQuizWithSettings}
           topicName={selectedTopic.name}
-          accentColor={CHEMISTRY_ACCENT_COLOR}
+          accentColor={MATHEMATICS_ACCENT_COLOR}
         />
       )}
     </Box>
   );
 }
 
-export default ChemistryPage;
+export default MathematicsPage;

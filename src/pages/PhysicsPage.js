@@ -1,20 +1,20 @@
-// src/pages/mathematics/MathematicsPage.js
+// src/pages/physics/PhysicsPage.js
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { mathematicsTopics } from './mathematicsTopics';
-import TopicCard from '../../components/TopicCard';
-import QuizSettingsModal from '../../components/QuizSettingsModal';
-import { subjectAccentColors } from '../../theme';
+import { physicsTopics } from '../components/PhysicsTopics';
+import TopicCard from '../components/TopicCard';
+import QuizSettingsModal from '../components/QuizSettingsModal';
+import { subjectAccentColors } from '../theme';
 
-function MathematicsPage() {
+function PhysicsPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
-  const MATHEMATICS_ACCENT_COLOR = subjectAccentColors.mathematics;
+  const PHYSICS_ACCENT_COLOR = subjectAccentColors.physics;
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -28,13 +28,13 @@ function MathematicsPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Mathematics quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/mathematics/${selectedTopic.id}`, {
+      console.log(`Starting Physics quiz for ${selectedTopic.name} with settings:`, settings);
+      navigate(`/quiz/physics/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
-          accentColor: MATHEMATICS_ACCENT_COLOR,
+          accentColor: PHYSICS_ACCENT_COLOR,
         }
       });
     }
@@ -42,12 +42,12 @@ function MathematicsPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = mathematicsTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = physicsTopics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
-  }, []);
+  }, []); // physicsTopics is stable, so empty dependency array is fine here if it's a top-level import
 
   const filteredTopics = useMemo(() => {
-    let topics = mathematicsTopics;
+    let topics = physicsTopics;
 
     if (selectedClass) {
       topics = topics.filter(topic => topic.class === selectedClass);
@@ -61,19 +61,19 @@ function MathematicsPage() {
       );
     }
     return topics;
-  }, [searchTerm, selectedClass]);
+  }, [searchTerm, selectedClass]); // physicsTopics is stable
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ color: MATHEMATICS_ACCENT_COLOR }}
+        sx={{ color: PHYSICS_ACCENT_COLOR }}
       >
-        Mathematics Quiz Topics
+        Physics Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Mathematics quiz.
+        Select a topic below to customize and start your Physics quiz.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -111,8 +111,8 @@ function MathematicsPage() {
               <TopicCard
                 topic={topic}
                 onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={MATHEMATICS_ACCENT_COLOR}
-                subjectBasePath="mathematics"
+                accentColor={PHYSICS_ACCENT_COLOR}
+                subjectBasePath="physics"
               />
             </Box>
           ))
@@ -127,11 +127,11 @@ function MathematicsPage() {
           onClose={handleCloseModal}
           onSubmit={handleStartQuizWithSettings}
           topicName={selectedTopic.name}
-          accentColor={MATHEMATICS_ACCENT_COLOR}
+          accentColor={PHYSICS_ACCENT_COLOR}
         />
       )}
     </Box>
   );
 }
 
-export default MathematicsPage;
+export default PhysicsPage;

@@ -1,20 +1,20 @@
-// src/pages/biology/BiologyPage.js
+// src/pages/chemistry/ChemistryPage.js
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { biologyTopics } from './biologyTopics';
-import TopicCard from '../../components/TopicCard';
-import QuizSettingsModal from '../../components/QuizSettingsModal';
-import { subjectAccentColors } from '../../theme';
+import { chemistryTopics } from '../components/ChemistryTopics';
+import TopicCard from '../components/TopicCard';
+import QuizSettingsModal from '../components/QuizSettingsModal';
+import { subjectAccentColors } from '../theme';
 
-function BiologyPage() {
+function ChemistryPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
-  const BIOLOGY_ACCENT_COLOR = subjectAccentColors.biology;
+  const CHEMISTRY_ACCENT_COLOR = subjectAccentColors.chemistry;
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -28,13 +28,13 @@ function BiologyPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Biology quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/biology/${selectedTopic.id}`, {
+      console.log(`Starting Chemistry quiz for ${selectedTopic.name} with settings:`, settings);
+      navigate(`/quiz/chemistry/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
-          accentColor: BIOLOGY_ACCENT_COLOR,
+          accentColor: CHEMISTRY_ACCENT_COLOR,
         }
       });
     }
@@ -42,12 +42,12 @@ function BiologyPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = biologyTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = chemistryTopics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
   }, []);
 
   const filteredTopics = useMemo(() => {
-    let topics = biologyTopics;
+    let topics = chemistryTopics;
 
     if (selectedClass) {
       topics = topics.filter(topic => topic.class === selectedClass);
@@ -68,12 +68,12 @@ function BiologyPage() {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ color: BIOLOGY_ACCENT_COLOR }}
+        sx={{ color: CHEMISTRY_ACCENT_COLOR }}
       >
-        Biology Quiz Topics
+        Chemistry Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Biology quiz.
+        Select a topic below to customize and start your Chemistry quiz.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -111,8 +111,8 @@ function BiologyPage() {
               <TopicCard
                 topic={topic}
                 onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={BIOLOGY_ACCENT_COLOR}
-                subjectBasePath="biology"
+                accentColor={CHEMISTRY_ACCENT_COLOR}
+                subjectBasePath="chemistry"
               />
             </Box>
           ))
@@ -127,11 +127,11 @@ function BiologyPage() {
           onClose={handleCloseModal}
           onSubmit={handleStartQuizWithSettings}
           topicName={selectedTopic.name}
-          accentColor={BIOLOGY_ACCENT_COLOR}
+          accentColor={CHEMISTRY_ACCENT_COLOR}
         />
       )}
     </Box>
   );
 }
 
-export default BiologyPage;
+export default ChemistryPage;
