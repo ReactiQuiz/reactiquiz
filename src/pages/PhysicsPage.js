@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { physicsTopics } from '../components/PhysicsTopics';
+import { physicsTopics } from '../topics/PhysicsTopics';
 import TopicCard from '../components/TopicCard';
 import QuizSettingsModal from '../components/QuizSettingsModal';
 import { subjectAccentColors } from '../theme';
