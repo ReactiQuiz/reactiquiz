@@ -612,7 +612,7 @@
       },
       {
         "id": "c",
-        "text": "Displacement (or distance travelled in a specific direction)"
+        "text": "Displacement"
       },
       {
         "id": "d",
@@ -954,7 +954,7 @@
       },
       {
         "id": "d",
-        "text": "N s (Newton-second)"
+        "text": "N m/s"
       }
     ],
     "correctOptionId": "c",
@@ -1470,7 +1470,7 @@
       },
       {
         "id": "c",
-        "text": "Speed (or magnitude of velocity if motion is in one direction)"
+        "text": "Speed"
       },
       {
         "id": "d",
@@ -2120,7 +2120,7 @@
       },
       {
         "id": "c",
-        "text": "0 = u^2 - 2gh  (derived from v^2 = u^2 + 2as)"
+        "text": "0 = u^2 - 2gh"
       },
       {
         "id": "d",
