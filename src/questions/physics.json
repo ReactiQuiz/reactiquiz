@@ -20798,5 +20798,3905 @@
     "correctOptionId": "b",
     "explanation": "In any real machine, some of the input work is converted into heat due to friction between moving parts. This means the useful output work is always less than the input work, so efficiency is less than 100%. Maintenance discussion on page 98 mentions friction.",
     "difficulty": 19
+  },
+  {
+    "id": "disaster-management-6th-q001",
+    "topicId": "disaster-management-6th",
+    "text": "What is a 'disaster' defined as in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A minor inconvenience"
+      },
+      {
+        "id": "b",
+        "text": "A planned event"
+      },
+      {
+        "id": "c",
+        "text": "A sudden event that causes large scale damage to life, property and social aspects"
+      },
+      {
+        "id": "d",
+        "text": "A slow, gradual change in the environment"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A disaster is defined as a sudden event that causes large scale damage to life, property and social aspects of a nation or society. (Page 26)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q002",
+    "topicId": "disaster-management-6th",
+    "text": "Which of the following is an example of a man-made disaster?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earthquake"
+      },
+      {
+        "id": "b",
+        "text": "Flood"
+      },
+      {
+        "id": "c",
+        "text": "Bomb explosion"
+      },
+      {
+        "id": "d",
+        "text": "Tsunami"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Bomb explosions are listed as man-made disasters, resulting from terrorism, riots, and crimes. (Page 27)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q003",
+    "topicId": "disaster-management-6th",
+    "text": "What is a common effect of an earthquake?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Increased crop yield"
+      },
+      {
+        "id": "b",
+        "text": "Destruction of infrastructure like buildings and roads"
+      },
+      {
+        "id": "c",
+        "text": "Cleaner air quality"
+      },
+      {
+        "id": "d",
+        "text": "Reduced water levels in rivers"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Earthquakes can cause destruction of infrastructure, i.e., buildings, bridges, roads, railway tracks, etc. (Page 27)",
+    "difficulty": 12
+  },
+  {
+    "id": "disaster-management-6th-q004",
+    "topicId": "disaster-management-6th",
+    "text": "What is a primary cause of floods mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Lack of wind"
+      },
+      {
+        "id": "b",
+        "text": "Excessive rains in the same place causing a river to overflow"
+      },
+      {
+        "id": "c",
+        "text": "Too much sunlight"
+      },
+      {
+        "id": "d",
+        "text": "Earthquakes under the sea"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Floods are frequently caused by excessive rains in the same place, leading a river to overflow its banks. (Page 27)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q005",
+    "topicId": "disaster-management-6th",
+    "text": "Which of the following is an effect of storms?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Improved transport and communication"
+      },
+      {
+        "id": "b",
+        "text": "Strengthening of electric supply"
+      },
+      {
+        "id": "c",
+        "text": "Great damage in the storm affected region and disruption of electric supply"
+      },
+      {
+        "id": "d",
+        "text": "Reduced losses to life and property"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Effects of storms include great damage in the affected region, tremendous losses to life and property, and disruption of electric supply. (Page 28)",
+    "difficulty": 12
+  },
+  {
+    "id": "disaster-management-6th-q006",
+    "topicId": "disaster-management-6th",
+    "text": "What is disaster management?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ignoring disasters when they happen"
+      },
+      {
+        "id": "b",
+        "text": "Taking steps to prevent disasters, making plans to face them, and developing capacity"
+      },
+      {
+        "id": "c",
+        "text": "Only reacting after a disaster has occurred"
+      },
+      {
+        "id": "d",
+        "text": "Focusing solely on financial aid after a disaster"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Disaster management involves taking steps to prevent disasters, making plans to face disasters, and developing the capacity for that. (Page 28)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q007",
+    "topicId": "disaster-management-6th",
+    "text": "What is the emergency contact number for the Fire Brigade in India?",
+    "options": [
+      {
+        "id": "a",
+        "text": "100"
+      },
+      {
+        "id": "b",
+        "text": "101"
+      },
+      {
+        "id": "c",
+        "text": "102"
+      },
+      {
+        "id": "d",
+        "text": "108"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The emergency contact number for the Fire Brigade is 101. (Page 28)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q008",
+    "topicId": "disaster-management-6th",
+    "text": "During a flood, what is a recommended safety measure?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Stay in houses near river banks"
+      },
+      {
+        "id": "b",
+        "text": "Drive a vehicle into water currents"
+      },
+      {
+        "id": "c",
+        "text": "Seek shelter in other safe places, move to safer places at a greater height"
+      },
+      {
+        "id": "d",
+        "text": "Wait for the water to recede before moving"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "During floods, one should not linger in houses or areas on river banks and should seek shelter in other safe places or move to safer places at a greater height. (Page 29)",
+    "difficulty": 12
+  },
+  {
+    "id": "disaster-management-6th-q009",
+    "topicId": "disaster-management-6th",
+    "text": "What is the first step in providing first aid for external bleeding?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Apply a tourniquet immediately"
+      },
+      {
+        "id": "b",
+        "text": "Make the person sit or lie down comfortably"
+      },
+      {
+        "id": "c",
+        "text": "Give the person water to drink"
+      },
+      {
+        "id": "d",
+        "text": "Clean the wound with soap"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "If a person is bleeding externally, first make them sit or lie down comfortably. (Page 29)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q010",
+    "topicId": "disaster-management-6th",
+    "text": "For minor burns, what should be done with the injured part?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Apply oily ointments immediately"
+      },
+      {
+        "id": "b",
+        "text": "Cover with a thick, warm cloth"
+      },
+      {
+        "id": "c",
+        "text": "Wash with water or hold under water"
+      },
+      {
+        "id": "d",
+        "text": "Burst any blisters that form"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "For minor burns, the injured part should be washed with water or held under water. (Page 30)",
+    "difficulty": 12
+  },
+  {
+    "id": "disaster-management-6th-q011",
+    "topicId": "disaster-management-6th",
+    "text": "What causes sunstroke?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Exposure to cold weather"
+      },
+      {
+        "id": "b",
+        "text": "Working in the sun continuously for a long time, causing loss of water and minerals"
+      },
+      {
+        "id": "c",
+        "text": "Eating too much spicy food"
+      },
+      {
+        "id": "d",
+        "text": "Lack of sleep"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Sunstroke occurs when the body loses a lot of water and minerals from working in the sun continuously for a long time. (Page 30)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q012",
+    "topicId": "disaster-management-6th",
+    "text": "What is the recommended immediate action after a snakebite?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Try to suck out the venom"
+      },
+      {
+        "id": "b",
+        "text": "Kill the snake"
+      },
+      {
+        "id": "c",
+        "text": "Wash the wound with water and tie a cloth tightly above the wound"
+      },
+      {
+        "id": "d",
+        "text": "Apply heat to the wound"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Remedial measures for snakebite include washing the wound with water and tying a cloth tightly above the wound. (Page 30)",
+    "difficulty": 12
+  },
+  {
+    "id": "disaster-management-6th-q013",
+    "topicId": "disaster-management-6th",
+    "text": "Why is first aid important for a dog bite?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To prevent the dog from biting again"
+      },
+      {
+        "id": "b",
+        "text": "Because there is a risk of infection through the blood"
+      },
+      {
+        "id": "c",
+        "text": "To make the wound heal faster without scars"
+      },
+      {
+        "id": "d",
+        "text": "To determine the breed of the dog"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In a dog bite, there is a risk of infection through the blood, hence first aid and medical help are necessary. (Page 31)",
+    "difficulty": 11
+  },
+  {
+    "id": "disaster-management-6th-q014",
+    "topicId": "disaster-management-6th",
+    "text": "The Killari earthquake in 1993 occurred in which district of Maharashtra?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Pune"
+      },
+      {
+        "id": "b",
+        "text": "Mumbai"
+      },
+      {
+        "id": "c",
+        "text": "Latur"
+      },
+      {
+        "id": "d",
+        "text": "Nagpur"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In 1993, many people died due to the earthquake at Killari in Latur district. (Page 26)",
+    "difficulty": 13
+  },
+  {
+    "id": "disaster-management-6th-q015",
+    "topicId": "disaster-management-6th",
+    "text": "The National Disaster Management Authority (NDMA) was established in which year?",
+    "options": [
+      {
+        "id": "a",
+        "text": "1993"
+      },
+      {
+        "id": "b",
+        "text": "2000"
+      },
+      {
+        "id": "c",
+        "text": "2005"
+      },
+      {
+        "id": "d",
+        "text": "2014"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The National Disaster Management Authority was established in 2005. (Page 28)",
+    "difficulty": 13
+  },
+  {
+    "id": "disaster-management-6th-q016",
+    "topicId": "disaster-management-6th",
+    "text": "Which of these is NOT a remedial measure for serious burns mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Give emotional support."
+      },
+      {
+        "id": "b",
+        "text": "Cover wounds with sterilised cloth."
+      },
+      {
+        "id": "c",
+        "text": "Apply oily ointments generously."
+      },
+      {
+        "id": "d",
+        "text": "Do not touch or burst blisters."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "For serious burns, the text explicitly states 'Do not apply oily ointments'. (Page 30)",
+    "difficulty": 14
+  },
+  {
+    "id": "disaster-management-6th-q017",
+    "topicId": "disaster-management-6th",
+    "text": "Which type of disaster is a forest fire primarily classified as, based on its common causes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Always natural"
+      },
+      {
+        "id": "b",
+        "text": "Always man-made"
+      },
+      {
+        "id": "c",
+        "text": "Can be due to natural or man-made causes"
+      },
+      {
+        "id": "d",
+        "text": "Geological disaster"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A forest fire is an uncontrolled fire in a forest, pasture or grassland due to natural or man-made causes. (Page 28)",
+    "difficulty": 15
+  },
+  {
+    "id": "disaster-management-6th-q018",
+    "topicId": "disaster-management-6th",
+    "text": "If a person suffering from sunstroke feels like vomiting, what position is recommended?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Make them sit upright."
+      },
+      {
+        "id": "b",
+        "text": "Make them lie on their back."
+      },
+      {
+        "id": "c",
+        "text": "Make them lie prone (on abdomen) with head turned to one side."
+      },
+      {
+        "id": "d",
+        "text": "Make them stand and walk around."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If the patient feels like vomiting make him lie prone, i.e., on his/her abdomen with the head turned to one side. (Page 30)",
+    "difficulty": 15
+  },
+  {
+    "id": "disaster-management-6th-q019",
+    "topicId": "disaster-management-6th",
+    "text": "What is a 'Sarpa-mitra'?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A type of venomous snake"
+      },
+      {
+        "id": "b",
+        "text": "An antidote for snakebites"
+      },
+      {
+        "id": "c",
+        "text": "A person who helps with snakes, rather than killing them"
+      },
+      {
+        "id": "d",
+        "text": "A traditional snake charmer"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If you come across a snake, contact a ‘Sarpa-mitra’ rather than killing the snake at once. (Page 30)",
+    "difficulty": 14
+  },
+  {
+    "id": "disaster-management-6th-q020",
+    "topicId": "disaster-management-6th",
+    "text": "The India Meteorological Department (IMD) issues warnings that should be heeded. What kind of information is www.imd.gov.in likely to provide?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Information on historical monuments"
+      },
+      {
+        "id": "b",
+        "text": "Weather forecasts and warnings"
+      },
+      {
+        "id": "c",
+        "text": "Stock market updates"
+      },
+      {
+        "id": "d",
+        "text": "Agricultural product prices"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The IMD is associated with weather. The text advises heeding warnings issued by the Meteorological Department and using their website. (Page 29 and general knowledge based on page 7 reference)",
+    "difficulty": 15
+  },
+  {
+    "id": "disaster-management-6th-q021",
+    "topicId": "disaster-management-6th",
+    "text": "What is the primary reason for keeping the bleeding part of the body above the level of the heart in case of external bleeding?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To make the wound more visible."
+      },
+      {
+        "id": "b",
+        "text": "To help reduce blood flow to the wound due to gravity."
+      },
+      {
+        "id": "c",
+        "text": "To allow for easier application of bandages."
+      },
+      {
+        "id": "d",
+        "text": "To prevent infection from the ground."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Keeping the bleeding part above the heart uses gravity to help slow down blood flow to the injured area, thus reducing bleeding. (Page 29 mentions this action)",
+    "difficulty": 16
+  },
+  {
+    "id": "disaster-management-6th-q022",
+    "topicId": "disaster-management-6th",
+    "text": "Which of these is NOT an effect of floods listed in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Huge loss to life and property."
+      },
+      {
+        "id": "b",
+        "text": "Soil erosion."
+      },
+      {
+        "id": "c",
+        "text": "Increased land fertility in the immediate aftermath."
+      },
+      {
+        "id": "d",
+        "text": "Destruction of standing crops."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text lists huge loss to life and property, soil erosion, destruction of standing crops, and spread of diseases as effects of floods. Increased fertility is a long-term effect of some floods due to silt deposition but not an immediate listed effect. (Page 27)",
+    "difficulty": 14
+  },
+  {
+    "id": "disaster-management-6th-q023",
+    "topicId": "disaster-management-6th",
+    "text": "What is a significant danger during an earthquake regarding infrastructure like railway tracks?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They become electrified."
+      },
+      {
+        "id": "b",
+        "text": "They can get uprooted or roads can split open."
+      },
+      {
+        "id": "c",
+        "text": "They become excessively hot."
+      },
+      {
+        "id": "d",
+        "text": "They attract lightning."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "During an earthquake, roads split open, the ground cracks, railway tracks get uprooted. (Page 29)",
+    "difficulty": 14
+  },
+  {
+    "id": "disaster-management-6th-q024",
+    "topicId": "disaster-management-6th",
+    "text": "Using fire extinguishers in public places like schools and hospitals is a preventive measure for which type of disaster?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earthquakes"
+      },
+      {
+        "id": "b",
+        "text": "Floods"
+      },
+      {
+        "id": "c",
+        "text": "Fire"
+      },
+      {
+        "id": "d",
+        "text": "Storms"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "To get protection from fire, use fire extinguishers in public places like schools, hospitals, railway stations, etc. (Page 29)",
+    "difficulty": 14
+  },
+  {
+    "id": "disaster-management-6th-q025",
+    "topicId": "disaster-management-6th",
+    "text": "The Malin landslide in July 2014 occurred in which taluka of Pune district?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Haveli"
+      },
+      {
+        "id": "b",
+        "text": "Maval"
+      },
+      {
+        "id": "c",
+        "text": "Ambegaon"
+      },
+      {
+        "id": "d",
+        "text": "Khed"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In July 2014, the whole village of Malin in Ambegaon taluka of Pune district was destroyed due to a landslide. (Page 26)",
+    "difficulty": 16
+  },
+  {
+    "id": "disaster-management-6th-q026",
+    "topicId": "disaster-management-6th",
+    "text": "What is the moral responsibility mentioned during a disaster?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To wait for official help only."
+      },
+      {
+        "id": "b",
+        "text": "To document the event for social media."
+      },
+      {
+        "id": "c",
+        "text": "Helping and supporting each other."
+      },
+      {
+        "id": "d",
+        "text": "To secure personal belongings first."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "During a disaster, helping and supporting each other is our moral responsibility. (Page 28)",
+    "difficulty": 15
+  },
+  {
+    "id": "disaster-management-6th-q027",
+    "topicId": "disaster-management-6th",
+    "text": "Formation of high and low air pressure belts in the atmosphere causes which natural phenomenon?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earthquakes"
+      },
+      {
+        "id": "b",
+        "text": "Floods"
+      },
+      {
+        "id": "c",
+        "text": "Storms"
+      },
+      {
+        "id": "d",
+        "text": "Forest fires"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The formation of high and low air pressure belts in the atmosphere causes changes in weather resulting in strong winds or storms. (Page 28)",
+    "difficulty": 17
+  },
+  {
+    "id": "disaster-management-6th-q028",
+    "topicId": "disaster-management-6th",
+    "text": "Which of the following is a potential after-effect of floods?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Improved soil structure immediately"
+      },
+      {
+        "id": "b",
+        "text": "Spread of diseases and epidemics"
+      },
+      {
+        "id": "c",
+        "text": "Reduced need for drinking water"
+      },
+      {
+        "id": "d",
+        "text": "Stronger building foundations"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "After-effects of floods include the spread of diseases and epidemics affecting the health of the people. (Page 27)",
+    "difficulty": 16
+  },
+  {
+    "id": "disaster-management-6th-q029",
+    "topicId": "disaster-management-6th",
+    "text": "What does the term 'first aid' imply?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Complete medical treatment at a hospital."
+      },
+      {
+        "id": "b",
+        "text": "Immediate aid given before medical treatment becomes available."
+      },
+      {
+        "id": "c",
+        "text": "Financial assistance after an accident."
+      },
+      {
+        "id": "d",
+        "text": "Long-term rehabilitation after an injury."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "First aid is necessary to give some immediate aid even before medical treatment becomes available. (Page 29)",
+    "difficulty": 15
+  },
+  {
+    "id": "disaster-management-6th-q030",
+    "topicId": "disaster-management-6th",
+    "text": "One of the listed causes for disasters (how and why they occur) is 'Rampant and irregular constructions'. This would be primarily classified as a factor contributing to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Natural disasters"
+      },
+      {
+        "id": "b",
+        "text": "Increased vulnerability to both natural and man-made disasters"
+      },
+      {
+        "id": "c",
+        "text": "Geological stability"
+      },
+      {
+        "id": "d",
+        "text": "Improved disaster response"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Rampant and irregular constructions can exacerbate the effects of natural events (like earthquakes or floods) and can also be direct man-made issues (like building collapses). It increases overall vulnerability. (Page 27)",
+    "difficulty": 17
+  },
+  {
+    "id": "disaster-management-6th-q031",
+    "topicId": "disaster-management-6th",
+    "text": "What is the general recommendation for beverages if a patient with serious burns is conscious?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Give tea or coffee or other stimulating drinks."
+      },
+      {
+        "id": "b",
+        "text": "Give only cold water."
+      },
+      {
+        "id": "c",
+        "text": "Give water to drink but avoid tea or coffee or other stimulating drinks."
+      },
+      {
+        "id": "d",
+        "text": "No liquids should be given."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If the patient with serious burns is conscious, give water to drink but avoid tea or coffee or other stimulating drinks. (Page 30)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q032",
+    "topicId": "disaster-management-6th",
+    "text": "Why is it important to clean a wound from a dog bite with a solution of potassium permanganate or other antiseptic?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To numb the pain immediately."
+      },
+      {
+        "id": "b",
+        "text": "To prevent or reduce the risk of infection."
+      },
+      {
+        "id": "c",
+        "text": "To stop the bleeding completely."
+      },
+      {
+        "id": "d",
+        "text": "To identify the type of dog."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Washing the wound with an antiseptic like potassium permanganate solution helps to clean it and reduce the risk of infection, which is a major concern with dog bites. (Page 31)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q033",
+    "topicId": "disaster-management-6th",
+    "text": "An earthquake is caused by movements in which part of the Earth?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The atmosphere"
+      },
+      {
+        "id": "b",
+        "text": "The Earth's interior (crust)"
+      },
+      {
+        "id": "c",
+        "text": "The oceans"
+      },
+      {
+        "id": "d",
+        "text": "The Earth's magnetic field"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Movements in the interior of the earth release tremendous amounts of energy, causing seismic waves. Such vibrations or quaking in the earth’s crust is known as an earthquake. (Page 27)",
+    "difficulty": 19
+  },
+  {
+    "id": "disaster-management-6th-q034",
+    "topicId": "disaster-management-6th",
+    "text": "What is a key aspect of 'community participation' in disaster management?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only government agencies are involved."
+      },
+      {
+        "id": "b",
+        "text": "Individuals take no responsibility."
+      },
+      {
+        "id": "c",
+        "text": "Active involvement of local people in planning and response."
+      },
+      {
+        "id": "d",
+        "text": "Focusing only on international aid."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Community participation and disaster management are closely related. This implies active involvement of the community in various stages. (Page 28)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q035",
+    "topicId": "disaster-management-6th",
+    "text": "During heavy rains in big cities, what problem can lead to water overflowing onto roads?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Excessive use of groundwater"
+      },
+      {
+        "id": "b",
+        "text": "Water drainage system falling short, leading to choked gutters and drainage lines"
+      },
+      {
+        "id": "c",
+        "text": "High tides in nearby seas only"
+      },
+      {
+        "id": "d",
+        "text": "Construction of too many flyovers"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The water drainage system in big cities falls short when there is heavy rainfall, resulting in choking of gutters and drainage lines, causing water to overflow. (Page 27)",
+    "difficulty": 19
+  },
+  {
+    "id": "disaster-management-6th-q036",
+    "topicId": "disaster-management-6th",
+    "text": "Which of these is a crucial step in first aid for sunstroke to cool the body?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Covering the patient with warm blankets."
+      },
+      {
+        "id": "b",
+        "text": "Giving hot beverages like tea or coffee."
+      },
+      {
+        "id": "c",
+        "text": "Sponging the whole body with cold water and placing a cloth soaked in cold water on the neck."
+      },
+      {
+        "id": "d",
+        "text": "Encouraging vigorous physical activity to generate sweat."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Remedial measures for sunstroke include taking the patient to a cool place, sponging the whole body with cold water, and placing a cloth soaked in cold water on the neck. (Page 30)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q037",
+    "topicId": "disaster-management-6th",
+    "text": "What is a potential man-made cause for earthquakes, besides mining?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Deforestation"
+      },
+      {
+        "id": "b",
+        "text": "Construction of big dams"
+      },
+      {
+        "id": "c",
+        "text": "Air pollution"
+      },
+      {
+        "id": "d",
+        "text": "Overfishing"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "It is believed that besides other causes, man-made causes like mining and construction of big dams can also lead to earthquakes. (Page 27)",
+    "difficulty": 20
+  },
+  {
+    "id": "disaster-management-6th-q038",
+    "topicId": "disaster-management-6th",
+    "text": "The text mentions that 'All snakebites are not fatal'. What does this imply about snakes?",
+    "options": [
+      {
+        "id": "a",
+        "text": "All snakes are equally venomous."
+      },
+      {
+        "id": "b",
+        "text": "Only a few species of snakes are poisonous (venomous)."
+      },
+      {
+        "id": "c",
+        "text": "Snake venom is never deadly."
+      },
+      {
+        "id": "d",
+        "text": "Fear is the only cause of death from snakebites."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "There are nearly 2000 species of snakes. Of these, only a few, like cobras, kraits, vipers and sea snakes are poisonous. Therefore, all snakebites are not fatal. (Page 30)",
+    "difficulty": 19
+  },
+  {
+    "id": "disaster-management-6th-q039",
+    "topicId": "disaster-management-6th",
+    "text": "Avoiding shelter at the foot of a hill during a cloudburst or heavy rains is a precaution against which type of disaster?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Floods"
+      },
+      {
+        "id": "b",
+        "text": "Earthquakes"
+      },
+      {
+        "id": "c",
+        "text": "Landslides"
+      },
+      {
+        "id": "d",
+        "text": "Forest fires"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Landslides occur in hilly areas due to a cloudburst or heavy rains. On such occasions, do not take shelter at the foot of a hill. (Page 29)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q040",
+    "topicId": "disaster-management-6th",
+    "text": "What type of disaster was the deluge in Mumbai in July 2005?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earthquake"
+      },
+      {
+        "id": "b",
+        "text": "Landslide"
+      },
+      {
+        "id": "c",
+        "text": "Flooding caused by heavy rains"
+      },
+      {
+        "id": "d",
+        "text": "Forest fire"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Even today people of Mumbai shudder at the memory of July 2005 when many people had lost their lives in the deluge caused by heavy rains. (Page 26)",
+    "difficulty": 20
+  },
+  {
+    "id": "disaster-management-6th-q041",
+    "topicId": "disaster-management-6th",
+    "text": "What specific care should be taken with battery-operated radios and mobiles during a disaster situation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keep them connected to chargers at all times."
+      },
+      {
+        "id": "b",
+        "text": "Use them for entertainment to pass the time."
+      },
+      {
+        "id": "c",
+        "text": "Ensure they are charged and use them judiciously for essential communication and updates."
+      },
+      {
+        "id": "d",
+        "text": "Turn them off completely to save power indefinitely."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text says 'Use battery operated radios and mobiles'. This implies they should be functional for receiving news and warnings, requiring them to be charged and used wisely. (Page 29)",
+    "difficulty": 19
+  },
+  {
+    "id": "disaster-management-6th-q042",
+    "topicId": "disaster-management-6th",
+    "text": "The term 'biodiversity' is most likely to be affected by which of these disasters?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A minor chemical spill in a lab"
+      },
+      {
+        "id": "b",
+        "text": "A large-scale forest fire"
+      },
+      {
+        "id": "c",
+        "text": "A power outage in a city"
+      },
+      {
+        "id": "d",
+        "text": "A traffic jam"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Forest fires cause great damage to natural wealth and biodiversity. (Page 28)",
+    "difficulty": 20
+  },
+  {
+    "id": "disaster-management-6th-q043",
+    "topicId": "disaster-management-6th",
+    "text": "What is the primary function of the National Disaster Management Authority (NDMA)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Providing long-term loans to disaster victims."
+      },
+      {
+        "id": "b",
+        "text": "Conducting scientific research on climate change."
+      },
+      {
+        "id": "c",
+        "text": "Undertaking planning and implementation of disaster management work."
+      },
+      {
+        "id": "d",
+        "text": "Organizing international sports events."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The National Disaster Management Authority undertakes planning and implementation of disaster management work. (Page 28)",
+    "difficulty": 19
+  },
+  {
+    "id": "disaster-management-6th-q044",
+    "topicId": "disaster-management-6th",
+    "text": "A 'relief camp' during a disaster primarily aims to provide:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Permanent housing solutions."
+      },
+      {
+        "id": "b",
+        "text": "Long-term employment opportunities."
+      },
+      {
+        "id": "c",
+        "text": "Temporary shelter, medicines, food, drinking water, and first aid."
+      },
+      {
+        "id": "d",
+        "text": "Advanced education and vocational training."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Take shelter in relief camps as they provide medicines, food packets, drinking water, first aid, etc. (Page 29)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q045",
+    "topicId": "disaster-management-6th",
+    "text": "The principle of 'emergency planning and management' is crucial for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ensuring disasters never happen."
+      },
+      {
+        "id": "b",
+        "text": "Predicting the exact time and location of all disasters."
+      },
+      {
+        "id": "c",
+        "text": "Preventing or reducing damage caused by natural or man-made disasters."
+      },
+      {
+        "id": "d",
+        "text": "Assigning blame after a disaster occurs."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "To prevent or reduce damage caused by natural or man-made disasters, emergency planning and management is required. (Page 28)",
+    "difficulty": 20
+  },
+  {
+    "id": "disaster-management-6th-q046",
+    "topicId": "disaster-management-6th",
+    "text": "What does 'DRR' stand for in the context of disaster management?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Disaster Recovery Route"
+      },
+      {
+        "id": "b",
+        "text": "Disaster Risk Reduction"
+      },
+      {
+        "id": "c",
+        "text": "Daily Rainfall Report"
+      },
+      {
+        "id": "d",
+        "text": "Disaster Response Regiment"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "DRR stands for Disaster Risk Reduction. This is a common term in disaster management, focusing on proactive measures to minimize disaster risks. (Out of PDF but related)",
+    "difficulty": 16
+  },
+  {
+    "id": "disaster-management-6th-q047",
+    "topicId": "disaster-management-6th",
+    "text": "The 'Sendai Framework for Disaster Risk Reduction' is a global agreement. What is its primary goal?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To increase international trade."
+      },
+      {
+        "id": "b",
+        "text": "To substantially reduce global disaster risk and losses."
+      },
+      {
+        "id": "c",
+        "text": "To promote space exploration."
+      },
+      {
+        "id": "d",
+        "text": "To standardize educational curricula worldwide."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Sendai Framework is a 15-year, voluntary, non-binding agreement which recognizes that the State has the primary role to reduce disaster risk but that responsibility should be shared with other stakeholders including local government, the private sector and other stakeholders. (Out of PDF but related)",
+    "difficulty": 17
+  },
+  {
+    "id": "disaster-management-6th-q048",
+    "topicId": "disaster-management-6th",
+    "text": "What is a 'mock drill' in the context of disaster preparedness?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A type of construction tool."
+      },
+      {
+        "id": "b",
+        "text": "A celebration after a disaster."
+      },
+      {
+        "id": "c",
+        "text": "A practice exercise to test emergency plans and response."
+      },
+      {
+        "id": "d",
+        "text": "A documentary about past disasters."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A mock drill is a simulation of an emergency situation, conducted to train personnel and test the effectiveness of emergency response plans. (Out of PDF but related to emergency planning on page 28)",
+    "difficulty": 15
+  },
+  {
+    "id": "disaster-management-6th-q049",
+    "topicId": "disaster-management-6th",
+    "text": "A 'vulnerability assessment' in disaster management helps to identify:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The number of people who caused the disaster."
+      },
+      {
+        "id": "b",
+        "text": "The economic cost of rebuilding only."
+      },
+      {
+        "id": "c",
+        "text": "Which populations or areas are most susceptible to the impacts of hazards."
+      },
+      {
+        "id": "d",
+        "text": "The best locations for new tourist attractions."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Vulnerability assessment is a process that identifies the weaknesses of people, places, and systems in the face of a hazard. (Out of PDF but related to understanding risks)",
+    "difficulty": 18
+  },
+  {
+    "id": "disaster-management-6th-q050",
+    "topicId": "disaster-management-6th",
+    "text": "Which of these is an example of a 'mitigation' measure in disaster management?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Providing food and water after a flood."
+      },
+      {
+        "id": "b",
+        "text": "Constructing earthquake-resistant buildings in a seismically active zone."
+      },
+      {
+        "id": "c",
+        "text": "Conducting search and rescue operations after an earthquake."
+      },
+      {
+        "id": "d",
+        "text": "Documenting the damage caused by a storm."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Mitigation refers to actions taken to reduce or eliminate the long-term risk to human life and property from hazards. Building earthquake-resistant structures is a classic example. (Out of PDF but related to 'prevent disasters' on page 28)",
+    "difficulty": 19
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q001",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "What is motion defined as in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An object remaining stationary"
+      },
+      {
+        "id": "b",
+        "text": "The continuous displacement of an object"
+      },
+      {
+        "id": "c",
+        "text": "The force applied to an object"
+      },
+      {
+        "id": "d",
+        "text": "The shape of an object"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The continuous displacement of an object is called motion. (Page 65)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q002",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "Which type of motion is shown by a train moving along a straight track in the same direction?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Circular motion"
+      },
+      {
+        "id": "b",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "c",
+        "text": "Linear motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A train or a moving vehicle on a road may travel in a straight line or in the same direction. This motion of an object is called linear motion. (Page 65)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q003",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If the distance traversed by an object along a straight line in unit time is continuously the same, the motion is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Circular motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When the distance traversed by an object along a straight line in unit time is continuously the same, the motion is called uniform linear motion. (Page 66)",
+    "difficulty": 12
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q004",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of a swing in a park is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The movement of a swing always comes back from one end to the other end and takes about the same time for each swing or oscillation. This movement is called oscillatory motion. (Page 66)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q005",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "Which of these is an example of circular motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A ball rolling down a slope"
+      },
+      {
+        "id": "b",
+        "text": "The hands of a clock"
+      },
+      {
+        "id": "c",
+        "text": "A car moving on a straight road"
+      },
+      {
+        "id": "d",
+        "text": "A butterfly flying in a garden"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The hands of a clock move in a circular manner. (Page 67)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q006",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "Motion that repeats itself after a fixed period of time is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Random motion"
+      },
+      {
+        "id": "b",
+        "text": "Linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Periodic motion"
+      },
+      {
+        "id": "d",
+        "text": "Non-uniform motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The motion of an object which passes through a certain point again and again after a fixed period is called periodic motion. (Page 67)",
+    "difficulty": 12
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q007",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of a butterfly flitting from one flower to another with no definite direction is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Periodic motion"
+      },
+      {
+        "id": "b",
+        "text": "Circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Linear motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "A butterfly constantly flits from one flower to another with no definite direction to its motion. Such motion is called random motion. (Page 68)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q008",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "What is speed defined as?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The total distance an object travels"
+      },
+      {
+        "id": "b",
+        "text": "The time taken to travel a certain distance"
+      },
+      {
+        "id": "c",
+        "text": "The distance traversed by an object in unit time"
+      },
+      {
+        "id": "d",
+        "text": "The change in direction of an object"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The distance traversed by an object in unit time is called the speed of that object. (Page 68)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q009",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "Which of the following is a unit of speed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Kilogram/hour"
+      },
+      {
+        "id": "b",
+        "text": "Metre/second"
+      },
+      {
+        "id": "c",
+        "text": "Second/metre"
+      },
+      {
+        "id": "d",
+        "text": "Litre/minute"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The unit of speed mentioned in the text is kilometre/hour or metre/second. (Page 68)",
+    "difficulty": 11
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q010",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "When you are in a moving train, trees outside appear to be moving. This is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Absolute motion of trees"
+      },
+      {
+        "id": "b",
+        "text": "Relative motion"
+      },
+      {
+        "id": "c",
+        "text": "Random motion of trees"
+      },
+      {
+        "id": "d",
+        "text": "Circular motion of the train"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When you are in motion yourself, a still object appears to be moving. This describes relative motion. (Page 65)",
+    "difficulty": 12
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q011",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of soldiers in a parade, where no change in their movement is seen over a period, is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Random motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The motion of the marching soldiers is ‘uniform linear motion’, because in this motion no change is seen. (Page 66)",
+    "difficulty": 13
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q012",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A girl coming down a slide, whose speed increases continuously, demonstrates:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The motion of the girl coming down the slide is ‘non-uniform linear motion’ as her speed increases continuously. (Page 66)",
+    "difficulty": 12
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q013",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of the pendulum of a clock is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Random motion"
+      },
+      {
+        "id": "c",
+        "text": "Circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory motion and Periodic motion"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The movement of the pendulum of a clock is oscillatory. Since it repeats in a fixed time, it is also periodic. (Page 66, 67)",
+    "difficulty": 13
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q014",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A merry-go-round completes each round in the same period of time. This is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Random motion"
+      },
+      {
+        "id": "c",
+        "text": "Periodic motion and Circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A merry-go-round completes each round along a circular route and in the same period of time, so it exhibits both circular and periodic motion. (Page 67)",
+    "difficulty": 12
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q015",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If a bus travels 200 km in 5 hours, what is its average speed?",
+    "options": [
+      {
+        "id": "a",
+        "text": "20 km/hour"
+      },
+      {
+        "id": "b",
+        "text": "40 km/hour"
+      },
+      {
+        "id": "c",
+        "text": "50 km/hour"
+      },
+      {
+        "id": "d",
+        "text": "1000 km/hour"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Speed = Distance / Time = 200 km / 5 hours = 40 km/hour. (Page 68 example calculation)",
+    "difficulty": 13
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q016",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "Which of the following is NOT a type of non-linear motion mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "b",
+        "text": "Circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Non-linear motion is motion that does not occur in a straight line. Oscillatory, circular, and random motions are examples of non-linear motion. Uniform linear motion occurs in a straight line. (Page 66, 67, 68)",
+    "difficulty": 14
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q017",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The vibrating diaphragm of a tabla or drum is an example of which type of motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Circular motion"
+      },
+      {
+        "id": "b",
+        "text": "Linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The vibrating diaphragm of a tabla or drum exhibits oscillatory motion. (Page 66)",
+    "difficulty": 15
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q018",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If an object is in motion, it continuously undergoes:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Change in mass"
+      },
+      {
+        "id": "b",
+        "text": "Change in temperature"
+      },
+      {
+        "id": "c",
+        "text": "Displacement"
+      },
+      {
+        "id": "d",
+        "text": "Change in volume"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "An object in motion continuously undergoes displacement, which is the change of its place. (Page 65)",
+    "difficulty": 14
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q019",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The movement of a ceiling fan's blades is primarily:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "c",
+        "text": "Circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The blades of a ceiling fan move in a circular path around the central hub. (Page 67 example implied)",
+    "difficulty": 15
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q020",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If a car travels at a constant speed of 60 km/h on a straight road, its motion is best described as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Traveling at a constant speed in a straight line means the distance covered in unit time is the same, which is uniform linear motion. (Page 66)",
+    "difficulty": 16
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q021",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A bouncing ball exhibits which type(s) of motion between bounces (ignoring air resistance)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Only oscillatory motion"
+      },
+      {
+        "id": "c",
+        "text": "Linear motion (up and down) and can be considered periodic if bounces are regular"
+      },
+      {
+        "id": "d",
+        "text": "Only random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The ball moves up and down (linear). If the bounces occur at regular intervals, its overall up-and-down movement can be considered periodic. It's not oscillatory in the sense of a swing. (Page 65, 67)",
+    "difficulty": 17
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q022",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "When a car turns a corner, even at a constant speed, its motion is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-linear motion because its direction changes"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Linear motion is along a straight line. When a car turns, its direction changes, so it's non-linear. Even if speed is constant, the change in direction makes it non-uniform in a broader sense (velocity changes). (Page 66)",
+    "difficulty": 16
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q023",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A satellite orbiting the Earth at a constant speed is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform circular motion and periodic motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A satellite orbits in a roughly circular path. If its speed is constant, it's uniform circular motion. Since it repeats its orbit in a fixed time, it's also periodic. (Page 67)",
+    "difficulty": 15
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q024",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of players in a game of football is described as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The motion of the players in a game of football is of the type random motion, as their direction and speed change continually. (Page 68)",
+    "difficulty": 14
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q025",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If the speed of an object changes over time while it moves in a straight line, its motion is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform linear motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When the distance traversed by an object along a straight line in unit time keeps on changing (implying speed changes), the motion is called non-uniform linear motion. (Page 66)",
+    "difficulty": 15
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q026",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "What is 'displacement' in the context of motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The total path length covered by an object."
+      },
+      {
+        "id": "b",
+        "text": "The change of place of an object."
+      },
+      {
+        "id": "c",
+        "text": "The speed of an object in a specific direction."
+      },
+      {
+        "id": "d",
+        "text": "The time taken for an object to move."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Change of place of an object is called displacement. (Page 65)",
+    "difficulty": 16
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q027",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The minute hand of a clock completes one round in exactly 60 minutes every time. This demonstrates:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only circular motion"
+      },
+      {
+        "id": "b",
+        "text": "Only periodic motion"
+      },
+      {
+        "id": "c",
+        "text": "Both circular and periodic motion"
+      },
+      {
+        "id": "d",
+        "text": "Only random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The minute hand moves in a circle and completes its motion in a fixed period (60 minutes), making it both circular and periodic. (Page 67)",
+    "difficulty": 14
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q028",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "Which of the following motions is NOT an example of oscillatory motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The wings of a bird"
+      },
+      {
+        "id": "b",
+        "text": "The needle of a sewing machine"
+      },
+      {
+        "id": "c",
+        "text": "A stone rolling down a hillside"
+      },
+      {
+        "id": "d",
+        "text": "The vibrating diaphragm of a tabla"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Wings of a bird, needle of a sewing machine, and vibrating diaphragm of a tabla are examples of oscillatory motion. A stone rolling down a hillside is primarily linear (or non-linear if the path is curved) but not oscillatory. (Page 66)",
+    "difficulty": 17
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q029",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The speed of a racing car changes frequently during a race, and it also changes direction on the track. Its overall motion is best described as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform and non-linear (often random or complex) motion"
+      },
+      {
+        "id": "c",
+        "text": "Uniform circular motion"
+      },
+      {
+        "id": "d",
+        "text": "Purely oscillatory motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Since both speed and direction change, it is non-uniform and non-linear. Given the complexity of a race track and varying speeds, it can be considered complex or involving elements of random changes. (Page 66, 68)",
+    "difficulty": 16
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q030",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "When an object in motion changes its direction and speed continually, its motion is known as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Periodic motion"
+      },
+      {
+        "id": "b",
+        "text": "Uniform motion"
+      },
+      {
+        "id": "c",
+        "text": "Random motion"
+      },
+      {
+        "id": "d",
+        "text": "Circular motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The motion that changes its direction and speed continually is called random motion. (Page 68)",
+    "difficulty": 15
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q031",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If a ball is thrown vertically upwards, its speed:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Increases as it goes up, then decreases as it comes down."
+      },
+      {
+        "id": "b",
+        "text": "Remains constant throughout its motion."
+      },
+      {
+        "id": "c",
+        "text": "Decreases as it goes up, becomes zero at the highest point, then increases as it comes down."
+      },
+      {
+        "id": "d",
+        "text": "Increases continuously throughout its motion."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Due to gravity, the speed of a ball thrown upwards decreases until it momentarily stops at its peak, and then its speed increases as it falls back down. This describes non-uniform linear motion. (Implied by motion under gravity principles)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q032",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A spinning top rotates about its own axis. This type of motion is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Translational motion"
+      },
+      {
+        "id": "b",
+        "text": "Rotational motion (a form of circular motion for its points)"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A spinning top exhibits rotational motion, where all its particles move in circles around the axis of rotation. This is a specific type of circular motion for the particles. (Related to circular motion on page 67)",
+    "difficulty": 19
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q033",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "When a car accelerates from rest, its motion is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Non-uniform linear motion because its speed is increasing."
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Uniform circular motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Acceleration means the speed is changing (increasing from rest). If it moves in a straight line, this is non-uniform linear motion. (Page 66)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q034",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The Earth's revolution around the Sun is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linear motion and random motion"
+      },
+      {
+        "id": "b",
+        "text": "Oscillatory motion and non-periodic motion"
+      },
+      {
+        "id": "c",
+        "text": "Circular (or elliptical) motion and periodic motion"
+      },
+      {
+        "id": "d",
+        "text": "Uniform linear motion only"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Earth revolves around the Sun in an elliptical (approximately circular) path and completes this revolution in a fixed period (one year), making it both circular/elliptical and periodic. (Page 67 concept)",
+    "difficulty": 19
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q035",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The formula for speed is Distance / Time. If an object travels 10 meters in 2 seconds, its speed is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "2 m/s"
+      },
+      {
+        "id": "b",
+        "text": "5 m/s"
+      },
+      {
+        "id": "c",
+        "text": "10 m/s"
+      },
+      {
+        "id": "d",
+        "text": "20 m/s"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Speed = Distance / Time = 10 meters / 2 seconds = 5 m/s. (Page 68)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q036",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of a plucked string of a guitar or sitar is best described as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A plucked string vibrates back and forth around its equilibrium position, which is oscillatory motion. The example of a sitar string is in the exercises. (Page 66 & 69)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q037",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A meteor falling from the sky generally exhibits:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "b",
+        "text": "Uniform circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Non-uniform linear (or near-linear) motion due to gravity and air resistance"
+      },
+      {
+        "id": "d",
+        "text": "Periodic motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A meteor falls towards Earth primarily due to gravity, moving in a generally straight or slightly curved path. Its speed changes due to acceleration and air resistance, making it non-uniform. (Page 69 exercise item)",
+    "difficulty": 20
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q038",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If a child is sitting in a rotating giant wheel, the child has ...... motion, while the giant wheel itself has ...... motion.",
+    "options": [
+      {
+        "id": "a",
+        "text": "linear, circular"
+      },
+      {
+        "id": "b",
+        "text": "circular, circular"
+      },
+      {
+        "id": "c",
+        "text": "random, periodic"
+      },
+      {
+        "id": "d",
+        "text": "oscillatory, linear"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The child on the giant wheel moves in a circular path. The giant wheel itself is rotating, meaning its parts are in circular motion around its axis. (Page 69, Q2.d)",
+    "difficulty": 19
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q039",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "When a ball is released from the terrace of a building and falls straight down, it is in ...... motion.",
+    "options": [
+      {
+        "id": "a",
+        "text": "uniform circular"
+      },
+      {
+        "id": "b",
+        "text": "oscillatory"
+      },
+      {
+        "id": "c",
+        "text": "non-uniform linear"
+      },
+      {
+        "id": "d",
+        "text": "random"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A ball falling straight down due to gravity experiences acceleration, so its speed changes, making it non-uniform. Since it's a straight path, it's linear. (Page 69, Q2.a)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q040",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The term 'velocity' differs from 'speed' because velocity also includes:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The mass of the object"
+      },
+      {
+        "id": "b",
+        "text": "The direction of motion"
+      },
+      {
+        "id": "c",
+        "text": "The total time taken"
+      },
+      {
+        "id": "d",
+        "text": "The temperature of the object"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Speed is a scalar quantity (magnitude only), while velocity is a vector quantity that includes both magnitude (speed) and direction. (Out of PDF but related to concept of speed and direction changes in motion types)",
+    "difficulty": 20
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q041",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The SI unit of displacement is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Metre per second (m/s)"
+      },
+      {
+        "id": "b",
+        "text": "Second (s)"
+      },
+      {
+        "id": "c",
+        "text": "Metre (m)"
+      },
+      {
+        "id": "d",
+        "text": "Kilogram (kg)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Displacement is a measure of length or distance in a specific direction, so its SI unit is the metre (m). (Out of PDF but related to displacement on page 65)",
+    "difficulty": 16
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q042",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "What is 'acceleration'?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The constant speed of an object."
+      },
+      {
+        "id": "b",
+        "text": "The rate of change of displacement."
+      },
+      {
+        "id": "c",
+        "text": "The rate of change of velocity (speed or direction)."
+      },
+      {
+        "id": "d",
+        "text": "The total distance covered by an object."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Acceleration is defined as the rate at which an object's velocity changes over time. This change can be in speed, direction, or both. (Out of PDF but related to non-uniform motion where speed changes, page 66)",
+    "difficulty": 17
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q043",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A body is said to be in uniform motion if it covers:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Unequal distances in equal intervals of time."
+      },
+      {
+        "id": "b",
+        "text": "Equal distances in unequal intervals of time."
+      },
+      {
+        "id": "c",
+        "text": "Equal distances in equal intervals of time, in a straight line."
+      },
+      {
+        "id": "d",
+        "text": "Unequal distances in unequal intervals of time."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Uniform linear motion occurs when an object covers equal distances along a straight line in equal intervals of time. (Page 66)",
+    "difficulty": 15
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q044",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The path of a projectile (like a ball thrown at an angle) is typically:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A straight line"
+      },
+      {
+        "id": "b",
+        "text": "A circle"
+      },
+      {
+        "id": "c",
+        "text": "A parabolic curve (a type of non-linear motion)"
+      },
+      {
+        "id": "d",
+        "text": "An ellipse"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The motion of a projectile under gravity (ignoring air resistance) follows a parabolic trajectory, which is a form of non-linear motion. (Out of PDF but related to non-linear concepts)",
+    "difficulty": 19
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q045",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If a car takes 0.5 hours to travel 30 km, what is its speed in km/h?",
+    "options": [
+      {
+        "id": "a",
+        "text": "15 km/h"
+      },
+      {
+        "id": "b",
+        "text": "30 km/h"
+      },
+      {
+        "id": "c",
+        "text": "60 km/h"
+      },
+      {
+        "id": "d",
+        "text": "0.016 km/h"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Speed = Distance / Time = 30 km / 0.5 hours = 60 km/h. (Page 68 formula application)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q046",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of the tip of a second hand on a watch is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linear and random"
+      },
+      {
+        "id": "b",
+        "text": "Oscillatory and periodic"
+      },
+      {
+        "id": "c",
+        "text": "Circular and periodic"
+      },
+      {
+        "id": "d",
+        "text": "Random and non-periodic"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The tip of the second hand moves in a circle and completes its path every 60 seconds, making its motion both circular and periodic. (Page 67)",
+    "difficulty": 17
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q047",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "An object moving to and fro about a mean position is said to be in:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Circular motion"
+      },
+      {
+        "id": "b",
+        "text": "Oscillatory motion"
+      },
+      {
+        "id": "c",
+        "text": "Linear motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Oscillatory motion is characterized by a body swinging back and forth. (Page 66, 67 definition)",
+    "difficulty": 14
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q048",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "If the speed of an object is 10 m/s, how far will it travel in 5 seconds?",
+    "options": [
+      {
+        "id": "a",
+        "text": "2 m"
+      },
+      {
+        "id": "b",
+        "text": "10 m"
+      },
+      {
+        "id": "c",
+        "text": "50 m"
+      },
+      {
+        "id": "d",
+        "text": "0.5 m"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Distance = Speed x Time = 10 m/s x 5 s = 50 m. (Page 68 formula rearrangement)",
+    "difficulty": 19
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q049",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "A children's see-saw primarily demonstrates which type of motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Linear motion"
+      },
+      {
+        "id": "b",
+        "text": "Circular motion"
+      },
+      {
+        "id": "c",
+        "text": "Oscillatory (and periodic) motion"
+      },
+      {
+        "id": "d",
+        "text": "Random motion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A see-saw moves up and down (oscillatory) and usually completes this motion in a somewhat regular time, making it periodic. (Page 69 exercise puzzle item)",
+    "difficulty": 18
+  },
+  {
+    "id": "motion-and-types-of-motion-6th-q050",
+    "topicId": "motion-and-types-of-motion-6th",
+    "text": "The motion of a kite looking for its prey, flying with changing direction and speed, is described as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform linear"
+      },
+      {
+        "id": "b",
+        "text": "Periodic"
+      },
+      {
+        "id": "c",
+        "text": "Random"
+      },
+      {
+        "id": "d",
+        "text": "Oscillatory"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The kite looking for its prey flies with random motion in the sky, as its direction and speed are constantly changing. (Page 69, Q2.c)",
+    "difficulty": 20
+  },
+  {
+    "id": "force-and-types-of-force-6th-q001",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "What is required to move an object or change its direction of motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Heat"
+      },
+      {
+        "id": "b",
+        "text": "Light"
+      },
+      {
+        "id": "c",
+        "text": "Force"
+      },
+      {
+        "id": "d",
+        "text": "Sound"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "No object changes its position on its own. Force is required to move an object. Force is used to change the direction of an object in motion, or to stop it. (Page 70)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q002",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force applied with the help of muscles is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mechanical force"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "c",
+        "text": "Muscular force"
+      },
+      {
+        "id": "d",
+        "text": "Magnetic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The force applied with the help of muscles is called muscular force. (Page 71)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q003",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force applied by means of a machine is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Muscular force"
+      },
+      {
+        "id": "b",
+        "text": "Mechanical force"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The force applied by means of a machine is called mechanical force. (Page 71)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q004",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "What is the force applied by the earth to pull objects towards itself?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Frictional force"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The force applied by the earth to pull objects towards itself is called gravitational force. (Page 71)",
+    "difficulty": 12
+  },
+  {
+    "id": "force-and-types-of-force-6th-q005",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force exerted by a magnet is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "b",
+        "text": "Muscular force"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "d",
+        "text": "Frictional force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The force exerted by a magnet is called magnetic force. (Page 72)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q006",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When two surfaces rub against each other, which force comes into play and always acts against the direction of motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When two surfaces rub against each other, the force of friction comes into play. It always acts against the direction of motion. (Page 73)",
+    "difficulty": 12
+  },
+  {
+    "id": "force-and-types-of-force-6th-q007",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force exerted by electrically charged materials is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mechanical force"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The force exerted by such electrically charged materials is called electrostatic force. (Page 73)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q008",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Which force is necessary to change the shape of an object, like when a blacksmith hammers hot iron?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "c",
+        "text": "Force (general term, often muscular or mechanical)"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Force is necessary to change the shape an object. (Page 70)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q009",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Lifting a weight with your arm primarily uses which type of force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mechanical force"
+      },
+      {
+        "id": "b",
+        "text": "Muscular force"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Lifting a weight by using muscular force is shown as an example of muscular force. (Page 71)",
+    "difficulty": 11
+  },
+  {
+    "id": "force-and-types-of-force-6th-q010",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "A sewing machine or an electric pump uses which type of force to operate?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Muscular force primarily"
+      },
+      {
+        "id": "b",
+        "text": "Mechanical force (often from electricity or fuel)"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Frictional force primarily"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Machines like a sewing machine or electric pump are called ‘automatic machines’ because a mechanical force (from electricity or fuel) is used. (Page 71)",
+    "difficulty": 12
+  },
+  {
+    "id": "force-and-types-of-force-6th-q011",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Who discovered gravitation in the 17th century?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Galileo Galilei"
+      },
+      {
+        "id": "b",
+        "text": "Sir Isaac Newton"
+      },
+      {
+        "id": "c",
+        "text": "Albert Einstein"
+      },
+      {
+        "id": "d",
+        "text": "Michael Faraday"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Sir Isaac Newton discovered gravitation in the 17th century. (Page 71)",
+    "difficulty": 13
+  },
+  {
+    "id": "force-and-types-of-force-6th-q012",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force of gravity acting on an object is also called its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mass"
+      },
+      {
+        "id": "b",
+        "text": "Inertia"
+      },
+      {
+        "id": "c",
+        "text": "Weight"
+      },
+      {
+        "id": "d",
+        "text": "Friction"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The gravitational force acting on an object is called the weight of that object. (Page 72, Do you know? section)",
+    "difficulty": 13
+  },
+  {
+    "id": "force-and-types-of-force-6th-q013",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Static electricity produced on materials like rubber or plastic due to friction can exert which type of force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Mechanical force"
+      },
+      {
+        "id": "c",
+        "text": "Electrostatic force"
+      },
+      {
+        "id": "d",
+        "text": "Gravitational force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Static electricity is produced on materials like rubber, plastic and ebonite due to friction. The force exerted by such electrically charged materials is called electrostatic force. (Page 73)",
+    "difficulty": 12
+  },
+  {
+    "id": "force-and-types-of-force-6th-q014",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When an object is thrown upwards, its speed decreases until it becomes zero at the highest point. This is due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Earth's gravitational force acting in the opposite direction of motion"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force from the air only"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The earth’s gravitational force acts in a direction opposite to that of an object moving upwards. Hence, the speed of that object goes on decreasing till in the end it becomes zero. (Page 71)",
+    "difficulty": 13
+  },
+  {
+    "id": "force-and-types-of-force-6th-q015",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Why is it possible to walk on the ground without slipping?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Due to magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Due to gravitational force only"
+      },
+      {
+        "id": "c",
+        "text": "Due to the force of friction between our feet and the ground"
+      },
+      {
+        "id": "d",
+        "text": "Due to electrostatic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "It is possible for us to walk on the ground only because of the force of friction. If there is no friction, we would slip and fall. (Page 73)",
+    "difficulty": 13
+  },
+  {
+    "id": "force-and-types-of-force-6th-q016",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Which statement about frictional force is true?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It always acts in the direction of motion."
+      },
+      {
+        "id": "b",
+        "text": "It is stronger between smooth surfaces than rough surfaces."
+      },
+      {
+        "id": "c",
+        "text": "It always acts against the direction of motion."
+      },
+      {
+        "id": "d",
+        "text": "It only occurs with magnetic materials."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The force of friction always acts against the direction of motion. (Page 73)",
+    "difficulty": 14
+  },
+  {
+    "id": "force-and-types-of-force-6th-q017",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Dropping a stone from a height of 100 cm into water will likely produce a louder sound than dropping it from 20 cm. This suggests that the stone dropped from 100 cm has greater:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic pull"
+      },
+      {
+        "id": "b",
+        "text": "Speed and therefore greater force/impact upon hitting the water"
+      },
+      {
+        "id": "c",
+        "text": "Electrostatic charge"
+      },
+      {
+        "id": "d",
+        "text": "Frictional resistance in air"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The stone falling from a greater height will have a greater speed due to gravitational acceleration. This greater speed results in a greater impact force when it hits the water, producing a louder sound. (Page 72, Let's try this section implied conclusion)",
+    "difficulty": 15
+  },
+  {
+    "id": "force-and-types-of-force-6th-q018",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Rubbing a thermocol piece or an inflated balloon against silk cloth can make it attract small pieces of paper. This is due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Induced magnetism"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "c",
+        "text": "Electrostatic force generated by friction"
+      },
+      {
+        "id": "d",
+        "text": "Mechanical force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Spreading small pieces of paper and rubbing thermocol/balloon against silk cloth demonstrates electrostatic force due to the generation of static electricity. (Page 73)",
+    "difficulty": 14
+  },
+  {
+    "id": "force-and-types-of-force-6th-q019",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The operation of a spring balance to weigh an object involves a balance between the gravitational force pulling the object down and:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force from the spring"
+      },
+      {
+        "id": "b",
+        "text": "Frictional force within the spring"
+      },
+      {
+        "id": "c",
+        "text": "The force of tension in the spring pulling the object upwards"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force from the object"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When an object is hung from a spring balance, the force of gravity pulls it down, and the tension in the spring constantly pulls the object upwards. The reading shows the gravitational force when these are equal. (Page 72, Do you know? section)",
+    "difficulty": 16
+  },
+  {
+    "id": "force-and-types-of-force-6th-q020",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Why is more force required to lift a full sack compared to an empty sack?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The empty sack has more friction."
+      },
+      {
+        "id": "b",
+        "text": "The full sack has greater gravitational force acting on it (it weighs more)."
+      },
+      {
+        "id": "c",
+        "text": "The full sack is more magnetic."
+      },
+      {
+        "id": "d",
+        "text": "The empty sack has more electrostatic charge."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The gravitational force on the bigger (full) sack is greater, meaning it weighs more. Therefore, greater force must be applied to lift it. (Page 72)",
+    "difficulty": 15
+  },
+  {
+    "id": "force-and-types-of-force-6th-q021",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Which of these actions does NOT primarily rely on muscular force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An ox pulling a cart."
+      },
+      {
+        "id": "b",
+        "text": "A magnet picking up iron nails."
+      },
+      {
+        "id": "c",
+        "text": "Kicking a football."
+      },
+      {
+        "id": "d",
+        "text": "Lifting a heavy box."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "An ox pulling a cart, kicking a football, and lifting a box all involve muscular force. A magnet picking up iron nails uses magnetic force. (Page 70, 71, 72)",
+    "difficulty": 14
+  },
+  {
+    "id": "force-and-types-of-force-6th-q022",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The reason a car brake works is primarily due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force between brake pads and wheels."
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force acting on the car."
+      },
+      {
+        "id": "c",
+        "text": "Frictional force generated between brake parts (e.g., pads and discs/drums)."
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force from the car's battery."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When a brake is applied while riding a bicycle (or car), it stops due to friction produced between parts of the brake system. (Page 73)",
+    "difficulty": 16
+  },
+  {
+    "id": "force-and-types-of-force-6th-q023",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Combined forces act on an object when:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only one type of force is present."
+      },
+      {
+        "id": "b",
+        "text": "The object is at complete rest and no forces are acting."
+      },
+      {
+        "id": "c",
+        "text": "Various types of forces act on the object in question during an action."
+      },
+      {
+        "id": "d",
+        "text": "The object is in a vacuum."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "While an action is taking place, various types of forces act on the object in question. This describes combined forces. (Page 74)",
+    "difficulty": 14
+  },
+  {
+    "id": "force-and-types-of-force-6th-q024",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Why is powder sometimes sprinkled on a carrom board?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To increase the weight of the carrom pieces."
+      },
+      {
+        "id": "b",
+        "text": "To increase the friction between the striker and the pieces."
+      },
+      {
+        "id": "c",
+        "text": "To reduce the friction, allowing pieces to slide more easily."
+      },
+      {
+        "id": "d",
+        "text": "To make the board look cleaner."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Powder is sprinkled on a carrom board to reduce friction, allowing the carrom pieces and striker to slide more smoothly. (Page 73, Use your brain power!)",
+    "difficulty": 15
+  },
+  {
+    "id": "force-and-types-of-force-6th-q025",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The planets revolve around the sun due to which force operating between them?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "b",
+        "text": "Electrostatic force"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Frictional force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The gravitational force operates between the sun and the planets in the solar system. Because of this, the planets revolve around the sun. (Page 72, Find out and discuss section)",
+    "difficulty": 16
+  },
+  {
+    "id": "force-and-types-of-force-6th-q026",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When an elephant drags a wooden log over land, which of these forces is NOT directly applied BY the elephant?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Muscular force"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force (acting ON the log by Earth)"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force (between log and ground, opposing motion)"
+      },
+      {
+        "id": "d",
+        "text": "Magnetic force"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The elephant applies muscular force. Gravitational force acts on the log (its weight), and frictional force opposes its motion. Magnetic force is not relevant here. The question asks what is NOT applied BY the elephant. The elephant applies muscular force. (Page 74 exercise, based on question structure)",
+    "difficulty": 17
+  },
+  {
+    "id": "force-and-types-of-force-6th-q027",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "An aeroplane taking off into the sky experiences lift primarily due to principles related to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic forces from Earth's poles."
+      },
+      {
+        "id": "b",
+        "text": "Air pressure differences created by the shape of its wings (aerodynamic force)."
+      },
+      {
+        "id": "c",
+        "text": "Electrostatic repulsion from the ground."
+      },
+      {
+        "id": "d",
+        "text": "Purely muscular force from its engines."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Aeroplanes generate lift due to the aerodynamic shape of their wings, which creates a pressure difference above and below the wing. While engines provide thrust (a type of mechanical force), lift is an aerodynamic force. (Page 72, Use your brain power! implicitly touches on this when asking about forces on a plane).",
+    "difficulty": 17
+  },
+  {
+    "id": "force-and-types-of-force-6th-q028",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "If rough surfaces cause more friction than smooth surfaces, it implies that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "More force is needed to move an object over a rough surface than a smooth one."
+      },
+      {
+        "id": "b",
+        "text": "Objects move faster on rough surfaces."
+      },
+      {
+        "id": "c",
+        "text": "Rough surfaces have less gravitational pull."
+      },
+      {
+        "id": "d",
+        "text": "Smooth surfaces are more magnetic."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Rough surfaces cannot be easily rubbed against each other because the force of friction between them is much greater. This means more effort is required to overcome this friction. (Page 73)",
+    "difficulty": 16
+  },
+  {
+    "id": "force-and-types-of-force-6th-q029",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force that causes a rolling ball on a flat ground to eventually stop is primarily:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force (including air resistance and rolling friction)"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A ball rolling over a flat ground stops at a certain distance due to the force of friction (rolling friction with the ground and air resistance). (Page 73)",
+    "difficulty": 15
+  },
+  {
+    "id": "force-and-types-of-force-6th-q030",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Why might a wooden plank be laid down to help pull a car stuck in mud?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To reduce the car's weight."
+      },
+      {
+        "id": "b",
+        "text": "To increase the friction between the car's wheels and a solid surface."
+      },
+      {
+        "id": "c",
+        "text": "To make the car more magnetic."
+      },
+      {
+        "id": "d",
+        "text": "To reduce air resistance."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A force of friction is generated between the wheel and the wooden plank. This increased friction (compared to mud) helps the car to be pulled out. (Page 73)",
+    "difficulty": 17
+  },
+  {
+    "id": "force-and-types-of-force-6th-q031",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The phenomenon of a peacock feather moving towards your fingers after being rubbed between book pages is due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Air currents only."
+      },
+      {
+        "id": "b",
+        "text": "Electrostatic force due to charging by friction."
+      },
+      {
+        "id": "c",
+        "text": "The feather's natural magnetism."
+      },
+      {
+        "id": "d",
+        "text": "Gravitational attraction from your fingers."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Rubbing the peacock feather between two pages of a notebook charges it by friction, and the resulting electrostatic force causes it to be attracted to your fingers. (Page 73)",
+    "difficulty": 18
+  },
+  {
+    "id": "force-and-types-of-force-6th-q032",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "What is the unit of force in the SI system?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Joule (J)"
+      },
+      {
+        "id": "b",
+        "text": "Watt (W)"
+      },
+      {
+        "id": "c",
+        "text": "Newton (N)"
+      },
+      {
+        "id": "d",
+        "text": "Pascal (Pa)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The SI unit of force is the Newton (N), named after Sir Isaac Newton. (Out of PDF but related to forces and Newton's work mentioned on Page 71)",
+    "difficulty": 18
+  },
+  {
+    "id": "force-and-types-of-force-6th-q033",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "If an object is at rest, and the net force acting on it is zero, the object will:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Start moving with constant velocity."
+      },
+      {
+        "id": "b",
+        "text": "Start accelerating."
+      },
+      {
+        "id": "c",
+        "text": "Remain at rest."
+      },
+      {
+        "id": "d",
+        "text": "Start moving in a circle."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "This is based on Newton's First Law of Motion (Law of Inertia). If an object is at rest and no net force acts on it, it will stay at rest. Force is required to change its state of motion. (Page 70)",
+    "difficulty": 19
+  },
+  {
+    "id": "force-and-types-of-force-6th-q034",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Which of these forces can act over a distance without direct contact between objects?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Frictional force"
+      },
+      {
+        "id": "b",
+        "text": "Muscular force (when pushing/pulling)"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Force applied by a spring"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Gravitational force, magnetic force, and electrostatic force are examples of non-contact forces that can act over a distance. Friction and muscular force (direct push/pull) require contact. (Page 71-73 concepts)",
+    "difficulty": 18
+  },
+  {
+    "id": "force-and-types-of-force-6th-q035",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force of friction depends on the nature of the surfaces in contact and:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The color of the surfaces."
+      },
+      {
+        "id": "b",
+        "text": "The temperature of the surfaces only."
+      },
+      {
+        "id": "c",
+        "text": "The normal force pressing the surfaces together."
+      },
+      {
+        "id": "d",
+        "text": "The speed of light."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Friction depends on the types of surfaces (roughness) and how hard they are pressed together (normal force). The text implies this by discussing rough vs. smooth surfaces. (Page 73)",
+    "difficulty": 20
+  },
+  {
+    "id": "force-and-types-of-force-6th-q036",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When you squeeze a sponge, you are applying force to change its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mass"
+      },
+      {
+        "id": "b",
+        "text": "Weight"
+      },
+      {
+        "id": "c",
+        "text": "Shape"
+      },
+      {
+        "id": "d",
+        "text": "Chemical composition"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Actions like squeezing or bending something involve applying force to change its shape. (Page 70)",
+    "difficulty": 18
+  },
+  {
+    "id": "force-and-types-of-force-6th-q037",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force that holds planets in orbit around the Sun is the same type of force that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Makes a compass needle point north."
+      },
+      {
+        "id": "b",
+        "text": "Causes a rubbed balloon to stick to a wall."
+      },
+      {
+        "id": "c",
+        "text": "Causes an apple to fall from a tree to the ground."
+      },
+      {
+        "id": "d",
+        "text": "Allows a car to stop when brakes are applied."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The gravitational force operates between the sun and planets. The same force causes fruits on trees to fall to the ground. (Page 71 & 72)",
+    "difficulty": 19
+  },
+  {
+    "id": "force-and-types-of-force-6th-q038",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "If you drop a feather and a stone simultaneously from the same height in a vacuum (no air resistance), which will hit the ground first?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The feather"
+      },
+      {
+        "id": "b",
+        "text": "The stone"
+      },
+      {
+        "id": "c",
+        "text": "Both will hit at the same time."
+      },
+      {
+        "id": "d",
+        "text": "Neither will hit the ground."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In a vacuum, all objects fall at the same rate regardless of their mass or shape, due to gravitational acceleration being constant. Air resistance is what makes a feather fall slower in air. (Related to gravity on page 71)",
+    "difficulty": 20
+  },
+  {
+    "id": "force-and-types-of-force-6th-q039",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "A crane lifting a heavy iron object using a large electromagnet is primarily demonstrating the application of which two forces?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Muscular and Gravitational"
+      },
+      {
+        "id": "b",
+        "text": "Mechanical (from crane) and Magnetic (from electromagnet)"
+      },
+      {
+        "id": "c",
+        "text": "Frictional and Electrostatic"
+      },
+      {
+        "id": "d",
+        "text": "Gravitational and Frictional"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The crane itself uses mechanical force to lift. The electromagnet uses magnetic force to hold the iron object. (Page 71 for mechanical, Page 72 for magnetic, and Page 74 exercise (ii))",
+    "difficulty": 19
+  },
+  {
+    "id": "force-and-types-of-force-6th-q040",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When a boat is rowed, the rower pushes the oar backward against the water. The water, in turn, pushes the oar (and boat) forward. This is an example of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gravitational force only"
+      },
+      {
+        "id": "b",
+        "text": "Newton's Third Law of Motion (action-reaction forces)"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The rower applies a force (action) on the water with the oar. The water exerts an equal and opposite force (reaction) on the oar, propelling the boat forward. This illustrates Newton's Third Law. (Page 70 example of boat moving, related to force application)",
+    "difficulty": 20
+  },
+  {
+    "id": "force-and-types-of-force-6th-q041",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "What is inertia?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The force that causes objects to accelerate."
+      },
+      {
+        "id": "b",
+        "text": "The property of an object to resist changes in its state of motion."
+      },
+      {
+        "id": "c",
+        "text": "The speed of an object in a vacuum."
+      },
+      {
+        "id": "d",
+        "text": "The magnetic field around an object."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Inertia is the resistance of any physical object to any change in its state of motion; this includes changes to the object's speed, direction, or state of rest. (Out of PDF but related to why force is needed to move objects, Page 70)",
+    "difficulty": 16
+  },
+  {
+    "id": "force-and-types-of-force-6th-q042",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The concept of 'net force' refers to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The largest single force acting on an object."
+      },
+      {
+        "id": "b",
+        "text": "The sum of all forces acting on an object, considering their directions."
+      },
+      {
+        "id": "c",
+        "text": "The force required to stop an object."
+      },
+      {
+        "id": "d",
+        "text": "The force exerted by a fishing net."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Net force is the vector sum of all the forces acting on an object. If forces are balanced, the net force is zero. (Out of PDF but related to combined forces on Page 74)",
+    "difficulty": 17
+  },
+  {
+    "id": "force-and-types-of-force-6th-q043",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Which force is responsible for the tides in Earth's oceans?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic force of the Earth"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational forces of the Moon and Sun"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force of water currents"
+      },
+      {
+        "id": "d",
+        "text": "Atmospheric pressure"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Tides are primarily caused by the gravitational pull of the Moon and, to a lesser extent, the Sun on Earth's oceans. (Out of PDF but related to gravity as a universal force, Page 71-72)",
+    "difficulty": 15
+  },
+  {
+    "id": "force-and-types-of-force-6th-q044",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Buoyant force is an upward force exerted by a fluid that opposes the weight of an immersed object. This force is responsible for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Objects falling to the ground."
+      },
+      {
+        "id": "b",
+        "text": "Friction between solid surfaces."
+      },
+      {
+        "id": "c",
+        "text": "Objects floating in water."
+      },
+      {
+        "id": "d",
+        "text": "Static electricity."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Buoyancy is the upward force that allows objects to float. While not explicitly detailed, the example of a boat needing an oar to move (Page 70) implies interaction with water. (Out of PDF but related to forces in fluids).",
+    "difficulty": 18
+  },
+  {
+    "id": "force-and-types-of-force-6th-q045",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The force that causes a stretched rubber band to return to its original shape when released is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "b",
+        "text": "Elastic force (or restoring force)"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "d",
+        "text": "Frictional force"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When a spring or rubber band is stretched or compressed, it exerts an elastic (restoring) force that tries to return it to its equilibrium position. (Out of PDF, but related to force changing shape like a spring on page 70)",
+    "difficulty": 19
+  },
+  {
+    "id": "force-and-types-of-force-6th-q046",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When a force is applied to an object, it can cause a change in the object's speed, direction, or:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mass"
+      },
+      {
+        "id": "b",
+        "text": "Shape"
+      },
+      {
+        "id": "c",
+        "text": "Temperature"
+      },
+      {
+        "id": "d",
+        "text": "Volume only if it's a gas"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Force is necessary to change the shape of an object, in addition to moving it or changing its direction. (Page 70)",
+    "difficulty": 17
+  },
+  {
+    "id": "force-and-types-of-force-6th-q047",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Consider a tug-of-war. If both teams pull with equal force in opposite directions, the rope will:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Move towards the stronger team."
+      },
+      {
+        "id": "b",
+        "text": "Remain stationary (or move at constant velocity if already moving)."
+      },
+      {
+        "id": "c",
+        "text": "Break immediately."
+      },
+      {
+        "id": "d",
+        "text": "Move upwards due to combined forces."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "If the forces are equal and opposite, the net force is zero. If the rope is initially at rest, it will remain at rest. This concept of balanced forces is fundamental to understanding motion. (Page 70, no object changes position on its own)",
+    "difficulty": 18
+  },
+  {
+    "id": "force-and-types-of-force-6th-q048",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "The frictional force between a car's tires and the road is essential for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Making the car lighter."
+      },
+      {
+        "id": "b",
+        "text": "Reducing air resistance."
+      },
+      {
+        "id": "c",
+        "text": "Allowing the car to accelerate, brake, and turn."
+      },
+      {
+        "id": "d",
+        "text": "Generating electricity for the car."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Friction between tires and the road provides the grip necessary for a car to move forward (accelerate), slow down (brake), and change direction (turn). (Related to how friction helps in walking, page 73)",
+    "difficulty": 20
+  },
+  {
+    "id": "force-and-types-of-force-6th-q049",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "Air resistance is a type of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "c",
+        "text": "Frictional force"
+      },
+      {
+        "id": "d",
+        "text": "Electrostatic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Air resistance is a form of friction that opposes the motion of objects through the air. (Out of PDF but directly related to friction concepts on Page 73)",
+    "difficulty": 19
+  },
+  {
+    "id": "force-and-types-of-force-6th-q050",
+    "topicId": "force-and-types-of-force-6th",
+    "text": "When you push a heavy box across a rough floor, you have to overcome primarily which force to get it moving?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Static frictional force"
+      },
+      {
+        "id": "b",
+        "text": "Kinetic (sliding) frictional force"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Magnetic force"
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Static friction is the force that prevents an object from moving when a force is applied. You must apply a force greater than the maximum static friction to start the box moving. Once moving, you overcome kinetic friction. (Out of PDF, advanced concept but based on friction, Page 73)",
+    "difficulty": 20
   }
 ]
