@@ -24698,5 +24698,6505 @@
     "correctOptionId": "a",
     "explanation": "Static friction is the force that prevents an object from moving when a force is applied. You must apply a force greater than the maximum static friction to start the box moving. Once moving, you overcome kinetic friction. (Out of PDF, advanced concept but based on friction, Page 73)",
     "difficulty": 20
+  },
+  {
+    "id": "Work-and-energy-6th-q001",
+    "topicId": "work-and-energy-6th",
+    "text": "When is work said to be done, according to the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "When a force is applied, regardless of movement."
+      },
+      {
+        "id": "b",
+        "text": "When an object is displaced by applying a force on it."
+      },
+      {
+        "id": "c",
+        "text": "When an object changes its shape."
+      },
+      {
+        "id": "d",
+        "text": "When energy is consumed."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When an object is displaced by applying a force on it, work is said to be done. (Page 76)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q002",
+    "topicId": "work-and-energy-6th",
+    "text": "The capacity to do work is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Force"
+      },
+      {
+        "id": "b",
+        "text": "Displacement"
+      },
+      {
+        "id": "c",
+        "text": "Energy"
+      },
+      {
+        "id": "d",
+        "text": "Power"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The capacity to do work is called energy. (Page 77)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q003",
+    "topicId": "work-and-energy-6th",
+    "text": "What is the unit of work and energy in the S.I. (System International) system?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Newton"
+      },
+      {
+        "id": "b",
+        "text": "Watt"
+      },
+      {
+        "id": "c",
+        "text": "Joule"
+      },
+      {
+        "id": "d",
+        "text": "Calorie"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Work and energy are both measured in the unit named Joule in S.I. (System International) units. (Page 77)",
+    "difficulty": 12
+  },
+  {
+    "id": "Work-and-energy-6th-q004",
+    "topicId": "work-and-energy-6th",
+    "text": "The energy stored in an object due to its specific state or position is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Kinetic energy"
+      },
+      {
+        "id": "b",
+        "text": "Potential energy"
+      },
+      {
+        "id": "c",
+        "text": "Heat energy"
+      },
+      {
+        "id": "d",
+        "text": "Light energy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The energy which is stored in an object due to a specific state or position of that object is called potential energy. (Page 78)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q005",
+    "topicId": "work-and-energy-6th",
+    "text": "The energy obtained from motion is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Potential energy"
+      },
+      {
+        "id": "b",
+        "text": "Chemical energy"
+      },
+      {
+        "id": "c",
+        "text": "Kinetic energy"
+      },
+      {
+        "id": "d",
+        "text": "Sound energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The energy obtained from motion is called kinetic energy. (Page 78)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q006",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of these is an example of potential energy?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A moving car"
+      },
+      {
+        "id": "b",
+        "text": "Water stored at a height in a dam"
+      },
+      {
+        "id": "c",
+        "text": "A spinning top"
+      },
+      {
+        "id": "d",
+        "text": "Sound from a speaker"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Water stored at a height has potential energy due to its position. (Page 78 example for potential energy, page 80 for dam context)",
+    "difficulty": 12
+  },
+  {
+    "id": "Work-and-energy-6th-q007",
+    "topicId": "work-and-energy-6th",
+    "text": "Heat energy is measured in which unit mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Joule"
+      },
+      {
+        "id": "b",
+        "text": "Watt"
+      },
+      {
+        "id": "c",
+        "text": "Calorie"
+      },
+      {
+        "id": "d",
+        "text": "Newton"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Heat is measured in the unit ‘Calorie’. (Page 79)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q008",
+    "topicId": "work-and-energy-6th",
+    "text": "The energy obtained through chemical action is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mechanical energy"
+      },
+      {
+        "id": "b",
+        "text": "Light energy"
+      },
+      {
+        "id": "c",
+        "text": "Chemical energy"
+      },
+      {
+        "id": "d",
+        "text": "Sound energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The energy obtained through chemical action is called chemical energy. (Page 79)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q009",
+    "topicId": "work-and-energy-6th",
+    "text": "What is the most important source of all energy mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Wind"
+      },
+      {
+        "id": "b",
+        "text": "Water"
+      },
+      {
+        "id": "c",
+        "text": "The Sun"
+      },
+      {
+        "id": "d",
+        "text": "Fossil fuels"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In other words, the sun is the most important source of all energy. (Page 80)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q010",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of these is a conventional or non-renewable energy resource?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solar energy"
+      },
+      {
+        "id": "b",
+        "text": "Wind energy"
+      },
+      {
+        "id": "c",
+        "text": "Coal"
+      },
+      {
+        "id": "d",
+        "text": "Tidal energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Conventional energy resources include coal and fossil fuels such as petrol, diesel and natural gas. These are non-renewable. (Page 81)",
+    "difficulty": 12
+  },
+  {
+    "id": "Work-and-energy-6th-q011",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of these is a non-conventional or renewable energy resource?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Petrol"
+      },
+      {
+        "id": "b",
+        "text": "Natural gas"
+      },
+      {
+        "id": "c",
+        "text": "Wood"
+      },
+      {
+        "id": "d",
+        "text": "Wind energy"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Non-conventional (renewable) energy resources include solar energy, wind energy, tidal energy, etc. Wood is listed as conventional and cannot be replenished easily. (Page 81)",
+    "difficulty": 12
+  },
+  {
+    "id": "Work-and-energy-6th-q012",
+    "topicId": "work-and-energy-6th",
+    "text": "A solar cooker primarily utilizes which form of energy from the sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Light energy"
+      },
+      {
+        "id": "b",
+        "text": "Heat energy"
+      },
+      {
+        "id": "c",
+        "text": "Chemical energy"
+      },
+      {
+        "id": "d",
+        "text": "Mechanical energy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In devices like the solar cooker, solar water heater, and solar drier, heat energy obtained from the sun is utilized. (Page 81)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q013",
+    "topicId": "work-and-energy-6th",
+    "text": "Electricity generated by means of windmills using strong winds is an example of using:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solar energy"
+      },
+      {
+        "id": "b",
+        "text": "Tidal energy"
+      },
+      {
+        "id": "c",
+        "text": "Wind energy"
+      },
+      {
+        "id": "d",
+        "text": "Atomic energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Electricity is generated by means of windmills using strong winds. This is wind energy. (Page 81)",
+    "difficulty": 11
+  },
+  {
+    "id": "Work-and-energy-6th-q014",
+    "topicId": "work-and-energy-6th",
+    "text": "What type of energy is generated from the fission of atoms of heavy elements like uranium?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solar energy"
+      },
+      {
+        "id": "b",
+        "text": "Hydroelectric energy"
+      },
+      {
+        "id": "c",
+        "text": "Atomic energy"
+      },
+      {
+        "id": "d",
+        "text": "Wind energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The heat liberated during the fission of atoms of heavy elements such as uranium, thorium is used to generate electricity. This is atomic energy. (Page 82)",
+    "difficulty": 13
+  },
+  {
+    "id": "Work-and-energy-6th-q015",
+    "topicId": "work-and-energy-6th",
+    "text": "Energy resources that do not produce smoke and carbon gases are called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Conventional energy resources"
+      },
+      {
+        "id": "b",
+        "text": "Fossil fuels"
+      },
+      {
+        "id": "c",
+        "text": "Green energy resources"
+      },
+      {
+        "id": "d",
+        "text": "Non-renewable energy resources"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The energy resources which do not produce smoke and carbon gases such as carbon dioxide or carbon monoxide are called ‘Green energy resources’. (Page 82)",
+    "difficulty": 12
+  },
+  {
+    "id": "Work-and-energy-6th-q016",
+    "topicId": "work-and-energy-6th",
+    "text": "If the same force is applied, when is more work done?",
+    "options": [
+      {
+        "id": "a",
+        "text": "When the displacement is smaller."
+      },
+      {
+        "id": "b",
+        "text": "When there is no displacement."
+      },
+      {
+        "id": "c",
+        "text": "When the displacement is greater."
+      },
+      {
+        "id": "d",
+        "text": "Work done is independent of displacement."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If the same force is applied for more displacement, more work is done by the force. (Page 76, Use your brain power!)",
+    "difficulty": 14
+  },
+  {
+    "id": "Work-and-energy-6th-q017",
+    "topicId": "work-and-energy-6th",
+    "text": "A boy pushing a toy car applies force, and the car moves. This is an example of transformation of the boy's energy into:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Potential energy of the car"
+      },
+      {
+        "id": "b",
+        "text": "Work done on the car"
+      },
+      {
+        "id": "c",
+        "text": "Heat energy only"
+      },
+      {
+        "id": "d",
+        "text": "Light energy of the car"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Work has been done because the force applied to the car has caused displacement. Transformation of the boy’s energy into work has taken place. (Page 77)",
+    "difficulty": 15
+  },
+  {
+    "id": "Work-and-energy-6th-q018",
+    "topicId": "work-and-energy-6th",
+    "text": "A stretched rubber band or a wound spring of a toy possesses which type of mechanical energy?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Kinetic energy"
+      },
+      {
+        "id": "b",
+        "text": "Potential energy"
+      },
+      {
+        "id": "c",
+        "text": "Both kinetic and potential energy equally"
+      },
+      {
+        "id": "d",
+        "text": "Neither, it's chemical energy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A stretched rubber band or a wound spring has energy stored due to its specific state (stretched/wound), which is potential energy. (Page 78)",
+    "difficulty": 14
+  },
+  {
+    "id": "Work-and-energy-6th-q019",
+    "topicId": "work-and-energy-6th",
+    "text": "When wood burns, the stored chemical energy is emitted in which forms?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only heat energy"
+      },
+      {
+        "id": "b",
+        "text": "Only light energy"
+      },
+      {
+        "id": "c",
+        "text": "Heat, light, and sometimes sound energy"
+      },
+      {
+        "id": "d",
+        "text": "Only mechanical energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When wood burns, we get heat and light. Sometimes, we hear a crackling sound. The energy stored in wood is emitted in various forms through chemical action. (Page 79)",
+    "difficulty": 15
+  },
+  {
+    "id": "Work-and-energy-6th-q020",
+    "topicId": "work-and-energy-6th",
+    "text": "Hydroelectric power is generated by transforming which energy of stored water in a dam?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Chemical energy of water"
+      },
+      {
+        "id": "b",
+        "text": "Potential energy of water stored at a height"
+      },
+      {
+        "id": "c",
+        "text": "Heat energy of water"
+      },
+      {
+        "id": "d",
+        "text": "Solar energy absorbed by water"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In hydroelectric power, water stored in dams at a height has potential energy, which is transformed into kinetic energy as it falls and then into electrical energy. (Page 80, 82)",
+    "difficulty": 16
+  },
+  {
+    "id": "Work-and-energy-6th-q021",
+    "topicId": "work-and-energy-6th",
+    "text": "If you push against a wall with all your might but the wall does not move, how much work is done on the wall?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A large amount of work"
+      },
+      {
+        "id": "b",
+        "text": "A small amount of work"
+      },
+      {
+        "id": "c",
+        "text": "Zero work"
+      },
+      {
+        "id": "d",
+        "text": "Negative work"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Work is done when an object is displaced by applying a force. If the wall does not move (no displacement), no work is done on the wall, even though force is applied. (Page 76, Use your brain power! Q3)",
+    "difficulty": 17
+  },
+  {
+    "id": "Work-and-energy-6th-q022",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of these energy transformations occurs when an electric fan is switched on?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Electrical energy to light energy"
+      },
+      {
+        "id": "b",
+        "text": "Electrical energy to kinetic energy (and some heat/sound)"
+      },
+      {
+        "id": "c",
+        "text": "Kinetic energy to electrical energy"
+      },
+      {
+        "id": "d",
+        "text": "Chemical energy to electrical energy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Electrical energy is used to run a fan. It is transformed into kinetic energy (of the blades moving) and also some heat and sound energy. (Page 80)",
+    "difficulty": 16
+  },
+  {
+    "id": "Work-and-energy-6th-q023",
+    "topicId": "work-and-energy-6th",
+    "text": "The energy transformation in a lead acid battery (like in a car) involves:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Light energy to chemical energy"
+      },
+      {
+        "id": "b",
+        "text": "Chemical energy to electrical energy"
+      },
+      {
+        "id": "c",
+        "text": "Mechanical energy to chemical energy"
+      },
+      {
+        "id": "d",
+        "text": "Electrical energy to heat energy only"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "It is due to the chemical action in the lead acid battery that electrical energy is produced. (Page 79)",
+    "difficulty": 16
+  },
+  {
+    "id": "Work-and-energy-6th-q024",
+    "topicId": "work-and-energy-6th",
+    "text": "Why is it better to use alternative and supplementary resources instead of conventional ones like coal and petrol?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Alternative resources are more expensive."
+      },
+      {
+        "id": "b",
+        "text": "Conventional resources are unlimited."
+      },
+      {
+        "id": "c",
+        "text": "There is a danger that limited reserves of conventional resources will get exhausted."
+      },
+      {
+        "id": "d",
+        "text": "Alternative resources are less efficient."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "There is a danger that the limited reserves of coal, petrol, diesel, crude oil and natural gas will get exhausted. Therefore, it will be better to use alternative and supplementary resources. (Page 81)",
+    "difficulty": 15
+  },
+  {
+    "id": "Work-and-energy-6th-q025",
+    "topicId": "work-and-energy-6th",
+    "text": "A solar cell converts solar energy directly into:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Heat energy"
+      },
+      {
+        "id": "b",
+        "text": "Mechanical energy"
+      },
+      {
+        "id": "c",
+        "text": "Electrical energy"
+      },
+      {
+        "id": "d",
+        "text": "Chemical energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In a solar cell, electrical energy can be obtained from solar energy. (Page 81)",
+    "difficulty": 17
+  },
+  {
+    "id": "Work-and-energy-6th-q026",
+    "topicId": "work-and-energy-6th",
+    "text": "Tidal energy generation primarily uses the energy from:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The sun's heat on water"
+      },
+      {
+        "id": "b",
+        "text": "Wind blowing over the sea"
+      },
+      {
+        "id": "c",
+        "text": "Waves generated by high and low tides"
+      },
+      {
+        "id": "d",
+        "text": "Geothermal heat under the seabed"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Due to waves generated by high and low tides, the turbine of the generator fitted in the wall (of a creek) starts rotating and electricity is generated. (Page 81)",
+    "difficulty": 17
+  },
+  {
+    "id": "Work-and-energy-6th-q027",
+    "topicId": "work-and-energy-6th",
+    "text": "Saving energy is considered as good as generating energy because:",
+    "options": [
+      {
+        "id": "a",
+        "text": "It costs more to save energy than to generate it."
+      },
+      {
+        "id": "b",
+        "text": "It reduces the demand on existing energy resources, thus conserving them."
+      },
+      {
+        "id": "c",
+        "text": "Saved energy can be sold for a profit."
+      },
+      {
+        "id": "d",
+        "text": "Saving energy requires complex technology."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Saving energy reduces the need to generate more, thereby conserving resources and lessening environmental impact. The text states, 'In a way, saving energy is as good as generating energy.' (Page 82)",
+    "difficulty": 16
+  },
+  {
+    "id": "Work-and-energy-6th-q028",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of the following is NOT a form of mechanical energy?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Potential energy of a stretched bow"
+      },
+      {
+        "id": "b",
+        "text": "Kinetic energy of a rolling object"
+      },
+      {
+        "id": "c",
+        "text": "Heat energy from burning fuel"
+      },
+      {
+        "id": "d",
+        "text": "Potential energy of water in a dam"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Mechanical energy comprises potential and kinetic energy. Heat energy is a distinct form of energy. (Page 78 lists mechanical energy as potential and kinetic; Page 79 lists heat energy separately).",
+    "difficulty": 17
+  },
+  {
+    "id": "Work-and-energy-6th-q029",
+    "topicId": "work-and-energy-6th",
+    "text": "If a force of 10 Newtons displaces an object by 2 meters in the direction of the force, the work done is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "5 Joules"
+      },
+      {
+        "id": "b",
+        "text": "10 Joules"
+      },
+      {
+        "id": "c",
+        "text": "20 Joules"
+      },
+      {
+        "id": "d",
+        "text": "12 Joules"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Work done = Force × Displacement (in the direction of force). So, Work = 10 N × 2 m = 20 Joules. (This is the standard formula for work, consistent with text concepts on Page 76).",
+    "difficulty": 16
+  },
+  {
+    "id": "Work-and-energy-6th-q030",
+    "topicId": "work-and-energy-6th",
+    "text": "A windmill is also used for what purpose besides generating electricity, according to the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Grinding grain"
+      },
+      {
+        "id": "b",
+        "text": "Drawing water from a well"
+      },
+      {
+        "id": "c",
+        "text": "Powering boats"
+      },
+      {
+        "id": "d",
+        "text": "Cooling buildings"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A windmill is also used for drawing water from a well. (Page 81)",
+    "difficulty": 15
+  },
+  {
+    "id": "Work-and-energy-6th-q031",
+    "topicId": "work-and-energy-6th",
+    "text": "The Koyna project in Maharashtra is a well-known example of which type of power plant?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solar power plant"
+      },
+      {
+        "id": "b",
+        "text": "Wind power plant"
+      },
+      {
+        "id": "c",
+        "text": "Hydroelectric (hydel) power plant"
+      },
+      {
+        "id": "d",
+        "text": "Atomic power plant"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Koyna project in Maharashtra is a well-known hydel project. (Page 82)",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q032",
+    "topicId": "work-and-energy-6th",
+    "text": "When you lift an object from the ground, you do work against which primary force?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Frictional force"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic force"
+      },
+      {
+        "id": "c",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "d",
+        "text": "Air resistance"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When lifting an object, you are applying an upward force to overcome the downward pull of gravity (the object's weight).",
+    "difficulty": 19
+  },
+  {
+    "id": "Work-and-energy-6th-q033",
+    "topicId": "work-and-energy-6th",
+    "text": "A moving bicycle possesses what type of energy due to its motion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Potential energy"
+      },
+      {
+        "id": "b",
+        "text": "Kinetic energy"
+      },
+      {
+        "id": "c",
+        "text": "Chemical energy"
+      },
+      {
+        "id": "d",
+        "text": "Elastic energy"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Any object in motion has kinetic energy. (Page 78)",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q034",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of these is an example of sound energy doing work?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sunlight warming a surface."
+      },
+      {
+        "id": "b",
+        "text": "A battery powering a flashlight."
+      },
+      {
+        "id": "c",
+        "text": "Glass panes of windows cracking due to a loud noise."
+      },
+      {
+        "id": "d",
+        "text": "A stretched catapult releasing a stone."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "You might have seen the glass panes of windows crack due to a loud noise. This means that some work is done by sound. (Page 79)",
+    "difficulty": 19
+  },
+  {
+    "id": "Work-and-energy-6th-q035",
+    "topicId": "work-and-energy-6th",
+    "text": "The process where energy changes from one form to another is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Energy creation"
+      },
+      {
+        "id": "b",
+        "text": "Energy destruction"
+      },
+      {
+        "id": "c",
+        "text": "Energy transformation (or conversion)"
+      },
+      {
+        "id": "d",
+        "text": "Energy measurement"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Transformation of energy takes place when work is done, implying a change from one form to another. (Page 80)",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q036",
+    "topicId": "work-and-energy-6th",
+    "text": "The potential energy of an object at a certain height depends on its mass, the acceleration due to gravity, and its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Speed"
+      },
+      {
+        "id": "b",
+        "text": "Height above a reference point"
+      },
+      {
+        "id": "c",
+        "text": "Temperature"
+      },
+      {
+        "id": "d",
+        "text": "Volume"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Gravitational potential energy is given by PE = mgh, where m is mass, g is acceleration due to gravity, and h is height. (Standard physics formula, related to water stored at a height having potential energy, Page 78, 80).",
+    "difficulty": 20
+  },
+  {
+    "id": "Work-and-energy-6th-q037",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of the following best describes why fossil fuels are considered non-renewable?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They are too expensive to extract."
+      },
+      {
+        "id": "b",
+        "text": "They cannot be replenished within a human lifespan or are finite."
+      },
+      {
+        "id": "c",
+        "text": "They do not produce much energy."
+      },
+      {
+        "id": "d",
+        "text": "They are only found in one part of the world."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Conventional energy resources like fossil fuels are non-renewable because we cannot replenish them; they were formed over millions of years. (Page 81)",
+    "difficulty": 19
+  },
+  {
+    "id": "Work-and-energy-6th-q038",
+    "topicId": "work-and-energy-6th",
+    "text": "The Law of Conservation of Energy states that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Energy can only be converted into heat."
+      },
+      {
+        "id": "b",
+        "text": "Energy can be created from nothing."
+      },
+      {
+        "id": "c",
+        "text": "Energy cannot be created or destroyed, only transformed from one form to another."
+      },
+      {
+        "id": "d",
+        "text": "The total amount of energy in the universe is decreasing."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Law of Conservation of Energy is a fundamental principle in physics stating that the total energy of an isolated system remains constant; it is conserved over time. Energy can neither be created nor destroyed, but it can be transformed from one form to another. (Out of PDF but fundamental to energy transformation concept on Page 80).",
+    "difficulty": 19
+  },
+  {
+    "id": "Work-and-energy-6th-q039",
+    "topicId": "work-and-energy-6th",
+    "text": "Power is defined as the rate at which:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Force is applied."
+      },
+      {
+        "id": "b",
+        "text": "Work is done (or energy is transferred)."
+      },
+      {
+        "id": "c",
+        "text": "An object accelerates."
+      },
+      {
+        "id": "d",
+        "text": "An object is displaced."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Power is the rate of doing work or the rate of transferring energy. Its unit is Watt (Joule/second). (Out of PDF, but a related concept to work and energy).",
+    "difficulty": 20
+  },
+  {
+    "id": "Work-and-energy-6th-q040",
+    "topicId": "work-and-energy-6th",
+    "text": "Which of these devices is designed to convert electrical energy primarily into light energy and some heat energy?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An electric motor"
+      },
+      {
+        "id": "b",
+        "text": "An electric heater"
+      },
+      {
+        "id": "c",
+        "text": "An incandescent light bulb"
+      },
+      {
+        "id": "d",
+        "text": "A loudspeaker"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "An incandescent light bulb converts electrical energy into light energy (and a significant amount of heat). An electric heater primarily converts it to heat. (Page 80 mentions lighting a bulb transforms electrical to light energy).",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q041",
+    "topicId": "work-and-energy-6th",
+    "text": "What is 'geothermal energy'?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Energy derived from ocean waves."
+      },
+      {
+        "id": "b",
+        "text": "Energy derived from the heat within the Earth."
+      },
+      {
+        "id": "c",
+        "text": "Energy derived from burning wood."
+      },
+      {
+        "id": "d",
+        "text": "Energy derived from the movement of glaciers."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Geothermal energy is heat energy generated and stored in the Earth. (Out of PDF but a common renewable energy type).",
+    "difficulty": 16
+  },
+  {
+    "id": "Work-and-energy-6th-q042",
+    "topicId": "work-and-energy-6th",
+    "text": "The efficiency of an energy conversion process is typically less than 100% because:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Some energy is always created during the process."
+      },
+      {
+        "id": "b",
+        "text": "Some energy is always lost, often as unusable heat, to the surroundings."
+      },
+      {
+        "id": "c",
+        "text": "Energy is destroyed in most conversions."
+      },
+      {
+        "id": "d",
+        "text": "The input energy is always less than the output energy."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Due to factors like friction and heat loss, no energy conversion is perfectly efficient; some energy is always dissipated in forms that are not useful for the intended purpose. (Out of PDF but related to real-world energy transformations).",
+    "difficulty": 17
+  },
+  {
+    "id": "Work-and-energy-6th-q043",
+    "topicId": "work-and-energy-6th",
+    "text": "What type of energy is primarily stored in food?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mechanical energy"
+      },
+      {
+        "id": "b",
+        "text": "Light energy"
+      },
+      {
+        "id": "c",
+        "text": "Chemical energy"
+      },
+      {
+        "id": "d",
+        "text": "Nuclear energy"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Food contains chemical energy, which is released through metabolic processes in the body. The text mentions plants transforming light energy into energy in food. (Page 79).",
+    "difficulty": 15
+  },
+  {
+    "id": "Work-and-energy-6th-q044",
+    "topicId": "work-and-energy-6th",
+    "text": "A car moving at a constant velocity on a flat, straight road has:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only potential energy."
+      },
+      {
+        "id": "b",
+        "text": "Only kinetic energy."
+      },
+      {
+        "id": "c",
+        "text": "Both significant potential and kinetic energy."
+      },
+      {
+        "id": "d",
+        "text": "No energy."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Since the car is moving, it has kinetic energy. If it's on a flat road, its gravitational potential energy (relative to the road) is constant or zero. (Page 78).",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q045",
+    "topicId": "work-and-energy-6th",
+    "text": "One horsepower (hp) is a unit of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Energy"
+      },
+      {
+        "id": "b",
+        "text": "Work"
+      },
+      {
+        "id": "c",
+        "text": "Power"
+      },
+      {
+        "id": "d",
+        "text": "Force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Horsepower is a unit of power, often used for engines. 1 hp is approximately 746 Watts. (Out of PDF, but a common unit related to work/energy concepts).",
+    "difficulty": 19
+  },
+  {
+    "id": "Work-and-energy-6th-q046",
+    "topicId": "work-and-energy-6th",
+    "text": "If you lift a 1 kg object 1 meter high, and then lift a 2 kg object 1 meter high, in which case do you do more work against gravity?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Lifting the 1 kg object."
+      },
+      {
+        "id": "b",
+        "text": "Lifting the 2 kg object."
+      },
+      {
+        "id": "c",
+        "text": "The work done is the same in both cases."
+      },
+      {
+        "id": "d",
+        "text": "No work is done in either case."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Work done against gravity = mass × g × height. Since g and height are the same, more mass means more work. This is consistent with the idea that more force (to lift more weight) over the same displacement means more work. (Page 76 'More work is done for the same displacement, when more force is applied').",
+    "difficulty": 17
+  },
+  {
+    "id": "Work-and-energy-6th-q047",
+    "topicId": "work-and-energy-6th",
+    "text": "A hydroelectric dam converts the ______ energy of water into electrical energy.",
+    "options": [
+      {
+        "id": "a",
+        "text": "chemical"
+      },
+      {
+        "id": "b",
+        "text": "thermal"
+      },
+      {
+        "id": "c",
+        "text": "potential and kinetic (mechanical)"
+      },
+      {
+        "id": "d",
+        "text": "nuclear"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Water stored at height has potential energy. As it falls, this converts to kinetic energy, which then turns turbines to generate electricity. So, it's a conversion of mechanical energy (potential and kinetic). (Page 80, 82)",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q048",
+    "topicId": "work-and-energy-6th",
+    "text": "Which process involves the transformation of light energy from the sun into chemical energy stored in plants?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Respiration"
+      },
+      {
+        "id": "b",
+        "text": "Combustion"
+      },
+      {
+        "id": "c",
+        "text": "Photosynthesis"
+      },
+      {
+        "id": "d",
+        "text": "Fermentation"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Plants make their own food with the help of sunlight. It means that light energy is transformed into the energy in food (chemical energy). This process is photosynthesis. (Page 79)",
+    "difficulty": 19
+  },
+  {
+    "id": "Work-and-energy-6th-q049",
+    "topicId": "work-and-energy-6th",
+    "text": "Elastic potential energy is stored in:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A moving car"
+      },
+      {
+        "id": "b",
+        "text": "A stretched spring or rubber band"
+      },
+      {
+        "id": "c",
+        "text": "Water at the top of a waterfall"
+      },
+      {
+        "id": "d",
+        "text": "A burning candle"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Elastic potential energy is the energy stored in elastic materials as the result of their stretching or compressing. (Page 78 refers to stretched rubber band having potential energy).",
+    "difficulty": 18
+  },
+  {
+    "id": "Work-and-energy-6th-q050",
+    "topicId": "work-and-energy-6th",
+    "text": "If no displacement occurs when applying a force, it indicates that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Maximum work has been done."
+      },
+      {
+        "id": "b",
+        "text": "The force applied was too small."
+      },
+      {
+        "id": "c",
+        "text": "No work is done by that force on the object."
+      },
+      {
+        "id": "d",
+        "text": "The object has infinite energy."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If no displacement occurs on applying a force, it indicates that no work is done (in the physics sense). (Page 76, Use your brain power! Q4)",
+    "difficulty": 20
+  },
+  {
+    "id": "sound-6th-q1",
+    "topicId": "sound-6th",
+    "text": "What is the primary requirement for an object to produce sound?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It must be very large."
+      },
+      {
+        "id": "b",
+        "text": "It must be made of metal."
+      },
+      {
+        "id": "c",
+        "text": "It must vibrate."
+      },
+      {
+        "id": "d",
+        "text": "It must be heated."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter states that the vibration of an object is necessary for the production of sound. As long as the object vibrates, sound is heard.",
+    "difficulty": 11
+  },
+  {
+    "id": "sound-6th-q2",
+    "topicId": "sound-6th",
+    "text": "The object that causes sound to be produced is known as the:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sound receiver"
+      },
+      {
+        "id": "b",
+        "text": "Sound medium"
+      },
+      {
+        "id": "c",
+        "text": "Source of that sound"
+      },
+      {
+        "id": "d",
+        "text": "Sound amplifier"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text defines the object due to which sound is produced as the 'source of that sound'.",
+    "difficulty": 11
+  },
+  {
+    "id": "sound-6th-q3",
+    "topicId": "sound-6th",
+    "text": "In humans, which part of the body vibrates to produce sound when speaking?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The eardrum"
+      },
+      {
+        "id": "b",
+        "text": "The tongue"
+      },
+      {
+        "id": "c",
+        "text": "The vocal cords in the larynx"
+      },
+      {
+        "id": "d",
+        "text": "The lungs"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text explains that the vibration of the vocal cords in our larynx or 'voice box' produces sound.",
+    "difficulty": 12
+  },
+  {
+    "id": "sound-6th-q4",
+    "topicId": "sound-6th",
+    "text": "What is the scientific study of sound, including its production, propagation, and effects, called?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Optics"
+      },
+      {
+        "id": "b",
+        "text": "Acoustics"
+      },
+      {
+        "id": "c",
+        "text": "Thermodynamics"
+      },
+      {
+        "id": "d",
+        "text": "Mechanics"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter defines 'Acoustics' as the science of sound, resonance, including the production, propagation and effects of sound.",
+    "difficulty": 12
+  },
+  {
+    "id": "sound-6th-q5",
+    "topicId": "sound-6th",
+    "text": "The intensity of sound is commonly measured in which unit?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Hertz (Hz)"
+      },
+      {
+        "id": "b",
+        "text": "Meters per second (m/s)"
+      },
+      {
+        "id": "c",
+        "text": "Decibel (dB)"
+      },
+      {
+        "id": "d",
+        "text": "Joules (J)"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text mentions that the intensity of sound is measured in a unit called decibel (dB).",
+    "difficulty": 11
+  },
+  {
+    "id": "sound-6th-q6",
+    "topicId": "sound-6th",
+    "text": "Can sound travel through a vacuum (an empty space with no air)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Yes, sound can travel through anything."
+      },
+      {
+        "id": "b",
+        "text": "No, sound requires a medium to travel."
+      },
+      {
+        "id": "c",
+        "text": "Yes, but only very loud sounds."
+      },
+      {
+        "id": "d",
+        "text": "Only if the vacuum is very small."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter implies that sound needs a medium by discussing propagation through air, water, and solids. A vacuum is defined as an empty space where air is partially removed, and sound cannot propagate without a medium.",
+    "difficulty": 13
+  },
+  {
+    "id": "sound-6th-q7",
+    "topicId": "sound-6th",
+    "text": "A sound that is harsh, loud, and disagreeable to the ears is generally referred to as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Music"
+      },
+      {
+        "id": "b",
+        "text": "Noise"
+      },
+      {
+        "id": "c",
+        "text": "A whisper"
+      },
+      {
+        "id": "d",
+        "text": "A tone"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The text states that a loud sound is harsh to the ear and such sounds produce noise. Noise is also described as disagreeable and irregular.",
+    "difficulty": 11
+  },
+  {
+    "id": "sound-6th-q8",
+    "topicId": "sound-6th",
+    "text": "Sound travels in the form of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Particles"
+      },
+      {
+        "id": "b",
+        "text": "Light rays"
+      },
+      {
+        "id": "c",
+        "text": "Waves"
+      },
+      {
+        "id": "d",
+        "text": "Electrical signals"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter explains that a wave of vibrations of sound spreads in all directions from the source, and this is called a sound wave.",
+    "difficulty": 12
+  },
+  {
+    "id": "sound-6th-q9",
+    "topicId": "sound-6th",
+    "text": "The substance or material through which sound waves spread is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The sound source"
+      },
+      {
+        "id": "b",
+        "text": "The sound barrier"
+      },
+      {
+        "id": "c",
+        "text": "The medium of propagation"
+      },
+      {
+        "id": "d",
+        "text": "The sound insulator"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text defines 'The medium of propagation of sound' as the substance around a source of sound through which sound waves spread.",
+    "difficulty": 12
+  },
+  {
+    "id": "sound-6th-q10",
+    "topicId": "sound-6th",
+    "text": "When sound waves reach our ears, which delicate part inside the ear cavity starts vibrating?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The outer ear"
+      },
+      {
+        "id": "b",
+        "text": "The cochlea"
+      },
+      {
+        "id": "c",
+        "text": "The eardrum (diaphragm)"
+      },
+      {
+        "id": "d",
+        "text": "The auditory nerve"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text describes that there is a delicate diaphragm or eardrum in the cavity of our ears, which starts vibrating when sound waves reach it.",
+    "difficulty": 13
+  },
+  {
+    "id": "sound-6th-q11",
+    "topicId": "sound-6th",
+    "text": "What happens to the sound produced by an object if the object stops vibrating?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The sound becomes louder."
+      },
+      {
+        "id": "b",
+        "text": "The sound continues for a while."
+      },
+      {
+        "id": "c",
+        "text": "The sound also stops."
+      },
+      {
+        "id": "d",
+        "text": "The sound changes its pitch."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter states: 'When the vibration stops, the sound also stops.'",
+    "difficulty": 11
+  },
+  {
+    "id": "sound-6th-q12",
+    "topicId": "sound-6th",
+    "text": "Which of the following is an example of a source of sound?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An ear"
+      },
+      {
+        "id": "b",
+        "text": "A silent room"
+      },
+      {
+        "id": "c",
+        "text": "A stretched rubber band that is plucked"
+      },
+      {
+        "id": "d",
+        "text": "A piece of cloth"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A plucked rubber band vibrates and produces sound, making it a source of sound. The chapter provides this as an example.",
+    "difficulty": 12
+  },
+  {
+    "id": "sound-6th-q13",
+    "topicId": "sound-6th",
+    "text": "The quality of sound produced by the human voice box (larynx) primarily depends on:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The size of the person's throat"
+      },
+      {
+        "id": "b",
+        "text": "The amount of air pushed from the lungs"
+      },
+      {
+        "id": "c",
+        "text": "The tautness (tightness) of the vocal cords"
+      },
+      {
+        "id": "d",
+        "text": "The shape of the person's mouth"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text explains that 'The quality of the sound produced in the larynx depends upon the tautness of the vocal cords.'",
+    "difficulty": 13
+  },
+  {
+    "id": "sound-6th-q14",
+    "topicId": "sound-6th",
+    "text": "Which of these is a common adverse effect of prolonged exposure to noise pollution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Improved concentration"
+      },
+      {
+        "id": "b",
+        "text": "Better sleep"
+      },
+      {
+        "id": "c",
+        "text": "Impaired hearing or deafness"
+      },
+      {
+        "id": "d",
+        "text": "Increased happiness"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter lists several adverse effects of noise pollution, including that hearing may get impaired which can even lead to deafness.",
+    "difficulty": 12
+  },
+  {
+    "id": "sound-6th-q15",
+    "topicId": "sound-6th",
+    "text": "Sound is said to be 'propagated' when:",
+    "options": [
+      {
+        "id": "a",
+        "text": "It is created by a source."
+      },
+      {
+        "id": "b",
+        "text": "Sound waves spread in all directions from a source."
+      },
+      {
+        "id": "c",
+        "text": "It is heard by a listener."
+      },
+      {
+        "id": "d",
+        "text": "It is reflected off a surface."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The text defines propagation of sound as 'when sound waves spread in all directions from a source of sound.'",
+    "difficulty": 13
+  },
+  {
+    "id": "sound-6th-q16",
+    "topicId": "sound-6th",
+    "text": "In general, through which of the following states of matter does sound travel the SLOWEST?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Solids"
+      },
+      {
+        "id": "b",
+        "text": "Liquids"
+      },
+      {
+        "id": "c",
+        "text": "Gases"
+      },
+      {
+        "id": "d",
+        "text": "Sound travels at the same speed in all three."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter states that transmission of sound is faster through a liquid than through a gas, and faster through a solid than through a liquid. Therefore, it's slowest in gases.",
+    "difficulty": 14
+  },
+  {
+    "id": "sound-6th-q17",
+    "topicId": "sound-6th",
+    "text": "Why is it that when you press your ear to a long table and someone knocks at the other end, the sound is heard more clearly than when listening through the air?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sound travels slower in solids."
+      },
+      {
+        "id": "b",
+        "text": "The table amplifies the sound."
+      },
+      {
+        "id": "c",
+        "text": "Sound is propagated more clearly through a solid than through air."
+      },
+      {
+        "id": "d",
+        "text": "Air blocks most of the sound from the table."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter explains this experiment and concludes that sound 'is heard most clearly through a solid' compared to air or liquid.",
+    "difficulty": 15
+  },
+  {
+    "id": "sound-6th-q18",
+    "topicId": "sound-6th",
+    "text": "Which of the following is NOT a recommended measure for preventing noise pollution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Avoiding blowing the horn unnecessarily."
+      },
+      {
+        "id": "b",
+        "text": "Increasing the volume of TV or radio to maximum."
+      },
+      {
+        "id": "c",
+        "text": "Maintaining vehicles properly to reduce unnecessary sounds."
+      },
+      {
+        "id": "d",
+        "text": "Locating factories away from residential areas."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter suggests that the volume of TV or radio should be restricted, not increased, to prevent noise pollution.",
+    "difficulty": 14
+  },
+  {
+    "id": "sound-6th-q19",
+    "topicId": "sound-6th",
+    "text": "If a musician tightens the strings of a guitar, how is the sound produced likely to change?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It will become louder."
+      },
+      {
+        "id": "b",
+        "text": "It will become lower in pitch."
+      },
+      {
+        "id": "c",
+        "text": "It will become higher in pitch."
+      },
+      {
+        "id": "d",
+        "text": "It will stop producing sound."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "While the chapter primarily discusses vocal cord tautness affecting voice quality, the principle of tautness affecting pitch is general for string vibrations. Tighter strings vibrate faster, producing a higher pitch.",
+    "difficulty": 16
+  },
+  {
+    "id": "sound-6th-q20",
+    "topicId": "sound-6th",
+    "text": "Noise pollution is described as a 'social problem' because:",
+    "options": [
+      {
+        "id": "a",
+        "text": "It only affects people who make noise."
+      },
+      {
+        "id": "b",
+        "text": "It is caused only by social gatherings."
+      },
+      {
+        "id": "c",
+        "text": "It adversely affects the health and well-being of the community."
+      },
+      {
+        "id": "d",
+        "text": "It can be solved only by scientists."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A social problem affects society or a community. Noise pollution has adverse effects on people in a locality, making it a social problem.",
+    "difficulty": 15
+  },
+  {
+    "id": "sound-6th-q21",
+    "topicId": "sound-6th",
+    "text": "Consider the experiment where sawdust is sprinkled on a tabla diaphragm. What is the purpose of the sawdust?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To make the tabla sound louder."
+      },
+      {
+        "id": "b",
+        "text": "To clean the tabla surface."
+      },
+      {
+        "id": "c",
+        "text": "To visually demonstrate the vibrations of the diaphragm."
+      },
+      {
+        "id": "d",
+        "text": "To change the pitch of the tabla."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The movement of sawdust or similar particles makes the invisible vibrations of the tabla diaphragm visible, demonstrating that sound is produced by vibration.",
+    "difficulty": 16
+  },
+  {
+    "id": "sound-6th-q22",
+    "topicId": "sound-6th",
+    "text": "Why is blowing horns of vehicles generally prohibited near schools and hospitals?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Horns can damage the buildings."
+      },
+      {
+        "id": "b",
+        "text": "Horns consume too much vehicle battery."
+      },
+      {
+        "id": "c",
+        "text": "To prevent disturbance and noise pollution in sensitive areas."
+      },
+      {
+        "id": "d",
+        "text": "School children and patients enjoy loud sounds."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter states that these rules should be followed, implying it's to prevent noise pollution and disturbance in areas requiring quiet.",
+    "difficulty": 14
+  },
+  {
+    "id": "sound-6th-q23",
+    "topicId": "sound-6th",
+    "text": "The 'Believe it or not!' section mentions that some birds can recognize the sound of an earthworm in the soil. This is primarily due to their:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Excellent eyesight"
+      },
+      {
+        "id": "b",
+        "text": "Very sensitive hearing organs"
+      },
+      {
+        "id": "c",
+        "text": "Ability to smell earthworms"
+      },
+      {
+        "id": "d",
+        "text": "Magnetic sense"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The text explicitly states, 'This is because their hearing organs are very sensitive.'",
+    "difficulty": 15
+  },
+  {
+    "id": "sound-6th-q24",
+    "topicId": "sound-6th",
+    "text": "Which of the following actions would best demonstrate that sound requires a medium for propagation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Shouting loudly in an open field."
+      },
+      {
+        "id": "b",
+        "text": "Placing an alarm clock inside a sealed jar and pumping out the air."
+      },
+      {
+        "id": "c",
+        "text": "Tapping on a metal railing and listening from the other end."
+      },
+      {
+        "id": "d",
+        "text": "Listening to music through headphones."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "As air is pumped out, creating a near vacuum, the sound of the alarm clock would become fainter and eventually inaudible, showing sound needs a medium.",
+    "difficulty": 17
+  },
+  {
+    "id": "sound-6th-q25",
+    "topicId": "sound-6th",
+    "text": "If you are in a room and a door slams shut in another room, you hear the sound. Through which media has the sound likely travelled to reach you?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only through the air."
+      },
+      {
+        "id": "b",
+        "text": "Only through the walls (solid)."
+      },
+      {
+        "id": "c",
+        "text": "Through the walls (solid) and then through the air."
+      },
+      {
+        "id": "d",
+        "text": "Sound cannot travel between rooms."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The sound from the slamming door vibrates the walls/door (solid), and these vibrations then cause the air in your room to vibrate, allowing you to hear it.",
+    "difficulty": 16
+  },
+  {
+    "id": "sound-6th-q26",
+    "topicId": "sound-6th",
+    "text": "The sensation of sound is ultimately processed and understood in which part of the human body?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The eardrum"
+      },
+      {
+        "id": "b",
+        "text": "The vocal cords"
+      },
+      {
+        "id": "c",
+        "text": "The nerves in the ears"
+      },
+      {
+        "id": "d",
+        "text": "The brain"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The text states that the sensation produced by vibrations in the ear 'are passed on to the brain through the nerves in the ears and we hear the sound.'",
+    "difficulty": 14
+  },
+  {
+    "id": "sound-6th-q27",
+    "topicId": "sound-6th",
+    "text": "What fundamental property distinguishes a soft sound from a loud sound produced by the same instrument?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The speed of the sound waves."
+      },
+      {
+        "id": "b",
+        "text": "The frequency of the vibrations."
+      },
+      {
+        "id": "c",
+        "text": "The amplitude (intensity) of the vibrations."
+      },
+      {
+        "id": "d",
+        "text": "The material of the instrument."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Louder sounds are produced by vibrations with greater amplitude (intensity). The chapter links intensity to decibels.",
+    "difficulty": 17
+  },
+  {
+    "id": "sound-6th-q28",
+    "topicId": "sound-6th",
+    "text": "Which of the following human activities is LEAST likely to be a significant source of noise pollution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Operating heavy machinery in a factory."
+      },
+      {
+        "id": "b",
+        "text": "Whispering in a library."
+      },
+      {
+        "id": "c",
+        "text": "Continuous honking in a traffic jam."
+      },
+      {
+        "id": "d",
+        "text": "Loud music from a concert near a residential area."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Whispering is a very low-intensity sound and is unlikely to cause noise pollution, unlike the other options which involve loud sounds.",
+    "difficulty": 14
+  },
+  {
+    "id": "sound-6th-q29",
+    "topicId": "sound-6th",
+    "text": "The text mentions that the flapping of a bee's or mosquito's wings produces a humming sound. This implies that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Their wings are very large."
+      },
+      {
+        "id": "b",
+        "text": "Their wings vibrate at a frequency that is audible to humans."
+      },
+      {
+        "id": "c",
+        "text": "Their wings create light."
+      },
+      {
+        "id": "d",
+        "text": "Their wings are made of a special sound-producing material."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "For a sound to be heard, the vibrations must be within the audible frequency range. The humming indicates their wing flaps are rapid enough to produce such vibrations.",
+    "difficulty": 16
+  },
+  {
+    "id": "sound-6th-q30",
+    "topicId": "sound-6th",
+    "text": "A person experiences mental exhaustion and difficulty concentrating after spending a day near a busy construction site. This is most likely due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Air pollution from the site."
+      },
+      {
+        "id": "b",
+        "text": "Lack of physical activity."
+      },
+      {
+        "id": "c",
+        "text": "Exposure to continuous noise pollution."
+      },
+      {
+        "id": "d",
+        "text": "Changes in weather."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter lists mental exhaustion and inability to work with concentration as effects of continuous noise, which is common at construction sites.",
+    "difficulty": 15
+  },
+  {
+    "id": "sound-6th-q31",
+    "topicId": "sound-6th",
+    "text": "If sound travels from a source to a listener, what is actually moving from the source to the listener?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Air particles physically travel the entire distance."
+      },
+      {
+        "id": "b",
+        "text": "The sound source itself moves to the listener."
+      },
+      {
+        "id": "c",
+        "text": "Energy in the form of vibrations is transferred through the medium."
+      },
+      {
+        "id": "d",
+        "text": "Light waves that carry sound information."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Sound propagation involves the transfer of energy through vibrations of particles in a medium. The particles themselves oscillate but do not travel the entire distance.",
+    "difficulty": 18
+  },
+  {
+    "id": "sound-6th-q32",
+    "topicId": "sound-6th",
+    "text": "When a metal dish falls on the floor, it makes a loud noise. The text suggests we can stop the noise by stopping the vibrations. How might one practically stop the vibrations of a fallen metal dish quickly?",
+    "options": [
+      {
+        "id": "a",
+        "text": "By covering it with a cloth."
+      },
+      {
+        "id": "b",
+        "text": "By pouring water on it."
+      },
+      {
+        "id": "c",
+        "text": "By firmly holding or damping it with hands or a soft object."
+      },
+      {
+        "id": "d",
+        "text": "By shouting at it to stop."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "To stop the sound, one must stop the vibrations. Holding the dish firmly or pressing a soft object against it will damp the vibrations and thus reduce or stop the noise.",
+    "difficulty": 18
+  },
+  {
+    "id": "sound-6th-q33",
+    "topicId": "sound-6th",
+    "text": "Imagine two identical guitars. One is in a room filled with normal air, and the other is in a room filled with Helium gas (sound travels faster in Helium than in air). If the same string is plucked identically on both guitars, what difference would a listener primarily notice about the pitch of the sound?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The pitch would be higher in the Helium-filled room."
+      },
+      {
+        "id": "b",
+        "text": "The pitch would be lower in the Helium-filled room."
+      },
+      {
+        "id": "c",
+        "text": "The pitch would be the same in both rooms."
+      },
+      {
+        "id": "d",
+        "text": "No sound would be heard in the Helium-filled room."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The pitch of the sound produced by a string depends on the string's properties (length, tension, mass per unit length), not the medium it travels through. The speed of sound in the medium affects wavelength, but the frequency (pitch) is determined by the source. The quality/timbre might sound different though.",
+    "difficulty": 20
+  },
+  {
+    "id": "sound-6th-q34",
+    "topicId": "sound-6th",
+    "text": "Why is it that you can often feel the vibrations of very low-pitched sounds (like from a subwoofer) in your chest, even if you can't hear them very clearly?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Low-pitched sounds travel faster."
+      },
+      {
+        "id": "b",
+        "text": "Low-frequency vibrations have large amplitudes and can cause physical resonance in the body."
+      },
+      {
+        "id": "c",
+        "text": "The eardrum is more sensitive to low pitches."
+      },
+      {
+        "id": "d",
+        "text": "Low-pitched sounds are always louder."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Very low-frequency sounds, especially if intense (large amplitude), can cause noticeable physical vibrations in objects and even the human body due to resonance, which can be felt.",
+    "difficulty": 19
+  },
+  {
+    "id": "sound-6th-q35",
+    "topicId": "sound-6th",
+    "text": "If a person is speaking and then covers their mouth with their hand, the sound becomes muffled. This is primarily because:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The hand changes the pitch of the voice."
+      },
+      {
+        "id": "b",
+        "text": "The hand stops the vocal cords from vibrating."
+      },
+      {
+        "id": "c",
+        "text": "The hand absorbs and obstructs some of the sound waves, reducing their intensity and altering their quality."
+      },
+      {
+        "id": "d",
+        "text": "The hand makes the sound travel faster."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The hand acts as a barrier, absorbing some sound energy and blocking the direct path of sound waves, leading to a muffled or less clear sound.",
+    "difficulty": 18
+  },
+  {
+    "id": "sound-6th-q36",
+    "topicId": "sound-6th",
+    "text": "The difference in speed of sound in different media (solid, liquid, gas) is primarily due to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The temperature of the media."
+      },
+      {
+        "id": "b",
+        "text": "The color of the media."
+      },
+      {
+        "id": "c",
+        "text": "The density and elasticity (how closely packed particles are and how quickly they return to position) of the media."
+      },
+      {
+        "id": "d",
+        "text": "The loudness of the sound source."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Sound travels faster in media where particles are closer together and can transmit vibrations more efficiently. Solids are generally denser and more elastic than liquids, and liquids more so than gases.",
+    "difficulty": 19
+  },
+  {
+    "id": "sound-6th-q37",
+    "topicId": "sound-6th",
+    "text": "A construction worker using a very loud jackhammer for extended periods should ideally wear hearing protection to prevent:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Damage to the jackhammer."
+      },
+      {
+        "id": "b",
+        "text": "Noise-induced hearing loss (NIHL)."
+      },
+      {
+        "id": "c",
+        "text": "Disturbing nearby birds."
+      },
+      {
+        "id": "d",
+        "text": "Causing the ground to vibrate excessively."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Prolonged exposure to very loud sounds, like those from a jackhammer, can cause permanent damage to the hearing organs, leading to noise-induced hearing loss.",
+    "difficulty": 18
+  },
+  {
+    "id": "sound-6th-q38",
+    "topicId": "sound-6th",
+    "text": "When you tune a radio to a specific station, you are essentially matching the radio's receiver circuit to the ________ of the radio waves broadcast by that station.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Loudness"
+      },
+      {
+        "id": "b",
+        "text": "Frequency"
+      },
+      {
+        "id": "c",
+        "text": "Speed"
+      },
+      {
+        "id": "d",
+        "text": "Source location"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Radio stations broadcast at specific frequencies. Tuning a radio involves adjusting its internal circuits to resonate with or receive signals at that particular frequency.",
+    "difficulty": 20
+  },
+  {
+    "id": "sound-6th-q39",
+    "topicId": "sound-6th",
+    "text": "Some animals, like bats and dolphins, use echolocation. This process relies on their ability to produce sounds and then interpret the ________ of those sounds.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Color"
+      },
+      {
+        "id": "b",
+        "text": "Taste"
+      },
+      {
+        "id": "c",
+        "text": "Echoes (reflected sound waves)"
+      },
+      {
+        "id": "d",
+        "text": "Smell"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Echolocation involves emitting sound waves and listening for the echoes that bounce off objects to navigate and locate prey. This concept is an extension of sound propagation and reflection.",
+    "difficulty": 19
+  },
+  {
+    "id": "sound-6th-q40",
+    "topicId": "sound-6th",
+    "text": "If a sound wave travels from air into water, which of its properties will change?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only its frequency."
+      },
+      {
+        "id": "b",
+        "text": "Only its speed."
+      },
+      {
+        "id": "c",
+        "text": "Its speed and wavelength."
+      },
+      {
+        "id": "d",
+        "text": "Its frequency, speed, and wavelength."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When sound enters a new medium, its speed changes. Since frequency is determined by the source and remains constant, the wavelength must change (speed = frequency x wavelength).",
+    "difficulty": 20
+  },
+  {
+    "id": "sound-6th-q41",
+    "topicId": "sound-6th",
+    "text": "A marching band is playing music. If the drummers start hitting their drums harder, the primary change in the sound of the drums will be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "An increase in pitch."
+      },
+      {
+        "id": "b",
+        "text": "A decrease in loudness."
+      },
+      {
+        "id": "c",
+        "text": "An increase in loudness (intensity)."
+      },
+      {
+        "id": "d",
+        "text": "A change in the rhythm."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Hitting the drums harder causes the drumheads to vibrate with a larger amplitude, resulting in a louder sound (greater intensity).",
+    "difficulty": 18
+  },
+  {
+    "id": "sound-6th-q42",
+    "topicId": "sound-6th",
+    "text": "Why can an astronaut on the Moon not hear another astronaut speaking nearby, even if they shout, without using radio communication?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The spacesuits block all sound."
+      },
+      {
+        "id": "b",
+        "text": "The Moon has no atmosphere, so there is no medium for sound to travel."
+      },
+      {
+        "id": "c",
+        "text": "The sounds are too soft to travel far on the Moon."
+      },
+      {
+        "id": "d",
+        "text": "Gravity on the Moon is too weak for sound propagation."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Moon has virtually no atmosphere, meaning it's a near vacuum. Sound requires a medium (like air) to propagate, so sound cannot travel directly between astronauts.",
+    "difficulty": 19
+  },
+  {
+    "id": "sound-6th-q43",
+    "topicId": "sound-6th",
+    "text": "A tuning fork, when struck, produces a pure musical tone. This is because it vibrates:",
+    "options": [
+      {
+        "id": "a",
+        "text": "At many different frequencies simultaneously."
+      },
+      {
+        "id": "b",
+        "text": "Very slowly and irregularly."
+      },
+      {
+        "id": "c",
+        "text": "Primarily at a single, specific frequency with regular oscillations."
+      },
+      {
+        "id": "d",
+        "text": "Only when heated to a high temperature."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Tuning forks are designed to vibrate at a very specific, stable frequency, producing a pure tone, unlike more complex sounds or noises which have many irregular frequencies.",
+    "difficulty": 20
+  },
+  {
+    "id": "sound-6th-q44",
+    "topicId": "sound-6th",
+    "text": "The phenomenon where sound waves bend around obstacles or spread out through small openings is known as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection"
+      },
+      {
+        "id": "b",
+        "text": "Refraction"
+      },
+      {
+        "id": "c",
+        "text": "Diffraction"
+      },
+      {
+        "id": "d",
+        "text": "Absorption"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Diffraction is the bending of waves (including sound waves) around the corners of an obstacle or through an aperture into the region of geometrical shadow of the obstacle/aperture.",
+    "difficulty": 20
+  },
+  {
+    "id": "sound-6th-q45",
+    "topicId": "sound-6th",
+    "text": "If a siren's sound seems to get higher in pitch as it approaches you and lower as it moves away, this change in perceived frequency is due to the:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Doppler effect"
+      },
+      {
+        "id": "b",
+        "text": "Photoelectric effect"
+      },
+      {
+        "id": "c",
+        "text": "Greenhouse effect"
+      },
+      {
+        "id": "d",
+        "text": "Echo effect"
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "The Doppler effect describes the change in frequency or wavelength of a wave in relation to an observer who is moving relative to the wave source.",
+    "difficulty": 19
+  },
+  {
+    "id": "sound-6th-q46",
+    "topicId": "sound-6th",
+    "text": "The range of human hearing is typically considered to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "0 Hz to 100 Hz"
+      },
+      {
+        "id": "b",
+        "text": "20 Hz to 20,000 Hz"
+      },
+      {
+        "id": "c",
+        "text": "1,000 Hz to 50,000 Hz"
+      },
+      {
+        "id": "d",
+        "text": "20,000 Hz to 100,000 Hz"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "This is a generally accepted range for healthy young human hearing. This information is general science knowledge related to sound.",
+    "difficulty": 15
+  },
+  {
+    "id": "sound-6th-q47",
+    "topicId": "sound-6th",
+    "text": "The property of a sound wave that determines its loudness is its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Frequency"
+      },
+      {
+        "id": "b",
+        "text": "Wavelength"
+      },
+      {
+        "id": "c",
+        "text": "Speed"
+      },
+      {
+        "id": "d",
+        "text": "Amplitude"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The amplitude of a sound wave corresponds to the intensity or energy of the wave, which is perceived as loudness. This is a fundamental concept in wave physics.",
+    "difficulty": 16
+  },
+  {
+    "id": "sound-6th-q48",
+    "topicId": "sound-6th",
+    "text": "The property of a sound wave that determines its pitch (how high or low the sound is) is its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Amplitude"
+      },
+      {
+        "id": "b",
+        "text": "Frequency"
+      },
+      {
+        "id": "c",
+        "text": "Speed"
+      },
+      {
+        "id": "d",
+        "text": "Timbre"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Frequency, the number of vibrations per second, determines the pitch of a sound. Higher frequency means higher pitch. This is a key concept in understanding sound.",
+    "difficulty": 16
+  },
+  {
+    "id": "sound-6th-q49",
+    "topicId": "sound-6th",
+    "text": "An echo is produced when sound waves:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Are absorbed by a surface."
+      },
+      {
+        "id": "b",
+        "text": "Pass through a surface."
+      },
+      {
+        "id": "c",
+        "text": "Are reflected from a hard surface."
+      },
+      {
+        "id": "d",
+        "text": "Interfere with each other."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Echoes are a result of the reflection of sound waves from a surface back to the listener. This is a common phenomenon related to sound behavior.",
+    "difficulty": 15
+  },
+  {
+    "id": "sound-6th-q50",
+    "topicId": "sound-6th",
+    "text": "Sound waves are an example of which type of mechanical wave?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Transverse waves"
+      },
+      {
+        "id": "b",
+        "text": "Longitudinal waves"
+      },
+      {
+        "id": "c",
+        "text": "Electromagnetic waves"
+      },
+      {
+        "id": "d",
+        "text": "Surface waves"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In longitudinal waves, the particles of the medium vibrate parallel to the direction of wave propagation. Sound waves in air and fluids are longitudinal. This is a classification of waves.",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q001",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Objects or materials that emit their own light are called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-luminous objects"
+      },
+      {
+        "id": "b",
+        "text": "Opaque objects"
+      },
+      {
+        "id": "c",
+        "text": "Luminous objects or materials"
+      },
+      {
+        "id": "d",
+        "text": "Translucent objects"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The objects or materials which emit light, meaning those which themselves are a source of light, are called luminous objects or materials. (Page 97)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q002",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Which of the following is a natural source of light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An electric torch"
+      },
+      {
+        "id": "b",
+        "text": "A candle"
+      },
+      {
+        "id": "c",
+        "text": "The Sun"
+      },
+      {
+        "id": "d",
+        "text": "A lantern"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Sun is the main natural source of light. (Page 97)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q003",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Objects or materials that are not sources of light themselves are called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Luminous objects"
+      },
+      {
+        "id": "b",
+        "text": "Artificial sources of light"
+      },
+      {
+        "id": "c",
+        "text": "Non-luminous objects or materials"
+      },
+      {
+        "id": "d",
+        "text": "Primary sources of light"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The objects or materials that are not sources of light themselves, are called non-luminous objects or materials. (Page 97)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q004",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The phenomenon of light traveling in a straight line is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection of light"
+      },
+      {
+        "id": "b",
+        "text": "Refraction of light"
+      },
+      {
+        "id": "c",
+        "text": "Linear propagation of light"
+      },
+      {
+        "id": "d",
+        "text": "Dispersion of light"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Light travels in a straight line. This is called the linear propagation of light. (Page 98)",
+    "difficulty": 12
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q005",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "When light rays falling on an object are thrown back from its surface, this phenomenon is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Absorption of light"
+      },
+      {
+        "id": "b",
+        "text": "Reflection of light"
+      },
+      {
+        "id": "c",
+        "text": "Refraction of light"
+      },
+      {
+        "id": "d",
+        "text": "Diffraction of light"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The rays of light falling on an object from a source of light are thrown back from the surface of that object. This is called reflection of light. (Page 98)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q006",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "How do we see non-luminous objects?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They emit their own faint light."
+      },
+      {
+        "id": "b",
+        "text": "When light from a source reflects off them and reaches our eyes."
+      },
+      {
+        "id": "c",
+        "text": "Our eyes emit special rays that illuminate them."
+      },
+      {
+        "id": "d",
+        "text": "They absorb all light and appear dark."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "We see the object when the reflected rays from the object reach our eyes. (Page 98)",
+    "difficulty": 12
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q007",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "When you raise your right hand in front of a plane mirror, which hand of your image appears to be raised?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Right hand"
+      },
+      {
+        "id": "b",
+        "text": "Left hand"
+      },
+      {
+        "id": "c",
+        "text": "Both hands"
+      },
+      {
+        "id": "d",
+        "text": "Neither hand"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When you raise your right hand, the mirror image raises its left hand. This is lateral inversion. (Page 99)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q008",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A material through which light passes completely is said to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Opaque"
+      },
+      {
+        "id": "b",
+        "text": "Translucent"
+      },
+      {
+        "id": "c",
+        "text": "Transparent"
+      },
+      {
+        "id": "d",
+        "text": "Luminous"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The material through which light passes is said to be transparent. (Page 100)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q009",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A material through which light does not pass at all is said to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Transparent"
+      },
+      {
+        "id": "b",
+        "text": "Translucent"
+      },
+      {
+        "id": "c",
+        "text": "Opaque"
+      },
+      {
+        "id": "d",
+        "text": "Reflective"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The material through which light does not pass is said to be opaque. (Page 100)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q010",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "What is formed when an opaque object obstructs the path of light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An image"
+      },
+      {
+        "id": "b",
+        "text": "A reflection"
+      },
+      {
+        "id": "c",
+        "text": "A shadow"
+      },
+      {
+        "id": "d",
+        "text": "A rainbow"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "If an opaque object comes in the way of a light source, light does not pass through it. The dark part formed on the other side is called the ‘shadow of the object’. (Page 101)",
+    "difficulty": 12
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q011",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Which of these is an artificial source of light?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Sun"
+      },
+      {
+        "id": "b",
+        "text": "Fireflies"
+      },
+      {
+        "id": "c",
+        "text": "A burning candle"
+      },
+      {
+        "id": "d",
+        "text": "Honey mushroom"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Some man-made objects or materials also emit light. These are called artificial sources of light. A burning candle is man-made. (Page 97)",
+    "difficulty": 11
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q012",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The image seen in a pinhole camera is typically:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Erect and larger"
+      },
+      {
+        "id": "b",
+        "text": "Inverted (upside down) and can be smaller or larger"
+      },
+      {
+        "id": "c",
+        "text": "Erect and same size"
+      },
+      {
+        "id": "d",
+        "text": "Inverted and brighter than the object"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In a pinhole camera, you will see an upside down or inverted image of the flame. The size depends on distances. (Page 100)",
+    "difficulty": 13
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q013",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The size of an image in a plane mirror compared to the object is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Always larger"
+      },
+      {
+        "id": "b",
+        "text": "Always smaller"
+      },
+      {
+        "id": "c",
+        "text": "The same size"
+      },
+      {
+        "id": "d",
+        "text": "Varies with distance"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The size of the image in a plane mirror is the same as that of the object. (Page 99)",
+    "difficulty": 12
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q014",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A material through which light passes partially is said to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Transparent"
+      },
+      {
+        "id": "b",
+        "text": "Translucent"
+      },
+      {
+        "id": "c",
+        "text": "Opaque"
+      },
+      {
+        "id": "d",
+        "text": "Luminous"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The material through which light passes partially is said to be translucent. (Page 100)",
+    "difficulty": 13
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q015",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The kind of shadow formed depends on the relative distances between:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The object and the observer only"
+      },
+      {
+        "id": "b",
+        "text": "The source of light and the observer only"
+      },
+      {
+        "id": "c",
+        "text": "The source of light, the object, and the surface/screen"
+      },
+      {
+        "id": "d",
+        "text": "The object and the surface/screen only"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The kind of shadow it forms depends upon the relative distances between the source of light, the object and the surface or the screen on which the shadow is formed. (Page 101)",
+    "difficulty": 13
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q016",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "How does the length of a shadow formed by sunlight typically change from morning to noon?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It remains the same."
+      },
+      {
+        "id": "b",
+        "text": "It becomes longer."
+      },
+      {
+        "id": "c",
+        "text": "It becomes shorter."
+      },
+      {
+        "id": "d",
+        "text": "It disappears completely."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The shadow of an object formed due to sunlight is long in the mornings and evenings and short in the afternoon (noon). (Page 101)",
+    "difficulty": 14
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q017",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "What is a sundial?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A device that creates artificial sunlight."
+      },
+      {
+        "id": "b",
+        "text": "An instrument that indicates time using the shadow of an object formed in sunlight."
+      },
+      {
+        "id": "c",
+        "text": "A type of lamp that uses solar power."
+      },
+      {
+        "id": "d",
+        "text": "A mirror that reflects sunlight intensely."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A sundial is an instrument that indicates the time with the help of the extent and the direction of the shadow of an object formed in sunlight. (Page 102)",
+    "difficulty": 15
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q018",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The 'Raman Effect' discovered by Sir C. V. Raman is related to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The formation of shadows"
+      },
+      {
+        "id": "b",
+        "text": "The scattering of light"
+      },
+      {
+        "id": "c",
+        "text": "The speed of light"
+      },
+      {
+        "id": "d",
+        "text": "The reflection of light in mirrors"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The research work presented by the Indian scientist Sir C. V. Raman regarding scattering of light is known as the ‘Raman Effect’. (Page 102)",
+    "difficulty": 14
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q019",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Newton's disc demonstrates that white sunlight is made of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only three primary colors"
+      },
+      {
+        "id": "b",
+        "text": "Only black and white light"
+      },
+      {
+        "id": "c",
+        "text": "Seven colors (red, orange, yellow, green, blue, indigo, violet)"
+      },
+      {
+        "id": "d",
+        "text": "A single type of white light particle"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Newton's disc had seven petals of the seven colors. When rotated fast, it appeared white, proving that sunlight is made of seven colors. (Page 103)",
+    "difficulty": 15
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q020",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Which of these is an example of a translucent object?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A clear glass pane"
+      },
+      {
+        "id": "b",
+        "text": "A wooden door"
+      },
+      {
+        "id": "c",
+        "text": "Wax paper or tinted glass"
+      },
+      {
+        "id": "d",
+        "text": "A mirror"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Wax paper and tinted glass are listed as examples of translucent objects, through which light passes partially. (Page 100)",
+    "difficulty": 16
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q021",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The phenomenon where light bends as it passes from one medium to another (e.g., from air to water) is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection"
+      },
+      {
+        "id": "b",
+        "text": "Refraction"
+      },
+      {
+        "id": "c",
+        "text": "Diffraction"
+      },
+      {
+        "id": "d",
+        "text": "Dispersion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Refraction is the bending of light as it passes from one transparent substance into another. While not explicitly detailed, it's a fundamental property of light often discussed alongside reflection. (Out of PDF but related)",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q022",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The moon is a non-luminous object. We see it because:",
+    "options": [
+      {
+        "id": "a",
+        "text": "It generates its own faint light."
+      },
+      {
+        "id": "b",
+        "text": "It reflects sunlight."
+      },
+      {
+        "id": "c",
+        "text": "It refracts light from distant stars."
+      },
+      {
+        "id": "d",
+        "text": "It is transparent to starlight."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Planets, satellites are non-luminous. Sunlight reflected from the surface of the moon reaches us. That is how we can see the moon. (Page 98, Do you know? section)",
+    "difficulty": 16
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q023",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "If you stand 2 meters in front of a plane mirror, your image will appear to be:",
+    "options": [
+      {
+        "id": "a",
+        "text": "1 meter behind the mirror"
+      },
+      {
+        "id": "b",
+        "text": "2 meters behind the mirror"
+      },
+      {
+        "id": "c",
+        "text": "4 meters behind the mirror"
+      },
+      {
+        "id": "d",
+        "text": "At the surface of the mirror"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The image in a plane mirror is as far behind the mirror as the object is in front of it. (Page 99)",
+    "difficulty": 16
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q024",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A periscope allows you to see over obstacles. It works using:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Lenses to magnify the image."
+      },
+      {
+        "id": "b",
+        "text": "A single curved mirror."
+      },
+      {
+        "id": "c",
+        "text": "Two or more plane mirrors to reflect light around corners."
+      },
+      {
+        "id": "d",
+        "text": "A pinhole to form an inverted image."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Periscopes typically use a system of mirrors (often plane mirrors at 45-degree angles) to reflect light and allow viewing around obstacles. (Out of PDF but related to reflection from plane mirrors)",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q025",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The beautiful colors seen in soap bubbles or on a CD are due to a phenomenon called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Simple reflection"
+      },
+      {
+        "id": "b",
+        "text": "Shadow formation"
+      },
+      {
+        "id": "c",
+        "text": "Interference and diffraction of light (dispersion in thin films)"
+      },
+      {
+        "id": "d",
+        "text": "Linear propagation"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The colors in soap bubbles and on CDs are due to the interference of light waves reflecting off the different surfaces of thin films, and diffraction from the fine grooves on a CD. The text mentions seeing rainbow colours in soap bubbles and on a CD. (Page 102, Let's try this)",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q026",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Which property of light is primarily responsible for the formation of an image in a pinhole camera?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection of light"
+      },
+      {
+        "id": "b",
+        "text": "Scattering of light"
+      },
+      {
+        "id": "c",
+        "text": "Linear propagation of light"
+      },
+      {
+        "id": "d",
+        "text": "Dispersion of light"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A pinhole camera works because light travels in straight lines. Light rays from different parts of an object pass through the tiny hole and form an inverted image on the screen. (Page 100 concept)",
+    "difficulty": 18
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q027",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "If you place a very small opaque object very close to a large light source, the shadow formed will likely have:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Very sharp edges and be much larger than the object."
+      },
+      {
+        "id": "b",
+        "text": "Fuzzy edges (penumbra) and be roughly the same size as the object."
+      },
+      {
+        "id": "c",
+        "text": "No shadow will be formed."
+      },
+      {
+        "id": "d",
+        "text": "A very small, sharp shadow."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A large (extended) light source will cause a central dark shadow (umbra) and a lighter, fuzzy outer shadow (penumbra) due to light from different parts of the source being blocked. The closeness affects size and sharpness. (General shadow properties, extending Page 101 concepts)",
+    "difficulty": 19
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q028",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "What causes a rainbow to form after rain?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection of sunlight from clouds."
+      },
+      {
+        "id": "b",
+        "text": "Dispersion and total internal reflection of sunlight by raindrops."
+      },
+      {
+        "id": "c",
+        "text": "Scattering of sunlight by dust particles."
+      },
+      {
+        "id": "d",
+        "text": "Shadows cast by clouds."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Rainbows are formed when sunlight is refracted (bent), dispersed (split into colors), and internally reflected by water droplets in the air. (Related to Newton's disc and dispersion concept, Page 103).",
+    "difficulty": 19
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q029",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A concave mirror can form a real, inverted image if the object is placed beyond its focal point. A plane mirror always forms:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A real, inverted image"
+      },
+      {
+        "id": "b",
+        "text": "A virtual, erect image"
+      },
+      {
+        "id": "c",
+        "text": "A real, erect image"
+      },
+      {
+        "id": "d",
+        "text": "A virtual, inverted image"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Plane mirrors always form virtual (cannot be caught on a screen), erect (upright), and laterally inverted images of the same size as the object. (Page 99 characteristics).",
+    "difficulty": 18
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q030",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The path of light becomes visible when it passes through a medium containing dust particles because the dust particles:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Absorb the light completely."
+      },
+      {
+        "id": "b",
+        "text": "Refract the light in a single direction."
+      },
+      {
+        "id": "c",
+        "text": "Scatter the light in various directions, some of which reach our eyes."
+      },
+      {
+        "id": "d",
+        "text": "Amplify the light."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When light rays from a slit or hole move towards the floor, the dust particles in their way are seen clearly. Due to these particles, the path of the light becomes visible. This is due to scattering. (Page 97)",
+    "difficulty": 20
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q031",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Which of the following statements about shadows is INCORRECT?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Shadows are formed when an opaque object blocks light."
+      },
+      {
+        "id": "b",
+        "text": "The size of a shadow can change depending on the distance of the object from the light source."
+      },
+      {
+        "id": "c",
+        "text": "Transparent objects cast dark shadows."
+      },
+      {
+        "id": "d",
+        "text": "Shadows are always formed on the side opposite to the light source."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Transparent objects allow light to pass through them, so they do not cast dark shadows. Opaque objects cast shadows. (Page 100-101)",
+    "difficulty": 18
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q032",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The phenomenon of 'lateral inversion' in a plane mirror means:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The image is upside down."
+      },
+      {
+        "id": "b",
+        "text": "The image is smaller than the object."
+      },
+      {
+        "id": "c",
+        "text": "The left side of the object appears as the right side of the image, and vice versa."
+      },
+      {
+        "id": "d",
+        "text": "The image is formed in front of the mirror."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The left and right sides of the original object appear to be exchanged in the mirror image. This is lateral inversion. (Page 99)",
+    "difficulty": 19
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q033",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Which of these is NOT a characteristic of the image formed by a plane mirror?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The image is virtual."
+      },
+      {
+        "id": "b",
+        "text": "The image is the same size as the object."
+      },
+      {
+        "id": "c",
+        "text": "The image is inverted (upside down)."
+      },
+      {
+        "id": "d",
+        "text": "The image is as far behind the mirror as the object is in front."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Images in a plane mirror are erect (upright), not inverted. They are virtual, same size, and laterally inverted, and at the same distance behind the mirror. (Page 99)",
+    "difficulty": 18
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q034",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "An eclipse (solar or lunar) is a phenomenon caused by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection of light from planets."
+      },
+      {
+        "id": "b",
+        "text": "The formation of shadows of celestial bodies."
+      },
+      {
+        "id": "c",
+        "text": "Scattering of light in the atmosphere."
+      },
+      {
+        "id": "d",
+        "text": "Refraction of light through space."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Eclipses occur when one celestial body casts a shadow on another. For example, a solar eclipse is when the Moon's shadow falls on Earth. (Out of PDF but related to shadows and celestial bodies)",
+    "difficulty": 19
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q035",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The experiment with three cardboards with holes in a line, and a candle, demonstrates that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Light can bend around corners easily."
+      },
+      {
+        "id": "b",
+        "text": "Light travels in straight lines (linear propagation)."
+      },
+      {
+        "id": "c",
+        "text": "Light is made of seven colors."
+      },
+      {
+        "id": "d",
+        "text": "Candle flame requires air to burn."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The candle flame is only visible when the holes are aligned, showing that light from the flame travels in a straight line through the holes. (Page 98)",
+    "difficulty": 20
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q036",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A frosted glass window pane would be classified as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Transparent"
+      },
+      {
+        "id": "b",
+        "text": "Translucent"
+      },
+      {
+        "id": "c",
+        "text": "Opaque"
+      },
+      {
+        "id": "d",
+        "text": "Luminous"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Frosted glass allows some light to pass through but scatters it, so you cannot see clearly through it. This makes it translucent. (Page 100 examples like tinted glass)",
+    "difficulty": 18
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q037",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The primary colors of light are:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Red, yellow, blue"
+      },
+      {
+        "id": "b",
+        "text": "Red, green, blue"
+      },
+      {
+        "id": "c",
+        "text": "Cyan, magenta, yellow"
+      },
+      {
+        "id": "d",
+        "text": "Orange, green, violet"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The additive primary colors of light are red, green, and blue (RGB). When mixed in various proportions, they can create a wide spectrum of other colors, including white. (Out of PDF, but fundamental to light and color).",
+    "difficulty": 19
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q038",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "If an object appears red, it means that it primarily:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Absorbs red light and reflects other colors."
+      },
+      {
+        "id": "b",
+        "text": "Reflects red light and absorbs other colors."
+      },
+      {
+        "id": "c",
+        "text": "Emits red light on its own."
+      },
+      {
+        "id": "d",
+        "text": "Transmits red light and absorbs other colors."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The color of a non-luminous opaque object is determined by the color of light it reflects. A red object reflects red light and absorbs most other colors of the incident white light. (Out of PDF, but relates to how we see objects and reflection).",
+    "difficulty": 20
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q039",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The speed of light in a vacuum is approximately:",
+    "options": [
+      {
+        "id": "a",
+        "text": "300,000 kilometers per hour"
+      },
+      {
+        "id": "b",
+        "text": "300,000 meters per second"
+      },
+      {
+        "id": "c",
+        "text": "300,000 kilometers per second"
+      },
+      {
+        "id": "d",
+        "text": "3,000 meters per second"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The speed of light in a vacuum is a universal constant, approximately 299,792,458 meters per second, often rounded to 300,000 kilometers per second or 3 x 10^8 m/s. (Out of PDF, fundamental physics constant).",
+    "difficulty": 19
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q040",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "What is the umbra in the context of a shadow?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The lightest part of a shadow."
+      },
+      {
+        "id": "b",
+        "text": "The fully shaded, darkest inner region of a shadow."
+      },
+      {
+        "id": "c",
+        "text": "The blurry edge of a shadow."
+      },
+      {
+        "id": "d",
+        "text": "The object casting the shadow."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The umbra is the darkest, central part of a shadow where the light source is completely blocked by the occluding body. (Out of PDF, standard shadow terminology).",
+    "difficulty": 20
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q041",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Why is the sky blue on a clear day?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Because the ocean reflects blue light into the sky."
+      },
+      {
+        "id": "b",
+        "text": "Due to Rayleigh scattering of sunlight by air molecules, which scatters blue light more than red light."
+      },
+      {
+        "id": "c",
+        "text": "Because the sun primarily emits blue light."
+      },
+      {
+        "id": "d",
+        "text": "Because the atmosphere absorbs all colors except blue."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The blue color of the sky is due to Rayleigh scattering. As sunlight passes through the atmosphere, the tiny air molecules scatter blue light more effectively than other colors because blue light travels as shorter, smaller waves. (Out of PDF, relates to scattering of light mentioned with Raman Effect).",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q042",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "A lens that is thicker in the middle and thinner at the edges is called a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Concave lens"
+      },
+      {
+        "id": "b",
+        "text": "Convex lens (converging lens)"
+      },
+      {
+        "id": "c",
+        "text": "Plane lens"
+      },
+      {
+        "id": "d",
+        "text": "Prism"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A convex lens is thicker at the center than at the edges and converges parallel rays of light. (Out of PDF, but related to optical instruments).",
+    "difficulty": 16
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q043",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The unit for measuring the intensity of light is often:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Decibel"
+      },
+      {
+        "id": "b",
+        "text": "Hertz"
+      },
+      {
+        "id": "c",
+        "text": "Candela or Lux"
+      },
+      {
+        "id": "d",
+        "text": "Newton"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Luminous intensity is measured in candelas (cd), and illuminance (light falling on a surface) is measured in lux (lx). The text mentions intensity of light. (Page 97).",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q044",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "An object that emits light because it is very hot (e.g., the filament of an incandescent bulb) is undergoing a process called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Fluorescence"
+      },
+      {
+        "id": "b",
+        "text": "Phosphorescence"
+      },
+      {
+        "id": "c",
+        "text": "Incandescence"
+      },
+      {
+        "id": "d",
+        "text": "Chemiluminescence"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Incandescence is the emission of light (visible electromagnetic radiation) from a hot body as a result of its high temperature. (Out of PDF, related to sources of light).",
+    "difficulty": 18
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q045",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The splitting of white light into its constituent colors when passed through a prism is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Reflection"
+      },
+      {
+        "id": "b",
+        "text": "Diffraction"
+      },
+      {
+        "id": "c",
+        "text": "Dispersion"
+      },
+      {
+        "id": "d",
+        "text": "Interference"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Dispersion is the phenomenon where white light splits into its spectrum of colors (like in a rainbow or through a prism). (Page 103 Newton's disc and Page 104 exercise).",
+    "difficulty": 17
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q046",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "An example of a bioluminescent organism (natural source of light) is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A rock"
+      },
+      {
+        "id": "b",
+        "text": "A firefly"
+      },
+      {
+        "id": "c",
+        "text": "A mirror"
+      },
+      {
+        "id": "d",
+        "text": "A diamond"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Fireflies are mentioned as natural sources of light due to bioluminescence. (Page 97)",
+    "difficulty": 14
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q047",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "What type of material is a piece of clear glass?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Opaque"
+      },
+      {
+        "id": "b",
+        "text": "Translucent"
+      },
+      {
+        "id": "c",
+        "text": "Transparent"
+      },
+      {
+        "id": "d",
+        "text": "Luminous"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A piece of glass is listed as an example of a transparent object. (Page 100)",
+    "difficulty": 14
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q048",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "The National Science Day in India is celebrated on 28th February to commemorate:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The invention of the sundial."
+      },
+      {
+        "id": "b",
+        "text": "The discovery of the Raman Effect by Sir C. V. Raman."
+      },
+      {
+        "id": "c",
+        "text": "Sir Isaac Newton's birthday."
+      },
+      {
+        "id": "d",
+        "text": "The first successful pinhole camera experiment."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "To commemorate the discovery of the Raman Effect on 28th February 1928, this day is celebrated as ‘National Science Day’ since 1987 in India. (Page 102)",
+    "difficulty": 16
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q049",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "When making hand shadows of birds or animals, what acts as the opaque object?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The light source"
+      },
+      {
+        "id": "b",
+        "text": "Your hands"
+      },
+      {
+        "id": "c",
+        "text": "The screen or wall"
+      },
+      {
+        "id": "d",
+        "text": "The air"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In making hand shadows, your hands are the opaque objects that block the light to form the shadow shapes. (Page 102, A little fun!)",
+    "difficulty": 15
+  },
+  {
+    "id": "light-and-the-formation-of-shadows-6th-q050",
+    "topicId": "light-and-the-formation-of-shadows-6th",
+    "text": "Why is it generally not advisable to look directly at the sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It can cause shadows to form in your eyes."
+      },
+      {
+        "id": "b",
+        "text": "The intense light and UV radiation can damage your eyes."
+      },
+      {
+        "id": "c",
+        "text": "It makes you see colors incorrectly."
+      },
+      {
+        "id": "d",
+        "text": "It can make you feel cold."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Looking directly at the sun can expose your eyes to harmful levels of ultraviolet (UV) radiation and intense visible light, potentially causing serious and permanent damage to the retina. (Out of PDF, but crucial safety information related to the sun as a light source).",
+    "difficulty": 15
+  },
+  {
+    "id": "fun-with-magnets-6th-q1",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What is the property called when materials like iron, nickel, or cobalt get attracted to a magnet?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Electricity"
+      },
+      {
+        "id": "b",
+        "text": "Gravity"
+      },
+      {
+        "id": "c",
+        "text": "Magnetism"
+      },
+      {
+        "id": "d",
+        "text": "Friction"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter defines the property of a material, like iron, getting attracted to a magnet as 'magnetism'.",
+    "difficulty": 11
+  },
+  {
+    "id": "fun-with-magnets-6th-q2",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Materials that stick to a magnet are called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Non-magnetic materials"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic materials"
+      },
+      {
+        "id": "c",
+        "text": "Insulators"
+      },
+      {
+        "id": "d",
+        "text": "Conductors"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The text explicitly states that materials that stick to a magnet are called 'magnetic materials'.",
+    "difficulty": 11
+  },
+  {
+    "id": "fun-with-magnets-6th-q3",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Which of the following is an example of a non-magnetic material mentioned in the context of classifying objects?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Iron filings"
+      },
+      {
+        "id": "b",
+        "text": "Nickel"
+      },
+      {
+        "id": "c",
+        "text": "Cobalt"
+      },
+      {
+        "id": "d",
+        "text": "Pieces of paper"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "The experiment involves taking a mixture including pieces of paper, which do not stick to the magnet, classifying them as non-magnetic.",
+    "difficulty": 12
+  },
+  {
+    "id": "fun-with-magnets-6th-q4",
+    "topicId": "fun-with-magnets-6th",
+    "text": "According to the legend, who is credited with the discovery of natural magnets (magnetite)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Isaac Newton"
+      },
+      {
+        "id": "b",
+        "text": "Magnes, a shepherd"
+      },
+      {
+        "id": "c",
+        "text": "Michael Faraday"
+      },
+      {
+        "id": "d",
+        "text": "Albert Einstein"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter recounts the legend of a shepherd named Magnes who discovered magnetite when his iron-tipped staff and shoes stuck to a rock.",
+    "difficulty": 11
+  },
+  {
+    "id": "fun-with-magnets-6th-q5",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What were lodestones (natural magnetite rocks) historically used for?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Building houses"
+      },
+      {
+        "id": "b",
+        "text": "Making jewelry"
+      },
+      {
+        "id": "c",
+        "text": "Finding directions while travelling"
+      },
+      {
+        "id": "d",
+        "text": "Starting fires"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text explains that lodestones, when hung freely, always settled in the north-south direction and were used for finding directions, leading to the invention of the mariner's compass.",
+    "difficulty": 12
+  },
+  {
+    "id": "fun-with-magnets-6th-q6",
+    "topicId": "fun-with-magnets-6th",
+    "text": "If a bar magnet is suspended freely, in which direction will it typically settle?",
+    "options": [
+      {
+        "id": "a",
+        "text": "East-West"
+      },
+      {
+        "id": "b",
+        "text": "North-South"
+      },
+      {
+        "id": "c",
+        "text": "It will point randomly."
+      },
+      {
+        "id": "d",
+        "text": "It will point towards the largest nearby metal object."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A key characteristic of magnets is that 'A magnet always settles in the north-south direction' when suspended freely.",
+    "difficulty": 11
+  },
+  {
+    "id": "fun-with-magnets-6th-q7",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The end of a freely suspended magnet that points towards the geographic north is called its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "South pole"
+      },
+      {
+        "id": "b",
+        "text": "East pole"
+      },
+      {
+        "id": "c",
+        "text": "North pole"
+      },
+      {
+        "id": "d",
+        "text": "West pole"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter states: 'The end of a magnet that points to the north is called the north pole...'",
+    "difficulty": 11
+  },
+  {
+    "id": "fun-with-magnets-6th-q8",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Where is the magnetic force of a bar magnet typically most concentrated?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Evenly throughout the magnet"
+      },
+      {
+        "id": "b",
+        "text": "At its center"
+      },
+      {
+        "id": "c",
+        "text": "At its two ends or poles"
+      },
+      {
+        "id": "d",
+        "text": "Only at the north pole"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The experiment with iron filings shows that 'The magnetic force is concentrated at the two ends or poles of a magnet.'",
+    "difficulty": 12
+  },
+  {
+    "id": "fun-with-magnets-6th-q9",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What happens if a bar magnet is cut into two pieces?",
+    "options": [
+      {
+        "id": "a",
+        "text": "One piece becomes a north pole, the other a south pole."
+      },
+      {
+        "id": "b",
+        "text": "Both pieces lose their magnetism."
+      },
+      {
+        "id": "c",
+        "text": "Two independent magnets are formed, each with a north and south pole."
+      },
+      {
+        "id": "d",
+        "text": "The pieces repel each other strongly."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text clarifies: 'If a magnet is divided into two parts, two independent magnets are formed. It means that the two poles of a magnet cannot be separated from each other.'",
+    "difficulty": 13
+  },
+  {
+    "id": "fun-with-magnets-6th-q10",
+    "topicId": "fun-with-magnets-6th",
+    "text": "When a magnetic material (like an iron bar) is placed near a strong magnet, it acquires magnetism. This phenomenon is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Permanent magnetism"
+      },
+      {
+        "id": "b",
+        "text": "Induced magnetism"
+      },
+      {
+        "id": "c",
+        "text": "Electromagnetism"
+      },
+      {
+        "id": "d",
+        "text": "Natural magnetism"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter defines this: 'A magnetic material acquires magnetism when placed near a magnet. This magnetism is called induced magnetism.'",
+    "difficulty": 13
+  },
+  {
+    "id": "fun-with-magnets-6th-q11",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What is the interaction between like poles of two magnets (e.g., North pole near North pole)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Attraction"
+      },
+      {
+        "id": "b",
+        "text": "Repulsion"
+      },
+      {
+        "id": "c",
+        "text": "No interaction"
+      },
+      {
+        "id": "d",
+        "text": "They both lose magnetism."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The text states: 'There is repulsion between like poles of a magnet...'",
+    "difficulty": 12
+  },
+  {
+    "id": "fun-with-magnets-6th-q12",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What is the interaction between opposite poles of two magnets (e.g., North pole near South pole)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Attraction"
+      },
+      {
+        "id": "b",
+        "text": "Repulsion"
+      },
+      {
+        "id": "c",
+        "text": "No interaction"
+      },
+      {
+        "id": "d",
+        "text": "They both gain magnetism."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "...while there is attraction between the opposite poles.",
+    "difficulty": 12
+  },
+  {
+    "id": "fun-with-magnets-6th-q13",
+    "topicId": "fun-with-magnets-6th",
+    "text": "How can a needle or nail be temporarily magnetized using a bar magnet?",
+    "options": [
+      {
+        "id": "a",
+        "text": "By heating the needle with the magnet."
+      },
+      {
+        "id": "b",
+        "text": "By rubbing the magnet over it repeatedly in one direction."
+      },
+      {
+        "id": "c",
+        "text": "By soaking the needle in water with the magnet."
+      },
+      {
+        "id": "d",
+        "text": "By hitting the needle with the magnet."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter describes the method: 'Keep on rubbing a magnet over it from one end to the other. Do this 7-8 times.' This creates temporary magnetism.",
+    "difficulty": 13
+  },
+  {
+    "id": "fun-with-magnets-6th-q14",
+    "topicId": "fun-with-magnets-6th",
+    "text": "An electromagnet is typically made by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mixing iron filings with glue."
+      },
+      {
+        "id": "b",
+        "text": "Winding an insulated copper wire around an iron nail and passing electric current through the wire."
+      },
+      {
+        "id": "c",
+        "text": "Rubbing a piece of wood with a permanent magnet."
+      },
+      {
+        "id": "d",
+        "text": "Heating a piece of steel to a very high temperature."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The experiment to make an electromagnet involves winding an insulated copper wire around an iron nail and connecting the wire to a battery cell.",
+    "difficulty": 12
+  },
+  {
+    "id": "fun-with-magnets-6th-q15",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The magnetism of an electromagnet is:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Permanent and very strong."
+      },
+      {
+        "id": "b",
+        "text": "Temporary and disappears when the electric current is stopped."
+      },
+      {
+        "id": "c",
+        "text": "Permanent but very weak."
+      },
+      {
+        "id": "d",
+        "text": "Induced by the Earth's magnetic field."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The chapter states: 'When it [electric current] is put off, the magnetism vanishes. Such a magnet is called an electromagnet. This magnetism is temporary.'",
+    "difficulty": 13
+  },
+  {
+    "id": "fun-with-magnets-6th-q16",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Who developed the technique of producing electricity with the help of a magnet?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnes"
+      },
+      {
+        "id": "b",
+        "text": "Isaac Newton"
+      },
+      {
+        "id": "c",
+        "text": "Michael Faraday"
+      },
+      {
+        "id": "d",
+        "text": "James Watt"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The 'In the past...' section mentions: 'The British scientist Michael Faraday developed the technique of producing electricity with the help of a magnet.'",
+    "difficulty": 14
+  },
+  {
+    "id": "fun-with-magnets-6th-q17",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Permanent magnets, like those in a pin holder or cupboard door, are often made from a mixture of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Copper, tin, and zinc."
+      },
+      {
+        "id": "b",
+        "text": "Wood, plastic, and glass."
+      },
+      {
+        "id": "c",
+        "text": "Nickel, cobalt, and iron."
+      },
+      {
+        "id": "d",
+        "text": "Sand, cement, and water."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text states: 'Permanent magnets are made from a mixture of nickel, cobalt and iron. For example, the material alnico is a mixture of aluminium, nickel and cobalt.'",
+    "difficulty": 15
+  },
+  {
+    "id": "fun-with-magnets-6th-q18",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Which of the following actions can destroy the magnetism of a magnet?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keeping it in a cool, dark place."
+      },
+      {
+        "id": "b",
+        "text": "Wrapping it in cloth."
+      },
+      {
+        "id": "c",
+        "text": "Heating it, throwing it, or knocking it about."
+      },
+      {
+        "id": "d",
+        "text": "Placing it near another magnet with opposite poles touching."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter lists ways magnetism can be destroyed: 'Magnetism gets destroyed when a magnet is heated, thrown, knocked about or broken into pieces.'",
+    "difficulty": 14
+  },
+  {
+    "id": "fun-with-magnets-6th-q19",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What is a 'magnet keeper' used for?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To increase the strength of a magnet."
+      },
+      {
+        "id": "b",
+        "text": "To find lost magnets."
+      },
+      {
+        "id": "c",
+        "text": "To protect a magnet and prevent it from losing its magnetism."
+      },
+      {
+        "id": "d",
+        "text": "To clean magnets."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A magnet keeper, typically a piece of soft iron, 'protects a magnet' by providing a path for the magnetic field lines, thus helping to maintain its magnetism.",
+    "difficulty": 16
+  },
+  {
+    "id": "fun-with-magnets-6th-q20",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Maglev trains use which properties of magnets to operate?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only attraction between magnets."
+      },
+      {
+        "id": "b",
+        "text": "Only magnetism of the Earth."
+      },
+      {
+        "id": "c",
+        "text": "Electromagnetism and repulsion between magnets."
+      },
+      {
+        "id": "d",
+        "text": "Heating effect of magnets."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The description of Maglev trains mentions: 'The properties of electromagnetism and repulsion between magnets are used in a maglev train.'",
+    "difficulty": 15
+  },
+  {
+    "id": "fun-with-magnets-6th-q21",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Where might you find a strip of magnetic material used for storing information?",
+    "options": [
+      {
+        "id": "a",
+        "text": "In a wooden pencil."
+      },
+      {
+        "id": "b",
+        "text": "On a glass window."
+      },
+      {
+        "id": "c",
+        "text": "On ATM cards or credit cards."
+      },
+      {
+        "id": "d",
+        "text": "In a cotton shirt."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The 'Do you know?' section states: 'There is a strip of magnetic material in ATM cards, credit cards, etc. where necessary information about the user is stored.'",
+    "difficulty": 14
+  },
+  {
+    "id": "fun-with-magnets-6th-q22",
+    "topicId": "fun-with-magnets-6th",
+    "text": "If you bring the north pole of a bar magnet near a freely suspended magnetic needle, what will the north pole of the needle do?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It will be attracted to the magnet's north pole."
+      },
+      {
+        "id": "b",
+        "text": "It will be repelled by the magnet's north pole."
+      },
+      {
+        "id": "c",
+        "text": "It will not move."
+      },
+      {
+        "id": "d",
+        "text": "It will start spinning rapidly."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Like poles repel. The north pole of the magnet will repel the north pole of the magnetic needle.",
+    "difficulty": 16
+  },
+  {
+    "id": "fun-with-magnets-6th-q23",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The Earth itself acts like a giant magnet with its own magnetic poles. The North pole of a freely suspended magnet points towards the Earth's:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Geographic South Pole"
+      },
+      {
+        "id": "b",
+        "text": "Geographic North Pole (or more accurately, the Earth's magnetic north pole which is near the geographic North Pole)"
+      },
+      {
+        "id": "c",
+        "text": "Equator"
+      },
+      {
+        "id": "d",
+        "text": "Moon"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The north-seeking pole of a magnet is attracted to the Earth's magnetic north pole, which is located near the geographic North Pole.",
+    "difficulty": 17
+  },
+  {
+    "id": "fun-with-magnets-6th-q24",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Which of these is NOT a common shape for man-made magnets mentioned in the chapter?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Bar magnet"
+      },
+      {
+        "id": "b",
+        "text": "Horseshoe magnet"
+      },
+      {
+        "id": "c",
+        "text": "Spherical magnet"
+      },
+      {
+        "id": "d",
+        "text": "Disc magnet"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The chapter lists bar magnets, disc magnets, horseshoe magnets, ring-shaped magnets, cylindrical magnets, and button magnets, but not spherical magnets as a common shape.",
+    "difficulty": 15
+  },
+  {
+    "id": "fun-with-magnets-6th-q25",
+    "topicId": "fun-with-magnets-6th",
+    "text": "If you have a pile of mixed items: iron nails, copper coins, aluminum foil, and plastic buttons. Which items will be picked up by a strong magnet?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only the iron nails."
+      },
+      {
+        "id": "b",
+        "text": "Iron nails and copper coins."
+      },
+      {
+        "id": "c",
+        "text": "Iron nails and aluminum foil."
+      },
+      {
+        "id": "d",
+        "text": "All the items."
+      }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Iron is a magnetic material. Copper, aluminum, and plastic are non-magnetic.",
+    "difficulty": 16
+  },
+  {
+    "id": "fun-with-magnets-6th-q26",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The magnetic field of a magnet is strongest:",
+    "options": [
+      {
+        "id": "a",
+        "text": "At the center of the magnet."
+      },
+      {
+        "id": "b",
+        "text": "At the poles of the magnet."
+      },
+      {
+        "id": "c",
+        "text": "Uniformly throughout the magnet."
+      },
+      {
+        "id": "d",
+        "text": "Only on the surface facing North."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The concentration of magnetic force (and thus the magnetic field) is greatest at the poles, as demonstrated by where iron filings collect most.",
+    "difficulty": 17
+  },
+  {
+    "id": "fun-with-magnets-6th-q27",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Why is it important to store magnets carefully, for example, with keepers or by pairing them with opposite poles facing each other?",
+    "options": [
+      {
+        "id": "a",
+        "text": "To make them look more organized."
+      },
+      {
+        "id": "b",
+        "text": "To prevent them from attracting dust."
+      },
+      {
+        "id": "c",
+        "text": "To help them retain their magnetism for a longer time and prevent demagnetization."
+      },
+      {
+        "id": "d",
+        "text": "To make them easier to break if needed."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Improper storage or handling (like dropping, heating) can cause magnets to lose their magnetism. Keepers help maintain the magnetic circuit.",
+    "difficulty": 16
+  },
+  {
+    "id": "fun-with-magnets-6th-q28",
+    "topicId": "fun-with-magnets-6th",
+    "text": "In the experiment to make an electromagnet, if the battery cell is disconnected, what happens to the iron nail's ability to attract pins?",
+    "options": [
+      {
+        "id": "a",
+        "text": "It becomes even stronger."
+      },
+      {
+        "id": "b",
+        "text": "It remains the same."
+      },
+      {
+        "id": "c",
+        "text": "It loses its ability to attract pins (or becomes very weak)."
+      },
+      {
+        "id": "d",
+        "text": "It starts repelling the pins."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Electromagnetism is temporary; it exists only when current flows. When the current stops, the nail largely loses its induced magnetism.",
+    "difficulty": 14
+  },
+  {
+    "id": "fun-with-magnets-6th-q29",
+    "topicId": "fun-with-magnets-6th",
+    "text": "A compass needle is a small, lightweight magnet. Its primary function is to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Attract iron objects."
+      },
+      {
+        "id": "b",
+        "text": "Generate electricity."
+      },
+      {
+        "id": "c",
+        "text": "Align itself with the Earth's magnetic field to indicate direction."
+      },
+      {
+        "id": "d",
+        "text": "Measure the strength of other magnets."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The compass needle aligns with the Earth's magnetic field, with its north pole pointing towards the Earth's magnetic north, thus helping in navigation.",
+    "difficulty": 15
+  },
+  {
+    "id": "fun-with-magnets-6th-q30",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The force exerted by a magnet is a type of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Frictional force"
+      },
+      {
+        "id": "b",
+        "text": "Gravitational force"
+      },
+      {
+        "id": "c",
+        "text": "Non-contact force (action-at-a-distance force)"
+      },
+      {
+        "id": "d",
+        "text": "Elastic force"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Magnets can exert force (attraction or repulsion) on objects without direct physical contact, making magnetic force a non-contact force.",
+    "difficulty": 17
+  },
+  {
+    "id": "fun-with-magnets-6th-q31",
+    "topicId": "fun-with-magnets-6th",
+    "text": "If an iron nail is repeatedly rubbed in one direction with one pole of a strong magnet, the nail becomes a temporary magnet. If the end of the nail last touched by the magnet's North pole is tested, it will behave as a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "North pole"
+      },
+      {
+        "id": "b",
+        "text": "South pole"
+      },
+      {
+        "id": "c",
+        "text": "Non-magnetic end"
+      },
+      {
+        "id": "d",
+        "text": "Both North and South pole"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "When magnetizing by single touch, the end where the rubbing magnet lifts off acquires polarity opposite to the rubbing pole. So, if rubbed with a North pole, that end becomes a South pole.",
+    "difficulty": 18
+  },
+  {
+    "id": "fun-with-magnets-6th-q32",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The region around a magnet where its magnetic influence can be detected is called the:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Magnetic equator"
+      },
+      {
+        "id": "b",
+        "text": "Magnetic field"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic shadow"
+      },
+      {
+        "id": "d",
+        "text": "Magnetic current"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The magnetic field is the area surrounding a magnet within which the force of magnetism acts.",
+    "difficulty": 18
+  },
+  {
+    "id": "fun-with-magnets-6th-q33",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Consider a Maglev train. To achieve levitation (floating), the magnets on the track and the train must be arranged such that they:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Attract each other strongly."
+      },
+      {
+        "id": "b",
+        "text": "Repel each other."
+      },
+      {
+        "id": "c",
+        "text": "Have no magnetic interaction."
+      },
+      {
+        "id": "d",
+        "text": "Continuously switch between attraction and repulsion."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Levitation in Maglev trains is achieved by the repulsive forces between like poles of powerful electromagnets on the train and the guideway.",
+    "difficulty": 19
+  },
+  {
+    "id": "fun-with-magnets-6th-q34",
+    "topicId": "fun-with-magnets-6th",
+    "text": "If you have an unmarked bar magnet and want to determine its North pole, which of the following methods would be most reliable?",
+    "options": [
+      {
+        "id": "a",
+        "text": "See which end attracts iron filings more strongly."
+      },
+      {
+        "id": "b",
+        "text": "Suspend it freely and see which end points towards the geographic North."
+      },
+      {
+        "id": "c",
+        "text": "Heat one end and see if it loses magnetism."
+      },
+      {
+        "id": "d",
+        "text": "Try to pick up non-magnetic materials with it."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A freely suspended magnet aligns itself with the Earth's magnetic field, with its North-seeking pole pointing towards the Earth's (magnetic) North. Both poles attract iron filings strongly.",
+    "difficulty": 18
+  },
+  {
+    "id": "fun-with-magnets-6th-q35",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The material 'Alnico', mentioned as a mixture for permanent magnets, likely gets its name from the symbols of its constituent elements. These are:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Aluminum, Lithium, Copper"
+      },
+      {
+        "id": "b",
+        "text": "Argon, Lead, Nitrogen"
+      },
+      {
+        "id": "c",
+        "text": "Aluminum, Nickel, Cobalt"
+      },
+      {
+        "id": "d",
+        "text": "Silver, Nitrogen, Oxygen"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The text states Alnico is a mixture of aluminium, nickel and cobalt. Al (Aluminum), Ni (Nickel), Co (Cobalt).",
+    "difficulty": 19
+  },
+  {
+    "id": "fun-with-magnets-6th-q36",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The strength of an electromagnet can be increased by:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Decreasing the number of turns of wire around the core."
+      },
+      {
+        "id": "b",
+        "text": "Using a wooden core instead of an iron core."
+      },
+      {
+        "id": "c",
+        "text": "Increasing the electric current flowing through the wire and/or increasing the number of turns of wire."
+      },
+      {
+        "id": "d",
+        "text": "Heating the iron core."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The strength of an electromagnet depends on the current, the number of turns in the coil, and the nature of the core material (iron enhances it).",
+    "difficulty": 19
+  },
+  {
+    "id": "fun-with-magnets-6th-q37",
+    "topicId": "fun-with-magnets-6th",
+    "text": "When iron filings are sprinkled over a bar magnet covered with a sheet of paper, they arrange themselves in a pattern of curved lines. These lines represent:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Electric field lines."
+      },
+      {
+        "id": "b",
+        "text": "Gravitational field lines."
+      },
+      {
+        "id": "c",
+        "text": "Magnetic field lines (lines of force)."
+      },
+      {
+        "id": "d",
+        "text": "Heat flow lines."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Iron filings align themselves along the magnetic field lines, making the pattern of the invisible magnetic field visible.",
+    "difficulty": 18
+  },
+  {
+    "id": "fun-with-magnets-6th-q38",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Which of the following devices primarily relies on the principle of electromagnetism for its operation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A magnifying glass"
+      },
+      {
+        "id": "b",
+        "text": "An electric motor"
+      },
+      {
+        "id": "c",
+        "text": "A spring balance"
+      },
+      {
+        "id": "d",
+        "text": "A solar panel"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Electric motors operate based on the force exerted on a current-carrying conductor in a magnetic field, a key principle of electromagnetism. The chapter mentions cranes and doorbells as uses of electromagnets.",
+    "difficulty": 20
+  },
+  {
+    "id": "fun-with-magnets-6th-q39",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Demagnetization is the process by which a magnet:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gains magnetic strength."
+      },
+      {
+        "id": "b",
+        "text": "Loses its magnetic properties."
+      },
+      {
+        "id": "c",
+        "text": "Changes its shape."
+      },
+      {
+        "id": "d",
+        "text": "Becomes an electromagnet."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Demagnetization refers to the weakening or complete loss of a material's magnetic properties. The chapter discusses how magnetism can be destroyed.",
+    "difficulty": 19
+  },
+  {
+    "id": "fun-with-magnets-6th-q40",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The directive property of a magnet (aligning North-South) is due to its interaction with:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Sun's gravitational pull."
+      },
+      {
+        "id": "b",
+        "text": "The Earth's magnetic field."
+      },
+      {
+        "id": "c",
+        "text": "Atmospheric pressure."
+      },
+      {
+        "id": "d",
+        "text": "The Moon's magnetic field."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A magnet acts like a compass needle because it aligns with the Earth's own magnetic field.",
+    "difficulty": 20
+  },
+  {
+    "id": "fun-with-magnets-6th-q41",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Which of the following materials, when placed between a magnet and a piece of iron, would significantly weaken the magnetic force on the iron?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A thin sheet of paper"
+      },
+      {
+        "id": "b",
+        "text": "A thin sheet of glass"
+      },
+      {
+        "id": "c",
+        "text": "A thick sheet of iron or steel (magnetic shielding material)"
+      },
+      {
+        "id": "d",
+        "text": "A thin sheet of copper"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Ferromagnetic materials like iron or steel can be used for magnetic shielding because they redirect magnetic field lines, effectively weakening the field in the shielded region.",
+    "difficulty": 20
+  },
+  {
+    "id": "fun-with-magnets-6th-q42",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The tiny magnetic domains within a piece of unmagnetized iron are:",
+    "options": [
+      {
+        "id": "a",
+        "text": "All aligned in the same direction."
+      },
+      {
+        "id": "b",
+        "text": "Randomly oriented, so their magnetic effects cancel out."
+      },
+      {
+        "id": "c",
+        "text": "Absent; iron has no magnetic domains until magnetized."
+      },
+      {
+        "id": "d",
+        "text": "Aligned perpendicular to the Earth's magnetic field."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "In an unmagnetized ferromagnetic material, the magnetic domains (small regions where atomic magnetic moments are aligned) are randomly oriented, resulting in no net external magnetic field.",
+    "difficulty": 19
+  },
+  {
+    "id": "fun-with-magnets-6th-q43",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Steel is often preferred over soft iron for making permanent magnets because:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Steel is easier to magnetize than soft iron."
+      },
+      {
+        "id": "b",
+        "text": "Steel retains its magnetism better (has higher retentivity) than soft iron."
+      },
+      {
+        "id": "c",
+        "text": "Steel is less expensive than soft iron."
+      },
+      {
+        "id": "d",
+        "text": "Soft iron cannot be magnetized at all."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Steel has higher retentivity and coercivity than soft iron, meaning it's harder to magnetize but also harder to demagnetize, making it suitable for permanent magnets. Soft iron is easily magnetized and demagnetized, making it good for electromagnet cores.",
+    "difficulty": 20
+  },
+  {
+    "id": "fun-with-magnets-6th-q44",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The temperature at which a ferromagnetic material loses its characteristic ferromagnetic properties (becomes paramagnetic) is called the:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Boiling point"
+      },
+      {
+        "id": "b",
+        "text": "Melting point"
+      },
+      {
+        "id": "c",
+        "text": "Curie temperature"
+      },
+      {
+        "id": "d",
+        "text": "Freezing point"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Curie temperature is a critical point for ferromagnetic materials. Above this temperature, thermal agitation overcomes the magnetic ordering. The chapter mentions heating can destroy magnetism.",
+    "difficulty": 20
+  },
+  {
+    "id": "fun-with-magnets-6th-q45",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Magnetic Resonance Imaging (MRI) is a medical diagnostic technique that uses:",
+    "options": [
+      {
+        "id": "a",
+        "text": "X-rays and magnetic fields."
+      },
+      {
+        "id": "b",
+        "text": "Sound waves and magnetic fields."
+      },
+      {
+        "id": "c",
+        "text": "Strong magnetic fields, radio waves, and computers."
+      },
+      {
+        "id": "d",
+        "text": "Light waves and electric fields."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "MRI utilizes powerful magnets, radio frequency pulses, and computer processing to create detailed images of organs and tissues. This is a modern application of magnetism not in the chapter but related.",
+    "difficulty": 19
+  },
+  {
+    "id": "fun-with-magnets-6th-q46",
+    "topicId": "fun-with-magnets-6th",
+    "text": "What is the SI unit of magnetic field strength?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Weber (Wb)"
+      },
+      {
+        "id": "b",
+        "text": "Tesla (T)"
+      },
+      {
+        "id": "c",
+        "text": "Henry (H)"
+      },
+      {
+        "id": "d",
+        "text": "Gauss (G) (though Tesla is SI)"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Tesla (T) is the SI derived unit of magnetic flux density, commonly used to measure magnetic field strength. Gauss is a CGS unit also used (1 T = 10,000 G).",
+    "difficulty": 17
+  },
+  {
+    "id": "fun-with-magnets-6th-q47",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The needle of a magnetic compass is deflected when brought near a current-carrying wire. This demonstrates that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The wire is made of a magnetic material."
+      },
+      {
+        "id": "b",
+        "text": "Electric currents produce magnetic fields."
+      },
+      {
+        "id": "c",
+        "text": "The compass needle is faulty."
+      },
+      {
+        "id": "d",
+        "text": "Magnets can generate electricity."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "This is Oersted's discovery, fundamental to electromagnetism: an electric current creates a magnetic field around it, which can deflect a compass needle.",
+    "difficulty": 16
+  },
+  {
+    "id": "fun-with-magnets-6th-q48",
+    "topicId": "fun-with-magnets-6th",
+    "text": "Materials like copper, aluminum, and wood are classified as non-magnetic. More specifically, they are:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ferromagnetic"
+      },
+      {
+        "id": "b",
+        "text": "Paramagnetic or Diamagnetic"
+      },
+      {
+        "id": "c",
+        "text": "Antiferromagnetic"
+      },
+      {
+        "id": "d",
+        "text": "Ferrimagnetic"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "While the chapter uses 'non-magnetic', a more precise classification is that most such materials are either weakly attracted (paramagnetic) or weakly repelled (diamagnetic) by strong magnetic fields. For basic understanding, 'non-magnetic' suffices.",
+    "difficulty": 17
+  },
+  {
+    "id": "fun-with-magnets-6th-q49",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The lines of magnetic force (magnetic field lines) of a bar magnet:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Originate from the South pole and end at the North pole."
+      },
+      {
+        "id": "b",
+        "text": "Originate from the North pole and end at the South pole (outside the magnet)."
+      },
+      {
+        "id": "c",
+        "text": "Are always straight lines."
+      },
+      {
+        "id": "d",
+        "text": "Cross each other frequently."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "By convention, magnetic field lines are depicted as emerging from the North pole and entering the South pole externally, forming closed loops through the magnet.",
+    "difficulty": 16
+  },
+  {
+    "id": "fun-with-magnets-6th-q50",
+    "topicId": "fun-with-magnets-6th",
+    "text": "The phenomenon of electromagnetic induction, discovered by Michael Faraday, is the principle behind the operation of:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Permanent magnets"
+      },
+      {
+        "id": "b",
+        "text": "Electric generators"
+      },
+      {
+        "id": "c",
+        "text": "Magnetic compasses"
+      },
+      {
+        "id": "d",
+        "text": "Batteries"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Electromagnetic induction is the production of an electromotive force (voltage) across an electrical conductor in a changing magnetic field. This is how electric generators produce electricity, a concept linked to Faraday's work mentioned in the chapter.",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q001",
+    "topicId": "the-universe-6th",
+    "text": "What is the Milky Way also known as?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Andromeda"
+      },
+      {
+        "id": "b",
+        "text": "Mandakini"
+      },
+      {
+        "id": "c",
+        "text": "Orion Nebula"
+      },
+      {
+        "id": "d",
+        "text": "Local Group"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Milky Way is also known as ‘Mandakini’. (Page 112)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q002",
+    "topicId": "the-universe-6th",
+    "text": "A group of innumerable stars and their planetary systems are together known as a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Nebula"
+      },
+      {
+        "id": "b",
+        "text": "Comet"
+      },
+      {
+        "id": "c",
+        "text": "Galaxy"
+      },
+      {
+        "id": "d",
+        "text": "Star cluster"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A group of innumerable stars and their planetary systems are together known as a ‘galaxy’. (Page 112)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q003",
+    "topicId": "the-universe-6th",
+    "text": "The galaxy in which our solar system is located is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Andromeda"
+      },
+      {
+        "id": "b",
+        "text": "Triangulum Galaxy"
+      },
+      {
+        "id": "c",
+        "text": "The Milky Way"
+      },
+      {
+        "id": "d",
+        "text": "Centaurus A"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Milky Way is the galaxy in which our solar system is located. (Page 112)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q004",
+    "topicId": "the-universe-6th",
+    "text": "Which telescope was launched into the orbit of the Earth by NASA in 1990?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Kepler Telescope"
+      },
+      {
+        "id": "b",
+        "text": "Spitzer Telescope"
+      },
+      {
+        "id": "c",
+        "text": "Hubble Telescope"
+      },
+      {
+        "id": "d",
+        "text": "James Webb Telescope"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In 1990, NASA, the American space agency launched the ‘Hubble Telescope’ in the orbit of the earth. (Page 113)",
+    "difficulty": 12
+  },
+  {
+    "id": "the-universe-6th-q005",
+    "topicId": "the-universe-6th",
+    "text": "What are the birth places of stars, made of dust particles and gases?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Comets"
+      },
+      {
+        "id": "b",
+        "text": "Asteroids"
+      },
+      {
+        "id": "c",
+        "text": "Huge nebulae"
+      },
+      {
+        "id": "d",
+        "text": "Planets"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The birth place of stars are the huge nebulae, made of dust particles and gases. (Page 113)",
+    "difficulty": 12
+  },
+  {
+    "id": "the-universe-6th-q006",
+    "topicId": "the-universe-6th",
+    "text": "What is the approximate surface temperature range of stars mentioned in the text?",
+    "options": [
+      {
+        "id": "a",
+        "text": "1000°C to 10000°C"
+      },
+      {
+        "id": "b",
+        "text": "3500°C to 50000°C"
+      },
+      {
+        "id": "c",
+        "text": "500°C to 5000°C"
+      },
+      {
+        "id": "d",
+        "text": "100000°C to 500000°C"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Generally, the surface temperature of stars ranges from 3500°C to 50000°C. (Page 113)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q007",
+    "topicId": "the-universe-6th",
+    "text": "Stars like Sirius and Alpha Centauri are examples of which type of stars?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Red Giants"
+      },
+      {
+        "id": "b",
+        "text": "Super Novae"
+      },
+      {
+        "id": "c",
+        "text": "Sun-like stars"
+      },
+      {
+        "id": "d",
+        "text": "Variable Stars"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Sun-like stars: These stars can be slightly smaller or bigger than the sun. Examples: stars like Sirius, Alpha Centauri. (Page 113)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q008",
+    "topicId": "the-universe-6th",
+    "text": "Which type of stars have a temperature range between 3000°C and 4000°C and can be 100 times more luminous than the sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Super Novae"
+      },
+      {
+        "id": "b",
+        "text": "Red Giants"
+      },
+      {
+        "id": "c",
+        "text": "Binary Stars"
+      },
+      {
+        "id": "d",
+        "text": "Variable Stars"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Red Giants: The temperature of these stars ranges between 3000°C and 4000°C. But their luminance can be 100 times that of the sun. (Page 113)",
+    "difficulty": 12
+  },
+  {
+    "id": "the-universe-6th-q009",
+    "topicId": "the-universe-6th",
+    "text": "Stars whose luminance and shape are not stable and constantly contract or expand are called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sun-like stars"
+      },
+      {
+        "id": "b",
+        "text": "Binary Stars"
+      },
+      {
+        "id": "c",
+        "text": "Variable Stars"
+      },
+      {
+        "id": "d",
+        "text": "Red Giants"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Variable Stars: The luminance and shape of these stars is not stable. They are constantly contracting or expanding. (Page 113)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q010",
+    "topicId": "the-universe-6th",
+    "text": "The planets Mercury, Venus, Earth, and Mars are known as:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Outer planets"
+      },
+      {
+        "id": "b",
+        "text": "Gas giants"
+      },
+      {
+        "id": "c",
+        "text": "Inner planets"
+      },
+      {
+        "id": "d",
+        "text": "Ice giants"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Mercury, Venus, Earth and Mars are the inner planets. (Page 114)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q011",
+    "topicId": "the-universe-6th",
+    "text": "Which planet is known as the 'Red Planet' because its soil contains iron?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Jupiter"
+      },
+      {
+        "id": "b",
+        "text": "Saturn"
+      },
+      {
+        "id": "c",
+        "text": "Mars"
+      },
+      {
+        "id": "d",
+        "text": "Venus"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "As the soil on Mars contains iron, its colour is reddish. Hence Mars is also called the Red Planet. (Page 115)",
+    "difficulty": 12
+  },
+  {
+    "id": "the-universe-6th-q012",
+    "topicId": "the-universe-6th",
+    "text": "Celestial bodies that revolve around a planet without independently revolving around the sun are called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Asteroids"
+      },
+      {
+        "id": "b",
+        "text": "Comets"
+      },
+      {
+        "id": "c",
+        "text": "Satellites"
+      },
+      {
+        "id": "d",
+        "text": "Dwarf planets"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The celestial bodies that revolve around a planet without independently revolving around the sun are called satellites. (Page 116)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q013",
+    "topicId": "the-universe-6th",
+    "text": "A small-sized celestial body that revolves independently around the sun, like Pluto, is classified as a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Moon"
+      },
+      {
+        "id": "b",
+        "text": "Comet"
+      },
+      {
+        "id": "c",
+        "text": "Asteroid"
+      },
+      {
+        "id": "d",
+        "text": "Dwarf planet"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "A small sized celestial body that revolves independently around the sun is called a dwarf planet. A celestial body like Pluto can be classified as a dwarf planet. (Page 116)",
+    "difficulty": 13
+  },
+  {
+    "id": "the-universe-6th-q014",
+    "topicId": "the-universe-6th",
+    "text": "What are comets primarily made of?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Rock and metal"
+      },
+      {
+        "id": "b",
+        "text": "Ice and dust particles"
+      },
+      {
+        "id": "c",
+        "text": "Liquid water and organic compounds"
+      },
+      {
+        "id": "d",
+        "text": "Hot gases only"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Comets are formed out of ice and dust particles. (Page 116)",
+    "difficulty": 12
+  },
+  {
+    "id": "the-universe-6th-q015",
+    "topicId": "the-universe-6th",
+    "text": "A falling star is an event also called a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Comet appearance"
+      },
+      {
+        "id": "b",
+        "text": "Meteor fall"
+      },
+      {
+        "id": "c",
+        "text": "Satellite re-entry"
+      },
+      {
+        "id": "d",
+        "text": "Supernova explosion"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "At times, we see a falling star. This event is called a meteor fall. (Page 117)",
+    "difficulty": 11
+  },
+  {
+    "id": "the-universe-6th-q016",
+    "topicId": "the-universe-6th",
+    "text": "The galaxy closest to our Milky Way is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Triangulum"
+      },
+      {
+        "id": "b",
+        "text": "Centaurus A"
+      },
+      {
+        "id": "c",
+        "text": "Andromeda"
+      },
+      {
+        "id": "d",
+        "text": "Orion"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The galaxy that is closest to our Milky Way is called Andromeda. (Page 112)",
+    "difficulty": 14
+  },
+  {
+    "id": "the-universe-6th-q017",
+    "topicId": "the-universe-6th",
+    "text": "Which planet is described as the 'Stormy Planet' due to frequent huge storms?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mars"
+      },
+      {
+        "id": "b",
+        "text": "Earth"
+      },
+      {
+        "id": "c",
+        "text": "Jupiter"
+      },
+      {
+        "id": "d",
+        "text": "Uranus"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "As huge storms occur frequently on Jupiter, it is also called the ‘Stormy Planet’. (Page 115)",
+    "difficulty": 15
+  },
+  {
+    "id": "the-universe-6th-q018",
+    "topicId": "the-universe-6th",
+    "text": "Which celestial bodies form a belt between Mars and Jupiter?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Comets"
+      },
+      {
+        "id": "b",
+        "text": "Satellites"
+      },
+      {
+        "id": "c",
+        "text": "Asteroids"
+      },
+      {
+        "id": "d",
+        "text": "Dwarf planets"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "A belt of such celestial bodies (asteroids) has formed between the planets Mars and Jupiter. (Page 116)",
+    "difficulty": 14
+  },
+  {
+    "id": "the-universe-6th-q019",
+    "topicId": "the-universe-6th",
+    "text": "Halley's comet takes approximately how many years to complete its revolution around the sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "16 years"
+      },
+      {
+        "id": "b",
+        "text": "76 years"
+      },
+      {
+        "id": "c",
+        "text": "100 years"
+      },
+      {
+        "id": "d",
+        "text": "248 years"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Halley’s comet takes 76 years to complete its revolution around the sun. (Page 117)",
+    "difficulty": 15
+  },
+  {
+    "id": "the-universe-6th-q020",
+    "topicId": "the-universe-6th",
+    "text": "What happens to meteors when they enter Earth's atmosphere?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They speed up and hit the Earth with great force."
+      },
+      {
+        "id": "b",
+        "text": "They mostly burn up due to friction with air."
+      },
+      {
+        "id": "c",
+        "text": "They get captured by Earth's gravity and become satellites."
+      },
+      {
+        "id": "d",
+        "text": "They break into many smaller comets."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Smaller rocky pieces (meteors) get completely burnt due to friction with air after they enter the earth’s atmosphere. (Page 117)",
+    "difficulty": 16
+  },
+  {
+    "id": "the-universe-6th-q021",
+    "topicId": "the-universe-6th",
+    "text": "The color of a star generally depends on its:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Distance from Earth"
+      },
+      {
+        "id": "b",
+        "text": "Age"
+      },
+      {
+        "id": "c",
+        "text": "Surface temperature"
+      },
+      {
+        "id": "d",
+        "text": "Size only"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The colour of stars changes according to their temperature. (Page 113)",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q022",
+    "topicId": "the-universe-6th",
+    "text": "Which planet is peculiar because of the rings around it and has a very low density, such that it would float in a large enough sea?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Jupiter"
+      },
+      {
+        "id": "b",
+        "text": "Uranus"
+      },
+      {
+        "id": "c",
+        "text": "Neptune"
+      },
+      {
+        "id": "d",
+        "text": "Saturn"
+      }
+    ],
+    "correctOptionId": "d",
+    "explanation": "Saturn is considered to be a peculiar planet because of the rings around it. Though its mass is 95 times that of the earth, its density is very low. If it were dropped into a sea large enough to hold it; it would actually float in it! (Page 115)",
+    "difficulty": 16
+  },
+  {
+    "id": "the-universe-6th-q023",
+    "topicId": "the-universe-6th",
+    "text": "What causes the 'tail' of a comet to form when it is close to the sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The comet's rapid rotation."
+      },
+      {
+        "id": "b",
+        "text": "Gravitational pull from other planets."
+      },
+      {
+        "id": "c",
+        "text": "Frozen matter converting to gas due to solar heat, which is then pushed away from the sun."
+      },
+      {
+        "id": "d",
+        "text": "Dust particles igniting in Earth's atmosphere."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "When comets are close to the sun, frozen matter gets converted into gas due to the solar heat. These gases get thrown in a direction away from the sun, forming a long feathery tail. (Page 116)",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q024",
+    "topicId": "the-universe-6th",
+    "text": "The Lonar lake in Maharashtra is believed to have been formed by the impact of a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Comet"
+      },
+      {
+        "id": "b",
+        "text": "Large asteroid"
+      },
+      {
+        "id": "c",
+        "text": "Meteorite"
+      },
+      {
+        "id": "d",
+        "text": "Volcanic eruption"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "It is believed that the Lonar lake in Maharashtra has been formed by the impact of such a meteorite. (Page 117)",
+    "difficulty": 16
+  },
+  {
+    "id": "the-universe-6th-q025",
+    "topicId": "the-universe-6th",
+    "text": "Which planet has a day (period of rotation) longer than its year (period of revolution)?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earth"
+      },
+      {
+        "id": "b",
+        "text": "Mars"
+      },
+      {
+        "id": "c",
+        "text": "Venus"
+      },
+      {
+        "id": "d",
+        "text": "Jupiter"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Venus has a period of rotation of 243.00 Earth days and a period of revolution of 225 Earth days. This means its day is longer than its year. (Page 114, Table and Page 116 Q2)",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q026",
+    "topicId": "the-universe-6th",
+    "text": "The scientist Edwin Hubble is known for showing that:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Earth is the center of the universe."
+      },
+      {
+        "id": "b",
+        "text": "There are many galaxies beyond our Milky Way."
+      },
+      {
+        "id": "c",
+        "text": "Comets are made of ice and dust."
+      },
+      {
+        "id": "d",
+        "text": "Stars are born in black holes."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The scientist Edwin Hubble showed that there exist many galaxies beyond our Milky Way. (Page 113)",
+    "difficulty": 18
+  },
+  {
+    "id": "the-universe-6th-q027",
+    "topicId": "the-universe-6th",
+    "text": "Which planet is known for its axis being so greatly inclined that it appears to be rolling along on its orbit?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Saturn"
+      },
+      {
+        "id": "b",
+        "text": "Jupiter"
+      },
+      {
+        "id": "c",
+        "text": "Uranus"
+      },
+      {
+        "id": "d",
+        "text": "Neptune"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Uranus: Its axis is so greatly inclined that it appears as if it is rolling along on its orbit. (Page 115)",
+    "difficulty": 18
+  },
+  {
+    "id": "the-universe-6th-q028",
+    "topicId": "the-universe-6th",
+    "text": "Binary or Twin Stars are systems where:",
+    "options": [
+      {
+        "id": "a",
+        "text": "One star is much larger than the other."
+      },
+      {
+        "id": "b",
+        "text": "Two stars revolve around each other."
+      },
+      {
+        "id": "c",
+        "text": "Stars appear very close but are not gravitationally bound."
+      },
+      {
+        "id": "d",
+        "text": "A star periodically splits into two."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Binary or Twin Stars: They consist of two stars that revolve around each other. (Page 113)",
+    "difficulty": 19
+  },
+  {
+    "id": "the-universe-6th-q029",
+    "topicId": "the-universe-6th",
+    "text": "Which of these is a characteristic of inner planets like Earth and Mars?",
+    "options": [
+      {
+        "id": "a",
+        "text": "They have gaseous outer covers."
+      },
+      {
+        "id": "b",
+        "text": "They all have prominent rings."
+      },
+      {
+        "id": "c",
+        "text": "Their crust is hard."
+      },
+      {
+        "id": "d",
+        "text": "They are larger than outer planets."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The crust of all the inner planets is hard. The outer planets have gaseous outer cover. (Page 114)",
+    "difficulty": 18
+  },
+  {
+    "id": "the-universe-6th-q030",
+    "topicId": "the-universe-6th",
+    "text": "The universe includes innumerable galaxies, the space between them, and also:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Dark matter only"
+      },
+      {
+        "id": "b",
+        "text": "Sound waves only"
+      },
+      {
+        "id": "c",
+        "text": "Energy"
+      },
+      {
+        "id": "d",
+        "text": "Only visible light"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The universe includes innumerable galaxies, the space between them and also energy. (Page 112)",
+    "difficulty": 20
+  },
+  {
+    "id": "the-universe-6th-q031",
+    "topicId": "the-universe-6th",
+    "text": "The 'Local Group' refers to:",
+    "options": [
+      {
+        "id": "a",
+        "text": "A cluster of stars within the Milky Way."
+      },
+      {
+        "id": "b",
+        "text": "The planets of our solar system."
+      },
+      {
+        "id": "c",
+        "text": "A group of galaxies of which the Milky Way is a part."
+      },
+      {
+        "id": "d",
+        "text": "A collection of comets and asteroids."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Milky Way is a part of the ‘Local Group’ of galaxies. (Page 112)",
+    "difficulty": 18
+  },
+  {
+    "id": "the-universe-6th-q032",
+    "topicId": "the-universe-6th",
+    "text": "Which planet rotates around itself from east to west, unlike most other planets?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earth"
+      },
+      {
+        "id": "b",
+        "text": "Mars"
+      },
+      {
+        "id": "c",
+        "text": "Venus"
+      },
+      {
+        "id": "d",
+        "text": "Jupiter"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Venus: It rotates around itself from east to west. (Page 115)",
+    "difficulty": 19
+  },
+  {
+    "id": "the-universe-6th-q033",
+    "topicId": "the-universe-6th",
+    "text": "The phenomenon where the Moon passes directly between the Sun and Earth, casting a shadow on Earth, is called a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Lunar eclipse"
+      },
+      {
+        "id": "b",
+        "text": "Solar eclipse"
+      },
+      {
+        "id": "c",
+        "text": "Meteor shower"
+      },
+      {
+        "id": "d",
+        "text": "Planetary transit"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A solar eclipse occurs when the Moon is positioned between the Sun and Earth, blocking sunlight and casting a shadow on Earth. (Out of PDF, but related to celestial bodies and shadows, mentioned as phenomenon to study in 'Always remember...' on page 118).",
+    "difficulty": 19
+  },
+  {
+    "id": "the-universe-6th-q034",
+    "topicId": "the-universe-6th",
+    "text": "What is a light-year?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The time it takes for light to travel from the Sun to Earth."
+      },
+      {
+        "id": "b",
+        "text": "The distance light travels in one year."
+      },
+      {
+        "id": "c",
+        "text": "A unit of time equal to 365.25 days."
+      },
+      {
+        "id": "d",
+        "text": "The brightness of a star as seen from Earth."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A light-year is a unit of astronomical distance equivalent to the distance that light travels in one year. (Out of PDF, but fundamental for discussing distances in the universe).",
+    "difficulty": 20
+  },
+  {
+    "id": "the-universe-6th-q035",
+    "topicId": "the-universe-6th",
+    "text": "The Big Bang Theory is the prevailing cosmological model for:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The formation of stars."
+      },
+      {
+        "id": "b",
+        "text": "The origin of the universe."
+      },
+      {
+        "id": "c",
+        "text": "The life cycle of comets."
+      },
+      {
+        "id": "d",
+        "text": "The cause of meteor showers."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The Big Bang Theory describes the origin and evolution of the universe from an extremely hot, dense state. (Out of PDF, but a foundational concept in cosmology).",
+    "difficulty": 19
+  },
+  {
+    "id": "the-universe-6th-q036",
+    "topicId": "the-universe-6th",
+    "text": "Olympus Mons, the highest and longest mountain in the solar system, is located on:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earth"
+      },
+      {
+        "id": "b",
+        "text": "Mars"
+      },
+      {
+        "id": "c",
+        "text": "Jupiter"
+      },
+      {
+        "id": "d",
+        "text": "The Moon"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The highest and longest mountain in the solar system ‘Olympus Mons’ is located on Mars. (Page 115)",
+    "difficulty": 18
+  },
+  {
+    "id": "the-universe-6th-q037",
+    "topicId": "the-universe-6th",
+    "text": "Which type of stars are even brighter and larger than red giant stars, with diameters more than a hundred times greater than the Sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sun-like stars"
+      },
+      {
+        "id": "b",
+        "text": "Variable Stars"
+      },
+      {
+        "id": "c",
+        "text": "Super Novae"
+      },
+      {
+        "id": "d",
+        "text": "Binary Stars"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Super Nova: These are even brighter and larger than the red giant stars. Their diameter can be more than a hundred times greater than that of the Sun. (Page 113)",
+    "difficulty": 20
+  },
+  {
+    "id": "the-universe-6th-q038",
+    "topicId": "the-universe-6th",
+    "text": "The Sun rotates around its axis and also revolves around:",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Earth"
+      },
+      {
+        "id": "b",
+        "text": "The center of the Milky Way galaxy"
+      },
+      {
+        "id": "c",
+        "text": "The Andromeda galaxy"
+      },
+      {
+        "id": "d",
+        "text": "The planet Jupiter"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The sun rotates around its axis and while doing so, it revolves around the centre of the Milky Way taking the solar system along with it. (Page 114)",
+    "difficulty": 19
+  },
+  {
+    "id": "the-universe-6th-q039",
+    "topicId": "the-universe-6th",
+    "text": "Which planet is known for having winds that blow with extremely high speed and where a season lasts for about 41 years?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uranus"
+      },
+      {
+        "id": "b",
+        "text": "Saturn"
+      },
+      {
+        "id": "c",
+        "text": "Neptune"
+      },
+      {
+        "id": "d",
+        "text": "Mars"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Neptune: A season on Neptune lasts for about 41 years. On this planet winds blow with extremely high speed. (Page 115)",
+    "difficulty": 20
+  },
+  {
+    "id": "the-universe-6th-q040",
+    "topicId": "the-universe-6th",
+    "text": "If a meteor does not completely burn up in the atmosphere and falls to the surface of the Earth, it is called a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Comet fragment"
+      },
+      {
+        "id": "b",
+        "text": "Asteroid"
+      },
+      {
+        "id": "c",
+        "text": "Meteorite"
+      },
+      {
+        "id": "d",
+        "text": "Dwarf planet"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Sometimes the meteors do not burn completely and fall to the surface of the earth. These are called meteorites. (Page 117)",
+    "difficulty": 18
+  },
+  {
+    "id": "the-universe-6th-q041",
+    "topicId": "the-universe-6th",
+    "text": "What is the primary reason we only see one side of the Moon from Earth?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The other side is always dark."
+      },
+      {
+        "id": "b",
+        "text": "The Moon does not rotate on its axis."
+      },
+      {
+        "id": "c",
+        "text": "The Moon's period of rotation is the same as its period of revolution around Earth (synchronous rotation)."
+      },
+      {
+        "id": "d",
+        "text": "Earth's atmosphere blocks the view of the other side."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "The Moon is tidally locked with Earth, meaning its rotation period matches its orbital period (27.3 days as per Page 116), so the same side always faces Earth. (Page 116 Q1)",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q042",
+    "topicId": "the-universe-6th",
+    "text": "Short-period comets are those that take less than how many years to complete one revolution around the sun?",
+    "options": [
+      {
+        "id": "a",
+        "text": "50 years"
+      },
+      {
+        "id": "b",
+        "text": "100 years"
+      },
+      {
+        "id": "c",
+        "text": "200 years"
+      },
+      {
+        "id": "d",
+        "text": "500 years"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Short period comets: These comets take less than 200 years to complete one revolution around the sun. (Page 116)",
+    "difficulty": 16
+  },
+  {
+    "id": "the-universe-6th-q043",
+    "topicId": "the-universe-6th",
+    "text": "The Pole Star (Polaris) is given as an example of which type of star?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Red Giant"
+      },
+      {
+        "id": "b",
+        "text": "Super Nova"
+      },
+      {
+        "id": "c",
+        "text": "Variable Star"
+      },
+      {
+        "id": "d",
+        "text": "Binary Star"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Variable Stars: For example, Polaris (Pole Star). (Page 113)",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q044",
+    "topicId": "the-universe-6th",
+    "text": "Which planet has the largest number of known satellites listed in the table?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Saturn"
+      },
+      {
+        "id": "b",
+        "text": "Jupiter"
+      },
+      {
+        "id": "c",
+        "text": "Uranus"
+      },
+      {
+        "id": "d",
+        "text": "Earth"
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "According to the table on page 114, Jupiter has 64 known satellites, which is the highest number listed. (Page 114)",
+    "difficulty": 15
+  },
+  {
+    "id": "the-universe-6th-q045",
+    "topicId": "the-universe-6th",
+    "text": "Fred Whipple proposed that comets consist of an icy cluster, leading them to be called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "'Rocky snowballs'"
+      },
+      {
+        "id": "b",
+        "text": "'Fiery snowballs'"
+      },
+      {
+        "id": "c",
+        "text": "'Dirty snowballs'"
+      },
+      {
+        "id": "d",
+        "text": "'Gas giants in miniature'"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Fred Whipple proposed that comets consist of an icy cluster of various constituents. That is why, comets came to be called ‘dirty snowballs’. (Page 117)",
+    "difficulty": 16
+  },
+  {
+    "id": "the-universe-6th-q046",
+    "topicId": "the-universe-6th",
+    "text": "A constellation is a:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Single very bright star."
+      },
+      {
+        "id": "b",
+        "text": "Group of stars forming a recognizable pattern in the sky."
+      },
+      {
+        "id": "c",
+        "text": "Type of galaxy."
+      },
+      {
+        "id": "d",
+        "text": "Cloud of gas and dust where stars are born."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A constellation is a group of stars that appear to form a pattern or picture in the sky. (Out of PDF, but related to stars and sky observation)",
+    "difficulty": 16
+  },
+  {
+    "id": "the-universe-6th-q047",
+    "topicId": "the-universe-6th",
+    "text": "What is a black hole?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A hole in a planet's surface."
+      },
+      {
+        "id": "b",
+        "text": "A region in space where gravity is so strong that nothing, not even light, can escape."
+      },
+      {
+        "id": "c",
+        "text": "A type of dark nebula."
+      },
+      {
+        "id": "d",
+        "text": "An unlit star."
+      }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A black hole is a region of spacetime where gravity is so strong that nothing—no particles or even electromagnetic radiation such as light—can escape from it. (Out of PDF, but related to advanced celestial concepts and 'dead stars' mentioned on Page 112)",
+    "difficulty": 17
+  },
+  {
+    "id": "the-universe-6th-q048",
+    "topicId": "the-universe-6th",
+    "text": "The study of celestial objects, space, and the physical universe as a whole is called:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Geology"
+      },
+      {
+        "id": "b",
+        "text": "Meteorology"
+      },
+      {
+        "id": "c",
+        "text": "Astronomy"
+      },
+      {
+        "id": "d",
+        "text": "Astrology"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Astronomy is the scientific study of celestial objects (such as stars, planets, comets, and galaxies) and phenomena that originate outside the Earth's atmosphere. (Out of PDF, the whole chapter is about astronomy)",
+    "difficulty": 15
+  },
+  {
+    "id": "the-universe-6th-q049",
+    "topicId": "the-universe-6th",
+    "text": "Which of the following is the largest planet in our solar system?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Earth"
+      },
+      {
+        "id": "b",
+        "text": "Saturn"
+      },
+      {
+        "id": "c",
+        "text": "Jupiter"
+      },
+      {
+        "id": "d",
+        "text": "Neptune"
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Jupiter: This is the largest planet of the solar system. (Page 115)",
+    "difficulty": 14
+  },
+  {
+    "id": "the-universe-6th-q050",
+    "topicId": "the-universe-6th",
+    "text": "The Earth's magnetic field is important because it:",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keeps the Moon in orbit."
+      },
+      {
+        "id": "b",
+        "text": "Causes the seasons."
+      },
+      {
+        "id": "c",
+        "text": "Diverts harmful solar radiation towards the polar regions."
+      },
+      {
+        "id": "d",
+        "text": "Makes the Earth rotate faster."
+      }
+    ],
+    "correctOptionId": "c",
+    "explanation": "As the earth is a magnet, there is a magnetic field around the earth. It diverts the harmful rays from the sun towards the polar regions of the earth. (Page 115)",
+    "difficulty": 17
   }
 ]
