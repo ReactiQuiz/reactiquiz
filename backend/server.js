@@ -1,18 +1,14 @@
-// backend/server.js
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs').promises;
-
 const app = express();
 const port = process.env.SERVER_PORT || 3001;
-
 const projectRoot = path.resolve(__dirname, '../');
-const RESULTS_FILE_PATH = process.env.JSON_RESULTS_FILE 
-    ? path.resolve(projectRoot, process.env.JSON_RESULTS_FILE.startsWith('./') ? process.env.JSON_RESULTS_FILE.substring(2) : process.env.JSON_RESULTS_FILE)
-    : path.join(__dirname, 'results.json');
+const RESULTS_FILE_PATH = process.env.JSON_RESULTS_FILE
+  ? path.resolve(projectRoot, process.env.JSON_RESULTS_FILE.startsWith('./') ? process.env.JSON_RESULTS_FILE.substring(2) : process.env.JSON_RESULTS_FILE)
+  : path.join(__dirname, 'results.json');
 
 
 console.log(`[INIT] Backend starting...`);
@@ -46,16 +42,15 @@ async function ensureResultsFileExists() {
 }
 
 async function readResults() {
-    // ... (no changes here)
   if (!await ensureResultsFileExists()) {
     throw new Error("Results file is not accessible or couldn't be created.");
   }
   try {
     const data = await fs.readFile(RESULTS_FILE_PATH, 'utf8');
-    if (data.trim() === '') { 
-        console.log("[JSON_DB] Results file is empty, returning empty array.");
-        return [];
-    }
+    if (data.trim() === '') {
+      console.log("[JSON_DB] Results file is empty, returning empty array.");
+      return [];
+    } 
     return JSON.parse(data);
   } catch (error) {
     console.error('[JSON_DB] Error reading or parsing results file:', error);
@@ -64,7 +59,6 @@ async function readResults() {
 }
 
 async function writeResults(resultsData) {
-    // ... (no changes here)
   if (!await ensureResultsFileExists()) {
     throw new Error("Results file is not accessible or couldn't be created for writing.");
   }
@@ -77,15 +71,14 @@ async function writeResults(resultsData) {
   }
 }
 
-// --- POST /api/results --- (existing, no changes needed here from previous step)
 app.post('/api/results', async (req, res) => {
   console.log('[SERVER] POST /api/results - Request body received.');
   const newResultData = req.body;
 
   if (!newResultData.subject || !newResultData.topicId || newResultData.score == null ||
-      newResultData.totalQuestions == null || newResultData.percentage == null || !newResultData.timestamp ||
-      !newResultData.questionsAttempted || !Array.isArray(newResultData.questionsAttempted) ||
-      !newResultData.userAnswersSnapshot || typeof newResultData.userAnswersSnapshot !== 'object'
+    newResultData.totalQuestions == null || newResultData.percentage == null || !newResultData.timestamp ||
+    !newResultData.questionsAttempted || !Array.isArray(newResultData.questionsAttempted) ||
+    !newResultData.userAnswersSnapshot || typeof newResultData.userAnswersSnapshot !== 'object'
   ) {
     console.error('[SERVER] POST /api/results - Bad Request: Missing required fields, including detailed quiz data.');
     return res.status(400).json({ message: 'Missing required fields for saving result, including questions attempted and user answers.' });
@@ -110,10 +103,10 @@ app.post('/api/results', async (req, res) => {
       questionsAttempted: newResultData.questionsAttempted,
       userAnswersSnapshot: newResultData.userAnswersSnapshot
     };
-    
+
     currentResults.push(resultToSave);
     await writeResults(currentResults);
-    
+
     console.log(`[SERVER] POST /api/results - Success: Result added with ID ${resultToSave.id}. Total results: ${currentResults.length}`);
     res.status(201).json({ message: 'Result saved successfully!', id: resultToSave.id });
   } catch (error) {
@@ -122,7 +115,6 @@ app.post('/api/results', async (req, res) => {
   }
 });
 
-// --- GET /api/results --- (existing, no changes needed here)
 app.get('/api/results', async (req, res) => {
   console.log('[SERVER] GET /api/results - Request received.');
   try {
@@ -136,7 +128,6 @@ app.get('/api/results', async (req, res) => {
   }
 });
 
-// --- NEW DELETE /api/results/:id Endpoint ---
 app.delete('/api/results/:id', async (req, res) => {
   const resultIdToDelete = parseInt(req.params.id, 10);
   console.log(`[SERVER] DELETE /api/results/${resultIdToDelete} - Request received.`);
@@ -155,7 +146,7 @@ app.delete('/api/results/:id', async (req, res) => {
       return res.status(404).json({ message: 'Result not found.' });
     }
 
-    currentResults.splice(resultIndex, 1); // Remove the result
+    currentResults.splice(resultIndex, 1);
     await writeResults(currentResults);
 
     console.log(`[SERVER] DELETE /api/results - Success: Result with ID ${resultIdToDelete} deleted. Remaining results: ${currentResults.length}`);
@@ -166,13 +157,11 @@ app.delete('/api/results/:id', async (req, res) => {
   }
 });
 
-
-// Initialize and start server
 ensureResultsFileExists().then(() => {
-    app.listen(port, () => {
-        console.log(`[SERVER] Backend server (JSON file) running on http://localhost:${port}`);
-    });
+  app.listen(port, () => {
+    console.log(`[SERVER] Backend server (JSON file) running on http://localhost:${port}`);
+  });
 }).catch(err => {
-    console.error("[SERVER] Failed to initialize and start server:", err);
-    process.exit(1); 
+  console.error("[SERVER] Failed to initialize and start server:", err);
+  process.exit(1);
 });
