@@ -1,11 +1,22 @@
-// src/pages/mathematics/MathematicsPage.js
-import React, { useState, useMemo } from 'react';
-import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { mathematicsTopics } from '../topics/MathematicsTopics';
+import {
+  useState, useMemo
+} from 'react';
+import {
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+} from '@mui/material';
+import {
+  useNavigate
+
+} from 'react-router-dom';
+import {
+  mathematicsTopics
+
+} from '../topics/MathematicsTopics';
+import {
+  subjectAccentColors
+} from '../theme';
 import TopicCard from '../components/TopicCard';
 import QuizSettingsModal from '../components/QuizSettingsModal';
-import { subjectAccentColors } from '../theme';
 
 function MathematicsPage() {
   const navigate = useNavigate();
@@ -28,7 +39,6 @@ function MathematicsPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Mathematics quiz for ${selectedTopic.name} with settings:`, settings);
       navigate(`/quiz/mathematics/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
@@ -117,7 +127,7 @@ function MathematicsPage() {
             </Box>
           ))
         ) : (
-          <Typography sx={{mt: 2}}>No topics found matching your criteria.</Typography>
+          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
         )}
       </Box>
 

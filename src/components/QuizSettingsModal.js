@@ -1,14 +1,16 @@
-// src/components/QuizSettingsModal.js
-import React, { useState, useEffect } from 'react';
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, Button,
-  FormControl, InputLabel, Select, MenuItem, TextField, useTheme // Added useTheme
+  useState, useEffect
+} from 'react';
+import {
+  Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, TextField, useTheme
 } from '@mui/material';
-import { darken } from '@mui/material/styles';
+import {
+  darken
+} from '@mui/material/styles';
 
 
 function QuizSettingsModal({ open, onClose, onSubmit, topicName, accentColor }) {
-  const theme = useTheme(); // Access theme
+  const theme = useTheme();
   const [difficulty, setDifficulty] = useState('medium');
   const [numQuestions, setNumQuestions] = useState(10);
   const [numQuestionsError, setNumQuestionsError] = useState('');
@@ -55,7 +57,6 @@ function QuizSettingsModal({ open, onClose, onSubmit, topicName, accentColor }) 
         Quiz Settings: {topicName}
       </DialogTitle>
       <DialogContent sx={{ pt: '20px !important', display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-        {/* DialogContent inherits background from Paper, which is now dark via theme */}
         <FormControl fullWidth>
           <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
           <Select
@@ -64,13 +65,12 @@ function QuizSettingsModal({ open, onClose, onSubmit, topicName, accentColor }) 
             value={difficulty}
             label="Difficulty"
             onChange={(e) => setDifficulty(e.target.value)}
-            // MenuProps apply to the dropdown menu itself
             MenuProps={{ PaperProps: { sx: { backgroundColor: theme.palette.background.paper } } }}
           >
             <MenuItem value="easy">Easy</MenuItem>
             <MenuItem value="medium">Medium</MenuItem>
             <MenuItem value="hard">Hard</MenuItem>
-            <MenuItem value="mixed">Mixed</MenuItem> {/* Added Mixed option */}
+            <MenuItem value="mixed">Mixed</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -92,7 +92,7 @@ function QuizSettingsModal({ open, onClose, onSubmit, topicName, accentColor }) 
           sx={{
             backgroundColor: effectiveAccentColor,
             color: theme.palette.getContrastText(effectiveAccentColor),
-            '&:hover': { backgroundColor: darken(effectiveAccentColor, 0.2) } // Darken more for better visual feedback
+            '&:hover': { backgroundColor: darken(effectiveAccentColor, 0.2) }
           }}
           disabled={!!numQuestionsError || numQuestions === ''}
         >

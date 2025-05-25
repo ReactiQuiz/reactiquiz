@@ -51,3 +51,16 @@ Example :   {
     "explanation": "Frequency ν = 30 kHz = 30,000 Hz. Wavelength λ = v / ν = 1500 m/s / 30000 Hz = 0.05 m. (Page 129)",
     "difficulty": 16
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  Add a timer to the quiz. The timer grows as the user takes more time to solve the test. The amount of time taken to solve the test should be saved to results file and displayed in a chip like how number of questions and difficulty is shown.

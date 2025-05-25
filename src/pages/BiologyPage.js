@@ -1,11 +1,20 @@
-// src/pages/biology/BiologyPage.js
-import React, { useState, useMemo } from 'react';
-import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { biologyTopics } from '../topics/BiologyTopics';
+import {
+  useState, useMemo
+} from 'react';
+import {
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+} from '@mui/material';
+import {
+  useNavigate
+} from 'react-router-dom';
+import {
+  biologyTopics
+} from '../topics/BiologyTopics';
+import {
+  subjectAccentColors
+} from '../theme';
 import TopicCard from '../components/TopicCard';
 import QuizSettingsModal from '../components/QuizSettingsModal';
-import { subjectAccentColors } from '../theme';
 
 function BiologyPage() {
   const navigate = useNavigate();
@@ -28,7 +37,6 @@ function BiologyPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Biology quiz for ${selectedTopic.name} with settings:`, settings);
       navigate(`/quiz/biology/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,

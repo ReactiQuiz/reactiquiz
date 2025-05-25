@@ -1,7 +1,9 @@
-// src/pages/quiz/QuestionItem.js
-import React from 'react';
-import { Box, Typography, Button, Paper, useTheme } from '@mui/material';
-import { lighten, darken } from '@mui/material/styles';
+import {
+  Box, Typography, Button, Paper, useTheme
+} from '@mui/material';
+import {
+  lighten, darken
+} from '@mui/material/styles';
 
 const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOptionId, accentColor }) => {
   const theme = useTheme();

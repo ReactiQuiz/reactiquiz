@@ -1,13 +1,16 @@
-// src/pages/ResultsPage.js
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
-  Box, Typography, Paper, List, ListItem, ListItemText, ListItemIcon,
-  Button, Divider, useTheme, alpha, darken, Alert, Chip, CircularProgress,
-  ButtonBase,
-  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  useMemo, useEffect, useState, useCallback
+} from 'react';
+import {
+  useLocation, useNavigate
+} from 'react-router-dom';
+import {
+  Box, Typography, Paper, List, ListItem, ListItemText, ListItemIcon, Button, Divider, useTheme, alpha, darken, Alert, Chip, CircularProgress, ButtonBase, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
+import {
+  subjectAccentColors as themeSubjectAccentColors
+} from '../theme';
+import axios from 'axios';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -18,13 +21,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-// Import from theme.js
-import { subjectAccentColors as themeSubjectAccentColors } from '../theme';
-
-// Using the imported accent colors from theme.js
 const subjectAccentColors = themeSubjectAccentColors;
 
-// Helper function to format topic names
 const formatTopicName = (topicId) => {
   if (!topicId) return 'N/A';
   let name = topicId.replace(/-/g, ' ');
@@ -35,8 +33,6 @@ const formatTopicName = (topicId) => {
   return name.replace(/\b\w/g, l => l.toUpperCase());
 };
 
-
-// Reusable Detailed Quiz View Component
 function QuizDetailView({
   quizResult,
   quizTitle,
@@ -58,10 +54,10 @@ function QuizDetailView({
 
   if (!quizResult) {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-            <CircularProgress sx={{color: effectiveAccentColor}}/>
-            <Typography sx={{ml: 2}}>Loading quiz details...</Typography>
-        </Box>
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+        <CircularProgress sx={{ color: effectiveAccentColor }} />
+        <Typography sx={{ ml: 2 }}>Loading quiz details...</Typography>
+      </Box>
     );
   }
 
@@ -74,16 +70,16 @@ function QuizDetailView({
         </Typography>
         <Typography variant="h5" component="div" gutterBottom>
           <Typography variant="h6" component="span" sx={{ textTransform: 'capitalize', color: theme.palette.text.secondary }}>
-             {topicName}
+            {topicName}
           </Typography>
           {(quizClass || difficulty || numQuestionsConfigured != null) && (
             <Typography variant="caption" display="block" color="text.secondary" sx={{ textTransform: 'capitalize', mt: 0.5 }}>
               (
-                {quizClass && `Class ${quizClass}`}
-                {(quizClass && difficulty) && ', '}
-                {difficulty && `${difficulty}`}
-                {((quizClass || difficulty) && numQuestionsConfigured != null) && ', '}
-                {numQuestionsConfigured != null && `${numQuestionsConfigured} Questions`}
+              {quizClass && `Class ${quizClass}`}
+              {(quizClass && difficulty) && ', '}
+              {difficulty && `${difficulty}`}
+              {((quizClass || difficulty) && numQuestionsConfigured != null) && ', '}
+              {numQuestionsConfigured != null && `${numQuestionsConfigured} Questions`}
               )
             </Typography>
           )}
@@ -105,14 +101,14 @@ function QuizDetailView({
       <Typography variant="h5" gutterBottom sx={{ mb: 2, display: 'flex', alignItems: 'center', color: theme.palette.text.primary }}>
         Detailed Breakdown
       </Typography>
-       {detailedQuestionsToDisplay.map((result, index) => (
+      {detailedQuestionsToDisplay.map((result, index) => (
         <Paper key={result.id || `q-${index}`} elevation={2} sx={{ mb: 3, p: { xs: 2, sm: 2.5 }, borderLeft: `4px solid ${result.isCorrect ? successColor : (result.isAnswered ? errorColor : neutralColor)}` }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
             <Typography variant="h6" component="div" sx={{ fontWeight: 500, color: theme.palette.text.primary }}> Question {index + 1} </Typography>
-            {result.isAnswered ? ( result.isCorrect ?
-                <Chip icon={<CheckCircleOutlineIcon />} label="Correct" color="success" size="small" variant="outlined" /> :
-                <Chip icon={<HighlightOffIcon />} label="Incorrect" color="error" size="small" variant="outlined" />
-            ) : ( <Chip label="Not Answered" size="small" variant="outlined" /> )}
+            {result.isAnswered ? (result.isCorrect ?
+              <Chip icon={<CheckCircleOutlineIcon />} label="Correct" color="success" size="small" variant="outlined" /> :
+              <Chip icon={<HighlightOffIcon />} label="Incorrect" color="error" size="small" variant="outlined" />
+            ) : (<Chip label="Not Answered" size="small" variant="outlined" />)}
           </Box>
           <Typography variant="body1" sx={{ mb: 2, color: theme.palette.text.primary, whiteSpace: 'pre-wrap' }}>{result.text}</Typography>
           <List dense sx={{ py: 0, mb: result.explanation ? 1.5 : 0 }}>
@@ -127,7 +123,8 @@ function QuizDetailView({
               }
               if (isUserSelected) {
                 icon = <RadioButtonCheckedIcon fontSize="small" sx={{ color: isCorrectAnswer ? successColor : errorColor }} />;
-                if (!isCorrectAnswer) { optionStyle = { ...optionStyle, backgroundColor: alpha(errorColor, 0.2), border: `1px solid ${alpha(errorColor, 0.4)}`, color: theme.palette.error.light };
+                if (!isCorrectAnswer) {
+                  optionStyle = { ...optionStyle, backgroundColor: alpha(errorColor, 0.2), border: `1px solid ${alpha(errorColor, 0.4)}`, color: theme.palette.error.light };
                 } else { optionStyle.fontWeight = 'bold'; }
               }
               return (
@@ -153,24 +150,24 @@ function QuizDetailView({
             sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, '&:hover': { borderColor: darken(effectiveAccentColor, 0.15), backgroundColor: alpha(effectiveAccentColor, 0.08) }, minWidth: '180px' }}
           > Back to List </Button>
         )}
-         <Button variant="outlined" startIcon={<HomeIcon />} onClick={() => navigate('/')}
-            sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, '&:hover': { borderColor: darken(effectiveAccentColor, 0.15), backgroundColor: alpha(effectiveAccentColor, 0.08) }, minWidth: '180px' }}
-          > Home </Button>
+        <Button variant="outlined" startIcon={<HomeIcon />} onClick={() => navigate('/')}
+          sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, '&:hover': { borderColor: darken(effectiveAccentColor, 0.15), backgroundColor: alpha(effectiveAccentColor, 0.08) }, minWidth: '180px' }}
+        > Home </Button>
         {onRetryQuiz && subject && topicId && (
           <Button variant="contained" startIcon={<ReplayIcon />} onClick={onRetryQuiz}
             sx={{ backgroundColor: effectiveAccentColor, color: theme.palette.getContrastText(effectiveAccentColor), '&:hover': { backgroundColor: darken(effectiveAccentColor, 0.15) }, minWidth: '180px' }}
           > Retry Quiz </Button>
         )}
         {onDeleteQuiz && resultId && (
-            <Button
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={() => onDeleteQuiz(resultId)}
-                sx={{ minWidth: '180px' }}
-            >
-                Delete This Result
-            </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={() => onDeleteQuiz(resultId)}
+            sx={{ minWidth: '180px' }}
+          >
+            Delete This Result
+          </Button>
         )}
       </Box>
     </Box>
@@ -178,8 +175,8 @@ function QuizDetailView({
 }
 
 function DeleteConfirmationDialog({ open, onClose, onConfirm, error }) {
-   const theme = useTheme();
-   return (
+  const theme = useTheme();
+  return (
     <Dialog open={open} onClose={onClose} aria-labelledby="delete-confirmation-title">
       <DialogTitle id="delete-confirmation-title">Confirm Deletion</DialogTitle>
       <DialogContent>
@@ -189,7 +186,7 @@ function DeleteConfirmationDialog({ open, onClose, onConfirm, error }) {
         {error && <Alert severity="error" sx={{ mt: 2 }} variant="filled">{error}</Alert>}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} sx={{color: theme.palette.text.secondary}}>Cancel</Button>
+        <Button onClick={onClose} sx={{ color: theme.palette.text.secondary }}>Cancel</Button>
         <Button onClick={onConfirm} color="error" autoFocus>
           Delete
         </Button>
@@ -281,12 +278,11 @@ function ResultsPage() {
       };
       axios.post('/api/results', payload)
         .then(response => {
-            console.log('Quiz results saved successfully:', response.data);
-            fetchHistoricalData();
+          console.log('Quiz results saved successfully:', response.data);
+          fetchHistoricalData();
         })
         .catch(error => { console.error('Error saving quiz results:', error.response ? error.response.data : error.message); });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isShowingCurrentQuizResult, currentQuizData, score, percentage, fetchHistoricalData]);
 
 
@@ -344,7 +340,7 @@ function ResultsPage() {
           })}
           onDeleteQuiz={openDeleteConfirmation}
         />
-         <DeleteConfirmationDialog
+        <DeleteConfirmationDialog
           open={deleteConfirmationOpen}
           onClose={() => setDeleteConfirmationOpen(false)}
           onConfirm={handleConfirmDelete}
@@ -370,12 +366,12 @@ function ResultsPage() {
           detailedQuestionsToDisplay={detailedResults}
           accentColor={currentQuizData.subjectAccentColor || theme.palette.primary.main}
           onRetryQuiz={() => navigate(`/quiz/${currentQuizData.subject}/${currentQuizData.topicId}`, {
-             state: {
-                ...currentQuizData,
-                numQuestions: currentQuizData.numQuestionsConfigured,
-                quizClass: currentQuizData.quizClass
-              }
-            })}
+            state: {
+              ...currentQuizData,
+              numQuestions: currentQuizData.numQuestionsConfigured,
+              quizClass: currentQuizData.quizClass
+            }
+          })}
         />
       </Box>
     );
@@ -396,14 +392,14 @@ function ResultsPage() {
 
 
       {isLoadingHistorical ? (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-            <CircularProgress /> <Typography sx={{ ml: 2 }}>Loading past results...</Typography>
-         </Box>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+          <CircularProgress /> <Typography sx={{ ml: 2 }}>Loading past results...</Typography>
+        </Box>
       ) : historicalResults.length === 0 && !fetchError ? (
         <Paper elevation={2} sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h6" gutterBottom>No Past Results Found</Typography>
           <Typography>Complete some quizzes to see your history here!</Typography>
-           <Button variant="contained" startIcon={<HomeIcon />} onClick={() => navigate('/')} sx={{ mt: 2 }} >
+          <Button variant="contained" startIcon={<HomeIcon />} onClick={() => navigate('/')} sx={{ mt: 2 }} >
             Go to Home
           </Button>
         </Paper>
@@ -417,12 +413,12 @@ function ResultsPage() {
                 width: '100%', textAlign: 'left', display: 'block', mb: 2, borderRadius: 2, overflow: 'hidden',
                 borderLeft: `5px solid ${subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.grey[500]}`,
                 '&:hover': { boxShadow: theme.shadows[6], backgroundColor: alpha(theme.palette.action.hover, 0.08) },
-                p:0
+                p: 0
               }}
               key={result.id}
               elevation={2}
             >
-              <ListItem sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'flex-start', sm: {alignItems: 'center'}, gap: { xs: 1, sm: 2 }, py: 1.5, px: 2 }}>
+              <ListItem sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'flex-start', sm: { alignItems: 'center' }, gap: { xs: 1, sm: 2 }, py: 1.5, px: 2 }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" component="div" sx={{ textTransform: 'capitalize', fontWeight: 500, color: subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.primary.light }}>
                     {formatTopicName(result.topicId)} {/* Use formatter here */}
@@ -438,28 +434,28 @@ function ResultsPage() {
                     Taken on: {new Date(result.timestamp).toLocaleString()}
                   </Typography>
                 </Box>
-                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: { xs: 1, sm: 0 }, alignSelf: {xs: 'flex-end', sm: 'center'} }}>
-                    <Chip
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: { xs: 1, sm: 0 }, alignSelf: { xs: 'flex-end', sm: 'center' } }}>
+                  <Chip
                     label={`${result.percentage}%`}
                     sx={{
-                        fontWeight: 'bold', fontSize: '1.1rem', px: 1,
-                        backgroundColor: result.percentage >= 70 ? alpha(theme.palette.success.dark, 0.3) : result.percentage >= 50 ? alpha(theme.palette.warning.dark, 0.3) : alpha(theme.palette.error.dark, 0.3),
-                        color: result.percentage >= 70 ? theme.palette.success.light : result.percentage >= 50 ? theme.palette.warning.light : theme.palette.error.light,
-                        border: `1px solid ${result.percentage >= 70 ? theme.palette.success.main : result.percentage >= 50 ? theme.palette.warning.main : theme.palette.error.main}`
+                      fontWeight: 'bold', fontSize: '1.1rem', px: 1,
+                      backgroundColor: result.percentage >= 70 ? alpha(theme.palette.success.dark, 0.3) : result.percentage >= 50 ? alpha(theme.palette.warning.dark, 0.3) : alpha(theme.palette.error.dark, 0.3),
+                      color: result.percentage >= 70 ? theme.palette.success.light : result.percentage >= 50 ? theme.palette.warning.light : theme.palette.error.light,
+                      border: `1px solid ${result.percentage >= 70 ? theme.palette.success.main : result.percentage >= 50 ? theme.palette.warning.main : theme.palette.error.main}`
                     }}
-                    />
-                    <Button
-                        variant="text"
-                        size="small"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            openDeleteConfirmation(result.id);
-                        }}
-                        sx={{p:0.5, minWidth: 'auto', color: theme.palette.error.light, '&:hover': {backgroundColor: alpha(theme.palette.error.main, 0.2)}}}
-                        aria-label={`Delete result for ${formatTopicName(result.topicId)}`}
-                    >
-                        <DeleteIcon />
-                    </Button>
+                  />
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openDeleteConfirmation(result.id);
+                    }}
+                    sx={{ p: 0.5, minWidth: 'auto', color: theme.palette.error.light, '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.2) } }}
+                    aria-label={`Delete result for ${formatTopicName(result.topicId)}`}
+                  >
+                    <DeleteIcon />
+                  </Button>
                 </Box>
               </ListItem>
             </Paper>
@@ -467,7 +463,7 @@ function ResultsPage() {
         </List>
       )}
       <Box sx={{ mt: 4, py: 2, display: 'flex', justifyContent: 'center' }}>
-         <Button variant="outlined" startIcon={<HomeIcon />} onClick={() => navigate('/')}
+        <Button variant="outlined" startIcon={<HomeIcon />} onClick={() => navigate('/')}
           sx={{ borderColor: theme.palette.primary.main, color: theme.palette.primary.main, '&:hover': { borderColor: darken(theme.palette.primary.main, 0.15), backgroundColor: alpha(theme.palette.primary.main, 0.08) }, minWidth: { xs: '100%', sm: '200px' } }}
         > Back to Home </Button>
       </Box>

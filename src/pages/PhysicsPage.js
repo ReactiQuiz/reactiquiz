@@ -1,11 +1,20 @@
-// src/pages/physics/PhysicsPage.js
-import React, { useState, useMemo } from 'react';
-import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { physicsTopics } from '../topics/PhysicsTopics';
+import {
+  useState, useMemo
+} from 'react';
+import {
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+} from '@mui/material';
+import {
+  useNavigate
+} from 'react-router-dom';
+import {
+  physicsTopics
+} from '../topics/PhysicsTopics';
+import {
+  subjectAccentColors
+} from '../theme';
 import TopicCard from '../components/TopicCard';
 import QuizSettingsModal from '../components/QuizSettingsModal';
-import { subjectAccentColors } from '../theme';
 
 function PhysicsPage() {
   const navigate = useNavigate();
@@ -117,7 +126,7 @@ function PhysicsPage() {
             </Box>
           ))
         ) : (
-          <Typography sx={{mt: 2}}>No topics found matching your criteria.</Typography>
+          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
         )}
       </Box>
 

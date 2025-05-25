@@ -1,11 +1,20 @@
-// src/pages/chemistry/ChemistryPage.js
-import React, { useState, useMemo } from 'react';
-import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { chemistryTopics } from '../topics/ChemistryTopics';
+import {
+  useState, useMemo
+} from 'react';
+import {
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+} from '@mui/material';
+import {
+  useNavigate
+} from 'react-router-dom';
+import {
+  chemistryTopics
+} from '../topics/ChemistryTopics';
+import {
+  subjectAccentColors
+} from '../theme';
 import TopicCard from '../components/TopicCard';
 import QuizSettingsModal from '../components/QuizSettingsModal';
-import { subjectAccentColors } from '../theme';
 
 function ChemistryPage() {
   const navigate = useNavigate();
@@ -28,7 +37,6 @@ function ChemistryPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Chemistry quiz for ${selectedTopic.name} with settings:`, settings);
       navigate(`/quiz/chemistry/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
@@ -117,7 +125,7 @@ function ChemistryPage() {
             </Box>
           ))
         ) : (
-          <Typography sx={{mt: 2}}>No topics found matching your criteria.</Typography>
+          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
         )}
       </Box>
 

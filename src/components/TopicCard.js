@@ -1,11 +1,10 @@
-// src/components/TopicCard.js
-import React from 'react';
-import { Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box } from '@mui/material'; // Added Box
-import { lighten, darken } from '@mui/material/styles';
+import {
+  Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box
+} from '@mui/material';
 
 function TopicCard({ topic, onStartQuiz, accentColor }) {
   const theme = useTheme();
-  const { name, description, id, class: topicClass } = topic; // Destructure class as topicClass
+  const { name, description, class: topicClass } = topic;
 
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 

@@ -1,23 +1,26 @@
-// src/pages/quiz/QuizPage.js
-import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Typography, Button, CircularProgress, Alert } from '@mui/material';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { darken, useTheme } from '@mui/material/styles';
+import {
+  useState, useEffect, useCallback
+} from 'react';
+import {
+  Box, Typography, Button, CircularProgress, Alert
+} from '@mui/material';
+import {
+  useParams, useNavigate, useLocation
+} from 'react-router-dom';
+import {
+  darken, useTheme
+} from '@mui/material/styles';
 
-// Import all possible question files
+// ----Import question files----
 import allChemistryQuestions from '../questions/chemistry.json';
 import allPhysicsQuestions from '../questions/physics.json';
 import allMathematicsQuestions from '../questions/mathematics.json';
 import allBiologyQuestions from '../questions/biology.json';
 
-import { subjectAccentColors as themeSubjectAccentColors } from '../theme';
+import {
+  subjectAccentColors as themeSubjectAccentColors
+} from '../theme';
 import QuestionItem from '../components/QuestionItem';
-
-// Log the .env variables to see if they are being picked up
-// These are primarily for build-time configuration or if you were using a more dynamic loader
-console.log('REACT_APP_CHEMISTRY_QUESTIONS_MODULE_PATH:', process.env.REACT_APP_CHEMISTRY_QUESTIONS_MODULE_PATH);
-console.log('REACT_APP_PHYSICS_QUESTIONS_MODULE_PATH:', process.env.REACT_APP_PHYSICS_QUESTIONS_MODULE_PATH);
-// ... etc.
 
 const subjectQuestionMap = {
   chemistry: allChemistryQuestions,
@@ -71,26 +74,20 @@ function QuizPage() {
       return;
     }
 
-    // This is where you'd conceptually use the .env variable,
-    // but since we've statically imported, we just use the map.
     let allQuestionsForSubject;
     const subjectLower = subject.toLowerCase();
 
-    // This mapping demonstrates how you *might* choose based on env vars
-    // if you were loading them differently, but with static imports, it's direct.
     if (subjectLower === 'chemistry' && process.env.REACT_APP_CHEMISTRY_QUESTIONS_MODULE_PATH) {
-        allQuestionsForSubject = subjectQuestionMap.chemistry;
+      allQuestionsForSubject = subjectQuestionMap.chemistry;
     } else if (subjectLower === 'physics' && process.env.REACT_APP_PHYSICS_QUESTIONS_MODULE_PATH) {
-        allQuestionsForSubject = subjectQuestionMap.physics;
+      allQuestionsForSubject = subjectQuestionMap.physics;
     } else if (subjectLower === 'mathematics' && process.env.REACT_APP_MATHEMATICS_QUESTIONS_MODULE_PATH) {
-        allQuestionsForSubject = subjectQuestionMap.mathematics;
+      allQuestionsForSubject = subjectQuestionMap.mathematics;
     } else if (subjectLower === 'biology' && process.env.REACT_APP_BIOLOGY_QUESTIONS_MODULE_PATH) {
-        allQuestionsForSubject = subjectQuestionMap.biology;
+      allQuestionsForSubject = subjectQuestionMap.biology;
     } else {
-        // Fallback if .env var is not set or subject doesn't match
-        allQuestionsForSubject = subjectQuestionMap[subjectLower];
+      allQuestionsForSubject = subjectQuestionMap[subjectLower];
     }
-
 
     if (!allQuestionsForSubject) {
       setError(`Questions for subject "${subject}" not found or path not configured.`);
@@ -166,7 +163,6 @@ function QuizPage() {
     return questions.every(q => userAnswers.hasOwnProperty(q.id) && userAnswers[q.id] !== '' && userAnswers[q.id] !== undefined);
   };
 
-  // ... (rest of the rendering logic remains the same as before)
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
