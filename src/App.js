@@ -12,7 +12,7 @@ import ChemistryPage from './pages/ChemistryPage';
 import PhysicsPage from './pages/PhysicsPage';
 import MathematicsPage from './pages/MathematicsPage';
 import BiologyPage from './pages/BiologyPage';
-import QuizPage from './pages/QuizPage'; // <<< ENSURE THIS PATH IS CORRECT
+import QuizPage from './pages/QuizPage';
 import ResultsPage from './pages/ResultsPage';
 import AppDrawer from './components/AppDrawer';
 
@@ -62,7 +62,7 @@ function App() {
           </Container>
            <Box component="footer" sx={{ bgcolor: 'background.paper', p: 2, textAlign: 'center', borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}>
             <Typography variant="body2" color="text.secondary">
-              © {new Date().getFullYear()} ReactiQuiz. All Rights Reserved.
+              © 2025 ReactiQuiz. All Rights Reserved.
             </Typography>
           </Box>
         </Box>

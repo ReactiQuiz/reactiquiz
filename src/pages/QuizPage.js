@@ -1,6 +1,6 @@
 // src/pages/quiz/QuizPage.js
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Typography, Button, Paper, CircularProgress, Alert } from '@mui/material';
+import { Box, Typography, Button, CircularProgress, Alert } from '@mui/material';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { darken, useTheme } from '@mui/material/styles';
 

@@ -117,7 +117,7 @@ function BiologyPage() {
             </Box>
           ))
         ) : (
-          <Typography sx={{mt: 2}}>No topics found matching your criteria.</Typography>
+          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
         )}
       </Box>
 

@@ -85,9 +85,8 @@ export default function NavbarLayout({ children }) {
     setOpen(false);
   };
 
-  // --- Updated Navigation Items ---
   const navItems = [
-    { text: 'Home', icon: <QuizIcon />, path: '/' }, // Renamed "Quiz" to "Home" for clarity, assuming '/' is main quiz or landing
+    { text: 'Home', icon: <QuizIcon />, path: '/' },
     { text: 'Results', icon: <AssessmentIcon />, path: '/results' },
     { text: 'Chemistry', icon: <ScienceOutlinedIcon />, path: '/chemistry' },
     { text: 'Physics', icon: <BoltOutlinedIcon />, path: '/physics' },
