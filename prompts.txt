@@ -1,3 +1,7 @@
+/* ====reactiquiz\src\App.js==== */
+/* ====Make By Sanskar==== */
+
+
 Give me 125 MCQ questions on chapter 18 of the given PDF with 4 options a, b, c, d with one correct option. 30% questions should be easy 30% medium and 30% hard and 10% out of the PDF but related to the text. The questions should be independent of eachother and of the text. Questions should not be like "Find x in previous question" or "What is this fig in page 65". You have to give questions in the form of json format. topicid will be "observing-space-telescopes-9th. You have to give difficulty rating from 11-13 easy 14-17 medium and 18-20 hard. You have to give difficulty rating to each question. You also have to give correct option and explanation for each question.
 Example :   {
     "id": "phy_sound_ch12_q124",

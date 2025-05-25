@@ -11,7 +11,7 @@ import {
   darken, useTheme
 } from '@mui/material/styles';
 
-// ----Import question files----
+/* ----Import question files---- */
 import allChemistryQuestions from '../questions/chemistry.json';
 import allPhysicsQuestions from '../questions/physics.json';
 import allMathematicsQuestions from '../questions/mathematics.json';
