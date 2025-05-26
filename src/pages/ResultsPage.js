@@ -1,35 +1,40 @@
 import {
-  useMemo, useEffect, useState, useCallback
+  useMemo, useEffect, useState, useCallback, useRef
 } from 'react';
 import {
   useLocation, useNavigate
 } from 'react-router-dom';
 import {
-  Box, Typography, Paper, List, Alert, CircularProgress, Button, useTheme
+  Box, Typography, Paper, List, Alert, CircularProgress, Button, useTheme,
+  darken, alpha
 } from '@mui/material';
 import axios from 'axios';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 
 import { subjectAccentColors } from '../theme';
-import allChemistryQuestions from '../questions/chemistry.json';
-import allPhysicsQuestions from '../questions/physics.json';
-import allMathematicsQuestions from '../questions/mathematics.json';
-import allBiologyQuestions from '../questions/biology.json';
+
+// Removed direct JSON imports for questions
+// import allChemistryQuestions from '../questions/chemistry.json';
+// import allPhysicsQuestions from '../questions/physics.json';
+// import allMathematicsQuestions from '../questions/mathematics.json';
+// import allBiologyQuestions from '../questions/biology.json';
 
 import QuizResultSummary from '../components/QuizResultSummary';
 import QuestionBreakdown from '../components/QuestionBreakdown';
 import HistoricalResultItem from '../components/HistoricalResultItem';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import ResultsActionButtons from '../components/ResultsActionButtons';
+import { formatTime } from '../utils/formatTime';
 
+// Removed the allQuestionsData map as questions are now fetched from backend
+// const allQuestionsData = {
+//   chemistry: allChemistryQuestions,
+//   physics: allPhysicsQuestions,
+//   mathematics: allMathematicsQuestions,
+//   biology: allBiologyQuestions,
+// };
 
-const allQuestionsData = {
-  chemistry: allChemistryQuestions,
-  physics: allPhysicsQuestions,
-  mathematics: allMathematicsQuestions,
-  biology: allBiologyQuestions,
-};
 
 function ResultsPage() {
   const location = useLocation();
@@ -40,62 +45,55 @@ function ResultsPage() {
   const [historicalResults, setHistoricalResults] = useState([]);
   const [isLoadingHistorical, setIsLoadingHistorical] = useState(false);
   const [fetchError, setFetchError] = useState('');
+  
   const [selectedHistoricalResult, setSelectedHistoricalResult] = useState(null);
   const [processedHistoricalDetailedView, setProcessedHistoricalDetailedView] = useState([]);
-  const [isCurrentResultSaved, setIsCurrentResultSaved] = useState(false);
+  const [isLoadingHistoricalDetails, setIsLoadingHistoricalDetails] = useState(false);
+
+  const processedAttemptIdRef = useRef(null); 
+
 
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [resultToDeleteId, setResultToDeleteId] = useState(null);
   const [deleteError, setDeleteError] = useState('');
 
+  const {
+    quizAttemptId: currentQuizAttemptId,
+    subject: currentSubject,
+    topicId: currentTopicId,
+    difficulty: currentDifficulty,
+    numQuestionsConfigured: currentNumQuestionsConfigured,
+    quizClass: currentQuizClass,
+    timeTaken: currentTimeTaken,
+    questionsActuallyAttemptedIds: currentQuestionsActuallyAttemptedIds,
+    userAnswersSnapshot: currentUserAnswersSnapshot,
+    originalQuestionsForDisplay: currentOriginalQuestionsForDisplay,
+    originalAnswersForDisplay: currentOriginalAnswersForDisplay,
+    subjectAccentColor: currentSubjectAccentColor
+  } = useMemo(() => {
+    return currentQuizDataFromState || {};
+  }, [currentQuizDataFromState]);
+
+
   const { score, percentage, detailedResultsForCurrentQuiz } = useMemo(() => {
-    if (!currentQuizDataFromState || !currentQuizDataFromState.originalAnswersForDisplay || !currentQuizDataFromState.originalQuestionsForDisplay || !Array.isArray(currentQuizDataFromState.originalQuestionsForDisplay) || currentQuizDataFromState.originalQuestionsForDisplay.length === 0) {
+    if (!currentOriginalAnswersForDisplay || !currentOriginalQuestionsForDisplay || !Array.isArray(currentOriginalQuestionsForDisplay) || currentOriginalQuestionsForDisplay.length === 0) {
       return { score: 0, percentage: 0, detailedResultsForCurrentQuiz: [] };
     }
     let calculatedScore = 0;
-    const results = currentQuizDataFromState.originalQuestionsForDisplay.map(question => {
-      const userAnswerId = currentQuizDataFromState.originalAnswersForDisplay[question.id];
+    const results = currentOriginalQuestionsForDisplay.map(question => {
+      const userAnswerId = currentOriginalAnswersForDisplay[question.id];
       const correctAnswerId = question.correctOptionId;
       const isCorrect = userAnswerId === correctAnswerId;
       if (isCorrect) calculatedScore++;
-      const userAnswerText = question.options.find(opt => opt.id === userAnswerId)?.text;
-      const correctAnswerText = question.options.find(opt => opt.id === correctAnswerId)?.text;
-      return { ...question, userAnswerId, userAnswerText, correctAnswerText, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
+      return { ...question, userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
     });
-    const calculatedPercentage = currentQuizDataFromState.originalQuestionsForDisplay.length > 0 ? Math.round((calculatedScore / currentQuizDataFromState.originalQuestionsForDisplay.length) * 100) : 0;
+    const calculatedPercentage = currentOriginalQuestionsForDisplay.length > 0 ? Math.round((calculatedScore / currentOriginalQuestionsForDisplay.length) * 100) : 0;
     return { score: calculatedScore, percentage: calculatedPercentage, detailedResultsForCurrentQuiz: results };
-  }, [currentQuizDataFromState]);
+  }, [currentOriginalAnswersForDisplay, currentOriginalQuestionsForDisplay]);
 
-  const isShowingCurrentQuizResult = !!(currentQuizDataFromState && currentQuizDataFromState.originalQuestionsForDisplay && currentQuizDataFromState.originalQuestionsForDisplay.length > 0);
+  const isShowingCurrentQuizResult = !!(currentOriginalQuestionsForDisplay && currentOriginalQuestionsForDisplay.length > 0 && currentQuizAttemptId);
 
-  useEffect(() => {
-    if (selectedHistoricalResult && selectedHistoricalResult.questionsActuallyAttemptedIds && selectedHistoricalResult.userAnswersSnapshot) {
-      const subjectKey = selectedHistoricalResult.subject?.toLowerCase();
-      const subjectQuestions = allQuestionsData[subjectKey];
-      if (!subjectQuestions) {
-        console.error("Cannot find question bank for subject:", selectedHistoricalResult.subject);
-        setProcessedHistoricalDetailedView([]);
-        return;
-      }
-
-      const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
-        const fullQuestionData = subjectQuestions.find(q => q.id === qId);
-        if (!fullQuestionData) {
-          console.warn(`Question data for ID ${qId} not found in ${selectedHistoricalResult.subject} bank.`);
-          return { id: qId, text: "Question data not found.", options: [], isCorrect: false, isAnswered: false, explanation: "Original question data missing." };
-        }
-        const userAnswerId = selectedHistoricalResult.userAnswersSnapshot[qId];
-        const correctAnswerId = fullQuestionData.correctOptionId;
-        const isCorrect = userAnswerId === correctAnswerId;
-        return { ...fullQuestionData, userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
-      });
-      setProcessedHistoricalDetailedView(populatedQuestions);
-    } else {
-      setProcessedHistoricalDetailedView([]);
-    }
-  }, [selectedHistoricalResult]);
-
-
+  // Effect for fetching historical data
   const fetchHistoricalData = useCallback(() => {
     setIsLoadingHistorical(true);
     setFetchError('');
@@ -118,47 +116,115 @@ function ResultsPage() {
         setIsLoadingHistorical(false);
       });
   }, []);
-
+  
+  // Effect for saving the current quiz result
   useEffect(() => {
-    if (isShowingCurrentQuizResult && currentQuizDataFromState.questionsActuallyAttemptedIds && !isCurrentResultSaved) {
+    if (isShowingCurrentQuizResult && currentQuestionsActuallyAttemptedIds && currentQuizAttemptId && currentQuizAttemptId !== processedAttemptIdRef.current) {
+      
+      console.log(`[ResultsPage] Attempting to save current quiz result. Attempt ID: ${currentQuizAttemptId}, Previously processed: ${processedAttemptIdRef.current}`);
+      processedAttemptIdRef.current = currentQuizAttemptId; 
+
       const payload = {
-        subject: currentQuizDataFromState.subject,
-        topicId: currentQuizDataFromState.topicId,
-        score: score,
-        totalQuestions: currentQuizDataFromState.questionsActuallyAttemptedIds.length,
-        percentage: percentage,
+        subject: currentSubject,
+        topicId: currentTopicId,
+        score: score, 
+        totalQuestions: currentQuestionsActuallyAttemptedIds.length, 
+        percentage: percentage, 
         timestamp: new Date().toISOString(),
-        difficulty: currentQuizDataFromState.difficulty,
-        numQuestionsConfigured: currentQuizDataFromState.numQuestionsConfigured,
-        class: currentQuizDataFromState.quizClass,
-        timeTaken: currentQuizDataFromState.timeTaken,
-        questionsActuallyAttemptedIds: currentQuizDataFromState.questionsActuallyAttemptedIds,
-        userAnswersSnapshot: currentQuizDataFromState.userAnswersSnapshot
+        difficulty: currentDifficulty,
+        numQuestionsConfigured: currentNumQuestionsConfigured,
+        class: currentQuizClass,
+        timeTaken: currentTimeTaken,
+        questionsActuallyAttemptedIds: currentQuestionsActuallyAttemptedIds,
+        userAnswersSnapshot: currentUserAnswersSnapshot
       };
+
       axios.post('/api/results', payload)
         .then(response => {
-          console.log('[ResultsPage] Quiz results saved successfully:', response.data);
-          setIsCurrentResultSaved(true);
-          fetchHistoricalData();
+          console.log('[ResultsPage] Quiz results saved successfully:', response.data, "for attempt ID:", currentQuizAttemptId);
+          fetchHistoricalData(); 
         })
-        .catch(error => {
-          console.error('[ResultsPage] Error saving quiz results:', error.response ? error.response.data : error.message);
-          setFetchError(`Failed to save current quiz result: ${error.response?.data?.message || error.message}`);
+        .catch(error => { 
+            console.error('[ResultsPage] Error saving quiz results for attempt ID:', currentQuizAttemptId, error.response ? error.response.data : error.message); 
+            setFetchError(`Failed to save current quiz result: ${error.response?.data?.message || error.message}`);
+            if (error.response && error.response.status === 409) {
+                console.log("[ResultsPage] Save was rejected by backend as duplicate.");
+                fetchHistoricalData(); 
+            }
         });
     }
-  }, [isShowingCurrentQuizResult, currentQuizDataFromState, score, percentage, fetchHistoricalData, isCurrentResultSaved]);
+  }, [
+      isShowingCurrentQuizResult, 
+      currentSubject, 
+      currentTopicId, 
+      score, 
+      percentage, 
+      currentDifficulty, 
+      currentNumQuestionsConfigured, 
+      currentQuizClass, 
+      currentTimeTaken, 
+      currentQuestionsActuallyAttemptedIds, 
+      currentUserAnswersSnapshot, 
+      currentQuizAttemptId, 
+      fetchHistoricalData
+    ]);
 
 
+  // Effect for populating detailed view for a selected historical result
+  useEffect(() => {
+    if (selectedHistoricalResult && selectedHistoricalResult.questionsActuallyAttemptedIds && selectedHistoricalResult.userAnswersSnapshot) {
+        setIsLoadingHistoricalDetails(true); 
+        const subjectKey = selectedHistoricalResult.subject?.toLowerCase();
+        const topicId = selectedHistoricalResult.topicId;
+        
+        axios.get(`/api/questions/${subjectKey}/${topicId}`) // Fetch all questions for that topic
+            .then(response => {
+                const allTopicQuestions = response.data;
+                if (!Array.isArray(allTopicQuestions)) {
+                    console.error("Fetched questions for historical result is not an array:", allTopicQuestions);
+                    setFetchError("Could not load question details for this historical result.");
+                    setProcessedHistoricalDetailedView([]);
+                    setIsLoadingHistoricalDetails(false);
+                    return;
+                }
+
+                const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
+                    const fullQuestionData = allTopicQuestions.find(q => q.id === qId);
+                    if (!fullQuestionData) {
+                        console.warn(`Question data for ID ${qId} not found in fetched data for ${subjectKey}/${topicId}.`);
+                        return { id: qId, text: "Question data not found.", options: [], isCorrect: false, isAnswered: false, explanation: "Original question data could not be loaded." }; 
+                    }
+                    const userAnswerId = selectedHistoricalResult.userAnswersSnapshot[qId];
+                    const isCorrect = userAnswerId === fullQuestionData.correctOptionId;
+                    return { ...fullQuestionData, userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
+                });
+                setProcessedHistoricalDetailedView(populatedQuestions);
+            })
+            .catch(err => {
+                console.error("Error fetching question details for historical result:", err);
+                setFetchError("Failed to load detailed question information for this past quiz.");
+                setProcessedHistoricalDetailedView([]);
+            })
+            .finally(() => {
+                setIsLoadingHistoricalDetails(false);
+            });
+    } else {
+        setProcessedHistoricalDetailedView([]);
+    }
+  }, [selectedHistoricalResult]);
+
+
+  // Initial fetch of historical data if not showing current results
   useEffect(() => {
     if (!isShowingCurrentQuizResult && !selectedHistoricalResult) {
       fetchHistoricalData();
     }
   }, [isShowingCurrentQuizResult, selectedHistoricalResult, fetchHistoricalData]);
 
-
   const handleHistoricalResultClick = (result) => setSelectedHistoricalResult(result);
   const handleBackToList = () => {
     setSelectedHistoricalResult(null);
+    setProcessedHistoricalDetailedView([]); 
   }
 
   const openDeleteConfirmation = (id) => {
@@ -174,7 +240,7 @@ function ResultsPage() {
       await axios.delete(`/api/results/${resultToDeleteId}`);
       setHistoricalResults(prevResults => prevResults.filter(r => r.id !== resultToDeleteId));
       if (selectedHistoricalResult && selectedHistoricalResult.id === resultToDeleteId) {
-        setSelectedHistoricalResult(null);
+        setSelectedHistoricalResult(null); 
       }
       setDeleteConfirmationOpen(false);
       setResultToDeleteId(null);
@@ -183,7 +249,7 @@ function ResultsPage() {
       setDeleteError(`Failed to delete result: ${error.response?.data?.message || error.message}`);
     }
   };
-
+  
   const handleNavigateHome = () => navigate('/');
 
 
@@ -191,19 +257,30 @@ function ResultsPage() {
     return (
       <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
         <QuizResultSummary
-          quizResult={selectedHistoricalResult}
+          quizResult={selectedHistoricalResult} 
           quizTitle="Past Quiz Details"
           accentColor={subjectAccentColors[selectedHistoricalResult.subject?.toLowerCase()] || theme.palette.primary.main}
         />
-        <QuestionBreakdown detailedQuestionsToDisplay={processedHistoricalDetailedView} />
+        {isLoadingHistoricalDetails ? (
+             <Box display="flex" justifyContent="center" alignItems="center" minHeight="20vh">
+                <CircularProgress />
+                <Typography sx={{ml: 2}}>Loading question details...</Typography>
+            </Box>
+        ) : processedHistoricalDetailedView.length > 0 ? (
+            <QuestionBreakdown detailedQuestionsToDisplay={processedHistoricalDetailedView} />
+        ) : (
+             fetchError && !isLoadingHistoricalDetails ? 
+             <Alert severity="error" sx={{mt: 2}}>{fetchError}</Alert> 
+             : <Alert severity="warning" sx={{mt: 2}}>Could not load question details for this result or no questions were attempted.</Alert>
+        )}
         <ResultsActionButtons
-          onBackToList={handleBackToList}
-          onNavigateHome={handleNavigateHome}
-          showBackToListButton={true}
-          accentColor={subjectAccentColors[selectedHistoricalResult.subject?.toLowerCase()] || theme.palette.primary.main}
-          showDeleteButton={true}
-          onDeleteClick={() => openDeleteConfirmation(selectedHistoricalResult.id)}
-          deleteDisabled={!selectedHistoricalResult.id}
+            onBackToList={handleBackToList}
+            onNavigateHome={handleNavigateHome}
+            showBackToListButton={true}
+            accentColor={subjectAccentColors[selectedHistoricalResult.subject?.toLowerCase()] || theme.palette.primary.main}
+            showDeleteButton={true}
+            onDeleteClick={() => openDeleteConfirmation(selectedHistoricalResult.id)}
+            deleteDisabled={!selectedHistoricalResult.id}
         />
         <DeleteConfirmationDialog
           open={deleteConfirmationOpen}
@@ -217,29 +294,30 @@ function ResultsPage() {
 
   if (isShowingCurrentQuizResult) {
     const currentQuizResultForView = {
-      subject: currentQuizDataFromState.subject,
-      topicId: currentQuizDataFromState.topicId,
-      score: score,
-      totalQuestions: currentQuizDataFromState.originalQuestionsForDisplay.length,
-      percentage: percentage,
-      difficulty: currentQuizDataFromState.difficulty,
-      numQuestionsConfigured: currentQuizDataFromState.numQuestionsConfigured,
-      class: currentQuizDataFromState.quizClass,
-      timeTaken: currentQuizDataFromState.timeTaken
+        subject: currentSubject,
+        topicId: currentTopicId,
+        score: score, 
+        totalQuestions: currentOriginalQuestionsForDisplay.length,
+        percentage: percentage, 
+        difficulty: currentDifficulty,
+        numQuestionsConfigured: currentNumQuestionsConfigured,
+        class: currentQuizClass,
+        timeTaken: currentTimeTaken
     };
 
     return (
       <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
-        <QuizResultSummary
-          quizResult={currentQuizResultForView}
-          quizTitle="Quiz Results"
-          accentColor={currentQuizDataFromState.subjectAccentColor || theme.palette.primary.main}
+        {fetchError && <Alert severity="error" variant="filled" sx={{ mb: 2 }}>{fetchError}</Alert>}
+        <QuizResultSummary 
+            quizResult={currentQuizResultForView}
+            quizTitle="Quiz Results"
+            accentColor={currentSubjectAccentColor || theme.palette.primary.main}
         />
         <QuestionBreakdown detailedQuestionsToDisplay={detailedResultsForCurrentQuiz} />
-        <ResultsActionButtons
-          onNavigateHome={handleNavigateHome}
-          showBackToListButton={false} // No "Back to List" for current results
-          accentColor={currentQuizDataFromState.subjectAccentColor || theme.palette.primary.main}
+        <ResultsActionButtons 
+            onNavigateHome={handleNavigateHome} 
+            showBackToListButton={false} 
+            accentColor={currentSubjectAccentColor || theme.palette.primary.main}
         />
       </Box>
     );
@@ -273,11 +351,11 @@ function ResultsPage() {
       ) : (
         <List>
           {Array.isArray(historicalResults) && historicalResults.map((result) => (
-            <HistoricalResultItem
-              key={result.id}
-              result={result}
-              onResultClick={handleHistoricalResultClick}
-              onDeleteClick={openDeleteConfirmation} // Pass handler for delete icon
+            <HistoricalResultItem 
+                key={result.id}
+                result={result}
+                onResultClick={handleHistoricalResultClick}
+                onDeleteClick={openDeleteConfirmation}
             />
           ))}
         </List>

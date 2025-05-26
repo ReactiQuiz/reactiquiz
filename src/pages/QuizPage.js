@@ -1,3 +1,4 @@
+// src/pages/QuizPage.js
 import {
   useState, useEffect, useCallback
 } from 'react';
@@ -10,25 +11,13 @@ import {
 import {
   darken, useTheme, alpha
 } from '@mui/material/styles';
-
-/* ----Import question files---- */
-import allChemistryQuestions from '../questions/chemistry.json';
-import allPhysicsQuestions from '../questions/physics.json';
-import allMathematicsQuestions from '../questions/mathematics.json';
-import allBiologyQuestions from '../questions/biology.json';
+import axios from 'axios';
 
 import {
   subjectAccentColors as themeSubjectAccentColors
 } from '../theme';
 import QuestionItem from '../components/QuestionItem';
 import { formatTime } from '../utils/formatTime';
-
-const subjectQuestionMap = {
-  chemistry: allChemistryQuestions,
-  physics: allPhysicsQuestions,
-  mathematics: allMathematicsQuestions,
-  biology: allBiologyQuestions,
-};
 
 const subjectAccentColors = themeSubjectAccentColors;
 
@@ -63,75 +52,87 @@ function QuizPage() {
   const [error, setError] = useState('');
   const [elapsedTime, setElapsedTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
-
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state for submission
 
   const currentAccentColor = subjectAccentColors[subject?.toLowerCase()] || quizSettings.accentColor || subjectAccentColors.default;
 
   useEffect(() => {
-    setIsLoading(true);
-    setError('');
-    setTimerActive(false);
-    setElapsedTime(0);
-
-    if (!subject || !topicId) {
-      setError("Subject or Topic ID is missing.");
-      setIsLoading(false);
+    const fetchQuestions = async () => {
+      setIsLoading(true);
+      setError('');
+      setTimerActive(false);
+      setElapsedTime(0);
+      setUserAnswers({});
       setQuestions([]);
-      return;
-    }
+      setIsSubmitting(false); // Reset submission state on new quiz load
 
-    let allQuestionsForSubject;
-    const subjectLower = subject.toLowerCase();
-    allQuestionsForSubject = subjectQuestionMap[subjectLower];
 
-    if (!allQuestionsForSubject) {
-      setError(`Questions for subject "${subject}" not found or path not configured.`);
-      setQuestions([]);
-      setIsLoading(false);
-      return;
-    }
-
-    const topicQuestions = allQuestionsForSubject.filter(q => q.topicId === topicId);
-
-    let filteredByDifficultyQuestions;
-    if (difficultyLabel === 'mixed') {
-      filteredByDifficultyQuestions = [...topicQuestions];
-    } else {
-      let minScore = 0;
-      let maxScore = Infinity;
-
-      if (difficultyLabel === 'easy') {
-        minScore = 10; // Assuming difficulty 10-13 is easy
-        maxScore = 13;
-      } else if (difficultyLabel === 'medium') {
-        minScore = 14; // Assuming difficulty 14-17 is medium
-        maxScore = 17;
-      } else if (difficultyLabel === 'hard') {
-        minScore = 18; // Assuming difficulty 18-20 is hard
-        maxScore = 20;
+      if (!subject || !topicId) {
+        setError("Subject or Topic ID is missing.");
+        setIsLoading(false);
+        return;
       }
-      filteredByDifficultyQuestions = topicQuestions.filter(q =>
-        q.hasOwnProperty('difficulty') &&
-        typeof q.difficulty === 'number' &&
-        q.difficulty >= minScore &&
-        q.difficulty <= maxScore
-      );
-    }
 
-    if (filteredByDifficultyQuestions.length === 0) {
-      setError(`No questions found for topic "${topicNameFromState}" with difficulty "${difficultyLabel}". Please try 'Mixed' difficulty or another topic.`);
-      setQuestions([]);
-    } else {
-      const shuffledQuestions = shuffleArray(filteredByDifficultyQuestions);
-      const selectedQuestions = shuffledQuestions.slice(0, numQuestionsReq);
-      setQuestions(selectedQuestions);
-      if (selectedQuestions.length > 0) {
-        setTimerActive(true);
+      try {
+        const response = await axios.get(`/api/questions/${subject.toLowerCase()}/${topicId}`);
+        let fetchedQuestions = response.data;
+
+        if (!Array.isArray(fetchedQuestions)) {
+            console.error("Fetched questions is not an array:", fetchedQuestions);
+            setError(`Invalid question data received for ${topicNameFromState}.`);
+            setIsLoading(false);
+            return;
+        }
+        
+        console.log(`Fetched ${fetchedQuestions.length} questions for ${topicId}`);
+
+
+        let filteredByDifficultyQuestions;
+        if (difficultyLabel === 'mixed') {
+          filteredByDifficultyQuestions = [...fetchedQuestions];
+        } else {
+          let minScore = 0;
+          let maxScore = Infinity;
+
+          if (difficultyLabel === 'easy') {
+            minScore = 10; 
+            maxScore = 13;
+          } else if (difficultyLabel === 'medium') {
+            minScore = 14; 
+            maxScore = 17;
+          } else if (difficultyLabel === 'hard') {
+            minScore = 18; 
+            maxScore = 20;
+          }
+          
+          filteredByDifficultyQuestions = fetchedQuestions.filter(q =>
+            q.hasOwnProperty('difficulty') &&
+            typeof q.difficulty === 'number' &&
+            q.difficulty >= minScore &&
+            q.difficulty <= maxScore
+          );
+        }
+
+        if (filteredByDifficultyQuestions.length === 0) {
+          setError(`No questions found for topic "${topicNameFromState}" with difficulty "${difficultyLabel}". Try 'Mixed' or another topic.`);
+        } else {
+          const shuffledQuestions = shuffleArray(filteredByDifficultyQuestions);
+          const selectedQuestions = shuffledQuestions.slice(0, numQuestionsReq);
+          setQuestions(selectedQuestions);
+          if (selectedQuestions.length > 0) {
+            setTimerActive(true);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching questions:", err.response || err.message);
+        setError(`Failed to load questions for ${topicNameFromState}. ${err.response?.data?.message || err.message}`);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setUserAnswers({});
-    setIsLoading(false);
-  }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]);
+    };
+
+    fetchQuestions();
+  }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]); 
 
   useEffect(() => {
     let intervalId;
@@ -152,9 +153,13 @@ function QuizPage() {
   };
 
   const handleSubmitQuiz = useCallback(() => {
-    setTimerActive(false);
+    if (isSubmitting) return; // Prevent multiple submissions
+
+    setIsSubmitting(true); // Set submitting state
+    setTimerActive(false); // Stop the timer on submit
 
     const questionsActuallyAttemptedIds = questions.map(q => q.id);
+    
     const relevantUserAnswersSnapshot = {};
     questionsActuallyAttemptedIds.forEach(id => {
       if (userAnswers.hasOwnProperty(id)) {
@@ -164,25 +169,40 @@ function QuizPage() {
       }
     });
 
+    // Generate a unique ID for this quiz attempt on the client-side
+    // This can help ResultsPage identify if it has already processed this specific attempt
+    const quizAttemptId = `attempt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
+
     navigate('/results', {
       state: {
+        quizAttemptId: quizAttemptId, // Send unique attempt ID
         userAnswersSnapshot: relevantUserAnswersSnapshot,
         questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
-        
         originalQuestionsForDisplay: questions, 
-        originalAnswersForDisplay: userAnswers, // Keep this for immediate display logic on ResultsPage
-
+        originalAnswersForDisplay: userAnswers,
         subjectAccentColor: currentAccentColor,
         subject: subject,
         topicId: topicId,
         difficulty: difficultyLabel,
-        // totalQuestions for THIS quiz instance will be questions.length
-        numQuestionsConfigured: numQuestionsReq, // How many user asked for
+        numQuestionsConfigured: numQuestionsReq,
         timeTaken: elapsedTime,
         quizClass: quizClassFromState,
       }
     });
-  }, [userAnswers, questions, navigate, currentAccentColor, subject, topicId, difficultyLabel, numQuestionsReq, elapsedTime, quizClassFromState]);
+  }, [
+      userAnswers, 
+      questions, 
+      navigate, 
+      currentAccentColor, 
+      subject, 
+      topicId, 
+      difficultyLabel, 
+      numQuestionsReq, 
+      elapsedTime, 
+      quizClassFromState,
+      isSubmitting // Add isSubmitting to dependencies
+    ]);
 
   const allQuestionsAnswered = () => {
     if (questions.length === 0) return false;
@@ -193,6 +213,7 @@ function QuizPage() {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
         <CircularProgress sx={{ color: currentAccentColor }} />
+        <Typography sx={{ml:2}}>Loading Questions...</Typography>
       </Box>
     );
   }
@@ -229,17 +250,14 @@ function QuizPage() {
         <Box
           sx={{
             position: 'fixed',
-            top: {
-              xs: `calc(56px + ${theme.spacing(1)})`, 
-              sm: `calc(64px + ${theme.spacing(1)})`
-            },
+            top: { xs: `calc(56px + ${theme.spacing(1)})`, sm: `calc(64px + ${theme.spacing(1)})` },
             left: '50%',
             transform: 'translateX(-50%)',
             backgroundColor: alpha(theme.palette.background.paper, 0.9),
             color: 'white',
             padding: theme.spacing(0.75, 2),
             borderRadius: theme.shape.borderRadius,
-            zIndex: 1050, 
+            zIndex: 1050,
             boxShadow: theme.shadows[3],
             minWidth: '80px',
             textAlign: 'center',
@@ -300,7 +318,7 @@ function QuizPage() {
           variant="contained"
           size="large"
           onClick={handleSubmitQuiz}
-          disabled={!allQuestionsAnswered()}
+          disabled={!allQuestionsAnswered() || isSubmitting} // Disable if not all answered or already submitting
           sx={{
             backgroundColor: currentAccentColor,
             color: theme.palette.getContrastText(currentAccentColor),
@@ -310,7 +328,7 @@ function QuizPage() {
             minWidth: '200px',
           }}
         >
-          Submit Quiz
+          {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Submit Quiz"}
         </Button>
       </Box>
     </Box>

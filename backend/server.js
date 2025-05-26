@@ -3,207 +3,218 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs').promises;
+const sqlite3 = require('sqlite3').verbose();
+
 const app = express();
 const port = process.env.SERVER_PORT || 3001;
 const projectRoot = path.resolve(__dirname, '../');
-const RESULTS_FILE_PATH = process.env.JSON_RESULTS_FILE
-  ? path.resolve(projectRoot, process.env.JSON_RESULTS_FILE.startsWith('./') ? process.env.JSON_RESULTS_FILE.substring(2) : process.env.JSON_RESULTS_FILE)
-  : path.join(__dirname, 'results.json');
 
+const RESULTS_DB_PATH = process.env.DATABASE_FILE_PATH
+  ? path.resolve(projectRoot, process.env.DATABASE_FILE_PATH.startsWith('./') ? process.env.DATABASE_FILE_PATH.substring(2) : process.env.DATABASE_FILE_PATH)
+  : path.join(__dirname, 'quizResults.db');
+
+const QUESTIONS_DB_PATH = process.env.QUESTIONS_DATABASE_FILE_PATH
+  ? path.resolve(projectRoot, process.env.QUESTIONS_DATABASE_FILE_PATH.startsWith('./') ? process.env.QUESTIONS_DATABASE_FILE_PATH.substring(2) : process.env.QUESTIONS_DATABASE_FILE_PATH)
+  : path.join(__dirname, 'quizData.db');
 
 console.log(`[INIT] Backend API server starting on port ${port}...`);
-console.log(`[INIT] Resolved RESULTS_FILE_PATH: ${RESULTS_FILE_PATH}`);
+console.log(`[INIT] Results DB Path: ${RESULTS_DB_PATH}`);
+console.log(`[INIT] Questions DB Path: ${QUESTIONS_DB_PATH}`);
+
+const resultsDb = new sqlite3.Database(RESULTS_DB_PATH, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+  if (err) {
+    console.error('[DB_ERROR] Could not connect to results database', err.message);
+    process.exit(1);
+  } else {
+    console.log('[DB_INIT] Connected to the SQLite results database.');
+    resultsDb.run(`CREATE TABLE IF NOT EXISTS quiz_results (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, subject TEXT NOT NULL, topicId TEXT NOT NULL,
+      score INTEGER NOT NULL, totalQuestions INTEGER NOT NULL, percentage REAL NOT NULL,
+      timestamp TEXT NOT NULL, difficulty TEXT, numQuestionsConfigured INTEGER,
+      class TEXT, timeTaken INTEGER, questionsActuallyAttemptedIds TEXT, userAnswersSnapshot TEXT
+    )`, (err) => {
+      if (err) console.error('[DB_ERROR] Error creating quiz_results table', err.message);
+      else console.log('[DB_INIT] quiz_results table ensured.');
+    });
+  }
+});
+
+const questionsDb = new sqlite3.Database(QUESTIONS_DB_PATH, sqlite3.OPEN_READONLY, (err) => {
+  if (err) {
+    console.error('[DB_ERROR] Could not connect to questions database (read-only)', err.message);
+  } else {
+    console.log('[DB_INIT] Connected to the SQLite questions database (read-only).');
+    questionsDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='questions'", (err, row) => {
+        if (err) console.error("[DB_ERROR] Error checking questions table", err);
+        else if (!row) console.warn("[DB_WARN] 'questions' table does not exist in questions_data.db. Run converter script.");
+        else console.log("[DB_INIT] 'questions' table found.");
+    });
+  }
+});
 
 app.use(cors());
-app.use(express.json({ limit: '5mb' })); // Reduced limit as we are saving less data per result
+app.use(express.json({ limit: '5mb' }));
 
-// --- Helper Functions (ensureResultsFileExists, readResults, writeResults - no changes from previous correct version) ---
-async function ensureResultsFileExists() {
-  try {
-    await fs.access(RESULTS_FILE_PATH);
-    console.log(`[JSON_DB] Results file found at ${RESULTS_FILE_PATH}.`);
-    return true;
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      console.log(`[JSON_DB] Results file not found. Creating ${RESULTS_FILE_PATH} with an empty array.`);
-      try {
-        await fs.writeFile(RESULTS_FILE_PATH, JSON.stringify([]), 'utf8');
-        console.log(`[JSON_DB] Successfully created ${RESULTS_FILE_PATH}.`);
-        return true;
-      } catch (writeError) {
-        console.error(`[JSON_DB] CRITICAL ERROR: Could not create results file ${RESULTS_FILE_PATH}:`, writeError);
-        return false;
-      }
-    } else {
-      console.error(`[JSON_DB] CRITICAL ERROR: Error accessing results file ${RESULTS_FILE_PATH}:`, error);
-      return false;
+app.get('/api/questions/:subject/:topicId', (req, res) => {
+  const { subject, topicId } = req.params;
+  console.log(`[API /api/questions] Request for subject: ${subject}, topicId: ${topicId}`);
+  const sql = `SELECT * FROM questions WHERE subject = ? AND topicId = ?`;
+  questionsDb.all(sql, [subject.toLowerCase(), topicId], (err, rows) => {
+    if (err) {
+      console.error('[API /api/questions] DB Error:', err.message);
+      return res.status(500).json({ message: `Failed to fetch questions: ${err.message}` });
     }
-  }
-}
-
-async function readResults() {
-  if (!await ensureResultsFileExists()) {
-    console.error("[JSON_DB] readResults: ensureResultsFileExists returned false.");
-    return [];
-  }
-  try {
-    const data = await fs.readFile(RESULTS_FILE_PATH, 'utf8');
-    if (data.trim() === '') {
-      console.log("[JSON_DB] Results file is empty, returning empty array.");
-      return [];
-    }
-    const parsedData = JSON.parse(data);
-    if (!Array.isArray(parsedData)) {
-      console.error('[JSON_DB] Parsed results file is not an array. File content:', data, 'Returning empty array.');
-      return [];
-    }
-    return parsedData;
-  } catch (error) {
-    console.error('[JSON_DB] Error reading or parsing results file:', error, 'Returning empty array.');
-    return [];
-  }
-}
-
-async function writeResults(resultsData) {
-  if (!await ensureResultsFileExists()) {
-    console.error("[JSON_DB] writeResults: Cannot write, results file not accessible and couldn't be created.");
-    throw new Error("Results file is not accessible or couldn't be created for writing.");
-  }
-  try {
-    await fs.writeFile(RESULTS_FILE_PATH, JSON.stringify(resultsData, null, 2), 'utf8');
-    console.log(`[JSON_DB] Successfully wrote ${resultsData.length} records to ${RESULTS_FILE_PATH}.`);
-  } catch (error) {
-    console.error('[JSON_DB] Error writing results file:', error);
-    throw error;
-  }
-}
-// --- End Helper Functions ---
-
+    const questions = rows.map(row => ({ ...row, options: JSON.parse(row.options) }));
+    console.log(`[API /api/questions] Success: Fetched ${questions.length} questions for ${subject}/${topicId}.`);
+    res.json(questions);
+  });
+});
 
 app.post('/api/results', async (req, res) => {
-  console.log('[API /api/results POST] Request received. Body keys:', Object.keys(req.body));
+  console.log('[API /api/results POST] Request received.');
   const newResultData = req.body;
 
-  // Validate required fields
-  const requiredFields = [
-    'subject', 'topicId', 'score', 'totalQuestions', 'percentage', 
-    'timestamp', 'questionsActuallyAttemptedIds', 'userAnswersSnapshot' // Changed from questionsAttempted
-  ];
+  const requiredFields = ['subject', 'topicId', 'score', 'totalQuestions', 'percentage', 'timestamp', 'questionsActuallyAttemptedIds', 'userAnswersSnapshot'];
   const missingFields = requiredFields.filter(field => newResultData[field] == null);
-
   if (missingFields.length > 0) {
-    const message = `Bad Request: Missing required fields: ${missingFields.join(', ')}.`;
-    console.error(`[API /api/results POST] ${message}`);
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: `Bad Request: Missing required fields: ${missingFields.join(', ')}.` });
   }
-
   if (!Array.isArray(newResultData.questionsActuallyAttemptedIds) || newResultData.questionsActuallyAttemptedIds.length === 0) {
-    const message = 'Bad Request: questionsActuallyAttemptedIds array cannot be empty or must be an array.';
-    console.error(`[API /api/results POST] ${message}`);
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: 'Bad Request: questionsActuallyAttemptedIds array cannot be empty or must be an array.' });
   }
-   if (typeof newResultData.userAnswersSnapshot !== 'object' || newResultData.userAnswersSnapshot === null) {
-    const message = 'Bad Request: userAnswersSnapshot must be an object.';
-    console.error(`[API /api/results POST] ${message}`);
-    return res.status(400).json({ message });
+  if (typeof newResultData.userAnswersSnapshot !== 'object' || newResultData.userAnswersSnapshot === null) {
+    return res.status(400).json({ message: 'Bad Request: userAnswersSnapshot must be an object.' });
   }
 
-  try {
-    const currentResults = await readResults();
-    if (!Array.isArray(currentResults)) {
-        console.error('[API /api/results POST] readResults did not return an array. Aborting save.');
-        return res.status(500).json({ message: 'Internal server error: Failed to read existing results correctly.' });
+  // Convert potentially undefined optional fields to null for consistent DB storage/querying
+  const difficulty = newResultData.difficulty || null;
+  const numQuestionsConfigured = newResultData.numQuestionsConfigured || null;
+  const className = newResultData.class || null; // 'class' is a reserved keyword, using className
+  const timeTaken = newResultData.timeTaken || null;
+  const questionsIdsString = JSON.stringify(newResultData.questionsActuallyAttemptedIds);
+  const answersSnapshotString = JSON.stringify(newResultData.userAnswersSnapshot);
+
+  // Check for very recent duplicates
+  const duplicateCheckSql = `
+    SELECT id FROM quiz_results 
+    WHERE subject = ? AND topicId = ? AND score = ? AND totalQuestions = ? 
+    AND percentage = ? AND difficulty = ? AND numQuestionsConfigured = ?
+    AND class = ? AND timeTaken = ? 
+    AND questionsActuallyAttemptedIds = ? AND userAnswersSnapshot = ?
+    AND timestamp >= ? 
+  `;
+  // Check for duplicates within the last 10 seconds, for example
+  const tenSecondsAgo = new Date(Date.now() - 10000).toISOString(); 
+
+  const duplicateParams = [
+    newResultData.subject, newResultData.topicId, newResultData.score, newResultData.totalQuestions,
+    newResultData.percentage, difficulty, numQuestionsConfigured, className, timeTaken,
+    questionsIdsString, answersSnapshotString, tenSecondsAgo
+  ];
+
+  resultsDb.get(duplicateCheckSql, duplicateParams, (err, row) => {
+    if (err) {
+      console.error('[API /api/results POST] DB Error checking for duplicates:', err.message);
+      return res.status(500).json({ message: `Failed to save result: ${err.message}` });
     }
 
-    const resultToSave = {
-      id: currentResults.length > 0 ? Math.max(0, ...currentResults.map(r => r.id || 0)) + 1 : 1,
-      subject: newResultData.subject,
-      topicId: newResultData.topicId,
-      score: newResultData.score,
-      totalQuestions: newResultData.totalQuestions, // This is the number of questions in the quiz instance
-      percentage: newResultData.percentage,
-      timestamp: newResultData.timestamp,
-      difficulty: newResultData.difficulty, // Optional
-      numQuestionsConfigured: newResultData.numQuestionsConfigured, // Optional, how many user requested
-      class: newResultData.class, // Optional
-      timeTaken: newResultData.timeTaken, // Optional
-      // Store only IDs of questions that were part of this specific quiz instance
-      questionsActuallyAttemptedIds: newResultData.questionsActuallyAttemptedIds,
-      // userAnswersSnapshot will contain answers only for these IDs
-      userAnswersSnapshot: newResultData.userAnswersSnapshot
-    };
+    if (row) {
+      console.warn(`[API /api/results POST] Duplicate result detected (ID: ${row.id}) within the last 10 seconds. Not saving.`);
+      return res.status(409).json({ message: 'Duplicate result detected shortly after a previous submission.', existingId: row.id });
+    }
 
-    currentResults.push(resultToSave);
-    await writeResults(currentResults);
+    // If no recent duplicate, proceed to insert
+    const insertSql = `INSERT INTO quiz_results (
+      subject, topicId, score, totalQuestions, percentage, timestamp, 
+      difficulty, numQuestionsConfigured, class, timeTaken, 
+      questionsActuallyAttemptedIds, userAnswersSnapshot
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    console.log(`[API /api/results POST] Success: Result added with ID ${resultToSave.id}. Total results: ${currentResults.length}`);
-    res.status(201).json({ message: 'Result saved successfully!', id: resultToSave.id });
-  } catch (error) {
-    console.error('[API /api/results POST] Error during save process:', error);
-    res.status(500).json({ message: `Failed to save result: ${error.message || 'Unknown server error'}` });
-  }
+    const insertParams = [
+      newResultData.subject, newResultData.topicId, newResultData.score, newResultData.totalQuestions,
+      newResultData.percentage, newResultData.timestamp, difficulty, numQuestionsConfigured,
+      className, timeTaken, questionsIdsString, answersSnapshotString
+    ];
+
+    resultsDb.run(insertSql, insertParams, function (err) {
+      if (err) {
+        console.error('[API /api/results POST] DB Error inserting result:', err.message);
+        return res.status(500).json({ message: `Failed to save result: ${err.message}` });
+      }
+      console.log(`[API /api/results POST] Success: Result added with ID ${this.lastID}.`);
+      res.status(201).json({ message: 'Result saved successfully!', id: this.lastID });
+    });
+  });
 });
 
-app.get('/api/results', async (req, res) => {
+app.get('/api/results', (req, res) => { // Removed async as db.all is callback based
   console.log('[API /api/results GET] Request received.');
-  try {
-    const results = await readResults();
-    if (!Array.isArray(results)) {
-        console.error('[API /api/results GET] readResults did not return an array. Sending empty array.');
-        return res.json([]);
+  const sql = "SELECT * FROM quiz_results ORDER BY timestamp DESC";
+  resultsDb.all(sql, [], (err, rows) => {
+    if (err) {
+      console.error('[API /api/results GET] DB Error:', err.message);
+      return res.status(500).json({ message: `Failed to fetch results: ${err.message}` });
     }
-    const sortedResults = results.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    console.log(`[API /api/results GET] Success: Fetched ${sortedResults.length} results.`);
-    res.json(sortedResults);
-  } catch (error) {
-    console.error('[API /api/results GET] Error during fetch process:', error);
-    res.status(500).json({ message: `Failed to fetch results: ${error.message || 'Unknown server error'}` });
-  }
+    const results = rows.map(row => ({
+      ...row,
+      questionsActuallyAttemptedIds: row.questionsActuallyAttemptedIds ? JSON.parse(row.questionsActuallyAttemptedIds) : [],
+      userAnswersSnapshot: row.userAnswersSnapshot ? JSON.parse(row.userAnswersSnapshot) : {}
+    }));
+    console.log(`[API /api/results GET] Success: Fetched ${results.length} results.`);
+    res.json(results);
+  });
 });
 
-app.delete('/api/results/:id', async (req, res) => {
+app.delete('/api/results/:id', (req, res) => { // Removed async
   const resultIdToDelete = parseInt(req.params.id, 10);
   console.log(`[API /api/results DELETE] Request received for ID: ${resultIdToDelete}.`);
-
   if (isNaN(resultIdToDelete)) {
-    const message = 'Bad Request: Invalid result ID format.';
-    console.error(`[API /api/results DELETE] ${message}`);
-    return res.status(400).json({ message });
+    return res.status(400).json({ message: 'Invalid result ID format.' });
   }
-
-  try {
-    let currentResults = await readResults();
-     if (!Array.isArray(currentResults)) {
-        console.error('[API /api/results DELETE] readResults did not return an array. Aborting delete.');
-        return res.status(500).json({ message: 'Internal server error: Failed to read existing results correctly.' });
+  const sql = "DELETE FROM quiz_results WHERE id = ?";
+  resultsDb.run(sql, resultIdToDelete, function (err) {
+    if (err) {
+      console.error(`[API /api/results DELETE] DB Error for ID ${resultIdToDelete}:`, err.message);
+      return res.status(500).json({ message: `Failed to delete result: ${err.message}` });
     }
-    const resultIndex = currentResults.findIndex(r => r.id === resultIdToDelete);
-
-    if (resultIndex === -1) {
-      const message = `Result with ID ${resultIdToDelete} not found.`;
-      console.warn(`[API /api/results DELETE] ${message}`);
-      return res.status(404).json({ message });
+    if (this.changes === 0) {
+      return res.status(404).json({ message: `Result with ID ${resultIdToDelete} not found.` });
     }
-
-    currentResults.splice(resultIndex, 1);
-    await writeResults(currentResults);
-
-    console.log(`[API /api/results DELETE] Success: Result ID ${resultIdToDelete} deleted. Remaining: ${currentResults.length}`);
+    console.log(`[API /api/results DELETE] Success: Result ID ${resultIdToDelete} deleted.`);
     res.status(200).json({ message: 'Result deleted successfully.' });
-  } catch (error) {
-    console.error(`[API /api/results DELETE] Error for ID ${resultIdToDelete}:`, error);
-    res.status(500).json({ message: `Failed to delete result: ${error.message || 'Unknown server error'}` });
+  });
+});
+
+if (process.env.NODE_ENV === 'production' || process.env.SERVE_BUILD === 'true') {
+  app.use(express.static(path.join(projectRoot, 'build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(projectRoot, 'build', 'index.html'), (err) => {
+      if (err) {
+        console.error('Error sending index.html:', err);
+        res.status(500).send(err.message || 'Error sending index.html');
+      }
+    });
+  });
+  console.log('[SERVER] Serving static files from build directory enabled.');
+}
+
+app.listen(port, () => {
+  console.log(`[SERVER] Backend API server running on http://localhost:${port}`);
+  if (process.env.NODE_ENV !== 'production' && process.env.SERVE_BUILD !== 'true') {
+    console.log(`[SERVER] Ensure your frontend (React Dev Server) is running, likely on http://localhost:3000, and uses proxy.`);
   }
 });
 
-
-ensureResultsFileExists().then(() => {
-  app.listen(port, () => {
-    console.log(`[SERVER] Backend API server running on http://localhost:${port}`);
-    console.log(`[SERVER] Ensure your frontend (React Dev Server) is running, likely on http://localhost:3000`);
+process.on('SIGINT', () => {
+  console.log('[SIGINT] Closing database connections...');
+  resultsDb.close((err) => {
+    if (err) console.error('[DB_CLOSE_ERR] Error closing results DB:', err.message);
+    else console.log('[DB_CLOSE] Closed the results database connection.');
+    
+    questionsDb.close((err_q) => {
+        if (err_q) console.error('[DB_CLOSE_ERR] Error closing questions DB:', err_q.message);
+        else console.log('[DB_CLOSE] Closed the questions database connection.');
+        process.exit(0);
+    });
   });
-}).catch(err => {
-  console.error("[SERVER] Failed to initialize and start backend API server:", err);
-  process.exit(1);
 });

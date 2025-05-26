@@ -1,3 +1,4 @@
+// src/components/AppRoutes.js
 import {
     Routes, Route
 } from 'react-router-dom';
@@ -9,6 +10,7 @@ import ChemistryPage from '../pages/ChemistryPage';
 import PhysicsPage from '../pages/PhysicsPage';
 import MathematicsPage from '../pages/MathematicsPage';
 import BiologyPage from '../pages/BiologyPage';
+import HomibhabhaPage from '../pages/HomibhabhaPage'; // Import the new page
 import QuizPage from '../pages/QuizPage';
 import ResultsPage from '../pages/ResultsPage';
 
@@ -21,6 +23,7 @@ function AppRoutes() {
                 <Route path="/physics" element={<PhysicsPage />} />
                 <Route path="/mathematics" element={<MathematicsPage />} />
                 <Route path="/biology" element={<BiologyPage />} />
+                <Route path="/homibhabha" element={<HomibhabhaPage />} /> {/* New Route */}
                 <Route path="/quiz/:subject/:topicId" element={<QuizPage />} />
                 <Route path="/results" element={<ResultsPage />} />
             </Routes>
@@ -28,4 +31,4 @@ function AppRoutes() {
     )
 }
 
-export default AppRoutes;
+export default AppRoutes;   
