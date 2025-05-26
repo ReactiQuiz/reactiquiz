@@ -1,5 +1,5 @@
 import {
-    BrowserRouter as Routes, Route
+    Routes, Route
 } from 'react-router-dom';
 import {
     Container,

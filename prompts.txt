@@ -66,5 +66,3 @@ Example :   {
 
 
 
-
-  Add a timer to the quiz. The timer grows as the user takes more time to solve the test. The amount of time taken to solve the test should be saved to results file and displayed in a chip like how number of questions and difficulty is shown.

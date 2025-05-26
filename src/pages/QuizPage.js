@@ -8,7 +8,7 @@ import {
   useParams, useNavigate, useLocation
 } from 'react-router-dom';
 import {
-  darken, useTheme
+  darken, useTheme, alpha
 } from '@mui/material/styles';
 
 /* ----Import question files---- */
@@ -21,6 +21,7 @@ import {
   subjectAccentColors as themeSubjectAccentColors
 } from '../theme';
 import QuestionItem from '../components/QuestionItem';
+import { formatTime } from '../utils/formatTime'; // Import the new utility
 
 const subjectQuestionMap = {
   chemistry: allChemistryQuestions,
@@ -60,12 +61,17 @@ function QuizPage() {
   const [userAnswers, setUserAnswers] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [elapsedTime, setElapsedTime] = useState(0); // State for timer
+  const [timerActive, setTimerActive] = useState(false); // Control timer activity
+
 
   const currentAccentColor = subjectAccentColors[subject?.toLowerCase()] || quizSettings.accentColor || subjectAccentColors.default;
 
   useEffect(() => {
     setIsLoading(true);
     setError('');
+    setTimerActive(false); // Stop timer during loading/re-fetching
+    setElapsedTime(0); // Reset timer
 
     if (!subject || !topicId) {
       setError("Subject or Topic ID is missing.");
@@ -77,17 +83,9 @@ function QuizPage() {
     let allQuestionsForSubject;
     const subjectLower = subject.toLowerCase();
 
-    if (subjectLower === 'chemistry' && process.env.REACT_APP_CHEMISTRY_QUESTIONS_MODULE_PATH) {
-      allQuestionsForSubject = subjectQuestionMap.chemistry;
-    } else if (subjectLower === 'physics' && process.env.REACT_APP_PHYSICS_QUESTIONS_MODULE_PATH) {
-      allQuestionsForSubject = subjectQuestionMap.physics;
-    } else if (subjectLower === 'mathematics' && process.env.REACT_APP_MATHEMATICS_QUESTIONS_MODULE_PATH) {
-      allQuestionsForSubject = subjectQuestionMap.mathematics;
-    } else if (subjectLower === 'biology' && process.env.REACT_APP_BIOLOGY_QUESTIONS_MODULE_PATH) {
-      allQuestionsForSubject = subjectQuestionMap.biology;
-    } else {
-      allQuestionsForSubject = subjectQuestionMap[subjectLower];
-    }
+    // Simplified question loading logic
+    allQuestionsForSubject = subjectQuestionMap[subjectLower];
+
 
     if (!allQuestionsForSubject) {
       setError(`Questions for subject "${subject}" not found or path not configured.`);
@@ -130,10 +128,25 @@ function QuizPage() {
       const shuffledQuestions = shuffleArray(filteredByDifficultyQuestions);
       const selectedQuestions = shuffledQuestions.slice(0, numQuestionsReq);
       setQuestions(selectedQuestions);
+      if (selectedQuestions.length > 0) {
+        setTimerActive(true); // Start timer only if questions are loaded
+      }
     }
     setUserAnswers({});
     setIsLoading(false);
   }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]);
+
+  // Timer effect
+  useEffect(() => {
+    let intervalId;
+    if (timerActive) {
+      intervalId = setInterval(() => {
+        setElapsedTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(intervalId); // Cleanup on unmount or if timerActive becomes false
+  }, [timerActive]);
+
 
   const handleOptionSelectForQuestion = (questionId, selectedOptionId) => {
     setUserAnswers(prevAnswers => ({
@@ -143,6 +156,7 @@ function QuizPage() {
   };
 
   const handleSubmitQuiz = useCallback(() => {
+    setTimerActive(false); // Stop the timer on submit
     navigate('/results', {
       state: {
         answers: userAnswers,
@@ -153,10 +167,11 @@ function QuizPage() {
         difficulty: difficultyLabel,
         numQuestions: questions.length,
         numQuestionsConfigured: numQuestionsReq,
+        timeTaken: elapsedTime, // Pass elapsed time
         quizClass: quizClassFromState,
       }
     });
-  }, [userAnswers, questions, navigate, currentAccentColor, subject, topicId, difficultyLabel, numQuestionsReq, quizClassFromState]);
+  }, [userAnswers, questions, navigate, currentAccentColor, subject, topicId, difficultyLabel, numQuestionsReq, elapsedTime, quizClassFromState]);
 
   const allQuestionsAnswered = () => {
     if (questions.length === 0) return false;
@@ -198,17 +213,66 @@ function QuizPage() {
   }
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}>
-      <Typography variant="h4" gutterBottom component="div" sx={{ mb: 1, textAlign: 'center', color: currentAccentColor, fontWeight: 'bold' }}>
+    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}> {/* This Box is inside the Container with mt: '64px' and py: 3 */}
+      {/* Fixed Timer Display */}
+      {timerActive && questions.length > 0 && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: {
+              xs: `calc(56px + ${theme.spacing(1)})`, // Mobile AppBar (56px) + 8px margin
+              sm: `calc(64px + ${theme.spacing(1)})`  // Desktop AppBar (64px) + 8px margin
+            },
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: alpha(theme.palette.background.paper, 0.9),
+            color: 'white', // Explicitly white text
+            padding: theme.spacing(0.75, 2),
+            borderRadius: theme.shape.borderRadius,
+            zIndex: 1050, // Above scrollable content, below drawer/modals
+            boxShadow: theme.shadows[3],
+            minWidth: '80px',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h6" component="div" sx={{ fontWeight: 500, lineHeight: 1.2 }}>
+            {formatTime(elapsedTime)}
+          </Typography>
+        </Box>
+      )}
+
+      <Typography
+        variant="h4"
+        gutterBottom
+        component="div"
+        sx={{
+          mb: 1,
+          textAlign: 'center',
+          color: currentAccentColor,
+          fontWeight: 'bold',
+          mt: theme.spacing(4.5) // Pushes title down to avoid overlap with fixed timer
+        }}
+      >
         {subject && topicId
           ? `${subject.charAt(0).toUpperCase() + subject.slice(1)} Quiz`
           : 'Quiz'}
       </Typography>
-      <Typography variant="h6" component="div" sx={{ mb: 3, textAlign: 'center', color: theme.palette.text.secondary, fontWeight: 'normal', textTransform: 'capitalize' }}>
+      <Typography
+        variant="h6"
+        component="div"
+        sx={{
+          mb: 3, // Increased margin bottom from timer
+          textAlign: 'center',
+          color: theme.palette.text.secondary,
+          fontWeight: 'normal',
+          textTransform: 'capitalize'
+        }}
+      >
         Topic: {topicNameFromState}
         {quizClassFromState && ` (Class ${quizClassFromState})`}
         {' '}({difficultyLabel}, {questions.length} Questions)
       </Typography>
+      
 
       {questions.map((question, index) => (
         <QuestionItem

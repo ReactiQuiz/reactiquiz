@@ -18,7 +18,6 @@ app.use(cors());
 app.use(express.json({ limit: '5mb' })); // Increase limit if quiz data is large
 
 async function ensureResultsFileExists() {
-  // ... (no changes here)
   try {
     await fs.access(RESULTS_FILE_PATH);
     console.log(`[JSON_DB] Results file found at ${RESULTS_FILE_PATH}.`);
@@ -100,6 +99,8 @@ app.post('/api/results', async (req, res) => {
       timestamp: newResultData.timestamp,
       difficulty: newResultData.difficulty,
       numQuestionsConfigured: newResultData.numQuestionsConfigured,
+      class: newResultData.class, // Save class
+      timeTaken: newResultData.timeTaken, // Save timeTaken
       questionsAttempted: newResultData.questionsAttempted,
       userAnswersSnapshot: newResultData.userAnswersSnapshot
     };

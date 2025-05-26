@@ -23,7 +23,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Router>
+      <Router> {/* Top-level BrowserRouter */}
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           {/* ----NavBar---- */}
           <NavBar onIconButtonClick={handleDrawerToggle} />

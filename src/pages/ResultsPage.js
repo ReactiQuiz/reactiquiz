@@ -20,6 +20,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import TimerIcon from '@mui/icons-material/Timer'; // Import TimerIcon
+import { formatTime } from '../utils/formatTime'; // Import the utility
 
 const subjectAccentColors = themeSubjectAccentColors;
 
@@ -49,7 +51,7 @@ function QuizDetailView({
   const navigate = useNavigate();
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
-  const { subject, topicId, score, totalQuestions, percentage, difficulty, numQuestionsConfigured, id: resultId, class: quizClass } = quizResult || {};
+  const { subject, topicId, score, totalQuestions, percentage, difficulty, numQuestionsConfigured, id: resultId, class: quizClassFromResult, timeTaken } = quizResult || {};
   const topicName = formatTopicName(topicId);
 
   if (!quizResult) {
@@ -72,17 +74,12 @@ function QuizDetailView({
           <Typography variant="h6" component="span" sx={{ textTransform: 'capitalize', color: theme.palette.text.secondary }}>
             {topicName}
           </Typography>
-          {(quizClass || difficulty || numQuestionsConfigured != null) && (
-            <Typography variant="caption" display="block" color="text.secondary" sx={{ textTransform: 'capitalize', mt: 0.5 }}>
-              (
-              {quizClass && `Class ${quizClass}`}
-              {(quizClass && difficulty) && ', '}
-              {difficulty && `${difficulty}`}
-              {((quizClass || difficulty) && numQuestionsConfigured != null) && ', '}
-              {numQuestionsConfigured != null && `${numQuestionsConfigured} Questions`}
-              )
-            </Typography>
-          )}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center', mt: 0.5, mb: 1 }}>
+            {quizClassFromResult && <Chip label={`Class ${quizClassFromResult}`} size="small" variant="outlined" />}
+            {difficulty && <Chip label={difficulty} size="small" variant="outlined" sx={{ textTransform: 'capitalize' }} />}
+            {numQuestionsConfigured != null && <Chip label={`${numQuestionsConfigured} Qs Config.`} size="small" variant="outlined" />}
+            {timeTaken != null && <Chip icon={<TimerIcon fontSize="small" />} label={formatTime(timeTaken)} size="small" variant="outlined" />}
+          </Box>
           <Divider sx={{ my: 1.5 }} />
           Score:
           <Typography component="span" variant="h4" sx={{ color: effectiveAccentColor, fontWeight: 'bold', ml: 1 }}>
@@ -272,7 +269,8 @@ function ResultsPage() {
         timestamp: new Date().toISOString(),
         difficulty: currentQuizData.difficulty,
         numQuestionsConfigured: currentQuizData.numQuestionsConfigured,
-        class: currentQuizData.quizClass, // Pass class to save
+        class: currentQuizData.quizClass,
+        timeTaken: currentQuizData.timeTaken, // Add timeTaken to payload
         questionsAttempted: currentQuizData.questions,
         userAnswersSnapshot: currentQuizData.answers
       };
@@ -283,7 +281,7 @@ function ResultsPage() {
         })
         .catch(error => { console.error('Error saving quiz results:', error.response ? error.response.data : error.message); });
     }
-  }, [isShowingCurrentQuizResult, currentQuizData, score, percentage, fetchHistoricalData]);
+  }, [isShowingCurrentQuizResult, currentQuizData, score, percentage, fetchHistoricalData]); // currentQuizData includes timeTaken
 
 
   useEffect(() => {
@@ -361,14 +359,17 @@ function ResultsPage() {
             totalQuestions: currentQuizData.questions.length,
             topicId: currentQuizData.topicId,
             class: currentQuizData.quizClass,
+            timeTaken: currentQuizData.timeTaken // Ensure timeTaken is passed here
           }}
           quizTitle="Quiz Results"
           detailedQuestionsToDisplay={detailedResults}
           accentColor={currentQuizData.subjectAccentColor || theme.palette.primary.main}
           onRetryQuiz={() => navigate(`/quiz/${currentQuizData.subject}/${currentQuizData.topicId}`, {
             state: {
-              ...currentQuizData,
+              difficulty: currentQuizData.difficulty,
               numQuestions: currentQuizData.numQuestionsConfigured,
+              topicName: formatTopicName(currentQuizData.topicId),
+              accentColor: currentQuizData.subjectAccentColor,
               quizClass: currentQuizData.quizClass
             }
           })}
@@ -421,14 +422,22 @@ function ResultsPage() {
               <ListItem sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'flex-start', sm: { alignItems: 'center' }, gap: { xs: 1, sm: 2 }, py: 1.5, px: 2 }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" component="div" sx={{ textTransform: 'capitalize', fontWeight: 500, color: subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.primary.light }}>
-                    {formatTopicName(result.topicId)} {/* Use formatter here */}
+                    {formatTopicName(result.topicId)}
                   </Typography>
                   <Typography component="div" variant="body2" color="text.secondary">
                     Score: {result.score}/{result.totalQuestions}
-                    {/* MODIFIED: Display Class chip alongside others */}
                     {result.class && <Chip label={`Class ${result.class}`} size="small" sx={{ ml: 1, backgroundColor: alpha(theme.palette.text.secondary, 0.3), color: theme.palette.text.primary, textTransform: 'capitalize' }} />}
                     {result.difficulty && <Chip label={result.difficulty} size="small" sx={{ ml: 1, textTransform: 'capitalize', backgroundColor: alpha(theme.palette.info.dark, 0.3) }} />}
                     {result.numQuestionsConfigured != null && <Chip label={`${result.numQuestionsConfigured} Qs`} size="small" sx={{ ml: 1, backgroundColor: alpha(theme.palette.secondary.dark, 0.3) }} />}
+                    {/* Display Time Taken Chip */}
+                    {result.timeTaken != null && (
+                      <Chip
+                        icon={<TimerIcon fontSize="small" />}
+                        label={formatTime(result.timeTaken)}
+                        size="small"
+                        sx={{ ml: 1, backgroundColor: alpha(theme.palette.grey[700], 0.3) }}
+                      />
+                    )}
                   </Typography>
                   <Typography component="div" variant="caption" color="text.secondary">
                     Taken on: {new Date(result.timestamp).toLocaleString()}
