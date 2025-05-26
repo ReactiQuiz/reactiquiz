@@ -1,3 +1,4 @@
+// backend/server.js
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
@@ -11,12 +12,13 @@ const RESULTS_FILE_PATH = process.env.JSON_RESULTS_FILE
   : path.join(__dirname, 'results.json');
 
 
-console.log(`[INIT] Backend starting...`);
+console.log(`[INIT] Backend API server starting on port ${port}...`);
 console.log(`[INIT] Resolved RESULTS_FILE_PATH: ${RESULTS_FILE_PATH}`);
 
 app.use(cors());
-app.use(express.json({ limit: '5mb' })); // Increase limit if quiz data is large
+app.use(express.json({ limit: '5mb' })); // Reduced limit as we are saving less data per result
 
+// --- Helper Functions (ensureResultsFileExists, readResults, writeResults - no changes from previous correct version) ---
 async function ensureResultsFileExists() {
   try {
     await fs.access(RESULTS_FILE_PATH);
@@ -42,23 +44,30 @@ async function ensureResultsFileExists() {
 
 async function readResults() {
   if (!await ensureResultsFileExists()) {
-    throw new Error("Results file is not accessible or couldn't be created.");
+    console.error("[JSON_DB] readResults: ensureResultsFileExists returned false.");
+    return [];
   }
   try {
     const data = await fs.readFile(RESULTS_FILE_PATH, 'utf8');
     if (data.trim() === '') {
       console.log("[JSON_DB] Results file is empty, returning empty array.");
       return [];
-    } 
-    return JSON.parse(data);
+    }
+    const parsedData = JSON.parse(data);
+    if (!Array.isArray(parsedData)) {
+      console.error('[JSON_DB] Parsed results file is not an array. File content:', data, 'Returning empty array.');
+      return [];
+    }
+    return parsedData;
   } catch (error) {
-    console.error('[JSON_DB] Error reading or parsing results file:', error);
-    throw new Error(`Could not read or parse results file: ${error.message}`);
+    console.error('[JSON_DB] Error reading or parsing results file:', error, 'Returning empty array.');
+    return [];
   }
 }
 
 async function writeResults(resultsData) {
   if (!await ensureResultsFileExists()) {
+    console.error("[JSON_DB] writeResults: Cannot write, results file not accessible and couldn't be created.");
     throw new Error("Results file is not accessible or couldn't be created for writing.");
   }
   try {
@@ -69,100 +78,132 @@ async function writeResults(resultsData) {
     throw error;
   }
 }
+// --- End Helper Functions ---
+
 
 app.post('/api/results', async (req, res) => {
-  console.log('[SERVER] POST /api/results - Request body received.');
+  console.log('[API /api/results POST] Request received. Body keys:', Object.keys(req.body));
   const newResultData = req.body;
 
-  if (!newResultData.subject || !newResultData.topicId || newResultData.score == null ||
-    newResultData.totalQuestions == null || newResultData.percentage == null || !newResultData.timestamp ||
-    !newResultData.questionsAttempted || !Array.isArray(newResultData.questionsAttempted) ||
-    !newResultData.userAnswersSnapshot || typeof newResultData.userAnswersSnapshot !== 'object'
-  ) {
-    console.error('[SERVER] POST /api/results - Bad Request: Missing required fields, including detailed quiz data.');
-    return res.status(400).json({ message: 'Missing required fields for saving result, including questions attempted and user answers.' });
+  // Validate required fields
+  const requiredFields = [
+    'subject', 'topicId', 'score', 'totalQuestions', 'percentage', 
+    'timestamp', 'questionsActuallyAttemptedIds', 'userAnswersSnapshot' // Changed from questionsAttempted
+  ];
+  const missingFields = requiredFields.filter(field => newResultData[field] == null);
+
+  if (missingFields.length > 0) {
+    const message = `Bad Request: Missing required fields: ${missingFields.join(', ')}.`;
+    console.error(`[API /api/results POST] ${message}`);
+    return res.status(400).json({ message });
   }
-  if (newResultData.questionsAttempted.length === 0) {
-    console.error('[SERVER] POST /api/results - Bad Request: questionsAttempted array is empty.');
-    return res.status(400).json({ message: 'questionsAttempted array cannot be empty.' });
+
+  if (!Array.isArray(newResultData.questionsActuallyAttemptedIds) || newResultData.questionsActuallyAttemptedIds.length === 0) {
+    const message = 'Bad Request: questionsActuallyAttemptedIds array cannot be empty or must be an array.';
+    console.error(`[API /api/results POST] ${message}`);
+    return res.status(400).json({ message });
+  }
+   if (typeof newResultData.userAnswersSnapshot !== 'object' || newResultData.userAnswersSnapshot === null) {
+    const message = 'Bad Request: userAnswersSnapshot must be an object.';
+    console.error(`[API /api/results POST] ${message}`);
+    return res.status(400).json({ message });
   }
 
   try {
     const currentResults = await readResults();
+    if (!Array.isArray(currentResults)) {
+        console.error('[API /api/results POST] readResults did not return an array. Aborting save.');
+        return res.status(500).json({ message: 'Internal server error: Failed to read existing results correctly.' });
+    }
+
     const resultToSave = {
       id: currentResults.length > 0 ? Math.max(0, ...currentResults.map(r => r.id || 0)) + 1 : 1,
       subject: newResultData.subject,
       topicId: newResultData.topicId,
       score: newResultData.score,
-      totalQuestions: newResultData.totalQuestions,
+      totalQuestions: newResultData.totalQuestions, // This is the number of questions in the quiz instance
       percentage: newResultData.percentage,
       timestamp: newResultData.timestamp,
-      difficulty: newResultData.difficulty,
-      numQuestionsConfigured: newResultData.numQuestionsConfigured,
-      class: newResultData.class, // Save class
-      timeTaken: newResultData.timeTaken, // Save timeTaken
-      questionsAttempted: newResultData.questionsAttempted,
+      difficulty: newResultData.difficulty, // Optional
+      numQuestionsConfigured: newResultData.numQuestionsConfigured, // Optional, how many user requested
+      class: newResultData.class, // Optional
+      timeTaken: newResultData.timeTaken, // Optional
+      // Store only IDs of questions that were part of this specific quiz instance
+      questionsActuallyAttemptedIds: newResultData.questionsActuallyAttemptedIds,
+      // userAnswersSnapshot will contain answers only for these IDs
       userAnswersSnapshot: newResultData.userAnswersSnapshot
     };
 
     currentResults.push(resultToSave);
     await writeResults(currentResults);
 
-    console.log(`[SERVER] POST /api/results - Success: Result added with ID ${resultToSave.id}. Total results: ${currentResults.length}`);
+    console.log(`[API /api/results POST] Success: Result added with ID ${resultToSave.id}. Total results: ${currentResults.length}`);
     res.status(201).json({ message: 'Result saved successfully!', id: resultToSave.id });
   } catch (error) {
-    console.error('[SERVER] POST /api/results - Error during save process:', error);
-    res.status(500).json({ message: `Failed to save result: ${error.message}` });
+    console.error('[API /api/results POST] Error during save process:', error);
+    res.status(500).json({ message: `Failed to save result: ${error.message || 'Unknown server error'}` });
   }
 });
 
 app.get('/api/results', async (req, res) => {
-  console.log('[SERVER] GET /api/results - Request received.');
+  console.log('[API /api/results GET] Request received.');
   try {
     const results = await readResults();
+    if (!Array.isArray(results)) {
+        console.error('[API /api/results GET] readResults did not return an array. Sending empty array.');
+        return res.json([]);
+    }
     const sortedResults = results.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    console.log(`[SERVER] GET /api/results - Success: Fetched ${sortedResults.length} historical results.`);
+    console.log(`[API /api/results GET] Success: Fetched ${sortedResults.length} results.`);
     res.json(sortedResults);
   } catch (error) {
-    console.error('[SERVER] GET /api/results - Error during fetch process:', error);
-    res.status(500).json({ message: `Failed to fetch results: ${error.message}` });
+    console.error('[API /api/results GET] Error during fetch process:', error);
+    res.status(500).json({ message: `Failed to fetch results: ${error.message || 'Unknown server error'}` });
   }
 });
 
 app.delete('/api/results/:id', async (req, res) => {
   const resultIdToDelete = parseInt(req.params.id, 10);
-  console.log(`[SERVER] DELETE /api/results/${resultIdToDelete} - Request received.`);
+  console.log(`[API /api/results DELETE] Request received for ID: ${resultIdToDelete}.`);
 
   if (isNaN(resultIdToDelete)) {
-    console.error('[SERVER] DELETE /api/results - Bad Request: Invalid ID format.');
-    return res.status(400).json({ message: 'Invalid result ID format.' });
+    const message = 'Bad Request: Invalid result ID format.';
+    console.error(`[API /api/results DELETE] ${message}`);
+    return res.status(400).json({ message });
   }
 
   try {
     let currentResults = await readResults();
+     if (!Array.isArray(currentResults)) {
+        console.error('[API /api/results DELETE] readResults did not return an array. Aborting delete.');
+        return res.status(500).json({ message: 'Internal server error: Failed to read existing results correctly.' });
+    }
     const resultIndex = currentResults.findIndex(r => r.id === resultIdToDelete);
 
     if (resultIndex === -1) {
-      console.warn(`[SERVER] DELETE /api/results - Not Found: Result with ID ${resultIdToDelete} not found.`);
-      return res.status(404).json({ message: 'Result not found.' });
+      const message = `Result with ID ${resultIdToDelete} not found.`;
+      console.warn(`[API /api/results DELETE] ${message}`);
+      return res.status(404).json({ message });
     }
 
     currentResults.splice(resultIndex, 1);
     await writeResults(currentResults);
 
-    console.log(`[SERVER] DELETE /api/results - Success: Result with ID ${resultIdToDelete} deleted. Remaining results: ${currentResults.length}`);
+    console.log(`[API /api/results DELETE] Success: Result ID ${resultIdToDelete} deleted. Remaining: ${currentResults.length}`);
     res.status(200).json({ message: 'Result deleted successfully.' });
   } catch (error) {
-    console.error(`[SERVER] DELETE /api/results - Error during delete process for ID ${resultIdToDelete}:`, error);
-    res.status(500).json({ message: `Failed to delete result: ${error.message}` });
+    console.error(`[API /api/results DELETE] Error for ID ${resultIdToDelete}:`, error);
+    res.status(500).json({ message: `Failed to delete result: ${error.message || 'Unknown server error'}` });
   }
 });
 
+
 ensureResultsFileExists().then(() => {
   app.listen(port, () => {
-    console.log(`[SERVER] Backend server (JSON file) running on http://localhost:${port}`);
+    console.log(`[SERVER] Backend API server running on http://localhost:${port}`);
+    console.log(`[SERVER] Ensure your frontend (React Dev Server) is running, likely on http://localhost:3000`);
   });
 }).catch(err => {
-  console.error("[SERVER] Failed to initialize and start server:", err);
+  console.error("[SERVER] Failed to initialize and start backend API server:", err);
   process.exit(1);
 });

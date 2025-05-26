@@ -21,7 +21,7 @@ import {
   subjectAccentColors as themeSubjectAccentColors
 } from '../theme';
 import QuestionItem from '../components/QuestionItem';
-import { formatTime } from '../utils/formatTime'; // Import the new utility
+import { formatTime } from '../utils/formatTime';
 
 const subjectQuestionMap = {
   chemistry: allChemistryQuestions,
@@ -61,8 +61,8 @@ function QuizPage() {
   const [userAnswers, setUserAnswers] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [elapsedTime, setElapsedTime] = useState(0); // State for timer
-  const [timerActive, setTimerActive] = useState(false); // Control timer activity
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
 
 
   const currentAccentColor = subjectAccentColors[subject?.toLowerCase()] || quizSettings.accentColor || subjectAccentColors.default;
@@ -70,8 +70,8 @@ function QuizPage() {
   useEffect(() => {
     setIsLoading(true);
     setError('');
-    setTimerActive(false); // Stop timer during loading/re-fetching
-    setElapsedTime(0); // Reset timer
+    setTimerActive(false);
+    setElapsedTime(0);
 
     if (!subject || !topicId) {
       setError("Subject or Topic ID is missing.");
@@ -82,10 +82,7 @@ function QuizPage() {
 
     let allQuestionsForSubject;
     const subjectLower = subject.toLowerCase();
-
-    // Simplified question loading logic
     allQuestionsForSubject = subjectQuestionMap[subjectLower];
-
 
     if (!allQuestionsForSubject) {
       setError(`Questions for subject "${subject}" not found or path not configured.`);
@@ -104,13 +101,13 @@ function QuizPage() {
       let maxScore = Infinity;
 
       if (difficultyLabel === 'easy') {
-        minScore = 10;
+        minScore = 10; // Assuming difficulty 10-13 is easy
         maxScore = 13;
       } else if (difficultyLabel === 'medium') {
-        minScore = 14;
+        minScore = 14; // Assuming difficulty 14-17 is medium
         maxScore = 17;
       } else if (difficultyLabel === 'hard') {
-        minScore = 18;
+        minScore = 18; // Assuming difficulty 18-20 is hard
         maxScore = 20;
       }
       filteredByDifficultyQuestions = topicQuestions.filter(q =>
@@ -129,14 +126,13 @@ function QuizPage() {
       const selectedQuestions = shuffledQuestions.slice(0, numQuestionsReq);
       setQuestions(selectedQuestions);
       if (selectedQuestions.length > 0) {
-        setTimerActive(true); // Start timer only if questions are loaded
+        setTimerActive(true);
       }
     }
     setUserAnswers({});
     setIsLoading(false);
   }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]);
 
-  // Timer effect
   useEffect(() => {
     let intervalId;
     if (timerActive) {
@@ -144,7 +140,7 @@ function QuizPage() {
         setElapsedTime(prevTime => prevTime + 1);
       }, 1000);
     }
-    return () => clearInterval(intervalId); // Cleanup on unmount or if timerActive becomes false
+    return () => clearInterval(intervalId);
   }, [timerActive]);
 
 
@@ -156,18 +152,33 @@ function QuizPage() {
   };
 
   const handleSubmitQuiz = useCallback(() => {
-    setTimerActive(false); // Stop the timer on submit
+    setTimerActive(false);
+
+    const questionsActuallyAttemptedIds = questions.map(q => q.id);
+    const relevantUserAnswersSnapshot = {};
+    questionsActuallyAttemptedIds.forEach(id => {
+      if (userAnswers.hasOwnProperty(id)) {
+        relevantUserAnswersSnapshot[id] = userAnswers[id];
+      } else {
+        relevantUserAnswersSnapshot[id] = null; 
+      }
+    });
+
     navigate('/results', {
       state: {
-        answers: userAnswers,
-        questions: questions,
+        userAnswersSnapshot: relevantUserAnswersSnapshot,
+        questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
+        
+        originalQuestionsForDisplay: questions, 
+        originalAnswersForDisplay: userAnswers, // Keep this for immediate display logic on ResultsPage
+
         subjectAccentColor: currentAccentColor,
         subject: subject,
         topicId: topicId,
         difficulty: difficultyLabel,
-        numQuestions: questions.length,
-        numQuestionsConfigured: numQuestionsReq,
-        timeTaken: elapsedTime, // Pass elapsed time
+        // totalQuestions for THIS quiz instance will be questions.length
+        numQuestionsConfigured: numQuestionsReq, // How many user asked for
+        timeTaken: elapsedTime,
         quizClass: quizClassFromState,
       }
     });
@@ -213,23 +224,22 @@ function QuizPage() {
   }
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}> {/* This Box is inside the Container with mt: '64px' and py: 3 */}
-      {/* Fixed Timer Display */}
+    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}>
       {timerActive && questions.length > 0 && (
         <Box
           sx={{
             position: 'fixed',
             top: {
-              xs: `calc(56px + ${theme.spacing(1)})`, // Mobile AppBar (56px) + 8px margin
-              sm: `calc(64px + ${theme.spacing(1)})`  // Desktop AppBar (64px) + 8px margin
+              xs: `calc(56px + ${theme.spacing(1)})`, 
+              sm: `calc(64px + ${theme.spacing(1)})`
             },
             left: '50%',
             transform: 'translateX(-50%)',
             backgroundColor: alpha(theme.palette.background.paper, 0.9),
-            color: 'white', // Explicitly white text
+            color: 'white',
             padding: theme.spacing(0.75, 2),
             borderRadius: theme.shape.borderRadius,
-            zIndex: 1050, // Above scrollable content, below drawer/modals
+            zIndex: 1050, 
             boxShadow: theme.shadows[3],
             minWidth: '80px',
             textAlign: 'center',
@@ -250,7 +260,7 @@ function QuizPage() {
           textAlign: 'center',
           color: currentAccentColor,
           fontWeight: 'bold',
-          mt: theme.spacing(4.5) // Pushes title down to avoid overlap with fixed timer
+          mt: theme.spacing(4.5) 
         }}
       >
         {subject && topicId
@@ -261,7 +271,7 @@ function QuizPage() {
         variant="h6"
         component="div"
         sx={{
-          mb: 3, // Increased margin bottom from timer
+          mb: 3, 
           textAlign: 'center',
           color: theme.palette.text.secondary,
           fontWeight: 'normal',
