@@ -1,5 +1,6 @@
 {
   "name": "reactiquiz",
+  "homepage": "https://sanskarsontakke.github.io/reactiquiz",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,12 +28,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "frontend": "cross-env HOST=0.0.0.0 HTTPS=true SSL_CRT_FILE=./.cert/192.168.177.112+3.pem SSL_KEY_FILE=./.cert/192.168.177.112+3-key.pem react-scripts start",
+    "frontend": "cross-env HOST=0.0.0.0 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node backend/server.js",
-    "server:dev": "nodemon backend/server.js"
+    "server:dev": "nodemon backend/server.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +57,8 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "debug": "^4.4.1",
+    "gh-pages": "^6.3.0",
     "http-proxy-middleware": "^3.0.5",
     "nodemon": "^3.1.10"
   },

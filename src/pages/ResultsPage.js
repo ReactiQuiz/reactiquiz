@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 import {
   Box, Typography, Paper, List, Alert, CircularProgress, Button, useTheme,
-  darken, alpha
 } from '@mui/material';
 import axios from 'axios';
 import HomeIcon from '@mui/icons-material/Home';
@@ -18,8 +17,6 @@ import QuestionBreakdown from '../components/QuestionBreakdown';
 import HistoricalResultItem from '../components/HistoricalResultItem';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import ResultsActionButtons from '../components/ResultsActionButtons';
-import { formatTime } from '../utils/formatTime';
-
 
 function ResultsPage() {
   const location = useLocation();
