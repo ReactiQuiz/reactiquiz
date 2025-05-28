@@ -27,7 +27,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "frontend": "react-scripts start",
+    "frontend": "cross-env HOST=0.0.0.0 HTTPS=true SSL_CRT_FILE=./.cert/192.168.177.112+3.pem SSL_KEY_FILE=./.cert/192.168.177.112+3-key.pem react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
