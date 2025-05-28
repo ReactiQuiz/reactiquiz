@@ -11,7 +11,7 @@ import {
 import {
   darken, useTheme, alpha
 } from '@mui/material/styles';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance'; // Import the new instance
 
 import {
   subjectAccentColors as themeSubjectAccentColors
@@ -35,13 +35,13 @@ const shuffleArray = (array) => {
 };
 
 function QuizPage() {
-  const { topicId } = useParams(); // Removed subject from params
+  const { topicId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
 
   const quizSettings = location.state || {};
-  const subject = quizSettings.subject; // Get subject from location state
+  const subject = quizSettings.subject;
   const difficultyLabel = (quizSettings.difficulty || 'medium').toLowerCase();
   const numQuestionsReq = quizSettings.numQuestions || 10;
   const topicNameFromState = quizSettings.topicName || topicId.replace(/-/g, ' ');
@@ -53,7 +53,8 @@ function QuizPage() {
   const [error, setError] = useState('');
   const [elapsedTime, setElapsedTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state for submission
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const currentAccentColor = subjectAccentColors[subject?.toLowerCase()] || quizSettings.accentColor || subjectAccentColors.default;
 
@@ -65,17 +66,17 @@ function QuizPage() {
       setElapsedTime(0);
       setUserAnswers({});
       setQuestions([]);
-      setIsSubmitting(false); // Reset submission state on new quiz load
+      setIsSubmitting(false);
 
 
-      if (!topicId || !subject) { // Check for subject from state as well
+      if (!topicId || !subject) {
         setError("Topic ID or Subject context is missing.");
         setIsLoading(false);
         return;
       }
 
       try {
-        const response = await axios.get(`/api/questions/${topicId}`);
+        const response = await apiClient.get(`/api/questions/${topicId}`);
         let fetchedQuestions = response.data;
 
         if (!Array.isArray(fetchedQuestions)) {
@@ -133,7 +134,7 @@ function QuizPage() {
     };
 
     fetchQuestions();
-  }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]); // subject from state now
+  }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]);
 
   useEffect(() => {
     let intervalId;
@@ -154,10 +155,10 @@ function QuizPage() {
   };
 
   const handleSubmitQuiz = useCallback(() => {
-    if (isSubmitting) return; // Prevent multiple submissions
+    if (isSubmitting) return;
 
-    setIsSubmitting(true); // Set submitting state
-    setTimerActive(false); // Stop the timer on submit
+    setIsSubmitting(true);
+    setTimerActive(false);
 
     const questionsActuallyAttemptedIds = questions.map(q => q.id);
     
@@ -170,14 +171,12 @@ function QuizPage() {
       }
     });
 
-    // Generate a unique ID for this quiz attempt on the client-side
-    // This can help ResultsPage identify if it has already processed this specific attempt
     const quizAttemptId = `attempt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
 
     navigate('/results', {
       state: {
-        quizAttemptId: quizAttemptId, // Send unique attempt ID
+        quizAttemptId: quizAttemptId,
         userAnswersSnapshot: relevantUserAnswersSnapshot,
         questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
         originalQuestionsForDisplay: questions, 
@@ -202,7 +201,7 @@ function QuizPage() {
       numQuestionsReq, 
       elapsedTime, 
       quizClassFromState,
-      isSubmitting // Add isSubmitting to dependencies
+      isSubmitting
     ]);
 
   const allQuestionsAnswered = () => {
@@ -319,7 +318,7 @@ function QuizPage() {
           variant="contained"
           size="large"
           onClick={handleSubmitQuiz}
-          disabled={!allQuestionsAnswered() || isSubmitting} // Disable if not all answered or already submitting
+          disabled={!allQuestionsAnswered() || isSubmitting}
           sx={{
             backgroundColor: currentAccentColor,
             color: theme.palette.getContrastText(currentAccentColor),

@@ -32,8 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node backend/server.js",
-    "server:dev": "nodemon backend/server.js",
+    "backend": "node backend/server.js",
+    "backend:dev": "nodemon backend/server.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },

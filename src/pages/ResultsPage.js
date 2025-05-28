@@ -1,3 +1,4 @@
+// src/pages/ResultsPage.js
 import {
   useMemo, useEffect, useState, useCallback, useRef
 } from 'react';
@@ -7,7 +8,7 @@ import {
 import {
   Box, Typography, Paper, List, Alert, CircularProgress, Button, useTheme,
 } from '@mui/material';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance'; // Import the new instance
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 
@@ -17,6 +18,7 @@ import QuestionBreakdown from '../components/QuestionBreakdown';
 import HistoricalResultItem from '../components/HistoricalResultItem';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import ResultsActionButtons from '../components/ResultsActionButtons';
+
 
 function ResultsPage() {
   const location = useLocation();
@@ -75,11 +77,10 @@ function ResultsPage() {
 
   const isShowingCurrentQuizResult = !!(currentOriginalQuestionsForDisplay && currentOriginalQuestionsForDisplay.length > 0 && currentQuizAttemptId);
 
-  // Effect for fetching historical data
   const fetchHistoricalData = useCallback(() => {
     setIsLoadingHistorical(true);
     setFetchError('');
-    axios.get('/api/results')
+    apiClient.get('/api/results')
       .then(response => {
         if (Array.isArray(response.data)) {
           setHistoricalResults(response.data);
@@ -99,7 +100,6 @@ function ResultsPage() {
       });
   }, []);
   
-  // Effect for saving the current quiz result
   useEffect(() => {
     if (isShowingCurrentQuizResult && currentQuestionsActuallyAttemptedIds && currentQuizAttemptId && currentQuizAttemptId !== processedAttemptIdRef.current) {
       
@@ -121,7 +121,7 @@ function ResultsPage() {
         userAnswersSnapshot: currentUserAnswersSnapshot
       };
 
-      axios.post('/api/results', payload)
+      apiClient.post('/api/results', payload)
         .then(response => {
           console.log('[ResultsPage] Quiz results saved successfully:', response.data, "for attempt ID:", currentQuizAttemptId);
           fetchHistoricalData(); 
@@ -152,13 +152,12 @@ function ResultsPage() {
     ]);
 
 
-  // Effect for populating detailed view for a selected historical result
   useEffect(() => {
     if (selectedHistoricalResult && selectedHistoricalResult.questionsActuallyAttemptedIds && selectedHistoricalResult.userAnswersSnapshot) {
         setIsLoadingHistoricalDetails(true); 
         const topicId = selectedHistoricalResult.topicId;
         
-        axios.get(`/api/questions/${topicId}`) // Fetch all questions for that topic using only topicId
+        apiClient.get(`/api/questions/${topicId}`)
             .then(response => {
                 const allTopicQuestions = response.data;
                 if (!Array.isArray(allTopicQuestions)) {
@@ -195,7 +194,6 @@ function ResultsPage() {
   }, [selectedHistoricalResult]);
 
 
-  // Initial fetch of historical data if not showing current results
   useEffect(() => {
     if (!isShowingCurrentQuizResult && !selectedHistoricalResult) {
       fetchHistoricalData();
@@ -218,7 +216,7 @@ function ResultsPage() {
     if (!resultToDeleteId) return;
     setDeleteError('');
     try {
-      await axios.delete(`/api/results/${resultToDeleteId}`);
+      await apiClient.delete(`/api/results/${resultToDeleteId}`);
       setHistoricalResults(prevResults => prevResults.filter(r => r.id !== resultToDeleteId));
       if (selectedHistoricalResult && selectedHistoricalResult.id === resultToDeleteId) {
         setSelectedHistoricalResult(null); 

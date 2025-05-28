@@ -6,7 +6,7 @@
 // DEBUG=reactiquiz:db:results npm run server:dev (shows only results DB logs)
 
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Ensure .env is loaded
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
@@ -16,10 +16,11 @@ const logServer = debug('reactiquiz:server');
 const logApi = debug('reactiquiz:api');
 const logDbResults = debug('reactiquiz:db:results');
 const logDbQuestions = debug('reactiquiz:db:questions');
-const logError = debug('reactiquiz:error'); // For specific error logging
+const logError = debug('reactiquiz:error');
 
 const app = express();
 const port = process.env.SERVER_PORT || 3001;
+const host = process.env.SERVER_HOST || '0.0.0.0';
 const projectRoot = path.resolve(__dirname, '../');
 
 const RESULTS_DB_PATH = process.env.DATABASE_FILE_PATH
@@ -30,7 +31,7 @@ const QUESTIONS_DB_PATH = process.env.QUESTIONS_DATABASE_FILE_PATH
   ? path.resolve(projectRoot, process.env.QUESTIONS_DATABASE_FILE_PATH.startsWith('./') ? process.env.QUESTIONS_DATABASE_FILE_PATH.substring(2) : process.env.QUESTIONS_DATABASE_FILE_PATH)
   : path.join(__dirname, 'quizData.db');
 
-logServer(`Backend API server starting on port ${port}...`);
+logServer(`Backend API server starting on port ${port} and host ${host}`);
 logServer(`Results DB Path: ${RESULTS_DB_PATH}`);
 logServer(`Questions DB Path: ${QUESTIONS_DB_PATH}`);
 
@@ -39,7 +40,7 @@ const resultsDb = new sqlite3.Database(RESULTS_DB_PATH, sqlite3.OPEN_READWRITE |
     logError('Could not connect to results database: %s', err.message);
     process.exit(1);
   } else {
-    logDbResults('Connected to the SQLite results database.');
+    logDbResults('Connected to the Results SQLite database[quiz_results.db]');
     resultsDb.run(`CREATE TABLE IF NOT EXISTS quiz_results (
       id INTEGER PRIMARY KEY AUTOINCREMENT, subject TEXT NOT NULL, topicId TEXT NOT NULL,
       score INTEGER NOT NULL, totalQuestions INTEGER NOT NULL, percentage REAL NOT NULL,
@@ -47,7 +48,7 @@ const resultsDb = new sqlite3.Database(RESULTS_DB_PATH, sqlite3.OPEN_READWRITE |
       class TEXT, timeTaken INTEGER, questionsActuallyAttemptedIds TEXT, userAnswersSnapshot TEXT
     )`, (err) => {
       if (err) logError('Error creating quiz_results table: %s', err.message);
-      else logDbResults('quiz_results table ensured.');
+      else logDbResults('Results[quiz_results] table ensured.');
     });
   }
 });
@@ -56,11 +57,11 @@ const questionsDb = new sqlite3.Database(QUESTIONS_DB_PATH, sqlite3.OPEN_READONL
   if (err) {
     logError('Could not connect to questions database (read-only): %s', err.message);
   } else {
-    logDbQuestions('Connected to the SQLite questions database (read-only).');
+    logDbQuestions('Connected to the Questions SQLite database[quiz_data.db] (read-only).');
     questionsDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='questions'", (err, row) => {
         if (err) logError("Error checking questions table: %s", err.message);
-        else if (!row) logServer.warn("'questions' table does not exist in questions_data.db. Run converter script."); // Changed to logServer.warn
-        else logDbQuestions("'questions' table found.");
+        else if (!row) logServer.warn("Questions[questions] table does not exist in Questions File[questions_data.db]. Run converter script[jsonToDBConverter.js]");
+        else logDbQuestions("Questions[questions] table ensured.");
     });
   }
 });
@@ -78,7 +79,6 @@ app.get('/api/questions/:topicId', (req, res) => {
   const { topicId } = req.params;
   logApi(`GET /api/questions/%s - Request for topicId: %s`, topicId, topicId);
   const sql = `SELECT * FROM questions WHERE topicId = ?`;
-  // logDbQuestions('Executing SQL: %s with params: %s', sql, topicId); // Uncomment for query logging
   questionsDb.all(sql, [topicId], (err, rows) => {
     if (err) {
       logError('GET /api/questions/%s - DB Error: %s', topicId, err.message);
@@ -138,8 +138,6 @@ app.post('/api/results', async (req, res) => {
   if (timeTaken !== null) duplicateParams.push(timeTaken);
   duplicateParams.push(questionsIdsString, answersSnapshotString, tenSecondsAgo);
 
-  // logDbResults('Executing SQL for duplicate check: %s with params: %o', duplicateCheckSql, duplicateParams); // Uncomment for query logging
-
   resultsDb.get(duplicateCheckSql, duplicateParams, (err, row) => {
     if (err) {
       logError('POST /api/results - DB Error checking for duplicates: %s', err.message);
@@ -163,8 +161,6 @@ app.post('/api/results', async (req, res) => {
       className, timeTaken, questionsIdsString, answersSnapshotString
     ];
 
-    // logDbResults('Executing SQL for insert: %s with params: %o', insertSql, insertParams); // Uncomment for query logging
-
     resultsDb.run(insertSql, insertParams, function (err) {
       if (err) {
         logError('POST /api/results - DB Error inserting result: %s', err.message);
@@ -179,7 +175,6 @@ app.post('/api/results', async (req, res) => {
 app.get('/api/results', (req, res) => {
   logApi('GET /api/results - Request received.');
   const sql = "SELECT * FROM quiz_results ORDER BY timestamp DESC";
-  // logDbResults('Executing SQL: %s', sql); // Uncomment for query logging
   resultsDb.all(sql, [], (err, rows) => {
     if (err) {
       logError('GET /api/results - DB Error: %s', err.message);
@@ -203,7 +198,6 @@ app.delete('/api/results/:id', (req, res) => {
     return res.status(400).json({ message: 'Invalid result ID format.' });
   }
   const sql = "DELETE FROM quiz_results WHERE id = ?";
-  // logDbResults('Executing SQL: %s with params: %d', sql, resultIdToDelete); // Uncomment for query logging
   resultsDb.run(sql, resultIdToDelete, function (err) {
     if (err) {
       logError('DELETE /api/results/%d - DB Error: %s', resultIdToDelete, err.message);
@@ -217,6 +211,7 @@ app.delete('/api/results/:id', (req, res) => {
     res.status(200).json({ message: 'Result deleted successfully.' });
   });
 });
+
 
 if (process.env.NODE_ENV === 'production' || process.env.SERVE_BUILD === 'true') {
   logServer('Production/Serve_Build mode: Enabling static file serving from build directory.');
@@ -234,10 +229,11 @@ if (process.env.NODE_ENV === 'production' || process.env.SERVE_BUILD === 'true')
   logServer('Development mode: Static file serving from build directory is NOT enabled.');
 }
 
-app.listen(port, () => {
-  logServer(`Backend API server running on http://localhost:${port}`);
+app.listen(port, host, () => {
+  logServer(`Backend API server running on http://${host}:${port}`);
   if (process.env.NODE_ENV !== 'production' && process.env.SERVE_BUILD !== 'true') {
-    logServer(`Ensure your frontend (React Dev Server) is running, likely on http://localhost:3000, and uses proxy.`);
+    logServer(`Ensure your frontend (React Dev Server) is running, likely on http://localhost:3000`);
+    logServer("Use proxy to http://${host}:${port} for frontend server.");
   }
 });
 
@@ -256,14 +252,11 @@ process.on('SIGINT', () => {
   });
 });
 
-// Generic error handler (optional, but good for unhandled promise rejections etc.)
 process.on('unhandledRejection', (reason, promise) => {
   logError('Unhandled Rejection at:', promise, 'reason:', reason);
-  // Application specific logging, throwing an error, or other logic here
 });
 
 process.on('uncaughtException', (error) => {
   logError('Uncaught Exception:', error);
-  // Application specific logging, cleanup, and exit
-  process.exit(1); // Mandatory exit after uncaught exception
+  process.exit(1);
 });
