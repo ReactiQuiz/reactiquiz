@@ -1,3 +1,4 @@
+// src/pages/GKPage.js
 import {
   useState, useMemo
 } from 'react';
@@ -8,22 +9,22 @@ import {
   useNavigate
 } from 'react-router-dom';
 import {
-  physicsTopics
-} from '../topics/PhysicsTopics';
+  gkTopics // Import GK topics
+} from '../topics/GKTopics';
 import {
   subjectAccentColors
 } from '../theme';
 import TopicCard from '../components/TopicCard';
 import QuizSettingsModal from '../components/QuizSettingsModal';
 
-function PhysicsPage() {
+function GKPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
-  const PHYSICS_ACCENT_COLOR = subjectAccentColors.physics;
+  const GK_ACCENT_COLOR = subjectAccentColors.gk;
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -37,14 +38,16 @@ function PhysicsPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      console.log(`Starting Physics quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/${selectedTopic.id}`, {
+      console.log(`Starting GK quiz for ${selectedTopic.name} with settings:`, settings);
+      navigate(`/quiz/${selectedTopic.id}`, { 
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
-          accentColor: PHYSICS_ACCENT_COLOR,
-          subject: "physics",
+          accentColor: GK_ACCENT_COLOR,
+          quizClass: selectedTopic.class, // Pass class if available on topic
+          subject: "gk",
+          // genre: selectedTopic.genre // Optionally pass genre if needed by QuizPage
         }
       });
     }
@@ -52,12 +55,12 @@ function PhysicsPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = physicsTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = gkTopics.map(topic => topic.class).filter(Boolean); // Filter out undefined/null classes
     return [...new Set(allClasses)].sort();
-  }, []); // physicsTopics is stable, so empty dependency array is fine here if it's a top-level import
+  }, []);
 
   const filteredTopics = useMemo(() => {
-    let topics = physicsTopics;
+    let topics = gkTopics;
 
     if (selectedClass) {
       topics = topics.filter(topic => topic.class === selectedClass);
@@ -67,51 +70,54 @@ function PhysicsPage() {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       topics = topics.filter(topic =>
         topic.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-        (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm))
+        (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm)) ||
+        (topic.genre && topic.genre.toLowerCase().includes(lowerCaseSearchTerm)) // Also search by genre
       );
     }
     return topics;
-  }, [searchTerm, selectedClass]); // physicsTopics is stable
+  }, [searchTerm, selectedClass]);
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ color: PHYSICS_ACCENT_COLOR }}
+        sx={{ color: GK_ACCENT_COLOR, textAlign: 'center', mb: 2 }}
       >
-        Physics Quiz Topics
+        General Knowledge Quiz Topics
       </Typography>
-      <Typography paragraph>
-        Select a topic below to customize and start your Physics quiz.
+      <Typography paragraph sx={{textAlign: 'center', mb:3}}>
+        Explore a variety of General Knowledge topics. Select one to start your quiz.
       </Typography>
 
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center', flexWrap: 'wrap' }}>
         <TextField
-          label="Search Topics"
+          label="Search Topics or Genres"
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ flexGrow: 1, minWidth: '200px' }}
         />
-        <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel id="class-select-label">Filter by Class</InputLabel>
-          <Select
-            labelId="class-select-label"
-            value={selectedClass}
-            label="Filter by Class"
-            onChange={(e) => setSelectedClass(e.target.value)}
-          >
-            <MenuItem value="">
-              <em>All Classes</em>
-            </MenuItem>
-            {availableClasses.map((cls) => (
-              <MenuItem key={cls} value={cls}>
-                Class {cls}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {availableClasses.length > 0 && (
+            <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel id="class-select-label-gk">Filter by Level/Class</InputLabel>
+            <Select
+                labelId="class-select-label-gk"
+                value={selectedClass}
+                label="Filter by Level/Class"
+                onChange={(e) => setSelectedClass(e.target.value)}
+            >
+                <MenuItem value="">
+                <em>All Levels/Classes</em>
+                </MenuItem>
+                {availableClasses.map((cls) => (
+                <MenuItem key={cls} value={cls}>
+                    {cls} 
+                </MenuItem>
+                ))}
+            </Select>
+            </FormControl>
+        )}
       </Box>
 
       <Box>
@@ -121,13 +127,13 @@ function PhysicsPage() {
               <TopicCard
                 topic={topic}
                 onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={PHYSICS_ACCENT_COLOR}
-                subjectBasePath="physics"
+                accentColor={GK_ACCENT_COLOR}
+                subjectBasePath="gk"
               />
             </Box>
           ))
         ) : (
-          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
+          <Typography sx={{ mt: 2, textAlign: 'center' }}>No topics found matching your criteria.</Typography>
         )}
       </Box>
 
@@ -137,11 +143,11 @@ function PhysicsPage() {
           onClose={handleCloseModal}
           onSubmit={handleStartQuizWithSettings}
           topicName={selectedTopic.name}
-          accentColor={PHYSICS_ACCENT_COLOR}
+          accentColor={GK_ACCENT_COLOR}
         />
       )}
     </Box>
   );
 }
 
-export default PhysicsPage;
+export default GKPage;  

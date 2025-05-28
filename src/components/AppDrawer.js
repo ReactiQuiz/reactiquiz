@@ -13,8 +13,9 @@ import ScienceIcon from '@mui/icons-material/Science'; // Chemistry
 import CalculateIcon from '@mui/icons-material/Calculate'; // Mathematics
 import BoltIcon from '@mui/icons-material/Bolt'; // Physics
 import BiotechIcon from '@mui/icons-material/Biotech'; // Biology
+import SchoolIcon from '@mui/icons-material/School'; // Homibhabha
+import PublicIcon from '@mui/icons-material/Public'; // GK Icon
 import PollIcon from '@mui/icons-material/Poll'; // Results
-import SchoolIcon from '@mui/icons-material/School'; // Example icon for Homibhabha
 
 const drawerWidth = 250;
 
@@ -27,7 +28,8 @@ function AppDrawer({ open, onClose }) {
     { text: 'Physics', icon: <BoltIcon sx={{ color: subjectAccentColors.physics }} />, path: '/physics', color: subjectAccentColors.physics },
     { text: 'Mathematics', icon: <CalculateIcon sx={{ color: subjectAccentColors.mathematics }} />, path: '/mathematics', color: subjectAccentColors.mathematics },
     { text: 'Biology', icon: <BiotechIcon sx={{ color: subjectAccentColors.biology }} />, path: '/biology', color: subjectAccentColors.biology },
-    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }}/>, path: '/homibhabha', color: theme.palette.secondary.main }, // New Item
+    { text: 'GK', icon: <PublicIcon sx={{ color: subjectAccentColors.gk }} />, path: '/gk', color: subjectAccentColors.gk },
+    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }}/>, path: '/homibhabha', color: theme.palette.secondary.main },
     { text: 'Results', icon: <PollIcon />, path: '/results', color: theme.palette.text.primary },
   ];
 

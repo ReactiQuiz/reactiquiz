@@ -35,12 +35,13 @@ const shuffleArray = (array) => {
 };
 
 function QuizPage() {
-  const { subject, topicId } = useParams();
+  const { topicId } = useParams(); // Removed subject from params
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
 
   const quizSettings = location.state || {};
+  const subject = quizSettings.subject; // Get subject from location state
   const difficultyLabel = (quizSettings.difficulty || 'medium').toLowerCase();
   const numQuestionsReq = quizSettings.numQuestions || 10;
   const topicNameFromState = quizSettings.topicName || topicId.replace(/-/g, ' ');
@@ -67,14 +68,14 @@ function QuizPage() {
       setIsSubmitting(false); // Reset submission state on new quiz load
 
 
-      if (!subject || !topicId) {
-        setError("Subject or Topic ID is missing.");
+      if (!topicId || !subject) { // Check for subject from state as well
+        setError("Topic ID or Subject context is missing.");
         setIsLoading(false);
         return;
       }
 
       try {
-        const response = await axios.get(`/api/questions/${subject.toLowerCase()}/${topicId}`);
+        const response = await axios.get(`/api/questions/${topicId}`);
         let fetchedQuestions = response.data;
 
         if (!Array.isArray(fetchedQuestions)) {
@@ -132,7 +133,7 @@ function QuizPage() {
     };
 
     fetchQuestions();
-  }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]); 
+  }, [subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState]); // subject from state now
 
   useEffect(() => {
     let intervalId;
@@ -281,7 +282,7 @@ function QuizPage() {
           mt: theme.spacing(4.5) 
         }}
       >
-        {subject && topicId
+        {subject
           ? `${subject.charAt(0).toUpperCase() + subject.slice(1)} Quiz`
           : 'Quiz'}
       </Typography>

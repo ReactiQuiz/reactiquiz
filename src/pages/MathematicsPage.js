@@ -39,12 +39,13 @@ function MathematicsPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      navigate(`/quiz/mathematics/${selectedTopic.id}`, {
+      navigate(`/quiz/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
           accentColor: MATHEMATICS_ACCENT_COLOR,
+          subject: "mathematics",
         }
       });
     }

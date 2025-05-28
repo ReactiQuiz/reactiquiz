@@ -68,8 +68,7 @@ async function convertJsonToDb() {
     await dbRun(`
       CREATE TABLE IF NOT EXISTS questions (
         id TEXT PRIMARY KEY,          -- Original ID from JSON
-        topicId TEXT NOT NULL,
-        subject TEXT NOT NULL,        -- Add subject column
+        topicId TEXT NOT NULL,        -- subject column removed
         text TEXT NOT NULL,
         options TEXT NOT NULL,        -- Store as JSON string
         correctOptionId TEXT NOT NULL,
@@ -100,14 +99,10 @@ async function convertJsonToDb() {
     console.log(`[INFO] Found ${questionsArray.length} questions in JSON file.`);
 
     // 3. Insert/Append data into SQLite
-    // Determine subject from file path (heuristic)
-    const fileName = path.basename(jsonFilePath, '.json');
-    const subject = fileName.toLowerCase(); // e.g., 'physics', 'chemistry'
-
     const insertSql = `
       INSERT OR IGNORE INTO questions 
-      (id, topicId, subject, text, options, correctOptionId, explanation, difficulty) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      (id, topicId, text, options, correctOptionId, explanation, difficulty) 
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     // Use INSERT OR REPLACE if you want to update existing questions with the same ID
     // const insertSql = `INSERT OR REPLACE INTO questions ...`; 
@@ -128,7 +123,6 @@ async function convertJsonToDb() {
       const params = [
         q.id,
         q.topicId,
-        subject, // Add subject
         q.text,
         JSON.stringify(q.options || []),
         q.correctOptionId,
@@ -158,7 +152,6 @@ async function convertJsonToDb() {
     }
 
     console.log(`\n--- Migration Summary ---`);
-    console.log(`Subject processed: ${subject}`);
     console.log(`Total questions in JSON: ${questionsArray.length}`);
     console.log(`Successfully inserted/updated: ${insertedCount}`);
     console.log(`Skipped (missing fields or already exists with IGNORE): ${skippedCount}`);

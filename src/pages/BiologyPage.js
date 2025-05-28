@@ -37,12 +37,13 @@ function BiologyPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      navigate(`/quiz/biology/${selectedTopic.id}`, {
+      navigate(`/quiz/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
           accentColor: BIOLOGY_ACCENT_COLOR,
+          subject: "biology",
         }
       });
     }

@@ -33,13 +33,14 @@ function HomibhabhaPage() {
     // Example: You'll need a new topicId scheme or way to identify PYQs
     // For now, let's assume a generic topicId like 'homibhabha-pyq-${settings.class}-${settings.year}'
     // and you'd need to create corresponding JSON question files.
-    navigate(`/quiz/homibhabha/pyq-${settings.class}-${settings.year}`, {
+    navigate(`/quiz/pyq-${settings.class}-${settings.year}`, { // Assuming topicId is structured like this
       state: {
         difficulty: 'mixed', // PYQs are usually mixed
         numQuestions: 100, // Or fetch actual number based on paper
         topicName: `Homi Bhabha PYQ ${settings.class}th - ${settings.year}`,
         accentColor: homiBhabhaAccentColor,
         quizClass: settings.class,
+        subject: "homibhabha", // Or a more specific subject if PYQs are categorized
         isPYQ: true, // Add a flag if needed
         year: settings.year
       }
@@ -58,12 +59,13 @@ function HomibhabhaPage() {
   const handleStartPracticeTest = (settings) => {
     console.log("Starting Practice Test with settings:", settings);
     // Navigate to a quiz page for practice tests
-    // Example: topicId could be `homibhabha-practice-${settings.class}`
-    navigate(`/quiz/homibhabha/practice-${settings.class}-${settings.difficulty}`, {
+    // Example: topicId could be `practice-${settings.class}-${settings.difficulty}`
+    navigate(`/quiz/practice-${settings.class}-${settings.difficulty}`, { // Assuming topicId is structured like this
       state: {
         difficulty: settings.difficulty,
         numQuestions: 50, // Or a configurable number for practice tests
         topicName: `Homi Bhabha Practice ${settings.class}th (${settings.difficulty})`,
+        subject: "homibhabha", // Or a more specific subject
         accentColor: homiBhabhaAccentColor,
         quizClass: settings.class,
       }

@@ -1,10 +1,11 @@
+// src/components/TopicCard.js
 import {
   Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box
 } from '@mui/material';
 
 function TopicCard({ topic, onStartQuiz, accentColor }) {
   const theme = useTheme();
-  const { name, description, class: topicClass } = topic;
+  const { name, description, class: topicClass, genre: topicGenre } = topic; // Destructure genre
 
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
@@ -22,13 +23,18 @@ function TopicCard({ topic, onStartQuiz, accentColor }) {
   return (
     <Card sx={cardStyle}>
       <CardContent sx={{ p: 2.5 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}> {/* Box was used here */}
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: effectiveAccentColor }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1, flexWrap: 'wrap', gap: 1 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: effectiveAccentColor, flexGrow: 1 }}>
             {name}
           </Typography>
-          {topicClass && (
-            <Chip label={`Class ${topicClass}`} size="small" sx={{ backgroundColor: alpha(theme.palette.text.secondary, 0.2), color: theme.palette.text.secondary }} />
-          )}
+          <Box sx={{display: 'flex', gap: 0.5, alignItems: 'center'}}> {/* Wrapper for chips */}
+            {topicClass && (
+              <Chip label={`Class ${topicClass}`} size="small" sx={{ backgroundColor: alpha(theme.palette.info.dark, 0.2), color: theme.palette.info.light }} />
+            )}
+            {topicGenre && ( // Display genre chip if it exists
+              <Chip label={topicGenre} size="small" sx={{ backgroundColor: alpha(theme.palette.success.dark, 0.2), color: theme.palette.success.light }} />
+            )}
+          </Box>
         </Box>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2, minHeight: '40px' }}>
           {description}

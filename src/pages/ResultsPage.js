@@ -13,27 +13,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 
 import { subjectAccentColors } from '../theme';
-
-// Removed direct JSON imports for questions
-// import allChemistryQuestions from '../questions/chemistry.json';
-// import allPhysicsQuestions from '../questions/physics.json';
-// import allMathematicsQuestions from '../questions/mathematics.json';
-// import allBiologyQuestions from '../questions/biology.json';
-
 import QuizResultSummary from '../components/QuizResultSummary';
 import QuestionBreakdown from '../components/QuestionBreakdown';
 import HistoricalResultItem from '../components/HistoricalResultItem';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import ResultsActionButtons from '../components/ResultsActionButtons';
 import { formatTime } from '../utils/formatTime';
-
-// Removed the allQuestionsData map as questions are now fetched from backend
-// const allQuestionsData = {
-//   chemistry: allChemistryQuestions,
-//   physics: allPhysicsQuestions,
-//   mathematics: allMathematicsQuestions,
-//   biology: allBiologyQuestions,
-// };
 
 
 function ResultsPage() {
@@ -174,10 +159,9 @@ function ResultsPage() {
   useEffect(() => {
     if (selectedHistoricalResult && selectedHistoricalResult.questionsActuallyAttemptedIds && selectedHistoricalResult.userAnswersSnapshot) {
         setIsLoadingHistoricalDetails(true); 
-        const subjectKey = selectedHistoricalResult.subject?.toLowerCase();
         const topicId = selectedHistoricalResult.topicId;
         
-        axios.get(`/api/questions/${subjectKey}/${topicId}`) // Fetch all questions for that topic
+        axios.get(`/api/questions/${topicId}`) // Fetch all questions for that topic using only topicId
             .then(response => {
                 const allTopicQuestions = response.data;
                 if (!Array.isArray(allTopicQuestions)) {
@@ -191,7 +175,7 @@ function ResultsPage() {
                 const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
                     const fullQuestionData = allTopicQuestions.find(q => q.id === qId);
                     if (!fullQuestionData) {
-                        console.warn(`Question data for ID ${qId} not found in fetched data for ${subjectKey}/${topicId}.`);
+                        console.warn(`Question data for ID ${qId} not found in fetched data for ${topicId}.`);
                         return { id: qId, text: "Question data not found.", options: [], isCorrect: false, isAnswered: false, explanation: "Original question data could not be loaded." }; 
                     }
                     const userAnswerId = selectedHistoricalResult.userAnswersSnapshot[qId];

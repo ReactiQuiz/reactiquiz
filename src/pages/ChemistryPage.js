@@ -37,12 +37,13 @@ function ChemistryPage() {
 
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopic) {
-      navigate(`/quiz/chemistry/${selectedTopic.id}`, {
+      navigate(`/quiz/${selectedTopic.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
           accentColor: CHEMISTRY_ACCENT_COLOR,
+          subject: "chemistry",
         }
       });
     }

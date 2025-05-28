@@ -15,7 +15,7 @@ const RESULTS_DB_PATH = process.env.DATABASE_FILE_PATH
 
 const QUESTIONS_DB_PATH = process.env.QUESTIONS_DATABASE_FILE_PATH
   ? path.resolve(projectRoot, process.env.QUESTIONS_DATABASE_FILE_PATH.startsWith('./') ? process.env.QUESTIONS_DATABASE_FILE_PATH.substring(2) : process.env.QUESTIONS_DATABASE_FILE_PATH)
-  : path.join(__dirname, 'quizData.db');
+  : path.join(__dirname, 'quizData.db'); // Corrected to quizData.db as used in converter
 
 console.log(`[INIT] Backend API server starting on port ${port}...`);
 console.log(`[INIT] Results DB Path: ${RESULTS_DB_PATH}`);
@@ -55,17 +55,17 @@ const questionsDb = new sqlite3.Database(QUESTIONS_DB_PATH, sqlite3.OPEN_READONL
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
-app.get('/api/questions/:subject/:topicId', (req, res) => {
-  const { subject, topicId } = req.params;
-  console.log(`[API /api/questions] Request for subject: ${subject}, topicId: ${topicId}`);
-  const sql = `SELECT * FROM questions WHERE subject = ? AND topicId = ?`;
-  questionsDb.all(sql, [subject.toLowerCase(), topicId], (err, rows) => {
+app.get('/api/questions/:topicId', (req, res) => {
+  const { topicId } = req.params;
+  console.log(`[API /api/questions] Request for topicId: ${topicId}`);
+  const sql = `SELECT * FROM questions WHERE topicId = ?`;
+  questionsDb.all(sql, [topicId], (err, rows) => {
     if (err) {
       console.error('[API /api/questions] DB Error:', err.message);
       return res.status(500).json({ message: `Failed to fetch questions: ${err.message}` });
     }
     const questions = rows.map(row => ({ ...row, options: JSON.parse(row.options) }));
-    console.log(`[API /api/questions] Success: Fetched ${questions.length} questions for ${subject}/${topicId}.`);
+    console.log(`[API /api/questions] Success: Fetched ${questions.length} questions for ${topicId}.`);
     res.json(questions);
   });
 });
