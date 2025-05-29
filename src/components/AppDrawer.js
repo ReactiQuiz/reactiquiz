@@ -41,7 +41,6 @@ function AppDrawer({ open, onClose }) {
       onKeyDown={onClose}
     >
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: theme.palette.background.paper, borderBottom: `1px solid ${theme.palette.divider}` }}>
-        <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="ReactiQuiz Logo" style={{ width: 40, height: 40, marginRight: 24 }} />
         <Typography variant="h6" sx={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>
           ReactiQuiz
         </Typography>
