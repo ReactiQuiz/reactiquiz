@@ -1,16 +1,14 @@
 // src/pages/GKPage.js
 import {
-  useState, useMemo
+  useState, useEffect, useMemo
 } from 'react';
 import {
-  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import {
   useNavigate
 } from 'react-router-dom';
-import {
-  gkTopics // Import GK topics
-} from '../topics/GKTopics';
+import apiClient from '../api/axiosInstance';
 import {
   subjectAccentColors
 } from '../theme';
@@ -22,9 +20,37 @@ function GKPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedClass, setSelectedClass] = useState(''); // For GK, 'class' might represent 'level' or 'category'
+
+  const [topics, setTopics] = useState([]);
+  const [isLoadingTopics, setIsLoadingTopics] = useState(true);
+  const [fetchTopicsError, setFetchTopicsError] = useState('');
 
   const GK_ACCENT_COLOR = subjectAccentColors.gk;
+
+  useEffect(() => {
+    const fetchGKTopics = async () => {
+      setIsLoadingTopics(true);
+      setFetchTopicsError('');
+      try {
+        const response = await apiClient.get('/api/topics/gk');
+        if (Array.isArray(response.data)) {
+          setTopics(response.data);
+        } else {
+          console.error('Fetched GK topics is not an array:', response.data);
+          setFetchTopicsError('Invalid topic data received for General Knowledge.');
+          setTopics([]);
+        }
+      } catch (err) {
+        console.error('Error fetching GK topics:', err);
+        setFetchTopicsError(`Failed to load General Knowledge topics: ${err.response?.data?.message || err.message}`);
+        setTopics([]);
+      } finally {
+        setIsLoadingTopics(false);
+      }
+    };
+    fetchGKTopics();
+  }, []);
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -45,9 +71,8 @@ function GKPage() {
           numQuestions: settings.numQuestions,
           topicName: selectedTopic.name,
           accentColor: GK_ACCENT_COLOR,
-          quizClass: selectedTopic.class, // Pass class if available on topic
+          quizClass: selectedTopic.class, 
           subject: "gk",
-          // genre: selectedTopic.genre // Optionally pass genre if needed by QuizPage
         }
       });
     }
@@ -55,27 +80,27 @@ function GKPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = gkTopics.map(topic => topic.class).filter(Boolean); // Filter out undefined/null classes
+    const allClasses = topics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
-  }, []);
+  }, [topics]);
 
   const filteredTopics = useMemo(() => {
-    let topics = gkTopics;
+    let currentTopics = topics;
 
     if (selectedClass) {
-      topics = topics.filter(topic => topic.class === selectedClass);
+      currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
 
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      topics = topics.filter(topic =>
+      currentTopics = currentTopics.filter(topic =>
         topic.name.toLowerCase().includes(lowerCaseSearchTerm) ||
         (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm)) ||
-        (topic.genre && topic.genre.toLowerCase().includes(lowerCaseSearchTerm)) // Also search by genre
+        (topic.genre && topic.genre.toLowerCase().includes(lowerCaseSearchTerm))
       );
     }
-    return topics;
-  }, [searchTerm, selectedClass]);
+    return currentTopics;
+  }, [searchTerm, selectedClass, topics]);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -120,22 +145,34 @@ function GKPage() {
         )}
       </Box>
 
-      <Box>
-        {filteredTopics.length > 0 ? (
-          filteredTopics.map((topic) => (
-            <Box key={topic.id} sx={{ mb: 2 }}>
-              <TopicCard
-                topic={topic}
-                onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={GK_ACCENT_COLOR}
-                subjectBasePath="gk"
-              />
-            </Box>
-          ))
-        ) : (
-          <Typography sx={{ mt: 2, textAlign: 'center' }}>No topics found matching your criteria.</Typography>
-        )}
-      </Box>
+      {isLoadingTopics && (
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
+          <CircularProgress sx={{color: GK_ACCENT_COLOR}} />
+          <Typography sx={{ml: 2}}>Loading GK Topics...</Typography>
+        </Box>
+      )}
+      {fetchTopicsError && (
+        <Alert severity="error" sx={{ my: 2 }}>{fetchTopicsError}</Alert>
+      )}
+
+      {!isLoadingTopics && !fetchTopicsError && (
+        <Box>
+          {filteredTopics.length > 0 ? (
+            filteredTopics.map((topic) => (
+              <Box key={topic.id} sx={{ mb: 2 }}>
+                <TopicCard
+                  topic={topic}
+                  onStartQuiz={() => handleOpenModal(topic)}
+                  accentColor={GK_ACCENT_COLOR}
+                  subjectBasePath="gk"
+                />
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ mt: 2, textAlign: 'center' }}>No topics found matching your criteria.</Typography>
+          )}
+        </Box>
+      )}
 
       {selectedTopic && (
         <QuizSettingsModal
@@ -150,4 +187,4 @@ function GKPage() {
   );
 }
 
-export default GKPage;  
+export default GKPage;

@@ -1,15 +1,13 @@
 import {
-  useState, useMemo
+  useState, useEffect, useMemo
 } from 'react';
 import {
-  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import {
   useNavigate
 } from 'react-router-dom';
-import {
-  chemistryTopics
-} from '../topics/ChemistryTopics';
+import apiClient from '../api/axiosInstance';
 import {
   subjectAccentColors
 } from '../theme';
@@ -23,7 +21,35 @@ function ChemistryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
+  const [topics, setTopics] = useState([]);
+  const [isLoadingTopics, setIsLoadingTopics] = useState(true);
+  const [fetchTopicsError, setFetchTopicsError] = useState('');
+
   const CHEMISTRY_ACCENT_COLOR = subjectAccentColors.chemistry;
+
+  useEffect(() => {
+    const fetchChemistryTopics = async () => {
+      setIsLoadingTopics(true);
+      setFetchTopicsError('');
+      try {
+        const response = await apiClient.get('/api/topics/chemistry');
+        if (Array.isArray(response.data)) {
+          setTopics(response.data);
+        } else {
+          console.error('Fetched chemistry topics is not an array:', response.data);
+          setFetchTopicsError('Invalid topic data received for Chemistry.');
+          setTopics([]);
+        }
+      } catch (err) {
+        console.error('Error fetching chemistry topics:', err);
+        setFetchTopicsError(`Failed to load Chemistry topics: ${err.response?.data?.message || err.message}`);
+        setTopics([]);
+      } finally {
+        setIsLoadingTopics(false);
+      }
+    };
+    fetchChemistryTopics();
+  }, []);
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -44,6 +70,7 @@ function ChemistryPage() {
           topicName: selectedTopic.name,
           accentColor: CHEMISTRY_ACCENT_COLOR,
           subject: "chemistry",
+          quizClass: selectedTopic.class,
         }
       });
     }
@@ -51,26 +78,26 @@ function ChemistryPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = chemistryTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = topics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
-  }, []);
+  }, [topics]);
 
   const filteredTopics = useMemo(() => {
-    let topics = chemistryTopics;
+    let currentTopics = topics;
 
     if (selectedClass) {
-      topics = topics.filter(topic => topic.class === selectedClass);
+      currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
 
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      topics = topics.filter(topic =>
+      currentTopics = currentTopics.filter(topic =>
         topic.name.toLowerCase().includes(lowerCaseSearchTerm) ||
         (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm))
       );
     }
-    return topics;
-  }, [searchTerm, selectedClass]);
+    return currentTopics;
+  }, [searchTerm, selectedClass, topics]);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -112,23 +139,35 @@ function ChemistryPage() {
           </Select>
         </FormControl>
       </Box>
+      
+      {isLoadingTopics && (
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
+          <CircularProgress sx={{color: CHEMISTRY_ACCENT_COLOR}}/>
+          <Typography sx={{ml: 2}}>Loading Chemistry Topics...</Typography>
+        </Box>
+      )}
+      {fetchTopicsError && (
+        <Alert severity="error" sx={{ my: 2 }}>{fetchTopicsError}</Alert>
+      )}
 
-      <Box>
-        {filteredTopics.length > 0 ? (
-          filteredTopics.map((topic) => (
-            <Box key={topic.id} sx={{ mb: 2 }}>
-              <TopicCard
-                topic={topic}
-                onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={CHEMISTRY_ACCENT_COLOR}
-                subjectBasePath="chemistry"
-              />
-            </Box>
-          ))
-        ) : (
-          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
-        )}
-      </Box>
+      {!isLoadingTopics && !fetchTopicsError && (
+        <Box>
+          {filteredTopics.length > 0 ? (
+            filteredTopics.map((topic) => (
+              <Box key={topic.id} sx={{ mb: 2 }}>
+                <TopicCard
+                  topic={topic}
+                  onStartQuiz={() => handleOpenModal(topic)}
+                  accentColor={CHEMISTRY_ACCENT_COLOR}
+                  subjectBasePath="chemistry"
+                />
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
+          )}
+        </Box>
+      )}
 
       {selectedTopic && (
         <QuizSettingsModal

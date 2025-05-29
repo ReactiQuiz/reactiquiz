@@ -1,15 +1,14 @@
 import {
-  useState, useMemo
+  useState, useEffect, useMemo
 } from 'react';
 import {
-  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import {
   useNavigate
 } from 'react-router-dom';
-import {
-  physicsTopics
-} from '../topics/PhysicsTopics';
+// Removed: import { physicsTopics } from '../topics/PhysicsTopics';
+import apiClient from '../api/axiosInstance'; // Ensure apiClient is imported
 import {
   subjectAccentColors
 } from '../theme';
@@ -23,7 +22,35 @@ function PhysicsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
+  const [topics, setTopics] = useState([]);
+  const [isLoadingTopics, setIsLoadingTopics] = useState(true);
+  const [fetchTopicsError, setFetchTopicsError] = useState('');
+
   const PHYSICS_ACCENT_COLOR = subjectAccentColors.physics;
+
+  useEffect(() => {
+    const fetchPhysicsTopics = async () => {
+      setIsLoadingTopics(true);
+      setFetchTopicsError('');
+      try {
+        const response = await apiClient.get('/api/topics/physics');
+        if (Array.isArray(response.data)) {
+          setTopics(response.data);
+        } else {
+          console.error('Fetched physics topics is not an array:', response.data);
+          setFetchTopicsError('Invalid topic data received for Physics.');
+          setTopics([]);
+        }
+      } catch (err) {
+        console.error('Error fetching physics topics:', err);
+        setFetchTopicsError(`Failed to load Physics topics: ${err.response?.data?.message || err.message}`);
+        setTopics([]);
+      } finally {
+        setIsLoadingTopics(false);
+      }
+    };
+    fetchPhysicsTopics();
+  }, []);
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -45,6 +72,7 @@ function PhysicsPage() {
           topicName: selectedTopic.name,
           accentColor: PHYSICS_ACCENT_COLOR,
           subject: "physics",
+          quizClass: selectedTopic.class, // Pass class from fetched topic
         }
       });
     }
@@ -52,26 +80,26 @@ function PhysicsPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = physicsTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = topics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
-  }, []); // physicsTopics is stable, so empty dependency array is fine here if it's a top-level import
+  }, [topics]);
 
   const filteredTopics = useMemo(() => {
-    let topics = physicsTopics;
+    let currentTopics = topics;
 
     if (selectedClass) {
-      topics = topics.filter(topic => topic.class === selectedClass);
+      currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
 
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      topics = topics.filter(topic =>
+      currentTopics = currentTopics.filter(topic =>
         topic.name.toLowerCase().includes(lowerCaseSearchTerm) ||
         (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm))
       );
     }
-    return topics;
-  }, [searchTerm, selectedClass]); // physicsTopics is stable
+    return currentTopics;
+  }, [searchTerm, selectedClass, topics]);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -114,22 +142,34 @@ function PhysicsPage() {
         </FormControl>
       </Box>
 
-      <Box>
-        {filteredTopics.length > 0 ? (
-          filteredTopics.map((topic) => (
-            <Box key={topic.id} sx={{ mb: 2 }}>
-              <TopicCard
-                topic={topic}
-                onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={PHYSICS_ACCENT_COLOR}
-                subjectBasePath="physics"
-              />
-            </Box>
-          ))
-        ) : (
-          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
-        )}
-      </Box>
+      {isLoadingTopics && (
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
+          <CircularProgress sx={{color: PHYSICS_ACCENT_COLOR}} />
+          <Typography sx={{ml: 2}}>Loading Physics Topics...</Typography>
+        </Box>
+      )}
+      {fetchTopicsError && (
+        <Alert severity="error" sx={{ my: 2 }}>{fetchTopicsError}</Alert>
+      )}
+
+      {!isLoadingTopics && !fetchTopicsError && (
+        <Box>
+          {filteredTopics.length > 0 ? (
+            filteredTopics.map((topic) => (
+              <Box key={topic.id} sx={{ mb: 2 }}>
+                <TopicCard
+                  topic={topic}
+                  onStartQuiz={() => handleOpenModal(topic)}
+                  accentColor={PHYSICS_ACCENT_COLOR}
+                  subjectBasePath="physics"
+                />
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
+          )}
+        </Box>
+      )}
 
       {selectedTopic && (
         <QuizSettingsModal

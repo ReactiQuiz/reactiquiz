@@ -1,17 +1,13 @@
 import {
-  useState, useMemo
+  useState, useEffect, useMemo
 } from 'react';
 import {
-  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem
+  Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import {
   useNavigate
-
 } from 'react-router-dom';
-import {
-  mathematicsTopics
-
-} from '../topics/MathematicsTopics';
+import apiClient from '../api/axiosInstance';
 import {
   subjectAccentColors
 } from '../theme';
@@ -25,7 +21,35 @@ function MathematicsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
+  const [topics, setTopics] = useState([]);
+  const [isLoadingTopics, setIsLoadingTopics] = useState(true);
+  const [fetchTopicsError, setFetchTopicsError] = useState('');
+
   const MATHEMATICS_ACCENT_COLOR = subjectAccentColors.mathematics;
+
+  useEffect(() => {
+    const fetchMathematicsTopics = async () => {
+      setIsLoadingTopics(true);
+      setFetchTopicsError('');
+      try {
+        const response = await apiClient.get('/api/topics/mathematics');
+        if (Array.isArray(response.data)) {
+          setTopics(response.data);
+        } else {
+          console.error('Fetched mathematics topics is not an array:', response.data);
+          setFetchTopicsError('Invalid topic data received for Mathematics.');
+          setTopics([]);
+        }
+      } catch (err) {
+        console.error('Error fetching mathematics topics:', err);
+        setFetchTopicsError(`Failed to load Mathematics topics: ${err.response?.data?.message || err.message}`);
+        setTopics([]);
+      } finally {
+        setIsLoadingTopics(false);
+      }
+    };
+    fetchMathematicsTopics();
+  }, []);
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -46,6 +70,7 @@ function MathematicsPage() {
           topicName: selectedTopic.name,
           accentColor: MATHEMATICS_ACCENT_COLOR,
           subject: "mathematics",
+          quizClass: selectedTopic.class,
         }
       });
     }
@@ -53,26 +78,26 @@ function MathematicsPage() {
   };
 
   const availableClasses = useMemo(() => {
-    const allClasses = mathematicsTopics.map(topic => topic.class).filter(Boolean);
+    const allClasses = topics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort();
-  }, []);
+  }, [topics]);
 
   const filteredTopics = useMemo(() => {
-    let topics = mathematicsTopics;
+    let currentTopics = topics;
 
     if (selectedClass) {
-      topics = topics.filter(topic => topic.class === selectedClass);
+      currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
 
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      topics = topics.filter(topic =>
+      currentTopics = currentTopics.filter(topic =>
         topic.name.toLowerCase().includes(lowerCaseSearchTerm) ||
         (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm))
       );
     }
-    return topics;
-  }, [searchTerm, selectedClass]);
+    return currentTopics;
+  }, [searchTerm, selectedClass, topics]);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -115,22 +140,34 @@ function MathematicsPage() {
         </FormControl>
       </Box>
 
-      <Box>
-        {filteredTopics.length > 0 ? (
-          filteredTopics.map((topic) => (
-            <Box key={topic.id} sx={{ mb: 2 }}>
-              <TopicCard
-                topic={topic}
-                onStartQuiz={() => handleOpenModal(topic)}
-                accentColor={MATHEMATICS_ACCENT_COLOR}
-                subjectBasePath="mathematics"
-              />
-            </Box>
-          ))
-        ) : (
-          <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
-        )}
-      </Box>
+      {isLoadingTopics && (
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
+          <CircularProgress sx={{color: MATHEMATICS_ACCENT_COLOR}} />
+          <Typography sx={{ml: 2}}>Loading Mathematics Topics...</Typography>
+        </Box>
+      )}
+      {fetchTopicsError && (
+        <Alert severity="error" sx={{ my: 2 }}>{fetchTopicsError}</Alert>
+      )}
+
+      {!isLoadingTopics && !fetchTopicsError && (
+        <Box>
+          {filteredTopics.length > 0 ? (
+            filteredTopics.map((topic) => (
+              <Box key={topic.id} sx={{ mb: 2 }}>
+                <TopicCard
+                  topic={topic}
+                  onStartQuiz={() => handleOpenModal(topic)}
+                  accentColor={MATHEMATICS_ACCENT_COLOR}
+                  subjectBasePath="mathematics"
+                />
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ mt: 2 }}>No topics found matching your criteria.</Typography>
+          )}
+        </Box>
+      )}
 
       {selectedTopic && (
         <QuizSettingsModal
