@@ -1,70 +1,181 @@
-# Getting Started with Create React App
+# ReactiQuiz 🧠✨
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ReactiQuiz is a dynamic and engaging quiz application designed to help users test and improve their knowledge across various subjects including Physics, Chemistry, Biology, Mathematics, General Knowledge, and specialized preparation for the Homi Bhabha Balvaidnyanik Spardha.
 
-## Available Scripts
+**Live Frontend:** [https://sanskarsontakke.github.io/reactiquiz/](https://sanskarsontakke.github.io/reactiquiz/)
+**Live Backend API:** `still.working.on.it.com`
 
-In the project directory, you can run:
+## Features 🚀
 
-### `npm start`
+*   **Multiple Subjects:** Quizzes available for Physics, Chemistry, Biology, Mathematics, and General Knowledge.
+*   **Homi Bhabha Exam Prep:** Dedicated section with practice tests and mock PYQs tailored for the Homi Bhabha Balvaidnyanik Spardha (Standards 6th & 9th).
+*   **Customizable Quizzes:** Users can select difficulty levels (Easy, Medium, Hard, Mixed) and the number of questions for most topics.
+*   **Timed Quizzes:** Homi Bhabha practice tests include a 90-minute timer to simulate exam conditions.
+*   **Instant Results:** Get immediate feedback with scores, percentages, and a detailed breakdown of correct/incorrect answers with explanations.
+*   **Persistent Results History:** Track your progress over time. Users can view and delete their past quiz attempts.
+*   **Dynamic Question Loading:** Questions and topics are fetched from a backend API, allowing for easy updates and expansion of the quiz bank.
+*   **Responsive Design:** User-friendly interface accessible on various devices.
+*   **Dark Mode Theme:** Built with Material UI, offering a comfortable viewing experience.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack 💻
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+*   **Frontend:**
+    *   React.js
+    *   React Router
+    *   Material UI (MUI) for styling and components
+    *   Axios for API calls
+    *   FontAwesome for additional icons
+*   **Backend:**
+    *   Node.js
+    *   Express.js for the API server
+    *   SQLite3 for database storage (questions, topics, results)
+    *   Nodemailer for the contact form (using Gmail SMTP via App Password)
+    *   `cors`, `dotenv`, `debug`
+*   **Deployment:**
+    *   Frontend: GitHub Pages
+    *   Backend: Railway (or your chosen platform)
 
-### `npm test`
+## Project Structure 📁
+reactiquiz/
+├── backend/
+│ ├── quizData.db # SQLite DB for questions
+│ ├── quizResults.db # SQLite DB for user results
+│ ├── quizTopics.db # SQLite DB for topic metadata
+│ ├── questions.json # Source JSON for questions
+│ ├── topics.json # Source JSON for topics
+│ ├── jsonToQuestionsDB.js # Script to populate questions DB
+│ ├── jsonToTopicsDB.js # Script to populate topics DB
+│ └── server.js # Express backend server
+├── public/
+│ ├── index.html
+│ └── assets/ # Placeholder for images like profile pic, logo
+├── src/
+│ ├── api/
+│ │ └── axiosInstance.js
+│ ├── components/ # Reusable React components
+│ ├── pages/ # Page components (HomePage, AboutPage, Subject Pages, etc.)
+│ ├── App.js
+│ ├── index.js
+│ ├── theme.js
+│ └── utils/
+│ └── formatTime.js
+├── .env # Local environment variables (GITIGNORED!)
+├── .gitignore
+├── package.json
+└── README.md
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started Locally 🚀
 
-### `npm run build`
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+*   Node.js (v18.x or higher recommended for backend, v14+ for frontend build)
+*   npm (comes with Node.js)
+*   Git
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation & Setup
 
-### `npm run eject`
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/sanskarsontakke/reactiquiz.git
+    cd reactiquiz
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2.  **Install frontend and backend dependencies:**
+    (Since all dependencies are in the root `package.json`)
+    ```bash
+    npm install
+    ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3.  **Set up Environment Variables:**
+    Create a `.env` file in the project root (`reactiquiz/.env`) and add the following (replace placeholders):
+    ```env
+    REACT_APP_API_BASE_URL=http://localhost:3001
+    SERVER_PORT=3001
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    # For backend contact form (using Gmail App Password)
+    EMAIL_USER=your_gmail_address@gmail.com
+    EMAIL_PASS=your_16_character_app_password
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    # Optional: Define database paths if different from defaults in server.js
+    # By default, server.js will look for .db files in the ./backend/ directory.
+    # DATABASE_FILE_PATH=./backend/quizResults.db
+    # QUESTIONS_DATABASE_FILE_PATH=./backend/quizData.db
+    # TOPICS_DATABASE_FILE_PATH=./backend/quizTopics.db
+    ```
+    **Important:** Add `.env` to your `.gitignore` file if it's not already there!
 
-## Learn More
+4.  **Populate Databases (One-time setup):**
+    Navigate to the backend directory and run the converter scripts to populate your SQLite databases from the JSON source files.
+    ```bash
+    cd backend
+    node jsonToTopicsDB.js  # Follow prompts (default: topics.json)
+    node jsonToQuestionsDB.js # Follow prompts (default: questions.json)
+    cd ..
+    ```
+    This will create/update `quizTopics.db` and `quizData.db` in the `backend/` folder. `quizResults.db` will be created automatically by the server on the first result save.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5.  **Run the Application:**
+    You'll need two terminals open.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    *   **Terminal 1: Start the Backend Server**
+        ```bash
+        npm run backend:dev
+        ```
+        (or `npm run backend` for without nodemon)
+        The backend should start on `http://localhost:3001` (or the `SERVER_PORT` you set).
 
-### Code Splitting
+    *   **Terminal 2: Start the Frontend Development Server**
+        ```bash
+        npm start
+        ```
+        (This runs the `frontend` script defined in `package.json`)
+        The frontend should open in your browser, usually at `http://localhost:3000`. It's proxied to the backend for API calls.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Available Scripts (from `package.json`)
 
-### Analyzing the Bundle Size
+*   `npm start` (or `npm run frontend`): Runs the React app in development mode.
+*   `npm run build`: Builds the app for production to the `build` folder.
+*   `npm test`: Launches the test runner.
+*   `npm run eject`: Ejects from Create React App (one-way operation).
+*   `npm run backend`: Starts the Node.js backend server.
+*   `npm run backend:dev`: Starts the backend server with `nodemon` for auto-restarts.
+*   `npm run predeploy` & `npm run deploy`: For deploying the frontend to GitHub Pages.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Deployment 🌍
 
-### Making a Progressive Web App
+*   **Frontend:** Deployed to GitHub Pages via the `npm run deploy` script.
+*   **Backend:** Currently set up to be deployable to platforms like Railway, Render, Glitch, etc. (See platform-specific guides for deployment steps). Environment variables (`EMAIL_USER`, `EMAIL_PASS`, and database paths if customized) need to be set on the hosting platform.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contributing 🤝 (Optional Section)
 
-### Advanced Configuration
+Contributions are welcome! If you'd like to contribute, please follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-### Deployment
+Please ensure your code adheres to the existing style and that any new features are well-tested.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Future Enhancements / To-Do 📝 (Optional Section)
 
-### `npm run build` fails to minify
+*   [ ] Add more subjects and topics.
+*   [ ] Implement user authentication for personalized result tracking.
+*   [ ] More advanced carousel for subject exploration.
+*   [ ] Admin panel for managing questions and topics.
+*   [ ] More detailed analytics for quiz performance.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License 📄
+
+This project is licensed under the MIT License - see the `LICENSE.md` file for details (if you have one, otherwise state MIT).
+
+## Contact 📬
+
+Sanskar Sontakke - [sanskarsontakke@gmail.com](mailto:sanskarsontakke@gmail.com) - [LinkedIn Profile URL]
+
+Project Link: [https://github.com/sanskarsontakke/reactiquiz](https://github.com/sanskarsontakke/reactiquiz)
+
+---
