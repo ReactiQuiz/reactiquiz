@@ -1,14 +1,18 @@
+// src/components/ResultsActionButtons.js
 import {
     Box, Button, useTheme, alpha, darken
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HistoryIcon from '@mui/icons-material/History'; // Added
 
 function ResultsActionButtons({
     onBackToList,
     onNavigateHome,
+    onViewHistory, // New prop
     showBackToListButton,
+    showViewHistoryButton, // New prop
     accentColor,
     showDeleteButton,
     onDeleteClick,
@@ -24,18 +28,28 @@ function ResultsActionButtons({
                     sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, '&:hover': { borderColor: darken(effectiveAccentColor, 0.15), backgroundColor: alpha(effectiveAccentColor, 0.08) }, minWidth: '180px' }}
                 > Back to List </Button>
             )}
+             {showViewHistoryButton && onViewHistory && (
+                <Button variant="outlined" startIcon={<HistoryIcon />} onClick={onViewHistory}
+                    sx={{ 
+                        borderColor: theme.palette.info.main, 
+                        color: theme.palette.info.main, 
+                        '&:hover': { borderColor: darken(theme.palette.info.main, 0.15), backgroundColor: alpha(theme.palette.info.main, 0.08) }, 
+                        minWidth: '180px' 
+                    }}
+                > View Full History </Button>
+            )}
             <Button variant="outlined" startIcon={<HomeIcon />} onClick={onNavigateHome}
                 sx={{
-                    borderColor: showBackToListButton ? effectiveAccentColor : theme.palette.primary.main,
-                    color: showBackToListButton ? effectiveAccentColor : theme.palette.primary.main,
+                    borderColor: (showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main,
+                    color: (showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main,
                     '&:hover': {
-                        borderColor: darken(showBackToListButton ? effectiveAccentColor : theme.palette.primary.main, 0.15),
-                        backgroundColor: alpha(showBackToListButton ? effectiveAccentColor : theme.palette.primary.main, 0.08)
+                        borderColor: darken((showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main, 0.15),
+                        backgroundColor: alpha((showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main, 0.08)
                     },
                     minWidth: { xs: '100%', sm: '180px' }
                 }}
             >
-                {showBackToListButton ? "Home" : "Back to Home"}
+                { (showBackToListButton || showViewHistoryButton) ? "Home" : "Back to Home"}
             </Button>
             {showDeleteButton && onDeleteClick && (
                 <Button

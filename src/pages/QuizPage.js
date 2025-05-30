@@ -1,6 +1,6 @@
 // src/pages/QuizPage.js
 import {
-  useState, useEffect, useCallback
+  useState, useEffect, useCallback, useMemo
 } from 'react';
 import {
   Box, Typography, Button, CircularProgress, Alert
@@ -47,7 +47,6 @@ const fetchAndFilterSubjectQuestions = async (subjectName, targetClass, difficul
         console.warn(`[QuizPage] No topic IDs extracted for subject ${subjectName}.`);
         return [];
     }
-    // console.log(`[QuizPage] Found topic IDs for ${subjectName}:`, subjectTopicIds); // Can be verbose
 
     let allQuestionsForSubject = [];
     for (const topicId of subjectTopicIds) {
@@ -67,7 +66,6 @@ const fetchAndFilterSubjectQuestions = async (subjectName, targetClass, difficul
       }
     }
     
-    // console.log(`[QuizPage] Total questions fetched for ${subjectName} before filtering: ${allQuestionsForSubject.length}`);
     if (allQuestionsForSubject.length === 0) return [];
 
     let classFilteredQuestions = allQuestionsForSubject;
@@ -76,7 +74,6 @@ const fetchAndFilterSubjectQuestions = async (subjectName, targetClass, difficul
         !q.class || q.class === targetClass 
       );
     }
-    // console.log(`[QuizPage] Questions for ${subjectName} after class filter ('${targetClass || 'any'}'): ${classFilteredQuestions.length}`);
     if (classFilteredQuestions.length === 0 && targetClass) { 
         console.warn(`[QuizPage] No questions for ${subjectName} matched class ${targetClass}. Trying without class filter for this subject.`);
         classFilteredQuestions = allQuestionsForSubject; 
@@ -100,7 +97,6 @@ const fetchAndFilterSubjectQuestions = async (subjectName, targetClass, difficul
         q.difficulty <= maxScore
       );
     }
-    // console.log(`[QuizPage] Questions for ${subjectName} after difficulty filter ('${difficultyLabel}'): ${difficultyFilteredQuestions.length}`);
     
     if (difficultyFilteredQuestions.length === 0 && difficultyLabel !== 'mixed' && classFilteredQuestions.length > 0) {
         console.warn(`[QuizPage] No questions for ${subjectName} (class: ${targetClass || 'any'}) matched difficulty ${difficultyLabel}. Using questions from any difficulty for this subject.`);
@@ -108,7 +104,7 @@ const fetchAndFilterSubjectQuestions = async (subjectName, targetClass, difficul
     }
     if (difficultyFilteredQuestions.length === 0) return [];
 
-    const shuffled = shuffleArray(difficultyFilteredQuestions); // Shuffle within the subject's filtered pool
+    const shuffled = shuffleArray(difficultyFilteredQuestions);
     const selected = shuffled.slice(0, numQuestionsNeeded); 
     console.log(`[QuizPage] Selected ${selected.length} questions for ${subjectName}.`);
     return selected;
@@ -120,7 +116,7 @@ const fetchAndFilterSubjectQuestions = async (subjectName, targetClass, difficul
 };
 
 
-function QuizPage() {
+function QuizPage({ currentUser }) { // Accept currentUser prop from AppRoutes
   const { topicId } = useParams(); 
   const navigate = useNavigate();
   const location = useLocation();
@@ -162,15 +158,13 @@ function QuizPage() {
         let finalQuizQuestions = [];
         let totalFetchedCount = 0;
         const desiredTotal = quizSettings.totalQuestions || 100;
-
-        // Define the order of subjects
         const subjectOrder = ['physics', 'chemistry', 'biology', 'gk']; 
 
         for (const subjKey of subjectOrder) {
           if (questionComposition[subjKey]) {
             const countNeeded = questionComposition[subjKey];
             const subjectQuestions = await fetchAndFilterSubjectQuestions(subjKey, quizClassFromState, difficultyLabel, countNeeded);
-            finalQuizQuestions.push(...subjectQuestions); // Add fetched questions for this subject
+            finalQuizQuestions.push(...subjectQuestions);
             totalFetchedCount += subjectQuestions.length;
             if (subjectQuestions.length < countNeeded) {
               setInfoMessage(prev => prev + `Could not find all ${countNeeded} ${difficultyLabel} questions for ${subjKey} (Class ${quizClassFromState || 'Any'}); got ${subjectQuestions.length}. `);
@@ -178,13 +172,8 @@ function QuizPage() {
           }
         }
         
-        // Ensure uniqueness across the entire set if questions might overlap due to general topic fetching
         const uniqueQuestionsMap = new Map();
-        finalQuizQuestions.forEach(q => {
-          if (!uniqueQuestionsMap.has(q.id)) {
-            uniqueQuestionsMap.set(q.id, q);
-          }
-        });
+        finalQuizQuestions.forEach(q => { if (!uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
         const uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
         
         if (uniqueFinalQuizQuestions.length === 0) {
@@ -192,20 +181,17 @@ function QuizPage() {
              setIsLoading(false);
              return;
         }
-        if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) { // Check totalFetchedCount to reflect if we even tried for 100
+        if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) {
             setInfoMessage(prev => prev + `Total questions for test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}. `);
         }
-
-        setQuestions(uniqueFinalQuizQuestions); // Set questions in the fetched subject order
+        setQuestions(uniqueFinalQuizQuestions);
         if (uniqueFinalQuizQuestions.length > 0) setTimerActive(true);
 
       } else if (topicId && subject) { 
         try {
           const response = await apiClient.get(`/api/questions/${topicId}`);
           let fetchedQuestions = response.data;
-
           if (!Array.isArray(fetchedQuestions)) {
-            console.error("Fetched questions is not an array:", fetchedQuestions);
             setError(`Invalid question data received for ${topicNameFromState}.`);
             setIsLoading(false);
             return;
@@ -213,27 +199,18 @@ function QuizPage() {
           
           let classFilteredQuestions = fetchedQuestions;
           if (quizClassFromState && subject !== 'gk' && subject !== 'mathematics') { 
-            classFilteredQuestions = fetchedQuestions.filter(q => 
-                !q.class || q.class === quizClassFromState
-            );
+            classFilteredQuestions = fetchedQuestions.filter(q => !q.class || q.class === quizClassFromState);
           }
 
           let filteredByDifficultyQuestions;
           if (difficultyLabel === 'mixed') {
             filteredByDifficultyQuestions = [...classFilteredQuestions];
           } else {
-            let minScore = 0;
-            let maxScore = Infinity;
+            let minScore = 0, maxScore = Infinity;
             if (difficultyLabel === 'easy') { minScore = 10; maxScore = 13; }
             else if (difficultyLabel === 'medium') { minScore = 14; maxScore = 17; }
             else if (difficultyLabel === 'hard') { minScore = 18; maxScore = 20; }
-            
-            filteredByDifficultyQuestions = classFilteredQuestions.filter(q =>
-              q.hasOwnProperty('difficulty') &&
-              typeof q.difficulty === 'number' &&
-              q.difficulty >= minScore &&
-              q.difficulty <= maxScore
-            );
+            filteredByDifficultyQuestions = classFilteredQuestions.filter(q => q.hasOwnProperty('difficulty') && typeof q.difficulty === 'number' && q.difficulty >= minScore && q.difficulty <= maxScore);
           }
 
           if (filteredByDifficultyQuestions.length === 0) {
@@ -245,7 +222,6 @@ function QuizPage() {
             if (selectedQuestions.length > 0) setTimerActive(true);
           }
         } catch (err) {
-          console.error("Error fetching questions:", err.response || err.message);
           setError(`Failed to load questions for ${topicNameFromState}. ${err.response?.data?.message || err.message}`);
         }
       } else {
@@ -253,41 +229,93 @@ function QuizPage() {
       }
       setIsLoading(false);
     };
-
     fetchQuizData();
   }, [quizType, subject, topicId, difficultyLabel, numQuestionsReq, topicNameFromState, questionComposition, quizClassFromState, quizSettings.totalQuestions]);
+
+  const calculateScoreAndPercentage = useCallback(() => {
+    if (questions.length === 0) return { score: 0, percentage: 0 };
+    let correctAnswers = 0;
+    questions.forEach(q => {
+      if (userAnswers[q.id] === q.correctOptionId) {
+        correctAnswers++;
+      }
+    });
+    return {
+      score: correctAnswers,
+      percentage: Math.round((correctAnswers / questions.length) * 100),
+    };
+  }, [questions, userAnswers]);
 
   const submitAndNavigate = useCallback(() => {
     if (isSubmitting) return;
     setIsSubmitting(true);
     setTimerActive(false);
 
+    const { score, percentage } = calculateScoreAndPercentage();
     const questionsActuallyAttemptedIds = questions.map(q => q.id);
     const relevantUserAnswersSnapshot = {};
     questionsActuallyAttemptedIds.forEach(id => {
       relevantUserAnswersSnapshot[id] = userAnswers[id] || null; 
     });
 
-    const quizAttemptId = `attempt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const quizAttemptIdForDisplay = `attempt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
-    navigate('/results', {
-      state: {
-        quizAttemptId: quizAttemptId,
-        userAnswersSnapshot: relevantUserAnswersSnapshot,
-        questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
+    const resultNavigationState = {
+        quizAttemptId: quizAttemptIdForDisplay,
         originalQuestionsForDisplay: questions, 
         originalAnswersForDisplay: userAnswers, 
         subjectAccentColor: currentAccentColor,
         subject: subject,
         topicId: quizType === 'homibhabha-practice' ? `homibhabha-practice-${quizClassFromState}-${difficultyLabel}` : topicId,
         difficulty: difficultyLabel,
-        numQuestionsConfigured: questions.length, // Use the actual number of questions presented
+        numQuestionsConfigured: questions.length,
         timeTaken: elapsedTime,
         quizClass: quizClassFromState,
-        isPracticeTest: quizType === 'homibhabha-practice', 
-      }
-    });
-  }, [userAnswers, questions, navigate, currentAccentColor, subject, topicId, difficultyLabel, /* numQuestionsReq removed */ elapsedTime, quizClassFromState, isSubmitting, quizType]);
+        isPracticeTest: quizType === 'homibhabha-practice',
+        score: score,
+        percentage: percentage,
+        savedToHistory: false // Default to false, will be true if saved
+    };
+
+    if (currentUser && currentUser.id && currentUser.token) { // Check for token too
+      console.log("[QuizPage] User logged in. Saving result to DB for user ID:", currentUser.id);
+      const payloadToSave = {
+        userId: currentUser.id, // Pass the user's database ID
+        subject: subject,
+        topicId: resultNavigationState.topicId,
+        score: score, 
+        totalQuestions: questions.length, 
+        percentage: percentage, 
+        timestamp: new Date().toISOString(),
+        difficulty: difficultyLabel,
+        numQuestionsConfigured: questions.length,
+        class: quizClassFromState,
+        timeTaken: elapsedTime,
+        questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
+        userAnswersSnapshot: relevantUserAnswersSnapshot
+      };
+
+      apiClient.post('/api/results', payloadToSave, {
+        headers: { Authorization: `Bearer ${currentUser.token}` } // Ensure token is sent
+      })
+        .then(response => {
+          console.log('[QuizPage] Quiz results saved successfully for user:', response.data);
+          resultNavigationState.savedToHistory = true;
+          navigate('/results', { state: resultNavigationState });
+        })
+        .catch(error => { 
+            console.error('[QuizPage] Error saving quiz results for user:', error.response ? error.response.data : error.message); 
+            // Still navigate, but indicate save failed (savedToHistory remains false)
+            navigate('/results', { state: resultNavigationState });
+        })
+        .finally(() => setIsSubmitting(false));
+    } else {
+      console.log("[QuizPage] User not logged in or token missing. Displaying result without saving.");
+      setIsSubmitting(false);
+      navigate('/results', { state: resultNavigationState });
+    }
+
+  }, [userAnswers, questions, navigate, currentAccentColor, subject, topicId, difficultyLabel, elapsedTime, quizClassFromState, isSubmitting, quizType, currentUser, calculateScoreAndPercentage]);
 
   useEffect(() => {
     let intervalId;
@@ -298,7 +326,6 @@ function QuizPage() {
           if (timeLimit && newTime >= timeLimit) {
             clearInterval(intervalId);
             setTimerActive(false);
-            console.log("Time limit reached, auto-submitting quiz.");
             submitAndNavigate(); 
             return timeLimit;
           }
@@ -357,7 +384,6 @@ function QuizPage() {
   const baseTimerColorForAlpha = timeLimit && remainingTime < 600 
     ? theme.palette.error.main 
     : theme.palette.text.primary;
-
   const timerDisplayTextColor = timeLimit && remainingTime < 600 
     ? theme.palette.error.main 
     : theme.palette.text.primary;
@@ -403,7 +429,7 @@ function QuizPage() {
           textAlign: 'center',
           color: currentAccentColor,
           fontWeight: 'bold',
-          mt: !infoMessage && ((timerActive || elapsedTime > 0) && questions.length > 0) ? theme.spacing(8) : ((timerActive || elapsedTime > 0) && questions.length > 0 ? theme.spacing(1) : theme.spacing(4.5)) // Adjust margin if timer is present
+          mt: !infoMessage && ((timerActive || elapsedTime > 0) && questions.length > 0) ? theme.spacing(8) : ((timerActive || elapsedTime > 0) && questions.length > 0 ? theme.spacing(1) : theme.spacing(4.5)) 
         }}
       >
         {subject

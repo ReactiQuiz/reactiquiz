@@ -28,12 +28,13 @@ function PhysicsPage() {
 
   const PHYSICS_ACCENT_COLOR = subjectAccentColors.physics;
 
+  // src/pages/PhysicsPage.js
   useEffect(() => {
     const fetchPhysicsTopics = async () => {
       setIsLoadingTopics(true);
-      setFetchTopicsError('');
+      setFetchTopicsError(''); // Clear previous errors
       try {
-        const response = await apiClient.get('/api/topics/physics');
+        const response = await apiClient.get('/api/topics/physics'); // API call
         if (Array.isArray(response.data)) {
           setTopics(response.data);
         } else {
@@ -43,14 +44,15 @@ function PhysicsPage() {
         }
       } catch (err) {
         console.error('Error fetching physics topics:', err);
+        // This should display an alert
         setFetchTopicsError(`Failed to load Physics topics: ${err.response?.data?.message || err.message}`);
         setTopics([]);
       } finally {
-        setIsLoadingTopics(false);
+        setIsLoadingTopics(false); // This should always run
       }
     };
     fetchPhysicsTopics();
-  }, []);
+  }, []); // Empty dependency array, runs once on mount
 
   const handleOpenModal = (topic) => {
     setSelectedTopic(topic);
@@ -144,8 +146,8 @@ function PhysicsPage() {
 
       {isLoadingTopics && (
         <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
-          <CircularProgress sx={{color: PHYSICS_ACCENT_COLOR}} />
-          <Typography sx={{ml: 2}}>Loading Physics Topics...</Typography>
+          <CircularProgress sx={{ color: PHYSICS_ACCENT_COLOR }} />
+          <Typography sx={{ ml: 2 }}>Loading Physics Topics...</Typography>
         </Box>
       )}
       {fetchTopicsError && (

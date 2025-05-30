@@ -1,3 +1,4 @@
+// src/components/HistoricalResultItem.js
 import {
   Paper, ListItem, Box, Typography, Chip, IconButton, useTheme, alpha
 } from '@mui/material';
@@ -6,24 +7,56 @@ import TimerIcon from '@mui/icons-material/Timer';
 import { formatTime } from '../utils/formatTime';
 import { subjectAccentColors } from '../theme';
 
+// Ensure this function handles various topicId formats gracefully
 const formatTopicName = (topicId) => {
   if (!topicId) return 'N/A';
-  let name = topicId.replace(/-/g, ' ');
+  let name = String(topicId).replace(/-/g, ' '); // Ensure topicId is a string
+  
+  // Remove specific prefixes if they exist
+  name = name.replace(/^homibhabha practice /i, 'Homi Bhabha Practice - ');
+  name = name.replace(/^pyq /i, 'PYQ ');
+
   const classSuffixRegex = /\s(\d+(?:st|nd|rd|th))$/i;
-  name = name.replace(classSuffixRegex, '').trim();
-  return name.replace(/\b\w/g, l => l.toUpperCase());
+  name = name.replace(classSuffixRegex, (match, p1) => ` - Class ${p1.toUpperCase()}`).trim(); // Add "Class" prefix
+  
+  // Capitalize words, handle hyphens introduced by replacements
+  name = name.split(' ').map(word => {
+      if (word.toLowerCase() === 'class' || word.toLowerCase() === 'std') return word; // Keep 'Class' as is
+      if (word.includes('-')) { // Handle parts like "9th-2023"
+          return word.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()).join('-');
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }).join(' ');
+
+  // Specific formatting for Homi Bhabha practice test if it has difficulty
+  name = name.replace(/Homi Bhabha Practice - (\w+) (\w+)/i, (match, quizClass, difficulty) => 
+    `Homi Bhabha Practice - Std ${quizClass} (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})`
+  );
+   name = name.replace(/Pyq (\w+) (\d+)/i, (match, quizClass, year) => 
+    `PYQ - Std ${quizClass} (${year})`
+  );
+
+
+  return name;
 };
 
 
-function HistoricalResultItem({ result, onResultClick, onDeleteClick }) {
+function HistoricalResultItem({ result, onResultClick, onDeleteClick, showDeleteButton }) {
   const theme = useTheme();
+
+  if (!result) { // Guard against undefined result
+    return null;
+  }
+
+  const topicName = formatTopicName(result.topicId);
+  const itemAccentColor = subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.grey[700];
 
   return (
     <Paper
       onClick={() => onResultClick(result)}
       sx={{
         width: '100%', textAlign: 'left', display: 'block', mb: 2, borderRadius: 2, overflow: 'hidden',
-        borderLeft: `5px solid ${subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.grey[500]}`,
+        borderLeft: `5px solid ${itemAccentColor}`,
         cursor: 'pointer',
         '&:hover': { boxShadow: theme.shadows[6], backgroundColor: alpha(theme.palette.action.hover, 0.08) },
         p: 0
@@ -32,8 +65,8 @@ function HistoricalResultItem({ result, onResultClick, onDeleteClick }) {
     >
       <ListItem sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'flex-start', sm: { alignItems: 'center' }, gap: { xs: 1, sm: 2 }, py: 1.5, px: 2 }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="div" sx={{ textTransform: 'capitalize', fontWeight: 500, color: subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.primary.light }}>
-            {formatTopicName(result.topicId)}
+          <Typography variant="h6" component="div" sx={{ textTransform: 'capitalize', fontWeight: 500, color: itemAccentColor }}>
+            {topicName} {/* Use formatted name */}
           </Typography>
           <Typography component="div" variant="body2" color="text.secondary">
             Score: {result.score}/{result.totalQuestions}
@@ -63,17 +96,19 @@ function HistoricalResultItem({ result, onResultClick, onDeleteClick }) {
               border: `1px solid ${result.percentage >= 70 ? theme.palette.success.main : result.percentage >= 50 ? theme.palette.warning.main : theme.palette.error.main}`
             }}
           />
-          <IconButton
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeleteClick(result.id);
-            }}
-            sx={{ color: theme.palette.error.light, '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.2) } }}
-            aria-label={`Delete result for ${formatTopicName(result.topicId)}`}
-          >
-            <DeleteIcon />
-          </IconButton>
+          {showDeleteButton && onDeleteClick && (
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteClick(result.id);
+              }}
+              sx={{ color: theme.palette.error.light, '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.2) } }}
+              aria-label={`Delete result for ${topicName}`}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
         </Box>
       </ListItem>
     </Paper>
