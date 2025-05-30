@@ -1,3 +1,4 @@
+// src/components/AppRoutes.js
 import {
     Routes, Route
 } from 'react-router-dom';
@@ -13,12 +14,14 @@ import HomibhabhaPage from '../pages/HomibhabhaPage';
 import GKPage from '../pages/GKPage';
 import QuizPage from '../pages/QuizPage';
 import ResultsPage from '../pages/ResultsPage';
+import AboutPage from '../pages/AboutPage'; // Import the new page
 
 function AppRoutes() {
     return (
         <Container component="main" sx={{ flexGrow: 1, py: 3, mt: '64px' }}>
             <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} /> {/* Add this route */}
                 <Route path="/chemistry" element={<ChemistryPage />} />
                 <Route path="/physics" element={<PhysicsPage />} />
                 <Route path="/mathematics" element={<MathematicsPage />} />
@@ -32,4 +35,4 @@ function AppRoutes() {
     )
 }
 
-export default AppRoutes;   
+export default AppRoutes;

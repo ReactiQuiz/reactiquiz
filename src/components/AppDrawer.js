@@ -9,13 +9,14 @@ import {
   subjectAccentColors
 } from '../theme';
 import HomeIcon from '@mui/icons-material/Home';
-import ScienceIcon from '@mui/icons-material/Science'; // Chemistry
-import CalculateIcon from '@mui/icons-material/Calculate'; // Mathematics
-import BoltIcon from '@mui/icons-material/Bolt'; // Physics
-import BiotechIcon from '@mui/icons-material/Biotech'; // Biology
-import SchoolIcon from '@mui/icons-material/School'; // Homibhabha
-import PublicIcon from '@mui/icons-material/Public'; // GK Icon
-import PollIcon from '@mui/icons-material/Poll'; // Results
+import ScienceIcon from '@mui/icons-material/Science'; 
+import CalculateIcon from '@mui/icons-material/Calculate'; 
+import BoltIcon from '@mui/icons-material/Bolt'; 
+import BiotechIcon from '@mui/icons-material/Biotech'; 
+import SchoolIcon from '@mui/icons-material/School'; 
+import PublicIcon from '@mui/icons-material/Public'; 
+import PollIcon from '@mui/icons-material/Poll'; 
+import InfoIcon from '@mui/icons-material/Info'; // Import InfoIcon
 
 const drawerWidth = 250;
 
@@ -31,6 +32,8 @@ function AppDrawer({ open, onClose }) {
     { text: 'GK', icon: <PublicIcon sx={{ color: subjectAccentColors.gk }} />, path: '/gk', color: subjectAccentColors.gk },
     { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }}/>, path: '/homibhabha', color: theme.palette.secondary.main },
     { text: 'Results', icon: <PollIcon />, path: '/results', color: theme.palette.text.primary },
+    { type: 'divider' }, // Optional divider
+    { text: 'About Us', icon: <InfoIcon />, path: '/about', color: theme.palette.text.primary }, // Add About Us link
   ];
 
   const drawerContent = (
@@ -47,7 +50,9 @@ function AppDrawer({ open, onClose }) {
       </Box>
       <Divider />
       <List>
-        {drawerItems.map((item) => (
+        {drawerItems.map((item, index) => (
+          item.type === 'divider' ? 
+          <Divider key={`divider-${index}`} sx={{ my: 1 }} /> :
           <ListItem key={item.text} disablePadding>
             <ListItemButton component={RouterLink} to={item.path}>
               <ListItemIcon sx={{ minWidth: 40 }}>

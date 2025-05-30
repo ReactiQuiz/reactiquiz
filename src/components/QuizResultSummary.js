@@ -3,14 +3,21 @@ import {
   Typography, Paper, Divider, Alert, Chip, Box, useTheme
 } from '@mui/material';
 import TimerIcon from '@mui/icons-material/Timer';
-import { formatTime } from '../utils/formatTime'; // Assuming utils is at src/utils
+import { formatTime } from '../utils/formatTime'; 
 
 const formatTopicName = (topicId) => {
   if (!topicId) return 'N/A';
   let name = topicId.replace(/-/g, ' ');
   const classSuffixRegex = /\s(\d+(?:st|nd|rd|th))$/i;
   name = name.replace(classSuffixRegex, '').trim();
-  return name.replace(/\b\w/g, l => l.toUpperCase());
+  // Improved capitalization for multi-word topic names
+  name = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+  if (name.toLowerCase().includes('homibhabha practice')) { // Specific formatting for Homi Bhabha
+      name = name.replace(/Homibhabha Practice (\w+)-(\w+)/i, (match, quizClass, difficulty) => 
+        `Homi Bhabha Practice - Std ${quizClass} (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})`
+      );
+  }
+  return name;
 };
 
 function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
@@ -36,7 +43,8 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center', mt: 0.5, mb: 1 }}>
           {quizClassFromResult && <Chip label={`Class ${quizClassFromResult}`} size="small" variant="outlined" />}
           {difficulty && <Chip label={difficulty} size="small" variant="outlined" sx={{ textTransform: 'capitalize' }} />}
-          {(numQuestionsConfigured != null && numQuestionsConfigured > 0) && <Chip label={`${numQuestionsConfigured} Qs Config.`} size="small" variant="outlined" />}
+          {/* Changed "Qs Config." to "Questions" or just the number */}
+          {(numQuestionsConfigured != null && numQuestionsConfigured > 0) && <Chip label={`${numQuestionsConfigured} Qs`} size="small" variant="outlined" />}
           {timeTaken != null && <Chip icon={<TimerIcon fontSize="small" />} label={formatTime(timeTaken)} size="small" variant="outlined" />}
         </Box>
         <Divider sx={{ my: 1.5 }} />

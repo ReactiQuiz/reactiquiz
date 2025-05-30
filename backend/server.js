@@ -104,7 +104,7 @@ app.get('/api/topics/:subject', (req, res) => {
   const { subject } = req.params;
   logApi(`[INFO] GET /api/topics/%s - Request for subject: %s`, subject, subject);
   const sql = `SELECT id, name, description, class, genre FROM quiz_topics WHERE subject = ? ORDER BY class, name`;
-  
+
   if (!topicsDb || topicsDb.open === false) { // Check if DB connection failed
     logError('[ERROR] GET /api/topics/%s - Topics DB not available.', subject);
     return res.status(503).json({ message: 'Service temporarily unavailable: Topics database is not connected.' });
@@ -116,8 +116,8 @@ app.get('/api/topics/:subject', (req, res) => {
       return res.status(500).json({ message: `Failed to fetch topics for ${subject}: ${err.message}` });
     }
     if (!rows) {
-        logApi(`[WARN] GET /api/topics/%s - No topics found.`, subject);
-        return res.json([]);
+      logApi(`[WARN] GET /api/topics/%s - No topics found.`, subject);
+      return res.json([]);
     }
     logApi(`[SUCCESS] GET /api/topics/%s - Success: Fetched %d topics.`, subject, rows.length);
     res.json(rows);
@@ -128,7 +128,7 @@ app.get('/api/questions/:topicId', (req, res) => {
   const { topicId } = req.params;
   logApi(`[INFO] GET /api/questions/%s - Request for topicId: %s`, topicId, topicId);
   const sql = `SELECT * FROM questions WHERE topicId = ?`;
-  
+
   if (!questionsDb || questionsDb.open === false) { // Check if DB connection failed
     logError('[ERROR] GET /api/questions/%s - Questions DB not available.', topicId);
     return res.status(503).json({ message: 'Service temporarily unavailable: Questions database is not connected.' });
@@ -232,16 +232,75 @@ app.post('/api/results', async (req, res) => {
   });
 });
 
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message, recipientEmail } = req.body;
+  logApi('[INFO] POST /api/contact - Received contact form submission');
+
+  if (!name || !email || !message || !recipientEmail) {
+    logApi.warn('[WARN] POST /api/contact - Missing fields');
+    return res.status(400).json({ message: 'All fields are required.' });
+  }
+
+  // --- NODEMAILER LOGIC WOULD GO HERE ---
+  // This is highly dependent on your chosen email provider (SendGrid, Mailgun, Gmail SMTP etc.)
+  // Example (very simplified, actual setup is more involved):
+  /*
+  try {
+    let transporter = nodemailer.createTransport({
+      service: 'gmail', // Or your provider
+      auth: {
+        user: process.env.EMAIL_USER, // Your sending email address from .env
+        pass: process.env.EMAIL_PASS, // Your email password or app password from .env
+      },
+    });
+
+    let mailOptions = {
+      from: `"${name}" <${email}>`, // Sender address (appears as from the user)
+      to: recipientEmail,           // Your email address
+      replyTo: email,               // So you can reply to the user directly
+      subject: `New Contact Form Message from ${name} via ReactiQuiz`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    logApi('[SUCCESS] POST /api/contact - Email sent successfully');
+    res.status(200).json({ message: 'Message sent successfully! Thank you for your feedback.' });
+  } catch (error) {
+    logError('[ERROR] POST /api/contact - Error sending email: %s', error.message);
+    console.error(error);
+    res.status(500).json({ message: 'Failed to send message. Please try again later.' });
+  }
+  */
+
+  // For now, since backend mailer isn't set up, simulate success:
+  logApi('[SIMULATE] POST /api/contact - Email sending simulated.');
+  res.status(200).json({ message: 'Message received (simulated)! Thank you for your feedback.' });
+});
+
 app.get('/api/results', (req, res) => {
   logApi('[INFO] GET /api/results - Request received.');
-  const sql = "SELECT * FROM quiz_results ORDER BY timestamp DESC";
-  
+  let sql = "SELECT * FROM quiz_results ORDER BY timestamp DESC";
+  const params = [];
+
+  // Add limit if provided and valid
+  if (req.query.limit) {
+    const limit = parseInt(req.query.limit, 10);
+    if (!isNaN(limit) && limit > 0) {
+      sql += " LIMIT ?";
+      params.push(limit);
+      logApi(`[INFO] Applying limit: ${limit}`);
+    } else {
+      logApi.warn(`[WARN] Invalid limit parameter received: ${req.query.limit}`);
+    }
+  }
+
   if (!resultsDb || resultsDb.open === false) {
     logError('[ERROR] GET /api/results - Results DB not available.');
     return res.status(503).json({ message: 'Service temporarily unavailable: Results database is not connected.' });
   }
 
-  resultsDb.all(sql, [], (err, rows) => {
+  resultsDb.all(sql, params, (err, rows) => { // Use params here
     if (err) {
       logError('[ERROR] GET /api/results - DB Error: %s', err.message);
       return res.status(500).json({ message: `Failed to fetch results: ${err.message}` });
@@ -264,7 +323,7 @@ app.delete('/api/results/:id', (req, res) => {
     return res.status(400).json({ message: 'Invalid result ID format.' });
   }
   const sql = "DELETE FROM quiz_results WHERE id = ?";
-  
+
   if (!resultsDb || resultsDb.open === false) {
     logError('[ERROR] DELETE /api/results/%d - Results DB not available.', resultIdToDelete);
     return res.status(503).json({ message: 'Service temporarily unavailable: Results database is not connected.' });

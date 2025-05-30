@@ -1,20 +1,19 @@
 // src/pages/HomibhabhaPage.js
-import { useState } from 'react'; // Removed useEffect
+import { useState } from 'react';
 import {
   Box, Typography, useTheme, Card, CardContent, CardActions, Button, Grid
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useNavigate } from 'react-router-dom';
-// import { subjectAccentColors } from '../theme'; // Keep if you want to use a specific subject accent
 
-import PYQPapersModal from '../components/PYQPapersModal'; // Import new modal
-import PracticeTestModal from '../components/PracticeTestModal'; // Import new modal
+import PYQPapersModal from '../components/PYQPapersModal';
+import PracticeTestModal from '../components/PracticeTestModal'; // Ensure this is correctly imported
 
 function HomibhabhaPage() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const homiBhabhaAccentColor = theme.palette.secondary.main; // Or choose another
+  const homiBhabhaAccentColor = theme.palette.secondary.main;
 
   const [pyqModalOpen, setPyqModalOpen] = useState(false);
   const [practiceTestModalOpen, setPracticeTestModalOpen] = useState(false);
@@ -29,19 +28,16 @@ function HomibhabhaPage() {
 
   const handleStartPyqTest = (settings) => {
     console.log("Starting PYQ Test with settings:", settings);
-    // Navigate to a quiz page, passing class and year to fetch/filter questions
-    // Example: You'll need a new topicId scheme or way to identify PYQs
-    // For now, let's assume a generic topicId like 'homibhabha-pyq-${settings.class}-${settings.year}'
-    // and you'd need to create corresponding JSON question files.
-    navigate(`/quiz/pyq-${settings.class}-${settings.year}`, { // Assuming topicId is structured like this
+    // This logic remains for actual PYQ papers if you have specific topicIds for them
+    navigate(`/quiz/pyq-${settings.class}-${settings.year}`, {
       state: {
-        difficulty: 'mixed', // PYQs are usually mixed
-        numQuestions: 100, // Or fetch actual number based on paper
+        difficulty: 'mixed', 
+        numQuestions: 100, 
         topicName: `Homi Bhabha PYQ ${settings.class}th - ${settings.year}`,
         accentColor: homiBhabhaAccentColor,
         quizClass: settings.class,
-        subject: "homibhabha", // Or a more specific subject if PYQs are categorized
-        isPYQ: true, // Add a flag if needed
+        subject: "homibhabha-pyq", // Differentiate from general practice
+        isPYQ: true,
         year: settings.year
       }
     });
@@ -57,17 +53,27 @@ function HomibhabhaPage() {
   };
 
   const handleStartPracticeTest = (settings) => {
-    console.log("Starting Practice Test with settings:", settings);
-    // Navigate to a quiz page for practice tests
-    // Example: topicId could be `practice-${settings.class}-${settings.difficulty}`
-    navigate(`/quiz/practice-${settings.class}-${settings.difficulty}`, { // Assuming topicId is structured like this
+    console.log("Starting Homi Bhabha Practice Test with settings:", settings);
+    
+    // For a Homi Bhabha practice test, we'll use a special identifier
+    // or pass detailed composition instructions to QuizPage.
+    // The 'topicId' here is more of a placeholder for the QuizPage routing.
+    navigate(`/quiz/homibhabha-practice-${settings.class}`, { 
       state: {
-        difficulty: settings.difficulty,
-        numQuestions: 50, // Or a configurable number for practice tests
-        topicName: `Homi Bhabha Practice ${settings.class}th (${settings.difficulty})`,
-        subject: "homibhabha", // Or a more specific subject
+        quizType: 'homibhabha-practice', // Special flag for QuizPage
+        quizClass: settings.class, // e.g., "6" or "9"
+        difficulty: settings.difficulty, // e.g., "easy", "medium", "hard", "mixed"
+        topicName: `Homi Bhabha Practice Test - Std ${settings.class}th (${settings.difficulty})`,
         accentColor: homiBhabhaAccentColor,
-        quizClass: settings.class,
+        subject: "homibhabha", // General subject category
+        timeLimit: 90 * 60, // 90 minutes in seconds
+        questionComposition: { // Desired number of questions per subject
+          physics: 30,
+          chemistry: 30,
+          biology: 30,
+          gk: 10
+        },
+        totalQuestions: 100 // Explicitly set total questions
       }
     });
     handleClosePracticeTestModal();
@@ -117,7 +123,7 @@ function HomibhabhaPage() {
               <Button
                 size="large"
                 variant="contained"
-                onClick={handleOpenPyqModal} // Open PYQ modal
+                onClick={handleOpenPyqModal}
                 sx={{
                   backgroundColor: homiBhabhaAccentColor,
                   color: theme.palette.getContrastText(homiBhabhaAccentColor),
@@ -140,14 +146,14 @@ function HomibhabhaPage() {
                 Practice Test Papers
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Take practice tests designed to simulate the Homi Bhabha exam environment and assess your preparation.
+                Take practice tests designed to simulate the Homi Bhabha exam environment and assess your preparation. (100 Questions, 90 Minutes)
               </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: 'center', p: 2, mt: 'auto' }}>
               <Button
                 size="large"
                 variant="contained"
-                onClick={handleOpenPracticeTestModal} // Open Practice Test modal
+                onClick={handleOpenPracticeTestModal}
                 sx={{
                   backgroundColor: homiBhabhaAccentColor,
                   color: theme.palette.getContrastText(homiBhabhaAccentColor),
