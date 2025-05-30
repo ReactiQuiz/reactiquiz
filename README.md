@@ -41,26 +41,57 @@ reactiquiz/
 │ ├── quizData.db # SQLite DB for questions
 │ ├── quizResults.db # SQLite DB for user results
 │ ├── quizTopics.db # SQLite DB for topic metadata
-│ ├── questions.json # Source JSON for questions
-│ ├── topics.json # Source JSON for topics
-│ ├── jsonToQuestionsDB.js # Script to populate questions DB
-│ ├── jsonToTopicsDB.js # Script to populate topics DB
-│ └── server.js # Express backend server
+│ ├── questions.json # Source JSON data for questions
+│ ├── topics.json # Source JSON data for topics
+│ ├── jsonToQuestionsDB.js # Script to populate questions DB from questions.json
+│ ├── jsonToTopicsDB.js # Script to populate topics DB from topics.json
+│ └── server.js # Express.js backend server application
 ├── public/
 │ ├── index.html
-│ └── assets/ # Placeholder for images like profile pic, logo
+│ ├── manifest.json
+│ ├── robots.txt
+│ └── assets/ # Static assets like logos, placeholder images
+│ └── profile-placeholder.png
+│ └── logo.png
 ├── src/
 │ ├── api/
-│ │ └── axiosInstance.js
-│ ├── components/ # Reusable React components
-│ ├── pages/ # Page components (HomePage, AboutPage, Subject Pages, etc.)
-│ ├── App.js
-│ ├── index.js
-│ ├── theme.js
+│ │ └── axiosInstance.js # Pre-configured Axios instance
+│ ├── components/ # Reusable React UI components
+│ │ ├── AppDrawer.js
+│ │ ├── AppRoutes.js
+│ │ ├── DeleteConfirmationDialog.js
+│ │ ├── Footer.js
+│ │ ├── HistoricalResultItem.js
+│ │ ├── Navbar.js
+│ │ ├── PracticeTestModal.js
+│ │ ├── PYQPapersModal.js
+│ │ ├── QuestionBreakdown.js
+│ │ ├── QuestionItem.js
+│ │ ├── QuizResultSummary.js
+│ │ ├── ResultsActionButtons.js
+│ │ └── TopicCard.js
+│ ├── pages/ # Top-level page components
+│ │ ├── AboutPage.js
+│ │ ├── BiologyPage.js
+│ │ ├── ChemistryPage.js
+│ │ ├── GKPage.js
+│ │ ├── HomePage.js
+│ │ ├── HomibhabhaPage.js
+│ │ ├── MathematicsPage.js
+│ │ ├── PhysicsPage.js
+│ │ ├── QuizPage.js
+│ │ └── ResultsPage.js
+│ ├── App.js # Main application component
+│ ├── index.js # Entry point for React application
+│ ├── reportWebVitals.js
+│ ├── setupTests.js
+│ ├── theme.js # MUI theme configuration
 │ └── utils/
-│ └── formatTime.js
+│ └── formatTime.js # Utility functions
 ├── .env # Local environment variables (GITIGNORED!)
 ├── .gitignore
+├── LICENSE # Project license (e.g., MIT License)
+├── package-lock.json
 ├── package.json
 └── README.md
 
