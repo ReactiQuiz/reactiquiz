@@ -11,9 +11,9 @@ import LoginModal from './components/LoginModal';
 import apiClient from './api/axiosInstance';
 import { getOrSetDeviceID } from './utils/deviceId';
 
-function AppContent() { 
+function AppContent() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null); 
+  const [currentUser, setCurrentUser] = useState(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [authError, setAuthError] = useState('');
   const [deviceChangeInfo, setDeviceChangeInfo] = useState({
@@ -23,7 +23,7 @@ function AppContent() {
     identifierForChange: null,
     otpSentMessage: '',
   });
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedUser = localStorage.getItem('reactiquizUser');
@@ -40,7 +40,7 @@ function AppContent() {
       }
     }
   }, []);
-  
+
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
   const handleLogin = async (identifier, recoveryEmail = null) => {
@@ -48,22 +48,22 @@ function AppContent() {
     setAuthError('');
     setDeviceChangeInfo({ showPrompt: false, showOtpInput: false, maskedEmail: null, identifierForChange: null, otpSentMessage: '' });
     const deviceIdFromClient = getOrSetDeviceID();
-    
+
     try {
       const payload = { identifier, deviceIdFromClient };
       if (recoveryEmail) payload.recoveryEmail = recoveryEmail;
 
       const response = await apiClient.post('/api/users/auth', payload);
-      
+
       if (response.data && response.data.user && response.data.token) {
         const userData = { id: response.data.user.id, name: response.data.user.name, recoveryEmail: response.data.user.recoveryEmail };
         setCurrentUser({ ...userData, token: response.data.token });
         localStorage.setItem('reactiquizUser', JSON.stringify(userData));
         localStorage.setItem('reactiquizToken', response.data.token);
         apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        setLoginModalOpen(false); 
+        setLoginModalOpen(false);
         return { success: true, user: userData };
-      } else { 
+      } else {
         setAuthError(response.data.message || 'Login failed.');
         return { success: false, message: response.data.message || 'Login failed.' };
       }
@@ -73,14 +73,14 @@ function AppContent() {
       const maskedEmail = error.response?.data?.recoveryEmailMasked;
 
       if (errorCode === 'DEVICE_MISMATCH') {
-        setDeviceChangeInfo({ 
-            showPrompt: true, 
-            showOtpInput: false,
-            maskedEmail: maskedEmail,
-            identifierForChange: identifier,
-            otpSentMessage: '',
+        setDeviceChangeInfo({
+          showPrompt: true,
+          showOtpInput: false,
+          maskedEmail: maskedEmail,
+          identifierForChange: identifier,
+          otpSentMessage: '',
         });
-        setAuthError(errorMessage); 
+        setAuthError(errorMessage);
       } else if (errorCode === 'EMAIL_REQUIRED' || errorCode === 'EMAIL_REQUIRED_FOR_DEVICE_LINK') {
         setAuthError(errorMessage);
       } else {
@@ -101,29 +101,24 @@ function AppContent() {
     navigate('/'); // Redirect to home on logout
   };
 
-  const handleOpenLoginModal = () => { 
-    setAuthError('');
-    setDeviceChangeInfo({ showPrompt: false, showOtpInput: false, maskedEmail: null, identifierForChange: null, otpSentMessage: '' });
-    setLoginModalOpen(true);
-  };
   const handleCloseLoginModal = () => setLoginModalOpen(false);
 
   const requestDeviceChangeOtp = async (identifierToChange) => {
     // ... (same as previous full code response)
     if (!identifierToChange) {
-        setAuthError("Identifier missing for device change request.");
-        return { success: false, message: "Identifier missing."};
+      setAuthError("Identifier missing for device change request.");
+      return { success: false, message: "Identifier missing." };
     }
     setAuthError('');
     try {
-        const response = await apiClient.post('/api/users/request-device-change', { identifier: identifierToChange });
-        setDeviceChangeInfo(prev => ({...prev, showOtpInput: true, otpSentMessage: response.data.message}));
-        return { success: true, message: response.data.message };
+      const response = await apiClient.post('/api/users/request-device-change', { identifier: identifierToChange });
+      setDeviceChangeInfo(prev => ({ ...prev, showOtpInput: true, otpSentMessage: response.data.message }));
+      return { success: true, message: response.data.message };
     } catch (error) {
-        const msg = error.response?.data?.message || "Failed to request OTP for device change.";
-        setAuthError(msg);
-        setDeviceChangeInfo(prev => ({...prev, showOtpInput: false, otpSentMessage: ''}));
-        return { success: false, message: msg };
+      const msg = error.response?.data?.message || "Failed to request OTP for device change.";
+      setAuthError(msg);
+      setDeviceChangeInfo(prev => ({ ...prev, showOtpInput: false, otpSentMessage: '' }));
+      return { success: false, message: msg };
     }
   };
 
@@ -132,64 +127,64 @@ function AppContent() {
     setAuthError('');
     const newDeviceId = getOrSetDeviceID();
     try {
-        const response = await apiClient.post('/api/users/confirm-device-change-otp', { identifier, otp, newDeviceId });
-        if (response.data && response.data.user && response.data.token) {
-            const userData = { id: response.data.user.id, name: response.data.user.name, recoveryEmail: response.data.user.recoveryEmail };
-            setCurrentUser({ ...userData, token: response.data.token });
-            localStorage.setItem('reactiquizUser', JSON.stringify(userData));
-            localStorage.setItem('reactiquizToken', response.data.token);
-            apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            setLoginModalOpen(false); 
-            setDeviceChangeInfo({ showPrompt: false, showOtpInput: false, maskedEmail: null, identifierForChange: null, otpSentMessage: '' }); 
-            return { success: true, user: userData };
-        } else {
-            setAuthError(response.data.message || "Device confirmation failed.");
-            return { success: false, message: response.data.message || "Device confirmation failed." };
-        }
+      const response = await apiClient.post('/api/users/confirm-device-change-otp', { identifier, otp, newDeviceId });
+      if (response.data && response.data.user && response.data.token) {
+        const userData = { id: response.data.user.id, name: response.data.user.name, recoveryEmail: response.data.user.recoveryEmail };
+        setCurrentUser({ ...userData, token: response.data.token });
+        localStorage.setItem('reactiquizUser', JSON.stringify(userData));
+        localStorage.setItem('reactiquizToken', response.data.token);
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        setLoginModalOpen(false);
+        setDeviceChangeInfo({ showPrompt: false, showOtpInput: false, maskedEmail: null, identifierForChange: null, otpSentMessage: '' });
+        return { success: true, user: userData };
+      } else {
+        setAuthError(response.data.message || "Device confirmation failed.");
+        return { success: false, message: response.data.message || "Device confirmation failed." };
+      }
     } catch (error) {
-        const msg = error.response?.data?.message || "Error confirming device with OTP.";
-        setAuthError(msg);
-        return { success: false, message: msg };
+      const msg = error.response?.data?.message || "Error confirming device with OTP.";
+      setAuthError(msg);
+      return { success: false, message: msg };
     }
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <NavBar 
-            onIconButtonClick={handleDrawerToggle} 
-            currentUser={currentUser}
-            // onLoginClick prop now primarily for Account page navigation if Login button is clicked when not logged in
-            // The modal opening is handled separately by AccountPage/LoginModal for specific flows
-          />
-          <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} /> 
-          <AppRoutes 
-            currentUser={currentUser} 
-            handleLogin={handleLogin}
-            handleLogout={handleLogout} // Pass handleLogout
-            authError={authError} 
-            setAuthError={setAuthError}
-            deviceChangeInfo={deviceChangeInfo}
-            setDeviceChangeInfo={setDeviceChangeInfo}
-            requestDeviceChangeOtp={requestDeviceChangeOtp}
-            confirmDeviceWithOtp={confirmDeviceWithOtp}
-            // setCurrentUser={setCurrentUser} // No longer strictly needed by ConfirmDevicePage if App.js handles it
-          />
-          <Footer />
-        </Box>
-        <LoginModal // This modal is now more for specific prompts like device change from Navbar
-          open={loginModalOpen}
-          onClose={handleCloseLoginModal}
-          onLogin={handleLogin} 
-          accentColor={darkTheme.palette.primary.main}
-          authError={authError} 
-          setAuthError={setAuthError} 
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <NavBar
+          onIconButtonClick={handleDrawerToggle}
+          currentUser={currentUser}
+        // onLoginClick prop now primarily for Account page navigation if Login button is clicked when not logged in
+        // The modal opening is handled separately by AccountPage/LoginModal for specific flows
+        />
+        <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />
+        <AppRoutes
+          currentUser={currentUser}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout} // Pass handleLogout
+          authError={authError}
+          setAuthError={setAuthError}
           deviceChangeInfo={deviceChangeInfo}
           setDeviceChangeInfo={setDeviceChangeInfo}
           requestDeviceChangeOtp={requestDeviceChangeOtp}
           confirmDeviceWithOtp={confirmDeviceWithOtp}
+        // setCurrentUser={setCurrentUser} // No longer strictly needed by ConfirmDevicePage if App.js handles it
         />
+        <Footer />
+      </Box>
+      <LoginModal // This modal is now more for specific prompts like device change from Navbar
+        open={loginModalOpen}
+        onClose={handleCloseLoginModal}
+        onLogin={handleLogin}
+        accentColor={darkTheme.palette.primary.main}
+        authError={authError}
+        setAuthError={setAuthError}
+        deviceChangeInfo={deviceChangeInfo}
+        setDeviceChangeInfo={setDeviceChangeInfo}
+        requestDeviceChangeOtp={requestDeviceChangeOtp}
+        confirmDeviceWithOtp={confirmDeviceWithOtp}
+      />
     </ThemeProvider>
   );
 }

@@ -22,9 +22,9 @@ const YOUR_TITLE = "Owner, Developer, Creator";
 const YOUR_BIO = "I am a passionate developer with a keen interest in creating educational tools. ReactiQuiz started as a project to combine my love for learning and coding, aiming to provide a useful resource for students. I believe in making education accessible and engaging through technology.";
 const YOUR_EMAIL = "sanskarsontakke@gmail.com";
 const YOUR_PHONE = "+91 82084 35506";
-const YOUR_LINKEDIN_URL = "https://linkedin.com/in/sanskarsontakke";
+const YOUR_LINKEDIN_URL = "https://www.linkedin.com/in/sanskar-sontakke-249576357/";
 const YOUR_GITHUB_URL = "https://github.com/sanskarsontakke";
-const YOUR_DISCORD_INVITE_OR_SERVER = "https://discord.gg/YourServerInvite";
+const YOUR_DISCORD_INVITE_OR_SERVER = "https://discord.gg/w3fuaTPadQ";
 
 function AboutPage() {
     const theme = useTheme();
