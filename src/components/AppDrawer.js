@@ -9,15 +9,17 @@ import {
   subjectAccentColors
 } from '../theme';
 import HomeIcon from '@mui/icons-material/Home';
-import ScienceIcon from '@mui/icons-material/Science'; 
-import CalculateIcon from '@mui/icons-material/Calculate'; 
-import BoltIcon from '@mui/icons-material/Bolt'; 
-import BiotechIcon from '@mui/icons-material/Biotech'; 
-import SchoolIcon from '@mui/icons-material/School'; 
-import PublicIcon from '@mui/icons-material/Public'; 
-import PollIcon from '@mui/icons-material/Poll'; 
+import ScienceIcon from '@mui/icons-material/Science';
+import CalculateIcon from '@mui/icons-material/Calculate';
+import BoltIcon from '@mui/icons-material/Bolt';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import SchoolIcon from '@mui/icons-material/School';
+import PublicIcon from '@mui/icons-material/Public';
+import PollIcon from '@mui/icons-material/Poll';
 import InfoIcon from '@mui/icons-material/Info';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // New Icon
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import GroupIcon from '@mui/icons-material/Group'; // Import GroupIcon
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 
 const drawerWidth = 250;
 
@@ -31,11 +33,13 @@ function AppDrawer({ open, onClose }) {
     { text: 'Mathematics', icon: <CalculateIcon sx={{ color: subjectAccentColors.mathematics }} />, path: '/mathematics', color: subjectAccentColors.mathematics },
     { text: 'Biology', icon: <BiotechIcon sx={{ color: subjectAccentColors.biology }} />, path: '/biology', color: subjectAccentColors.biology },
     { text: 'GK', icon: <PublicIcon sx={{ color: subjectAccentColors.gk }} />, path: '/gk', color: subjectAccentColors.gk },
-    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }}/>, path: '/homibhabha', color: theme.palette.secondary.main },
+    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }} />, path: '/homibhabha', color: theme.palette.secondary.main },
     { text: 'Results', icon: <PollIcon />, path: '/results', color: theme.palette.text.primary },
-    { type: 'divider' }, 
-    { text: 'My Account', icon: <AccountCircleIcon />, path: '/account', color: theme.palette.text.primary }, // New Account link
-    { text: 'About Us', icon: <InfoIcon />, path: '/about', color: theme.palette.text.primary }, 
+    { type: 'divider' },
+    { text: 'My Account', icon: <AccountCircleIcon />, path: '/account', color: theme.palette.text.primary },
+    { text: 'Friends', icon: <GroupIcon />, path: '/friends', color: theme.palette.text.primary }, // <-- ADD Friends Link
+    { text: 'Challenges', icon: <SportsKabaddiIcon />, path: '/challenges', color: theme.palette.text.primary },
+    { text: 'About Us', icon: <InfoIcon />, path: '/about', color: theme.palette.text.primary },
   ];
 
   const drawerContent = (
@@ -53,16 +57,16 @@ function AppDrawer({ open, onClose }) {
       <Divider />
       <List>
         {drawerItems.map((item, index) => (
-          item.type === 'divider' ? 
-          <Divider key={`divider-${index}`} sx={{ my: 1 }} /> :
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton component={RouterLink} to={item.path}>
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} sx={{ color: item.color || theme.palette.text.primary }} />
-            </ListItemButton>
-          </ListItem>
+          item.type === 'divider' ?
+            <Divider key={`divider-${index}`} sx={{ my: 1 }} /> :
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton component={RouterLink} to={item.path}>
+                <ListItemIcon sx={{ minWidth: 40 }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} sx={{ color: item.color || theme.palette.text.primary }} />
+              </ListItemButton>
+            </ListItem>
         ))}
       </List>
     </Box>

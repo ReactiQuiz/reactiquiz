@@ -1,3 +1,4 @@
+// src/pages/ChemistryPage.js
 import {
   useState, useEffect, useMemo
 } from 'react';
@@ -17,7 +18,7 @@ import QuizSettingsModal from '../components/QuizSettingsModal';
 function ChemistryPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
@@ -51,30 +52,41 @@ function ChemistryPage() {
     fetchChemistryTopics();
   }, []);
 
-  const handleOpenModal = (topic) => {
-    setSelectedTopic(topic);
+  const handleOpenQuizModal = (topic) => {
+    setSelectedTopicForQuiz(topic);
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseQuizModal = () => {
     setModalOpen(false);
-    setSelectedTopic(null);
+    setSelectedTopicForQuiz(null);
   };
 
   const handleStartQuizWithSettings = (settings) => {
-    if (selectedTopic) {
-      navigate(`/quiz/${selectedTopic.id}`, {
+    if (selectedTopicForQuiz) {
+      navigate(`/quiz/${selectedTopicForQuiz.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
-          topicName: selectedTopic.name,
+          topicName: selectedTopicForQuiz.name,
           accentColor: CHEMISTRY_ACCENT_COLOR,
           subject: "chemistry",
-          quizClass: selectedTopic.class,
+          quizClass: selectedTopicForQuiz.class,
         }
       });
     }
-    handleCloseModal();
+    handleCloseQuizModal();
+  };
+
+  const handleStudyFlashcards = (topic) => {
+    navigate(`/flashcards/${topic.id}`, {
+      state: {
+        topicName: topic.name,
+        accentColor: CHEMISTRY_ACCENT_COLOR,
+        subject: "chemistry",
+        quizClass: topic.class,
+      }
+    });
   };
 
   const availableClasses = useMemo(() => {
@@ -84,11 +96,9 @@ function ChemistryPage() {
 
   const filteredTopics = useMemo(() => {
     let currentTopics = topics;
-
     if (selectedClass) {
       currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
-
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       currentTopics = currentTopics.filter(topic =>
@@ -109,7 +119,7 @@ function ChemistryPage() {
         Chemistry Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Chemistry quiz.
+        Select a topic below to start a quiz or study with flashcards.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -139,7 +149,7 @@ function ChemistryPage() {
           </Select>
         </FormControl>
       </Box>
-      
+
       {isLoadingTopics && (
         <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
           <CircularProgress sx={{color: CHEMISTRY_ACCENT_COLOR}}/>
@@ -157,7 +167,8 @@ function ChemistryPage() {
               <Box key={topic.id} sx={{ mb: 2 }}>
                 <TopicCard
                   topic={topic}
-                  onStartQuiz={() => handleOpenModal(topic)}
+                  onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   accentColor={CHEMISTRY_ACCENT_COLOR}
                   subjectBasePath="chemistry"
                 />
@@ -169,12 +180,12 @@ function ChemistryPage() {
         </Box>
       )}
 
-      {selectedTopic && (
+      {selectedTopicForQuiz && (
         <QuizSettingsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={handleCloseQuizModal}
           onSubmit={handleStartQuizWithSettings}
-          topicName={selectedTopic.name}
+          topicName={selectedTopicForQuiz.name}
           accentColor={CHEMISTRY_ACCENT_COLOR}
         />
       )}

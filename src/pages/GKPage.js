@@ -18,7 +18,7 @@ import QuizSettingsModal from '../components/QuizSettingsModal';
 function GKPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState(''); // For GK, 'class' might represent 'level' or 'category'
 
@@ -52,31 +52,41 @@ function GKPage() {
     fetchGKTopics();
   }, []);
 
-  const handleOpenModal = (topic) => {
-    setSelectedTopic(topic);
+  const handleOpenQuizModal = (topic) => {
+    setSelectedTopicForQuiz(topic);
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseQuizModal = () => {
     setModalOpen(false);
-    setSelectedTopic(null);
+    setSelectedTopicForQuiz(null);
   };
 
   const handleStartQuizWithSettings = (settings) => {
-    if (selectedTopic) {
-      console.log(`Starting GK quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/${selectedTopic.id}`, { 
+    if (selectedTopicForQuiz) {
+      navigate(`/quiz/${selectedTopicForQuiz.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
-          topicName: selectedTopic.name,
+          topicName: selectedTopicForQuiz.name,
           accentColor: GK_ACCENT_COLOR,
-          quizClass: selectedTopic.class, 
+          quizClass: selectedTopicForQuiz.class,
           subject: "gk",
         }
       });
     }
-    handleCloseModal();
+    handleCloseQuizModal();
+  };
+
+  const handleStudyFlashcards = (topic) => {
+    navigate(`/flashcards/${topic.id}`, {
+      state: {
+        topicName: topic.name,
+        accentColor: GK_ACCENT_COLOR,
+        subject: "gk",
+        quizClass: topic.class,
+      }
+    });
   };
 
   const availableClasses = useMemo(() => {
@@ -86,11 +96,9 @@ function GKPage() {
 
   const filteredTopics = useMemo(() => {
     let currentTopics = topics;
-
     if (selectedClass) {
       currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
-
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       currentTopics = currentTopics.filter(topic =>
@@ -112,7 +120,7 @@ function GKPage() {
         General Knowledge Quiz Topics
       </Typography>
       <Typography paragraph sx={{textAlign: 'center', mb:3}}>
-        Explore a variety of General Knowledge topics. Select one to start your quiz.
+        Explore a variety of General Knowledge topics. Select one to start a quiz or study with flashcards.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -125,19 +133,19 @@ function GKPage() {
         />
         {availableClasses.length > 0 && (
             <FormControl sx={{ minWidth: 150 }}>
-            <InputLabel id="class-select-label-gk">Filter by Level/Class</InputLabel>
+            <InputLabel id="class-select-label-gk">Filter by Level/Category</InputLabel>
             <Select
                 labelId="class-select-label-gk"
                 value={selectedClass}
-                label="Filter by Level/Class"
+                label="Filter by Level/Category"
                 onChange={(e) => setSelectedClass(e.target.value)}
             >
                 <MenuItem value="">
-                <em>All Levels/Classes</em>
+                <em>All Levels/Categories</em>
                 </MenuItem>
                 {availableClasses.map((cls) => (
                 <MenuItem key={cls} value={cls}>
-                    {cls} 
+                    {cls}
                 </MenuItem>
                 ))}
             </Select>
@@ -162,7 +170,8 @@ function GKPage() {
               <Box key={topic.id} sx={{ mb: 2 }}>
                 <TopicCard
                   topic={topic}
-                  onStartQuiz={() => handleOpenModal(topic)}
+                  onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   accentColor={GK_ACCENT_COLOR}
                   subjectBasePath="gk"
                 />
@@ -174,12 +183,12 @@ function GKPage() {
         </Box>
       )}
 
-      {selectedTopic && (
+      {selectedTopicForQuiz && (
         <QuizSettingsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={handleCloseQuizModal}
           onSubmit={handleStartQuizWithSettings}
-          topicName={selectedTopic.name}
+          topicName={selectedTopicForQuiz.name}
           accentColor={GK_ACCENT_COLOR}
         />
       )}

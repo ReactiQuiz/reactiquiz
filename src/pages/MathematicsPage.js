@@ -1,3 +1,4 @@
+// src/pages/MathematicsPage.js
 import {
   useState, useEffect, useMemo
 } from 'react';
@@ -17,7 +18,7 @@ import QuizSettingsModal from '../components/QuizSettingsModal';
 function MathematicsPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
@@ -51,30 +52,41 @@ function MathematicsPage() {
     fetchMathematicsTopics();
   }, []);
 
-  const handleOpenModal = (topic) => {
-    setSelectedTopic(topic);
+  const handleOpenQuizModal = (topic) => {
+    setSelectedTopicForQuiz(topic);
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseQuizModal = () => {
     setModalOpen(false);
-    setSelectedTopic(null);
+    setSelectedTopicForQuiz(null);
   };
 
   const handleStartQuizWithSettings = (settings) => {
-    if (selectedTopic) {
-      navigate(`/quiz/${selectedTopic.id}`, {
+    if (selectedTopicForQuiz) {
+      navigate(`/quiz/${selectedTopicForQuiz.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
-          topicName: selectedTopic.name,
+          topicName: selectedTopicForQuiz.name,
           accentColor: MATHEMATICS_ACCENT_COLOR,
           subject: "mathematics",
-          quizClass: selectedTopic.class,
+          quizClass: selectedTopicForQuiz.class,
         }
       });
     }
-    handleCloseModal();
+    handleCloseQuizModal();
+  };
+
+  const handleStudyFlashcards = (topic) => {
+    navigate(`/flashcards/${topic.id}`, {
+      state: {
+        topicName: topic.name,
+        accentColor: MATHEMATICS_ACCENT_COLOR,
+        subject: "mathematics",
+        quizClass: topic.class,
+      }
+    });
   };
 
   const availableClasses = useMemo(() => {
@@ -84,11 +96,9 @@ function MathematicsPage() {
 
   const filteredTopics = useMemo(() => {
     let currentTopics = topics;
-
     if (selectedClass) {
       currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
-
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       currentTopics = currentTopics.filter(topic =>
@@ -109,7 +119,7 @@ function MathematicsPage() {
         Mathematics Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Mathematics quiz.
+        Select a topic below to start a quiz or study with flashcards.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -120,24 +130,26 @@ function MathematicsPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ flexGrow: 1, minWidth: '200px' }}
         />
-        <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel id="class-select-label">Filter by Class</InputLabel>
-          <Select
-            labelId="class-select-label"
-            value={selectedClass}
-            label="Filter by Class"
-            onChange={(e) => setSelectedClass(e.target.value)}
-          >
-            <MenuItem value="">
-              <em>All Classes</em>
-            </MenuItem>
-            {availableClasses.map((cls) => (
-              <MenuItem key={cls} value={cls}>
-                Class {cls}
+        {availableClasses.length > 0 && (
+          <FormControl sx={{ minWidth: 150 }}>
+            <InputLabel id="class-select-label">Filter by Class/Level</InputLabel>
+            <Select
+              labelId="class-select-label"
+              value={selectedClass}
+              label="Filter by Class/Level"
+              onChange={(e) => setSelectedClass(e.target.value)}
+            >
+              <MenuItem value="">
+                <em>All Levels</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {availableClasses.map((cls) => (
+                <MenuItem key={cls} value={cls}>
+                  {cls}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
       </Box>
 
       {isLoadingTopics && (
@@ -157,7 +169,8 @@ function MathematicsPage() {
               <Box key={topic.id} sx={{ mb: 2 }}>
                 <TopicCard
                   topic={topic}
-                  onStartQuiz={() => handleOpenModal(topic)}
+                  onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   accentColor={MATHEMATICS_ACCENT_COLOR}
                   subjectBasePath="mathematics"
                 />
@@ -169,12 +182,12 @@ function MathematicsPage() {
         </Box>
       )}
 
-      {selectedTopic && (
+      {selectedTopicForQuiz && (
         <QuizSettingsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={handleCloseQuizModal}
           onSubmit={handleStartQuizWithSettings}
-          topicName={selectedTopic.name}
+          topicName={selectedTopicForQuiz.name}
           accentColor={MATHEMATICS_ACCENT_COLOR}
         />
       )}

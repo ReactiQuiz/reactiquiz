@@ -1,3 +1,4 @@
+// src/pages/BiologyPage.js
 import {
   useState, useEffect, useMemo
 } from 'react';
@@ -17,7 +18,7 @@ import QuizSettingsModal from '../components/QuizSettingsModal';
 function BiologyPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
@@ -51,30 +52,41 @@ function BiologyPage() {
     fetchBiologyTopics();
   }, []);
 
-  const handleOpenModal = (topic) => {
-    setSelectedTopic(topic);
+  const handleOpenQuizModal = (topic) => {
+    setSelectedTopicForQuiz(topic);
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseQuizModal = () => {
     setModalOpen(false);
-    setSelectedTopic(null);
+    setSelectedTopicForQuiz(null);
   };
 
   const handleStartQuizWithSettings = (settings) => {
-    if (selectedTopic) {
-      navigate(`/quiz/${selectedTopic.id}`, {
+    if (selectedTopicForQuiz) {
+      navigate(`/quiz/${selectedTopicForQuiz.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
-          topicName: selectedTopic.name,
+          topicName: selectedTopicForQuiz.name,
           accentColor: BIOLOGY_ACCENT_COLOR,
           subject: "biology",
-          quizClass: selectedTopic.class,
+          quizClass: selectedTopicForQuiz.class,
         }
       });
     }
-    handleCloseModal();
+    handleCloseQuizModal();
+  };
+
+  const handleStudyFlashcards = (topic) => {
+    navigate(`/flashcards/${topic.id}`, {
+      state: {
+        topicName: topic.name,
+        accentColor: BIOLOGY_ACCENT_COLOR,
+        subject: "biology",
+        quizClass: topic.class,
+      }
+    });
   };
 
   const availableClasses = useMemo(() => {
@@ -84,11 +96,9 @@ function BiologyPage() {
 
   const filteredTopics = useMemo(() => {
     let currentTopics = topics;
-
     if (selectedClass) {
       currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
-
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       currentTopics = currentTopics.filter(topic =>
@@ -109,7 +119,7 @@ function BiologyPage() {
         Biology Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Biology quiz.
+        Select a topic below to start a quiz or study with flashcards.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -149,7 +159,7 @@ function BiologyPage() {
       {fetchTopicsError && (
         <Alert severity="error" sx={{ my: 2 }}>{fetchTopicsError}</Alert>
       )}
-      
+
       {!isLoadingTopics && !fetchTopicsError && (
         <Box>
           {filteredTopics.length > 0 ? (
@@ -157,7 +167,8 @@ function BiologyPage() {
               <Box key={topic.id} sx={{ mb: 2 }}>
                 <TopicCard
                   topic={topic}
-                  onStartQuiz={() => handleOpenModal(topic)}
+                  onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   accentColor={BIOLOGY_ACCENT_COLOR}
                   subjectBasePath="biology"
                 />
@@ -169,12 +180,12 @@ function BiologyPage() {
         </Box>
       )}
 
-      {selectedTopic && (
+      {selectedTopicForQuiz && (
         <QuizSettingsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={handleCloseQuizModal}
           onSubmit={handleStartQuizWithSettings}
-          topicName={selectedTopic.name}
+          topicName={selectedTopicForQuiz.name}
           accentColor={BIOLOGY_ACCENT_COLOR}
         />
       )}

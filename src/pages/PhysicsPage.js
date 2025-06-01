@@ -1,3 +1,4 @@
+// src/pages/PhysicsPage.js
 import {
   useState, useEffect, useMemo
 } from 'react';
@@ -7,8 +8,7 @@ import {
 import {
   useNavigate
 } from 'react-router-dom';
-// Removed: import { physicsTopics } from '../topics/PhysicsTopics';
-import apiClient from '../api/axiosInstance'; // Ensure apiClient is imported
+import apiClient from '../api/axiosInstance';
 import {
   subjectAccentColors
 } from '../theme';
@@ -18,7 +18,7 @@ import QuizSettingsModal from '../components/QuizSettingsModal';
 function PhysicsPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
 
@@ -28,13 +28,12 @@ function PhysicsPage() {
 
   const PHYSICS_ACCENT_COLOR = subjectAccentColors.physics;
 
-  // src/pages/PhysicsPage.js
   useEffect(() => {
     const fetchPhysicsTopics = async () => {
       setIsLoadingTopics(true);
-      setFetchTopicsError(''); // Clear previous errors
+      setFetchTopicsError('');
       try {
-        const response = await apiClient.get('/api/topics/physics'); // API call
+        const response = await apiClient.get('/api/topics/physics');
         if (Array.isArray(response.data)) {
           setTopics(response.data);
         } else {
@@ -44,41 +43,50 @@ function PhysicsPage() {
         }
       } catch (err) {
         console.error('Error fetching physics topics:', err);
-        // This should display an alert
         setFetchTopicsError(`Failed to load Physics topics: ${err.response?.data?.message || err.message}`);
         setTopics([]);
       } finally {
-        setIsLoadingTopics(false); // This should always run
+        setIsLoadingTopics(false);
       }
     };
     fetchPhysicsTopics();
-  }, []); // Empty dependency array, runs once on mount
+  }, []);
 
-  const handleOpenModal = (topic) => {
-    setSelectedTopic(topic);
+  const handleOpenQuizModal = (topic) => {
+    setSelectedTopicForQuiz(topic);
     setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseQuizModal = () => {
     setModalOpen(false);
-    setSelectedTopic(null);
+    setSelectedTopicForQuiz(null);
   };
 
   const handleStartQuizWithSettings = (settings) => {
-    if (selectedTopic) {
-      console.log(`Starting Physics quiz for ${selectedTopic.name} with settings:`, settings);
-      navigate(`/quiz/${selectedTopic.id}`, {
+    if (selectedTopicForQuiz) {
+      navigate(`/quiz/${selectedTopicForQuiz.id}`, {
         state: {
           difficulty: settings.difficulty,
           numQuestions: settings.numQuestions,
-          topicName: selectedTopic.name,
+          topicName: selectedTopicForQuiz.name,
           accentColor: PHYSICS_ACCENT_COLOR,
           subject: "physics",
-          quizClass: selectedTopic.class, // Pass class from fetched topic
+          quizClass: selectedTopicForQuiz.class,
         }
       });
     }
-    handleCloseModal();
+    handleCloseQuizModal();
+  };
+
+  const handleStudyFlashcards = (topic) => {
+    navigate(`/flashcards/${topic.id}`, {
+      state: {
+        topicName: topic.name,
+        accentColor: PHYSICS_ACCENT_COLOR,
+        subject: "physics",
+        quizClass: topic.class,
+      }
+    });
   };
 
   const availableClasses = useMemo(() => {
@@ -88,11 +96,9 @@ function PhysicsPage() {
 
   const filteredTopics = useMemo(() => {
     let currentTopics = topics;
-
     if (selectedClass) {
       currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
     }
-
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       currentTopics = currentTopics.filter(topic =>
@@ -113,7 +119,7 @@ function PhysicsPage() {
         Physics Quiz Topics
       </Typography>
       <Typography paragraph>
-        Select a topic below to customize and start your Physics quiz.
+        Select a topic below to start a quiz or study with flashcards.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -146,8 +152,8 @@ function PhysicsPage() {
 
       {isLoadingTopics && (
         <Box display="flex" justifyContent="center" alignItems="center" sx={{ my: 3 }}>
-          <CircularProgress sx={{ color: PHYSICS_ACCENT_COLOR }} />
-          <Typography sx={{ ml: 2 }}>Loading Physics Topics...</Typography>
+          <CircularProgress sx={{color: PHYSICS_ACCENT_COLOR}}/>
+          <Typography sx={{ml: 2}}>Loading Physics Topics...</Typography>
         </Box>
       )}
       {fetchTopicsError && (
@@ -161,7 +167,8 @@ function PhysicsPage() {
               <Box key={topic.id} sx={{ mb: 2 }}>
                 <TopicCard
                   topic={topic}
-                  onStartQuiz={() => handleOpenModal(topic)}
+                  onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   accentColor={PHYSICS_ACCENT_COLOR}
                   subjectBasePath="physics"
                 />
@@ -173,12 +180,12 @@ function PhysicsPage() {
         </Box>
       )}
 
-      {selectedTopic && (
+      {selectedTopicForQuiz && (
         <QuizSettingsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={handleCloseQuizModal}
           onSubmit={handleStartQuizWithSettings}
-          topicName={selectedTopic.name}
+          topicName={selectedTopicForQuiz.name}
           accentColor={PHYSICS_ACCENT_COLOR}
         />
       )}

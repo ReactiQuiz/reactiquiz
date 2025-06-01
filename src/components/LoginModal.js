@@ -63,7 +63,6 @@ function LoginModal({
     if (!/\S+@\S+\.\S+/.test(recoveryEmail)) { setLocalFormError('Please enter a valid email address.'); return; }
 
     setIsSubmitting(true);
-    const result = await onLogin(identifier.trim(), recoveryEmail.trim()); // onLogin is from App.js
     setIsSubmitting(false);
     // App.js handles setting currentUser and closing modal on success, or setting authError/deviceChangeInfo
   };
