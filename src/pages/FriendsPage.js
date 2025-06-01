@@ -3,8 +3,9 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Box, Typography, Paper, TextField, Button, Alert, CircularProgress,
   List, ListItem, ListItemText, IconButton, Divider, Grid, Stack, useTheme,
-  Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem
+  Tooltip 
 } from '@mui/material';
+import { darken } from '@mui/material/styles'; // Ensure darken is imported
 import SearchIcon from '@mui/icons-material/Search';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import CheckIcon from '@mui/icons-material/Check';
@@ -12,21 +13,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import GroupIcon from '@mui/icons-material/Group';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove'; 
-import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; 
+
 import { useNavigate } from 'react-router-dom';
 
 import apiClient from '../api/axiosInstance';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog'; 
-import QuizSettingsModal from '../components/QuizSettingsModal'; 
 
-// const logApi = console.log; // Simple way to define it for frontend if you were using it
-                            // Or just use console.log directly as below
 
 function FriendsPage({ currentUser }) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const FRIENDS_ACCENT_COLOR = theme.palette.friendsAccent?.main || theme.palette.info.main; // Use new accent
 
-  // ... (existing states for friend search, pending requests, friends list)
   const [friendSearchTerm, setFriendSearchTerm] = useState('');
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [isSearchingUsers, setIsSearchingUsers] = useState(false);
@@ -46,16 +44,6 @@ function FriendsPage({ currentUser }) {
   const [unfriendConfirmationOpen, setUnfriendConfirmationOpen] = useState(false);
   const [userToUnfriend, setUserToUnfriend] = useState(null); 
   const [unfriendError, setUnfriendError] = useState('');
-
-  // --- NEW: Challenge States ---
-  const [challengeModalOpen, setChallengeModalOpen] = useState(false);
-  const [userToChallenge, setUserToChallenge] = useState(null); 
-  const [challengeTopics, setChallengeTopics] = useState([]);
-  const [isLoadingChallengeTopics, setIsLoadingChallengeTopics] = useState(false);
-  const [selectedChallengeTopic, setSelectedChallengeTopic] = useState(''); 
-  const [challengeCreateError, setChallengeCreateError] = useState('');
-  const [challengeCreateSuccess, setChallengeCreateSuccess] = useState('');
-
 
   const fetchPendingRequests = useCallback(async () => { 
     if (!currentUser || !currentUser.token) return;
@@ -89,27 +77,6 @@ function FriendsPage({ currentUser }) {
     }
   }, [currentUser]);
 
-  const fetchAllTopicsForChallenge = useCallback(async () => {
-    if (challengeTopics.length > 0) return; 
-    setIsLoadingChallengeTopics(true);
-    try {
-        const subjects = ['physics', 'chemistry', 'biology', 'mathematics', 'gk'];
-        let allTopics = [];
-        for (const subject of subjects) {
-            const response = await apiClient.get(`/api/topics/${subject}`);
-            if (response.data && Array.isArray(response.data)) {
-                allTopics = allTopics.concat(response.data.map(t => ({...t, subject })));
-            }
-        }
-        setChallengeTopics(allTopics);
-    } catch (err) {
-        console.error("Error fetching topics for challenge:", err);
-        setChallengeCreateError("Could not load topics for challenge.");
-    } finally {
-        setIsLoadingChallengeTopics(false);
-    }
-  }, [challengeTopics.length]);
-
 
   useEffect(() => {
     if (currentUser !== undefined) { 
@@ -120,12 +87,6 @@ function FriendsPage({ currentUser }) {
         }
     }
   }, [currentUser, fetchPendingRequests, fetchFriendsList]);
-
-  useEffect(() => {
-    if (challengeModalOpen && challengeTopics.length === 0) {
-        fetchAllTopicsForChallenge();
-    }
-  }, [challengeModalOpen, challengeTopics.length, fetchAllTopicsForChallenge]);
 
 
   const handleSearchUsers = async () => { 
@@ -200,62 +161,10 @@ function FriendsPage({ currentUser }) {
     }
   };
 
-  const handleOpenChallengeModal = (friend) => {
-    setUserToChallenge(friend);
-    setChallengeModalOpen(true);
-    setSelectedChallengeTopic(''); 
-    setChallengeCreateError('');
-    setChallengeCreateSuccess('');
-  };
-
-  const handleCloseChallengeModal = () => {
-    setChallengeModalOpen(false);
-    setUserToChallenge(null);
-  };
-
-  const handleCreateChallenge = async (settings) => {
-    if (!userToChallenge || !selectedChallengeTopic || !settings.difficulty || !settings.numQuestions) {
-        setChallengeCreateError("Missing challenge parameters. Please select topic, difficulty, and number of questions.");
-        return;
-    }
-    setChallengeCreateError('');
-    setChallengeCreateSuccess('');
-
-    const topicDetails = challengeTopics.find(t => t.id === selectedChallengeTopic);
-    if (!topicDetails) {
-        setChallengeCreateError("Selected topic details not found.");
-        return;
-    }
-
-    try {
-        const payload = {
-            challengedUsername: userToChallenge.friendUsername,
-            topicId: selectedChallengeTopic,
-            topicName: topicDetails.name,
-            difficulty: settings.difficulty,
-            numQuestions: settings.numQuestions,
-            quizClass: topicDetails.class || null, 
-            subject: topicDetails.subject 
-        };
-        // console.log("Sending challenge with payload:", payload); // Replaced logApi
-        await apiClient.post('/api/challenges', payload, {
-            headers: { Authorization: `Bearer ${currentUser.token}` }
-        });
-        setChallengeCreateSuccess(`Challenge sent to ${userToChallenge.friendUsername}!`);
-        setTimeout(() => {
-            handleCloseChallengeModal();
-        }, 2000);
-    } catch (err) {
-        console.error("Error creating challenge:", err.response || err);
-        setChallengeCreateError(err.response?.data?.message || "Failed to send challenge.");
-    }
-  };
-
-
   if (!authStatusResolved) { 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}>
-            <CircularProgress />
+            <CircularProgress sx={{ color: FRIENDS_ACCENT_COLOR }} />
         </Box>
     );
   }
@@ -264,7 +173,7 @@ function FriendsPage({ currentUser }) {
         <Box sx={{ p: 3, textAlign: 'center', maxWidth: '600px', margin: 'auto', mt: 4 }}>
             <Paper elevation={3} sx={{p:3}}>
                 <Typography variant="h6">Please log in to manage friends.</Typography>
-                <Button variant="contained" onClick={() => navigate('/account')} sx={{mt: 2}}>Go to Login</Button>
+                <Button variant="contained" onClick={() => navigate('/account')} sx={{mt: 2, backgroundColor: FRIENDS_ACCENT_COLOR, '&:hover': {backgroundColor: darken(FRIENDS_ACCENT_COLOR, 0.2)}}}>Go to Login</Button>
             </Paper>
         </Box>
     );
@@ -274,17 +183,17 @@ function FriendsPage({ currentUser }) {
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '800px', margin: 'auto', mt: 2 }}>
       <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h4" gutterBottom sx={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>
-                <GroupIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em' }} />
+            <Typography variant="h4" gutterBottom sx={{ color: FRIENDS_ACCENT_COLOR, fontWeight: 'bold' }}>
+                <GroupIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em', color: FRIENDS_ACCENT_COLOR }} />
                 Manage Friends
             </Typography>
-            <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/account')}>
+            <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/account')} sx={{color: FRIENDS_ACCENT_COLOR}}>
                 My Profile
             </Button>
         </Stack>
 
         <Box sx={{ mb: 4 }}>
-            <Typography variant="h6" gutterBottom>Find Friends</Typography>
+            <Typography variant="h6" gutterBottom sx={{ color: FRIENDS_ACCENT_COLOR, opacity: 0.85 }}>Find Friends</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                 <TextField
                     fullWidth
@@ -295,7 +204,7 @@ function FriendsPage({ currentUser }) {
                     onChange={(e) => {setFriendSearchTerm(e.target.value); setFriendSearchError('');}}
                     onKeyPress={(e) => { if (e.key === 'Enter') handleSearchUsers(); }}
                 />
-                <Button onClick={handleSearchUsers} variant="contained" disabled={isSearchingUsers} startIcon={<SearchIcon />}>
+                <Button onClick={handleSearchUsers} variant="contained" disabled={isSearchingUsers} startIcon={<SearchIcon />} sx={{backgroundColor: FRIENDS_ACCENT_COLOR, '&:hover': {backgroundColor: darken(FRIENDS_ACCENT_COLOR, 0.2)}}}>
                     {isSearchingUsers ? <CircularProgress size={20} color="inherit"/> : "Search"}
                 </Button>
             </Box>
@@ -305,7 +214,7 @@ function FriendsPage({ currentUser }) {
                     {searchedUsers.map(user => {
                         let buttonText = 'Add Friend';
                         let buttonDisabled = false;
-                        let buttonColor = "secondary";
+                        let buttonColor = "secondary"; // Using secondary as a default that can be overridden
                         let currentStatus = friendRequestStatus[user.identifier];
 
                         if (currentStatus === 'sending') {
@@ -316,12 +225,12 @@ function FriendsPage({ currentUser }) {
                             buttonDisabled = true;
                             buttonColor = "success";
                         } else if (typeof currentStatus === 'string' && 
-                                   currentStatus !== 'error' && // Exclude generic 'error'
-                                   currentStatus !== 'Add Friend' && // Exclude default if not set
-                                   currentStatus) { // Catch other API messages like "Already friends"
-                            buttonText = currentStatus; // Display the message from API
+                                   currentStatus !== 'error' && 
+                                   currentStatus !== 'Add Friend' && 
+                                   currentStatus) { 
+                            buttonText = currentStatus; 
                             buttonDisabled = true;
-                            buttonColor = "info"; // Or another color like 'default'
+                            buttonColor = "info"; 
                         }
 
                         return (
@@ -337,7 +246,7 @@ function FriendsPage({ currentUser }) {
                                                 onClick={() => handleSendFriendRequest(user.identifier)}
                                                 disabled={buttonDisabled}
                                                 startIcon={currentStatus === 'sending' ? <CircularProgress size={16}/> : <PersonAddAlt1Icon />}
-                                                sx={{minWidth: '120px', textTransform: 'none'}} // Allow longer text
+                                                sx={{minWidth: '120px', textTransform: 'none'}} 
                                             >
                                                 {buttonText}
                                             </Button>
@@ -356,8 +265,8 @@ function FriendsPage({ currentUser }) {
         <Divider sx={{ my: 3 }} />
 
         <Box sx={{ mb: 4 }}>
-            <Typography variant="h6" gutterBottom>Pending Friend Requests</Typography>
-            {isLoadingPendingRequests && <CircularProgress size={24} />}
+            <Typography variant="h6" gutterBottom sx={{ color: FRIENDS_ACCENT_COLOR, opacity: 0.85 }}>Pending Friend Requests</Typography>
+            {isLoadingPendingRequests && <CircularProgress size={24} sx={{ color: FRIENDS_ACCENT_COLOR }} />}
             {pendingRequestError && <Alert severity="error" sx={{mb:1}}>{pendingRequestError}</Alert>}
             {!isLoadingPendingRequests && pendingRequests.length === 0 && !pendingRequestError && (
                 <Typography color="text.secondary">No pending friend requests.</Typography>
@@ -391,8 +300,8 @@ function FriendsPage({ currentUser }) {
         <Divider sx={{ my: 3 }} />
         
         <Box>
-            <Typography variant="h6" gutterBottom>My Friends</Typography>
-            {isLoadingFriendsList && <CircularProgress size={24} />}
+            <Typography variant="h6" gutterBottom sx={{ color: FRIENDS_ACCENT_COLOR, opacity: 0.85 }}>My Friends</Typography>
+            {isLoadingFriendsList && <CircularProgress size={24} sx={{ color: FRIENDS_ACCENT_COLOR }}/>}
             {friendsListError && <Alert severity="error" sx={{mb:1}}>{friendsListError}</Alert>}
             {!isLoadingFriendsList && friendsList.length === 0 && !friendsListError && (
                 <Typography color="text.secondary">You currently have no friends. Find some above!</Typography>
@@ -404,11 +313,6 @@ function FriendsPage({ currentUser }) {
                             key={friend.friendId}
                             secondaryAction={
                                 <Stack direction="row" spacing={0.5}>
-                                    <Tooltip title="Challenge Friend">
-                                        <IconButton size="small" sx={{color: theme.palette.secondary.main }} onClick={() => handleOpenChallengeModal(friend)}>
-                                            <SportsKabaddiIcon />
-                                        </IconButton>
-                                    </Tooltip>
                                     <Tooltip title="Unfriend">
                                         <IconButton size="small" color="error" onClick={() => openUnfriendConfirmation(friend)} aria-label={`unfriend ${friend.friendUsername}`}>
                                             <PersonRemoveIcon />
@@ -428,51 +332,10 @@ function FriendsPage({ currentUser }) {
         open={unfriendConfirmationOpen}
         onClose={() => setUnfriendConfirmationOpen(false)}
         onConfirm={handleConfirmUnfriend}
-        title="Confirm Unfriend" // More specific title
+        title="Confirm Unfriend" 
         message={`Are you sure you want to unfriend ${userToUnfriend?.friendUsername}? This action cannot be undone.`}
         error={unfriendError}
       />
-
-      {userToChallenge && challengeModalOpen && (
-        <Dialog open={challengeModalOpen} onClose={handleCloseChallengeModal} PaperProps={{sx: {minWidth: '320px', maxWidth:'500px'}}}>
-            <DialogTitle sx={{backgroundColor: theme.palette.secondary.main, color: theme.palette.getContrastText(theme.palette.secondary.main)}}>
-                Challenge {userToChallenge.friendUsername}
-            </DialogTitle>
-            <DialogContent sx={{pt: '20px !important'}}>
-                <Typography gutterBottom>Select a topic for your challenge:</Typography>
-                {isLoadingChallengeTopics ? <CircularProgress /> : (
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel id="challenge-topic-select-label">Topic</InputLabel>
-                        <Select
-                            labelId="challenge-topic-select-label"
-                            value={selectedChallengeTopic}
-                            label="Topic"
-                            onChange={(e) => setSelectedChallengeTopic(e.target.value)}
-                            MenuProps={{ PaperProps: { sx: { backgroundColor: theme.palette.background.paper } } }}
-                        >
-                            <MenuItem value=""><em>-- Select Topic --</em></MenuItem>
-                            {challengeTopics.map((topic) => (
-                                <MenuItem key={topic.id} value={topic.id}>
-                                    {topic.name} ({topic.subject}, Class {topic.class || 'Any'})
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                )}
-                <QuizSettingsModal 
-                    open={true} 
-                    onClose={handleCloseChallengeModal} // Pass the main dialog's closer
-                    onSubmit={handleCreateChallenge} // This is where settings are passed
-                    topicName={`${challengeTopics.find(t => t.id === selectedChallengeTopic)?.name || 'Selected Topic'}`}
-                    accentColor={theme.palette.secondary.main}
-                    isChallengeMode={true} 
-                />
-                {challengeCreateError && <Alert severity="error" sx={{mt:2}}>{challengeCreateError}</Alert>}
-                {challengeCreateSuccess && <Alert severity="success" sx={{mt:2}}>{challengeCreateSuccess}</Alert>}
-            </DialogContent>
-            {/* Actions are now part of the nested QuizSettingsModal */}
-        </Dialog>
-      )}
     </Box>
   );
 }

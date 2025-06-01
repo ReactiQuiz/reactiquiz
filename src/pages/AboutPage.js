@@ -6,7 +6,7 @@ import {
     DialogContentText, DialogActions, Button, TextField, Alert,
     CircularProgress
 } from '@mui/material';
-import { useTheme, alpha, darken } from '@mui/material/styles'; // <<< IMPORT darken
+import { useTheme, alpha, darken } from '@mui/material/styles'; 
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
@@ -28,7 +28,8 @@ const YOUR_DISCORD_INVITE_OR_SERVER = "https://discord.gg/w3fuaTPadQ";
 
 function AboutPage() {
     const theme = useTheme();
-    const mathematicsAccentColor = theme.palette.mathematicsAccent?.main || theme.palette.warning.main;
+    // Use the new aboutAccent or fallback to warning color
+    const ABOUT_US_ACCENT_COLOR = theme.palette.aboutAccent?.main || theme.palette.warning.main;
 
     const [openContactDialog, setOpenContactDialog] = useState(false);
     const [dialogContent, setDialogContent] = useState('');
@@ -76,8 +77,8 @@ function AboutPage() {
 
     return (
         <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}>
-            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-                <Typography variant="h3" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', color: theme.palette.primary.main, mb: 3 }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, borderTop: `5px solid ${ABOUT_US_ACCENT_COLOR}` }}>
+                <Typography variant="h3" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', color: ABOUT_US_ACCENT_COLOR, mb: 3 }}>
                     About ReactiQuiz
                 </Typography>
                 <Typography variant="h6" paragraph sx={{ textAlign: 'center', color: theme.palette.text.secondary, fontStyle: 'italic' }}>
@@ -93,8 +94,8 @@ function AboutPage() {
 
                 <Divider sx={{ my: 4 }} />
 
-                <Box sx={{ border: `2px solid ${mathematicsAccentColor}`, borderRadius: 2, p: { xs: 2, sm: 3 }, backgroundColor: alpha(mathematicsAccentColor, 0.05) }}>
-                    <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 600, color: mathematicsAccentColor, mb: 3 }}>
+                <Box sx={{ border: `2px solid ${ABOUT_US_ACCENT_COLOR}`, borderRadius: 2, p: { xs: 2, sm: 3 }, backgroundColor: alpha(ABOUT_US_ACCENT_COLOR, 0.05) }}>
+                    <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 600, color: ABOUT_US_ACCENT_COLOR, mb: 3 }}>
                         Meet the Creator
                     </Typography>
 
@@ -103,7 +104,7 @@ function AboutPage() {
                             <Avatar
                                 alt={YOUR_NAME}
                                 src={YOUR_PROFILE_IMAGE_URL}
-                                sx={{ width: 150, height: 150, border: `3px solid ${mathematicsAccentColor}` }}
+                                sx={{ width: 150, height: 150, border: `3px solid ${ABOUT_US_ACCENT_COLOR}` }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={8}>
@@ -118,30 +119,30 @@ function AboutPage() {
                             </Typography>
                             <Box sx={{ mt: 1.5, display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
                                 <Tooltip title="Send Email">
-                                    <IconButton onClick={() => handleOpenContactDialog('Email Address', YOUR_EMAIL)} sx={{ color: mathematicsAccentColor, '&:hover': { backgroundColor: alpha(mathematicsAccentColor, 0.1) } }}>
+                                    <IconButton onClick={() => handleOpenContactDialog('Email Address', YOUR_EMAIL)} sx={{ color: ABOUT_US_ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ABOUT_US_ACCENT_COLOR, 0.1) } }}>
                                         <EmailIcon />
                                     </IconButton>
                                 </Tooltip>
                                 {YOUR_PHONE && (
                                     <Tooltip title="View Phone Number">
-                                        <IconButton onClick={() => handleOpenContactDialog('Phone Number', YOUR_PHONE)} sx={{ color: mathematicsAccentColor, '&:hover': { backgroundColor: alpha(mathematicsAccentColor, 0.1) } }}>
+                                        <IconButton onClick={() => handleOpenContactDialog('Phone Number', YOUR_PHONE)} sx={{ color: ABOUT_US_ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ABOUT_US_ACCENT_COLOR, 0.1) } }}>
                                             <PhoneIcon />
                                         </IconButton>
                                     </Tooltip>
                                 )}
                                 <Tooltip title="LinkedIn Profile">
-                                    <Link href={YOUR_LINKEDIN_URL} target="_blank" rel="noopener noreferrer" sx={{ color: mathematicsAccentColor, '&:hover': { backgroundColor: alpha(mathematicsAccentColor, 0.1) }, display: 'inline-flex', borderRadius: '50%', p: '8px' }}>
+                                    <Link href={YOUR_LINKEDIN_URL} target="_blank" rel="noopener noreferrer" sx={{ color: ABOUT_US_ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ABOUT_US_ACCENT_COLOR, 0.1) }, display: 'inline-flex', borderRadius: '50%', p: '8px' }}>
                                         <LinkedInIcon />
                                     </Link>
                                 </Tooltip>
                                 <Tooltip title="GitHub Profile">
-                                    <Link href={YOUR_GITHUB_URL} target="_blank" rel="noopener noreferrer" sx={{ color: mathematicsAccentColor, '&:hover': { backgroundColor: alpha(mathematicsAccentColor, 0.1) }, display: 'inline-flex', borderRadius: '50%', p: '8px' }}>
+                                    <Link href={YOUR_GITHUB_URL} target="_blank" rel="noopener noreferrer" sx={{ color: ABOUT_US_ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ABOUT_US_ACCENT_COLOR, 0.1) }, display: 'inline-flex', borderRadius: '50%', p: '8px' }}>
                                         <GitHubIcon />
                                     </Link>
                                 </Tooltip>
                                 {YOUR_DISCORD_INVITE_OR_SERVER && (
                                     <Tooltip title="Join Discord Server">
-                                        <Link href={YOUR_DISCORD_INVITE_OR_SERVER} target="_blank" rel="noopener noreferrer" sx={{ color: mathematicsAccentColor, '&:hover': { backgroundColor: alpha(mathematicsAccentColor, 0.1) }, display: 'inline-flex', borderRadius: '50%', p: '8px', fontSize: '1.25rem' }}>
+                                        <Link href={YOUR_DISCORD_INVITE_OR_SERVER} target="_blank" rel="noopener noreferrer" sx={{ color: ABOUT_US_ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ABOUT_US_ACCENT_COLOR, 0.1) }, display: 'inline-flex', borderRadius: '50%', p: '8px', fontSize: '1.25rem' }}>
                                             <FontAwesomeIcon icon={faDiscord} />
                                         </Link>
                                     </Tooltip>
@@ -153,7 +154,7 @@ function AboutPage() {
 
                 <Divider sx={{ my: 4 }} />
 
-                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'medium', color: theme.palette.primary.light }}>
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'medium', color: ABOUT_US_ACCENT_COLOR, opacity: 0.85 }}>
                     Our Mission
                 </Typography>
                 <Typography variant="body1" paragraph>
@@ -162,7 +163,7 @@ function AboutPage() {
 
                 <Divider sx={{ my: 4 }} />
 
-                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'medium', color: theme.palette.primary.light, mt: 3 }}>
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'medium', color: ABOUT_US_ACCENT_COLOR, opacity: 0.85, mt: 3 }}>
                     Contact Us
                 </Typography>
                 <Typography variant="body1" paragraph>
@@ -205,7 +206,7 @@ function AboutPage() {
                         onChange={(e) => setFormMessage(e.target.value)}
                     />
                     {formStatus.message && (
-                        <Alert severity={formStatus.type === 'success' ? 'success' : 'error'} sx={{ mt: 2 }}> {/* Ensure severity is valid */}
+                        <Alert severity={formStatus.type === 'success' ? 'success' : 'error'} sx={{ mt: 2 }}> 
                             {formStatus.message}
                         </Alert>
                     )}
@@ -214,7 +215,7 @@ function AboutPage() {
                         fullWidth
                         variant="contained"
                         disabled={isSubmittingForm}
-                        sx={{ mt: 3, mb: 2, backgroundColor: theme.palette.primary.main, '&:hover': { backgroundColor: darken(theme.palette.primary.main, 0.15) } }} // Fixed darken here
+                        sx={{ mt: 3, mb: 2, backgroundColor: ABOUT_US_ACCENT_COLOR, color: theme.palette.getContrastText(ABOUT_US_ACCENT_COLOR), '&:hover': { backgroundColor: darken(ABOUT_US_ACCENT_COLOR, 0.15) } }} 
                         startIcon={isSubmittingForm ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
                     >
                         {isSubmittingForm ? 'Sending...' : 'Send Message'}
@@ -223,14 +224,14 @@ function AboutPage() {
             </Paper>
 
             <Dialog open={openContactDialog} onClose={handleCloseContactDialog}>
-                <DialogTitle>{dialogTitle}</DialogTitle>
+                <DialogTitle sx={{color: ABOUT_US_ACCENT_COLOR}}>{dialogTitle}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ textAlign: 'center', fontSize: '1.1rem', wordBreak: 'break-all' }}>
                         {dialogContent}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseContactDialog} color="primary">
+                    <Button onClick={handleCloseContactDialog} sx={{color: ABOUT_US_ACCENT_COLOR}}>
                         Close
                     </Button>
                 </DialogActions>

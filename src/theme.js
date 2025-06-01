@@ -1,5 +1,4 @@
-import { createTheme } from '@mui/material/styles';
-import { lighten } from '@mui/material/styles';
+import { createTheme, lighten, darken } from '@mui/material/styles'; // Ensure darken is imported
 
 export const subjectAccentColors = {
   chemistry: '#f44336',
@@ -17,7 +16,37 @@ export const darkTheme = createTheme({
       main: subjectAccentColors.default,
     },
     secondary: {
-      main: '#f48fb1',
+      main: '#f48fb1', 
+    },
+    challengesAccent: { 
+      main: '#9575CD', // Deep Purple 300
+      light: lighten('#9575CD', 0.2),
+      dark: darken('#9575CD', 0.15), 
+      contrastText: '#ffffff',
+    },
+    friendsAccent: { 
+      main: '#64B5F6', // Blue 300
+      light: lighten('#64B5F6', 0.2),
+      dark: darken('#64B5F6', 0.15),
+      contrastText: '#000000',
+    },
+    accountAccent: { 
+      main: '#81C784', // Green 300
+      light: lighten('#81C784', 0.2),
+      dark: darken('#81C784', 0.15),
+      contrastText: '#000000',
+    },
+    aboutAccent: { // New accent for About Us Page
+      main: '#FFA000', // Amber 700
+      light: lighten('#FFA000', 0.2),
+      dark: darken('#FFA000', 0.15),
+      contrastText: '#000000',
+    },
+    resultsAccent: { // New accent for Results Page
+      main: '#4DB6AC', // Teal 300
+      light: lighten('#4DB6AC', 0.2),
+      dark: darken('#4DB6AC', 0.15),
+      contrastText: '#000000',
     },
     background: {
       default: '#121212',
@@ -30,31 +59,31 @@ export const darkTheme = createTheme({
     chemistryAccent: {
       main: subjectAccentColors.chemistry,
       light: lighten(subjectAccentColors.chemistry, 0.2),
-      dark: lighten(subjectAccentColors.chemistry, 0.1),
+      dark: darken(subjectAccentColors.chemistry, 0.1), 
       contrastText: '#ffffff',
     },
     physicsAccent: {
       main: subjectAccentColors.physics,
       light: lighten(subjectAccentColors.physics, 0.2),
-      dark: lighten(subjectAccentColors.physics, 0.1),
+      dark: darken(subjectAccentColors.physics, 0.1), 
       contrastText: '#ffffff',
     },
     mathematicsAccent: {
       main: subjectAccentColors.mathematics,
       light: lighten(subjectAccentColors.mathematics, 0.2),
-      dark: lighten(subjectAccentColors.mathematics, 0.1),
+      dark: darken(subjectAccentColors.mathematics, 0.1), 
       contrastText: '#000000',
     },
     biologyAccent: {
       main: subjectAccentColors.biology,
       light: lighten(subjectAccentColors.biology, 0.2),
-      dark: lighten(subjectAccentColors.biology, 0.1),
+      dark: darken(subjectAccentColors.biology, 0.1), 
       contrastText: '#ffffff',
     },
     gkAccent: {
       main: subjectAccentColors.gk,
       light: lighten(subjectAccentColors.gk, 0.2),
-      dark: lighten(subjectAccentColors.gk, 0.1),
+      dark: darken(subjectAccentColors.gk, 0.1), 
       contrastText: '#000000',
     },
     error: {

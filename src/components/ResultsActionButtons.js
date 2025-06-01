@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HistoryIcon from '@mui/icons-material/History'; 
-import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Import
+// import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Removed
 
 function ResultsActionButtons({
     onBackToList,
@@ -18,9 +18,9 @@ function ResultsActionButtons({
     showDeleteButton,
     onDeleteClick,
     deleteDisabled,
-    onChallengeFriend, // New prop
-    showChallengeButton,  // New prop
-    currentUser
+    // onChallengeFriend, // Removed
+    // showChallengeButton,  // Removed
+    // currentUser // Removed
 }) {
     const theme = useTheme();
     const effectiveAccentColor = accentColor || theme.palette.primary.main;
@@ -42,22 +42,7 @@ function ResultsActionButtons({
                     }}
                 > View Full History </Button>
             )}
-            {/* Challenge Friend Button */}
-            {showChallengeButton && onChallengeFriend && currentUser && ( // Added currentUser check for safety
-                 <Button 
-                    variant="contained" 
-                    startIcon={<SportsKabaddiIcon />} 
-                    onClick={onChallengeFriend}
-                    sx={{ 
-                        backgroundColor: theme.palette.secondary.main, 
-                        color: theme.palette.getContrastText(theme.palette.secondary.main),
-                        '&:hover': { backgroundColor: darken(theme.palette.secondary.main, 0.2) },
-                        minWidth: {xs: '100%', sm:'180px'}
-                    }}
-                >
-                    Challenge a Friend
-                </Button>
-            )}
+            {/* Challenge Friend Button Removed */}
             <Button variant="outlined" startIcon={<HomeIcon />} onClick={onNavigateHome}
                 sx={{
                     borderColor: (showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main,
@@ -69,7 +54,7 @@ function ResultsActionButtons({
                     minWidth: { xs: '100%', sm: '180px' }
                 }}
             >
-                { (showBackToListButton || showViewHistoryButton || showChallengeButton) ? "Home" : "Back to Home"}
+                { (showBackToListButton || showViewHistoryButton /*|| showChallengeButton removed*/) ? "Home" : "Back to Home"}
             </Button>
             {showDeleteButton && onDeleteClick && (
                 <Button
@@ -86,12 +71,5 @@ function ResultsActionButtons({
         </Box>
     );
 }
-// Add currentUser prop if not already passed to ResultsActionButtons where showChallengeButton is used
-// For now, assuming ResultsPage passes it if needed implicitly through its own currentUser prop.
-// A better way might be to pass currentUser to ResultsActionButtons directly.
-// For this example, let's assume currentUser is available in the scope where ResultsActionButtons is called.
-// However, for clarity, it's better to pass props explicitly.
-// Let's assume `ResultsPage` will pass `currentUser` if it uses `showChallengeButton`.
-// For now, the logic `showChallengeButton && onChallengeFriend && currentUser` implies currentUser should be available.
 
 export default ResultsActionButtons;

@@ -12,7 +12,7 @@ function ChallengeSetupModal({
   open,
   onClose,
   currentUser,
-  quizDataForChallenge, // { topicId, topicName, difficulty, numQuestions, quizClass, questionIds (array of strings) }
+  quizDataForChallenge, // Expected: { topicId, topicName, difficulty, numQuestions, quizClass, questionIds (array of strings), subject }
   accentColor
 }) {
   const theme = useTheme();
@@ -23,7 +23,7 @@ function ChallengeSetupModal({
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const effectiveAccentColor = accentColor || theme.palette.secondary.main; // Challenges often use secondary
+  const effectiveAccentColor = accentColor || theme.palette.secondary.main;
 
   const fetchFriends = useCallback(async () => {
     if (!currentUser?.token) return;
@@ -45,7 +45,7 @@ function ChallengeSetupModal({
   useEffect(() => {
     if (open) {
       fetchFriends();
-      setSelectedFriendId('');
+      setSelectedFriendId(''); 
       setError('');
       setSuccessMessage('');
       setIsSubmitting(false);
@@ -57,8 +57,8 @@ function ChallengeSetupModal({
       setError('Please select a friend to challenge.');
       return;
     }
-    if (!quizDataForChallenge || !quizDataForChallenge.questionIds) {
-        setError('Quiz data for challenge is incomplete.');
+    if (!quizDataForChallenge || !quizDataForChallenge.questionIds || quizDataForChallenge.questionIds.length === 0 || !quizDataForChallenge.subject) {
+        setError('Quiz data for challenge is incomplete or missing subject.');
         return;
     }
     
@@ -72,21 +72,21 @@ function ChallengeSetupModal({
         topic_id: quizDataForChallenge.topicId,
         topic_name: quizDataForChallenge.topicName,
         difficulty: quizDataForChallenge.difficulty,
-        num_questions: quizDataForChallenge.numQuestions,
+        num_questions: quizDataForChallenge.questionIds.length, // Use actual length of questionIds
         quiz_class: quizDataForChallenge.quizClass || null,
-        question_ids_json: JSON.stringify(quizDataForChallenge.questionIds), // Send the exact question IDs
-        // subject will be derived by backend or could be passed if available in quizDataForChallenge
+        question_ids_json: JSON.stringify(quizDataForChallenge.questionIds),
+        subject: quizDataForChallenge.subject 
       };
       const response = await apiClient.post('/api/challenges', payload, {
         headers: { Authorization: `Bearer ${currentUser.token}` }
       });
       setSuccessMessage(response.data.message || 'Challenge sent successfully!');
       setTimeout(() => {
-        onClose(); // Close modal on success
+        onClose(); 
       }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to send challenge. They might already be in a challenge or an error occurred.');
-      console.error("Error sending challenge:", err);
+      console.error("Error sending challenge:", err.response || err);
     } finally {
       setIsSubmitting(false);
     }
@@ -98,21 +98,24 @@ function ChallengeSetupModal({
         Challenge a Friend
       </DialogTitle>
       <DialogContent sx={{ pt: '20px !important', display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Typography variant="body1">
-          You are about to challenge a friend with the quiz: <br/>
-          <strong>Topic:</strong> {quizDataForChallenge?.topicName || 'N/A'} <br/>
-          <strong>Difficulty:</strong> {quizDataForChallenge?.difficulty || 'N/A'} <br/>
-          <strong>Questions:</strong> {quizDataForChallenge?.numQuestions || 'N/A'}
-          {quizDataForChallenge?.quizClass && ` (Class: ${quizDataForChallenge.quizClass})`}
+        <Typography variant="body2" gutterBottom>
+          You are about to challenge a friend using the following quiz:
         </Typography>
+        <Box sx={{pl:1, borderLeft: `3px solid ${effectiveAccentColor}`, mb:1}}>
+            <Typography variant="body2"><strong>Topic:</strong> {quizDataForChallenge?.topicName || 'N/A'}</Typography>
+            <Typography variant="body2"><strong>Difficulty:</strong> {quizDataForChallenge?.difficulty || 'N/A'}</Typography>
+            <Typography variant="body2"><strong>Questions:</strong> {quizDataForChallenge?.questionIds?.length || 'N/A'}</Typography>
+            {quizDataForChallenge?.quizClass && <Typography variant="body2"><strong>Class:</strong> {quizDataForChallenge.quizClass}</Typography>}
+            {quizDataForChallenge?.subject && <Typography variant="body2"><strong>Subject:</strong> {quizDataForChallenge.subject}</Typography>}
+        </Box>
         
-        {isLoadingFriends ? <CircularProgress sx={{alignSelf: 'center'}} /> : (
+        {isLoadingFriends ? <CircularProgress sx={{alignSelf: 'center', color: effectiveAccentColor}} /> : (
           <FormControl fullWidth margin="normal" disabled={friendsList.length === 0}>
-            <InputLabel id="select-friend-label">Select Friend</InputLabel>
+            <InputLabel id="select-friend-label-challenge">Select Friend to Challenge</InputLabel>
             <Select
-              labelId="select-friend-label"
+              labelId="select-friend-label-challenge"
               value={selectedFriendId}
-              label="Select Friend"
+              label="Select Friend to Challenge"
               onChange={(e) => setSelectedFriendId(e.target.value)}
               MenuProps={{ PaperProps: { sx: { backgroundColor: theme.palette.background.paper } } }}
             >
@@ -123,7 +126,7 @@ function ChallengeSetupModal({
                 </MenuItem>
               ))}
             </Select>
-            {friendsList.length === 0 && !isLoadingFriends && <Typography variant="caption" color="text.secondary">You have no friends to challenge yet. Add friends from the 'Manage Friends' page.</Typography>}
+            {friendsList.length === 0 && !isLoadingFriends && <Typography variant="caption" color="text.secondary">You have no friends to challenge. Add friends from the 'Manage Friends' page.</Typography>}
           </FormControl>
         )}
 
