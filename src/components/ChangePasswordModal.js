@@ -22,7 +22,7 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
-  const effectiveAccentColor = theme.palette.secondary.main; // Or primary, depending on preference
+  const effectiveAccentColor = theme.palette.accountAccent?.main || theme.palette.success.main; 
 
   const handleClose = () => {
     setOldPassword('');
@@ -67,13 +67,12 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
         headers: { Authorization: `Bearer ${currentUser.token}` }
       });
       setSuccessMessage(response.data.message || 'Password changed successfully!');
-      // Optionally close modal after a delay or let user close it
       setTimeout(() => {
         handleClose();
       }, 2000); 
-    } catch (err) {
+    } catch (err) { // <<< ADDED CURLY BRACES HERE
       setError(err.response?.data?.message || 'Failed to change password. Please try again.');
-    } finally {
+    } finally { // <<< AND HERE
       setIsSubmitting(false);
     }
   };

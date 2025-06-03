@@ -3,7 +3,8 @@
 ReactiQuiz is a dynamic and engaging quiz application, **now with an enhanced user interface for a more intuitive experience,** designed to help users test and improve their knowledge across various subjects including Physics, Chemistry, Biology, Mathematics, General Knowledge, and specialized preparation for the Homi Bhabha Balvaidnyanik Spardha.
 
 **Live Frontend:** [https://sanskarsontakke.github.io/reactiquiz/](https://sanskarsontakke.github.io/reactiquiz/)
-**Live Backend API:** [still.working.on.it.com`]
+**Live Backend API:** [still.working.on.it.com`](still.working.on.it.com`)
+
 ## Features 🚀
 
 *   **Multiple Subjects:** Quizzes available for Physics, Chemistry, Biology, Mathematics, and General Knowledge.

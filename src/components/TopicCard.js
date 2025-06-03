@@ -2,10 +2,10 @@
 import {
   Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box, CardActions, Stack
 } from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School'; // For quiz
-import StyleIcon from '@mui/icons-material/Style'; // For flashcards
+import SchoolIcon from '@mui/icons-material/School';
+import StyleIcon from '@mui/icons-material/Style';
 
-function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) { // Added onStudyFlashcards
+function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) {
   const theme = useTheme();
   const { name, description, class: topicClass, genre: topicGenre } = topic;
 
@@ -22,7 +22,8 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) { // 
     },
     display: 'flex',
     flexDirection: 'column',
-    height: '100%'
+    height: '100%', // For equal height within a Grid row
+    width: '100%'   // Explicitly set width to fill parent Grid item
   };
 
   return (
@@ -68,7 +69,7 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) { // 
                     Start Quiz
                 </Button>
             )}
-            {onStudyFlashcards && ( // Conditionally render Flashcard button
+            {onStudyFlashcards && (
                  <Button
                     variant="outlined"
                     onClick={onStudyFlashcards}
