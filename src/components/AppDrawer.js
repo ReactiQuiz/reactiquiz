@@ -8,7 +8,6 @@ import {
 import {
   subjectAccentColors
 } from '../theme';
-import HomeIcon from '@mui/icons-material/Home';
 import ScienceIcon from '@mui/icons-material/Science';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import BoltIcon from '@mui/icons-material/Bolt';
@@ -18,8 +17,9 @@ import PublicIcon from '@mui/icons-material/Public';
 import PollIcon from '@mui/icons-material/Poll';
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import GroupIcon from '@mui/icons-material/Group'; 
+import GroupIcon from '@mui/icons-material/Group';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const drawerWidth = 250;
 
@@ -27,7 +27,7 @@ function AppDrawer({ open, onClose }) {
   const theme = useTheme();
 
   const drawerItems = [
-    { text: 'Home', icon: <HomeIcon />, path: '/', color: theme.palette.text.primary },
+    { text: 'Dashboard', icon: <DashboardIcon sx={{ color: theme.palette.dashboardAccent?.main || theme.palette.grey[500] }} />, path: '/dashboard', color: theme.palette.dashboardAccent?.main || theme.palette.grey[500] },
     { text: 'Chemistry', icon: <ScienceIcon sx={{ color: subjectAccentColors.chemistry }} />, path: '/chemistry', color: subjectAccentColors.chemistry },
     { text: 'Physics', icon: <BoltIcon sx={{ color: subjectAccentColors.physics }} />, path: '/physics', color: subjectAccentColors.physics },
     { text: 'Mathematics', icon: <CalculateIcon sx={{ color: subjectAccentColors.mathematics }} />, path: '/mathematics', color: subjectAccentColors.mathematics },
@@ -37,7 +37,7 @@ function AppDrawer({ open, onClose }) {
     { text: 'Results', icon: <PollIcon sx={{ color: theme.palette.resultsAccent?.main || theme.palette.info.main }}/>, path: '/results', color: theme.palette.resultsAccent?.main || theme.palette.info.main },
     { type: 'divider' },
     { text: 'My Account', icon: <AccountCircleIcon sx={{ color: theme.palette.accountAccent?.main || theme.palette.success.main }}/>, path: '/account', color: theme.palette.accountAccent?.main || theme.palette.success.main },
-    { text: 'Friends', icon: <GroupIcon sx={{ color: theme.palette.friendsAccent?.main || theme.palette.info.main }}/>, path: '/friends', color: theme.palette.friendsAccent?.main || theme.palette.info.main }, 
+    { text: 'Friends', icon: <GroupIcon sx={{ color: theme.palette.friendsAccent?.main || theme.palette.info.main }}/>, path: '/friends', color: theme.palette.friendsAccent?.main || theme.palette.info.main },
     { text: 'Challenges', icon: <SportsKabaddiIcon sx={{ color: theme.palette.challengesAccent?.main || theme.palette.secondary.main }}/>, path: '/challenges', color: theme.palette.challengesAccent?.main || theme.palette.secondary.main },
     { text: 'About Us', icon: <InfoIcon sx={{ color: theme.palette.aboutAccent?.main || theme.palette.warning.main }}/>, path: '/about', color: theme.palette.aboutAccent?.main || theme.palette.warning.main },
   ];

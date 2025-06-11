@@ -1,16 +1,23 @@
 // src/components/NavBar.js
-import { useState } from 'react'; // Import useState
+import { useState } from 'react';
 import {
     AppBar, Button, Toolbar, Typography, IconButton, Box, Avatar, Tooltip, Menu, MenuItem, ListItemIcon, ListItemText, Divider
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import VpnKeyIcon from '@mui/icons-material/VpnKey'; // For Change Password
+import VpnKeyIcon from '@mui/icons-material/VpnKey'; 
 import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
 
-function NavBar({ onIconButtonClick, currentUser, handleLogout, onOpenChangePasswordModal }) { // Added onOpenChangePasswordModal
+function NavBar({ 
+    onIconButtonClick, 
+    currentUser, 
+    handleLogout, 
+    onOpenChangePasswordModal,
+    showMenuIcon = true, // New prop with default
+    forceLoginButton = false // New prop with default
+}) {
     const navigate = useNavigate();
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -42,20 +49,26 @@ function NavBar({ onIconButtonClick, currentUser, handleLogout, onOpenChangePass
     return (
         <AppBar position="fixed">
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={onIconButtonClick}
-                    sx={{ mr: 2 }}
-                >
-                    <MenuIcon />
-                </IconButton>
+                {showMenuIcon && onIconButtonClick && ( // Conditionally render menu icon
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={onIconButtonClick}
+                        sx={{ mr: 2 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                )}
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     ReactiQuiz
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {currentUser ? (
+                    {forceLoginButton || !currentUser ? (
+                        <Button color="inherit" onClick={() => navigate('/account')} startIcon={<AccountCircleIcon />}>
+                            Login / Register
+                        </Button>
+                    ) : (
                         <>
                             <Tooltip title="Account options">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>
@@ -116,10 +129,6 @@ function NavBar({ onIconButtonClick, currentUser, handleLogout, onOpenChangePass
                                 </MenuItem>
                             </Menu>
                         </>
-                    ) : (
-                        <Button color="inherit" onClick={() => navigate('/account')} startIcon={<AccountCircleIcon />}>
-                            Login / Register
-                        </Button>
                     )}
                 </Box>
             </Toolbar>
@@ -127,4 +136,4 @@ function NavBar({ onIconButtonClick, currentUser, handleLogout, onOpenChangePass
     );
 }
 
-export default NavBar;  
+export default NavBar;

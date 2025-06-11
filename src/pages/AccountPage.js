@@ -37,7 +37,6 @@ function AccountPage({
   const ACCENT_COLOR = theme.palette.accountAccent?.main || theme.palette.primary.main;
 
   const [activeTab, setActiveTab] = useState(0);
-  // ... (other state variables remain the same as previous version) ...
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginOtp, setLoginOtp] = useState('');
@@ -67,7 +66,6 @@ function AccountPage({
 
 
   useEffect(() => {
-    // ... (useEffect content remains the same) ...
     setLocalPageError('');
     setLoginSuccessMessage('');
     setRegisterSuccessMessage('');
@@ -92,7 +90,6 @@ function AccountPage({
   const handleOpenChangeDetailsModal = () => setChangeDetailsModalOpen(true);
   const handleCloseChangeDetailsModal = () => setChangeDetailsModalOpen(false);
 
-  // ... (other handlers like handleTabChange, handleLoginSubmit, etc., remain the same) ...
   const handleTabChange = (event, newValue) => { setActiveTab(newValue); setShowLoginOtpInput(false); setLoginSuccessMessage(''); setRegisterSuccessMessage(''); setForgotPasswordStage('idle'); setForgotPasswordMessage({type: '', text: ''}); setLocalPageError(''); if(setAuthError) setAuthError(''); };
   const handleLoginSubmit = async (event) => { 
     event.preventDefault(); setLocalPageError(''); setLoginSuccessMessage(''); setShowLoginOtpInput(false); setLoginOtp('');
@@ -161,98 +158,113 @@ function AccountPage({
   if (currentUser) {
     return (
       <>
-        <Box sx={{ flexGrow: 1, p: { xs: 1, sm: 2 } }}>
-          <Grid container spacing={{ xs: 2, sm: 3 }}>
-            {/* Sidebar for User Info */}
-            <Grid item xs={12} md={6}> {/* CHANGED lg={4} to md={6} */}
-              <Paper elevation={3} sx={{ p: {xs: 1.5, sm: 2, md: 2.5}, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
-                <Avatar
-                  sx={{
-                    width: { xs: 100, sm: 130, md: 160 },
-                    height: { xs: 100, sm: 130, md: 160 },
-                    mb: 1.5,
-                    fontSize: { xs: '3rem', sm: '4rem', md: '4.5rem' },
-                    bgcolor: ACCENT_COLOR,
-                    color: theme.palette.getContrastText(ACCENT_COLOR)
-                  }}
-                  src={currentUser.profileImageUrl || ''}
-                  alt={currentUser.name ? currentUser.name.charAt(0).toUpperCase() : ''}
-                >
-                  {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : <AccountCircleIcon sx={{fontSize: 'inherit'}}/>}
-                </Avatar>
-                <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold', color: ACCENT_COLOR, textAlign: 'center', fontSize: {xs: '1.2rem', sm: '1.5rem'} }}>
-                  {currentUser.name}
-                </Typography>
-                {currentUser.email && (
-                  <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', wordBreak: 'break-word', fontSize: {xs: '0.8rem', sm: '0.9rem'}, mb: 0.5 }}>
-                    {currentUser.email}
-                  </Typography>
-                )}
-                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, justifyContent: 'center' }}>
-                  <PeopleAltIcon sx={{ color: theme.palette.text.secondary, mr: 0.5, fontSize: {xs: '1rem', sm: '1.1rem'} }} />
-                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: {xs: '0.8rem', sm: '0.875rem'} }}>
-                    Friends: {isLoadingFriendCount ? <Skeleton variant="text" width={20} sx={{display: 'inline-block'}} /> : friendCount}
-                  </Typography>
+        {/* Reduce overall page padding when logged in, allow Paper to define its own */}
+        <Box sx={{ flexGrow: 1, p: { xs: 1, sm: 1 } }}> 
+          <Paper
+            elevation={3}
+            sx={{
+              p: { xs: 2, sm: 3 },
+              maxWidth: '960px', // Increased max width
+              margin: '10px auto', // Reduced top/bottom margin, still centered
+              borderTop: `4px solid ${ACCENT_COLOR}`,
+              borderRadius: 2
+            }}
+          >
+            <Stack spacing={3}>
+              {/* User Profile Header */}
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: {xs: 2, sm: 0} }}>
+                  <Avatar
+                    sx={{
+                      width: { xs: 60, sm: 70 },
+                      height: { xs: 60, sm: 70 },
+                      mr: { xs: 1.5, sm: 2 },
+                      bgcolor: ACCENT_COLOR,
+                      fontSize: { xs: '1.8rem', sm: '2.2rem' },
+                      color: theme.palette.getContrastText(ACCENT_COLOR)
+                    }}
+                    src={currentUser.profileImageUrl || ''}
+                    alt={currentUser.name ? currentUser.name.charAt(0).toUpperCase() : ''}
+                  >
+                    {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : <AccountCircleIcon fontSize="inherit" />}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', color: ACCENT_COLOR, fontSize: {xs: '1.6rem', sm: '1.8rem'} }}>
+                      {currentUser.name}
+                    </Typography>
+                    {currentUser.email && (
+                      <Typography variant="body1" color="text.secondary" sx={{fontSize: {xs: '0.85rem', sm: '0.95rem'}}}>
+                        {currentUser.email}
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
+              </Box>
+
+              <Divider />
+
+              {/* Quick Stats/Info for Class and Address */}
+              <Grid container spacing={2} justifyContent="center" alignItems="flex-start">
                 {currentUser.class && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5, justifyContent: 'center' }}>
-                        <SchoolIcon sx={{ color: theme.palette.text.secondary, mr: 0.5, fontSize: {xs: '1rem', sm: '1.1rem'} }} />
-                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: {xs: '0.8rem', sm: '0.875rem'} }}>
-                            Class: {currentUser.class}{!isNaN(parseInt(currentUser.class)) && (parseInt(currentUser.class) % 10 === 1 && parseInt(currentUser.class) % 100 !== 11 ? 'st' : (parseInt(currentUser.class) % 10 === 2 && parseInt(currentUser.class) % 100 !== 12 ? 'nd' : (parseInt(currentUser.class) % 10 === 3 && parseInt(currentUser.class) % 100 !== 13 ? 'rd' : 'th')))}
-                        </Typography>
-                    </Box>
+                  <Grid item xs={12} sm={6} sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <SchoolIcon sx={{ fontSize: 30, color: theme.palette.text.secondary, mb: 0.5 }} />
+                    <Typography variant="h6">{currentUser.class}{!isNaN(parseInt(currentUser.class)) && (parseInt(currentUser.class) % 10 === 1 && parseInt(currentUser.class) % 100 !== 11 ? 'st' : (parseInt(currentUser.class) % 10 === 2 && parseInt(currentUser.class) % 100 !== 12 ? 'nd' : (parseInt(currentUser.class) % 10 === 3 && parseInt(currentUser.class) % 100 !== 13 ? 'rd' : 'th')))}</Typography>
+                    <Typography variant="caption" color="text.secondary">Class</Typography>
+                  </Grid>
                 )}
                 {currentUser.address && (
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: {xs: '0.8rem', sm: '0.875rem'}, wordBreak: 'break-word' }}>
-                      <HomeIcon sx={{ fontSize: {xs: '1rem', sm: '1.1rem'}, mr: 0.5, opacity: 0.7 }} />
-                      {currentUser.address}
-                  </Typography>
+                  <Grid item xs={12} sm={currentUser.class ? 6 : 12} sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', mt: {xs: currentUser.class ? 2 : 0, sm:0} }}>
+                    <HomeIcon sx={{ fontSize: 30, color: theme.palette.text.secondary, mb: 0.5 }} />
+                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>{currentUser.address}</Typography>
+                    <Typography variant="caption" color="text.secondary">Address</Typography>
+                  </Grid>
                 )}
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={onOpenChangePasswordModal}
-                  startIcon={<VpnKeyIcon />}
-                  sx={{
-                    mt: 2,
-                    py: {xs: 0.8, sm: 1},
-                    fontSize: {xs: '0.8rem', sm: '0.875rem'},
-                    borderColor: ACCENT_COLOR,
-                    color: ACCENT_COLOR,
-                    '&:hover': {
-                      backgroundColor: alpha(ACCENT_COLOR, 0.08),
-                      borderColor: darken(ACCENT_COLOR, 0.1)
-                    }
-                  }}
-                >
-                  Change Password
-                </Button>
-              </Paper>
-            </Grid>
+              </Grid>
+              
+              {(currentUser.class || currentUser.address) && <Divider />}
 
-            {/* Main Content Area for Action Buttons */}
-            <Grid item xs={12} md={6}> {/* CHANGED lg={8} to md={6} */}
-              <Paper elevation={3} sx={{p: {xs: 1.5, sm: 2, md: 2.5}, height: '100%', display: 'flex', flexDirection: 'column'}}>
-                <Typography variant="h6" gutterBottom sx={{color: theme.palette.text.secondary, mb: 1.5, fontSize: {xs: '1rem', sm: '1.125rem'} }}>
-                  Account Actions
-                </Typography>
-                <Stack spacing={{xs: 1, sm: 1.5}} sx={{ flexGrow: 1 }}>
-                  <Button fullWidth variant="contained" onClick={() => navigate('/friends')} startIcon={<GroupIcon />} sx={{ backgroundColor: theme.palette.friendsAccent?.main || theme.palette.info.main, color: theme.palette.getContrastText(theme.palette.friendsAccent?.main || theme.palette.info.main), '&:hover': { backgroundColor: darken(theme.palette.friendsAccent?.main || theme.palette.info.main, 0.2)}, py: {xs: 0.8, sm: 1}, fontSize: {xs: '0.8rem', sm: '0.875rem'} }}>
-                      Manage Friends
+
+              {/* Action Buttons */}
+              <Typography variant="h6" sx={{ color: theme.palette.text.secondary, textAlign: 'center', fontWeight: 'medium' }}>
+                Manage Your Account
+              </Typography>
+              <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} md={4}>
+                  <Button fullWidth variant="outlined" startIcon={<VpnKeyIcon />} onClick={onOpenChangePasswordModal} sx={{ py:1.2, borderColor: ACCENT_COLOR, color: ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ACCENT_COLOR, 0.08) } }}>
+                    Change Password
                   </Button>
-                  <Button fullWidth variant="contained" onClick={() => navigate('/challenges')} startIcon={<SportsKabaddiIcon />} sx={{ backgroundColor: theme.palette.challengesAccent?.main || theme.palette.secondary.main, color: theme.palette.getContrastText(theme.palette.challengesAccent?.main || theme.palette.secondary.main), '&:hover': { backgroundColor: darken(theme.palette.challengesAccent?.main || theme.palette.secondary.main, 0.2)}, py: {xs: 0.8, sm: 1}, fontSize: {xs: '0.8rem', sm: '0.875rem'} }}>
-                      My Challenges
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                  <Button fullWidth variant="outlined" startIcon={<SettingsIcon />} onClick={handleOpenChangeDetailsModal} sx={{ py:1.2, borderColor: ACCENT_COLOR, color: ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ACCENT_COLOR, 0.08) } }}>
+                    Change Details
                   </Button>
-                   <Button fullWidth variant="outlined" onClick={handleOpenChangeDetailsModal} startIcon={<SettingsIcon />} sx={{ borderColor: ACCENT_COLOR, color: ACCENT_COLOR, '&:hover': { backgroundColor: alpha(ACCENT_COLOR, 0.08)}, py: {xs: 0.8, sm: 1}, fontSize: {xs: '0.8rem', sm: '0.875rem'} }}>
-                      Change Details
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                  <Button fullWidth variant="contained" startIcon={<GroupIcon />} onClick={() => navigate('/friends')} sx={{ py:1.2, backgroundColor: theme.palette.friendsAccent?.main, color: theme.palette.getContrastText(theme.palette.friendsAccent?.main), '&:hover': { backgroundColor: darken(theme.palette.friendsAccent?.main, 0.2) } }}>
+                    Manage Friends
                   </Button>
-                </Stack>
-                <Button fullWidth variant="contained" color="error" onClick={handleLogout} startIcon={<LogoutIcon />} sx={{ py: {xs: 0.8, sm: 1}, mt: {xs: 1.5, sm: 2}, fontSize: {xs: '0.8rem', sm: '0.875rem'} }}>
-                      Logout
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}> {/* Adjust md for fitting, can be up to 12/number of buttons */}
+                  <Button fullWidth variant="contained" startIcon={<SportsKabaddiIcon />} onClick={() => navigate('/challenges')} sx={{ py:1.2, backgroundColor: theme.palette.challengesAccent?.main, color: theme.palette.getContrastText(theme.palette.challengesAccent?.main), '&:hover': { backgroundColor: darken(theme.palette.challengesAccent?.main, 0.2) } }}>
+                    My Challenges
                   </Button>
-              </Paper>
-            </Grid>
-          </Grid>
+                </Grid>
+              </Grid>
+
+              <Divider sx={{ mt: 1 }} />
+
+              <Button
+                fullWidth
+                variant="contained"
+                color="error"
+                onClick={handleLogout}
+                startIcon={<LogoutIcon />}
+                sx={{ mt: 1, py: 1.2, fontSize:'1rem' }}
+              >
+                Logout
+              </Button>
+            </Stack>
+          </Paper>
         </Box>
         {currentUser && (
           <ChangeDetailsModal
@@ -266,13 +278,14 @@ function AccountPage({
     );
   }
 
-  const renderFormErrorMessage = (pageErr, apiErr) => { /* ... (no change) ... */
+  // --- Login/Register/Forgot Password Forms (Unchanged) ---
+  const renderFormErrorMessage = (pageErr, apiErr) => {
     if (pageErr) return <Alert severity="error" sx={{ mt: 2, mb:1 }}>{pageErr}</Alert>;
     if (apiErr) return <Alert severity="error" sx={{ mt: 2, mb:1 }}>{apiErr}</Alert>;
     return null;
   };
 
-  return ( /* ... (Login/Register form unchanged) ... */
+  return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '550px', margin: 'auto', mt: 3 }}>
       <Paper elevation={4} sx={{ p: { xs: 2, sm: 3, md: 4 }, borderRadius: 2, borderTop: `5px solid ${ACCENT_COLOR}` }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -305,7 +318,6 @@ function AccountPage({
         </Box>
 
         <Box role="tabpanel" hidden={activeTab !== 0} id="login-panel" aria-labelledby="login-tab">
-            {/* Login form content */}
             {forgotPasswordStage === 'idle' && !showLoginOtpInput && (
             <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField margin="normal" required fullWidth id="login-identifier" label="Username" name="loginIdentifier" autoComplete="username" autoFocus value={loginIdentifier} onChange={(e) => { setLoginIdentifier(e.target.value); setLocalPageError(''); if(setAuthError) setAuthError(''); setLoginSuccessMessage('');}} error={!!(localPageError || authError) && !loginSuccessMessage && activeTab === 0 } />
@@ -359,7 +371,6 @@ function AccountPage({
         </Box>
 
         <Box role="tabpanel" hidden={activeTab !== 1} id="register-panel" aria-labelledby="register-tab">
-             {/* Registration form content */}
             <Box component="form" onSubmit={handleRegisterSubmit} noValidate sx={{ mt: 1 }}>
             <TextField margin="normal" required fullWidth id="register-identifier" label="Username" name="registerIdentifier" autoComplete="username" autoFocus value={registerIdentifier} onChange={(e) => { setRegisterIdentifier(e.target.value); setLocalPageError(''); if(setAuthError) setAuthError(''); setRegisterSuccessMessage(''); }} error={!!(localPageError || authError) && activeTab === 1 } />
             <TextField margin="normal" required fullWidth id="register-email" label="Email Address" name="registerEmail" type="email" autoComplete="email" value={registerEmail} onChange={(e) => { setRegisterEmail(e.target.value); setLocalPageError(''); if(setAuthError) setAuthError(''); setRegisterSuccessMessage(''); }} error={!!(localPageError || authError) && activeTab === 1 && (!/\S+@\S+\.\S+/.test(registerEmail) && registerEmail.length > 0)} />
