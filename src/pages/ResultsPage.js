@@ -6,7 +6,7 @@ import {
   useLocation, useNavigate
 } from 'react-router-dom';
 import {
-  Box, Typography, darken, Paper, Divider, List, Alert, CircularProgress, Button, useTheme, alpha, Grid, Stack
+  Box, Typography, darken, Paper, Divider, Alert, CircularProgress, Button, useTheme, alpha, Grid, Stack
 } from '@mui/material';
 import apiClient from '../api/axiosInstance';
 import HomeIcon from '@mui/icons-material/Home';
@@ -441,7 +441,7 @@ function ResultsPage({ currentUser }) {
 
   // Default view: Historical results list or login prompt
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
+    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth:'100%', width:'10000px', margin: 'auto', mt: 2 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 1, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
         <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em', color: RESULTS_PAGE_ACCENT_COLOR }} />
         {currentUser ? `${currentUser.name}'s Quiz Results` : 'Past Quiz Results'}
@@ -472,7 +472,7 @@ function ResultsPage({ currentUser }) {
           </Button>
         </Paper>
       ) : (
-        <List>
+        <Box sx={{ mt: 2}}>
           {Array.isArray(historicalResults) && historicalResults.map((result) => (
             <HistoricalResultItem
               key={result.id}
@@ -480,10 +480,10 @@ function ResultsPage({ currentUser }) {
               onResultClick={handleHistoricalResultClick}
               onDeleteClick={openDeleteConfirmation}
               showDeleteButton={currentUser && currentUser.id === result.userId}
-              isChallengeResult={!!result.challenge_id} // Pass this prop
+              isChallengeResult={!!result.challenge_id}
             />
           ))}
-        </List>
+        </Box>
       )}
       {!selectedHistoricalResult && (
         <ResultsActionButtons

@@ -301,14 +301,8 @@ app.post('/api/users/login', async (req, res) => {
                     return res.status(500).json({ message: 'Error preparing login. Please try again.' });
                 }
                 if (!transporter) {
-                    console.log(`\n--- SIMULATED EMAIL (Login OTP) ---`);
-                    console.log(`To: ${user.email}`);
-                    console.log(`For User: ${identifier}`);
-                    console.log(`Subject: ReactiQuiz - Login Verification Code`);
-                    console.log(`Body: Your OTP for ReactiQuiz is: ${otp}. It expires in 10 minutes.`);
-                    console.log(`-----------------------------------\n`);
-                    logApi('[SIMULATE] /api/users/login - OTP %s sent to %s for user %s (simulated).', otp, user.email, identifier);
-                    return res.status(200).json({ success: true, message: `SIMULATED: OTP sent to ${user.email.substring(0, 3)}****@${user.email.split('@')[1]}. Check server console.` });
+                    logError('[ERROR] /api/users/login - Email service not configured. Set EMAIL_USER and EMAIL_PASS in .env file.');
+                    return res.status(503).json({ message: 'The email service is not configured on the server. Cannot send OTP.' });
                 }
                 const mailOptions = {
                     from: `"${process.env.EMAIL_SENDER_NAME || 'ReactiQuiz Support'}" <${process.env.EMAIL_USER}>`,
@@ -930,14 +924,8 @@ app.post('/api/contact', async (req, res) => {
     }
 
     if (!transporter) {
-        logApi('[SIMULATE] POST /api/contact - Email sending simulated.');
-        console.log(`--- SIMULATED CONTACT EMAIL ---
-To: ${recipientEmail}
-From: ${name} <${email}>
-Subject: Contact Form Submission from ${name} via ReactiQuiz
-Message: ${message}
------------------------------`);
-        return res.status(200).json({ message: 'Message received (simulated)! Thank you for your feedback.' });
+        logError('[ERROR] POST /api/contact - Email service not configured.');
+        return res.status(503).json({ message: 'The email service is not configured on the server. Message cannot be sent.' });
     }
 
     const mailOptions = {
@@ -993,14 +981,8 @@ app.post('/api/users/request-password-reset', async (req, res) => {
                 }
 
                 if (!transporter) {
-                    console.log(`\n--- SIMULATED EMAIL (Password Reset OTP) ---`);
-                    console.log(`To: ${user.email}`);
-                    console.log(`For User: ${identifier}`);
-                    console.log(`Subject: ReactiQuiz - Password Reset Code`);
-                    console.log(`Body: Your OTP to reset your password is: ${otp}. It expires in 10 minutes.`);
-                    console.log(`--------------------------------------------\n`);
-                    logApi('[SIMULATE] /request-password-reset - OTP %s sent to %s for %s (simulated).', otp, user.email, identifier);
-                    return res.status(200).json({ message: `SIMULATED: If an account exists and has an email, an OTP has been sent to ${user.email.substring(0, 3)}****. Check server console.` });
+                    logError('[ERROR] /request-password-reset - Email service not configured. Set EMAIL_USER and EMAIL_PASS in .env file.');
+                    return res.status(503).json({ message: 'The email service is not configured on the server. Cannot send OTP.' });
                 }
 
                 const mailOptions = {
@@ -1042,4 +1024,4 @@ app.listen(port, () => {
 });
 
 process.on('unhandledRejection', (reason, promise) => { logError('[ERROR] Unhandled Rejection:', reason, promise); });
-process.on('uncaughtException', (error) => { logError('[ERROR] Uncaught Exception:', error); process.exit(1); });
+process.on('uncaughtException', (error) => { logError('[ERROR] Uncaught Exception:', error); process.exit(1); })
