@@ -1,6 +1,5 @@
-// --- START OF FILE src/pages/QuizPage.js ---
+// --- FULL AND CORRECTED CODE for src/pages/QuizPage.js ---
 
-// src/pages/QuizPage.js
 import {
   useState, useEffect, useCallback
 } from 'react';
@@ -36,9 +35,7 @@ const shuffleArray = (array) => {
   return newArray;
 };
 
-// Moved fetchAndFilterSubjectQuestions from inside QuizPage to be a top-level function
-// as it was used by fetchHomiBhabhaPracticeQuestions which might also be better outside or passed in.
-// For now, keeping it here but outside the component for clarity.
+// This helper function is used by fetchHomiBhabhaPracticeQuestions
 const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClass, difficultyLabel, numQuestionsNeeded) => {
   console.log(`[PracticeQuiz] Fetching for subject: ${subjectName}, class: ${targetClass}, difficulty: ${difficultyLabel}, needed: ${numQuestionsNeeded}`);
   try {
@@ -56,7 +53,6 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
     let allQuestionsForSubject = [];
     for (const topicId of subjectTopicIds) {
       try {
-        // <<< CHANGE HERE: Using query parameter >>>
         const questionsResponse = await apiClient.get(`/api/questions?topicId=${topicId}`);
         if (Array.isArray(questionsResponse.data)) {
           const topicInfo = topicsResponse.data.find(t => t.id === topicId);
@@ -121,10 +117,50 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
   }
 };
 
+// =========================================================================
+// START: This is the function that was missing
+// =========================================================================
+const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLabel, questionComposition, desiredTotal) => {
+    let finalQuizQuestions = [];
+    let totalFetchedCount = 0;
+    let infoMessages = [];
+    const subjectOrder = ['physics', 'chemistry', 'biology', 'gk'];
+
+    for (const subjKey of subjectOrder) {
+        if (questionComposition[subjKey]) {
+            const countNeeded = questionComposition[subjKey];
+            try {
+                const subjectQuestions = await fetchAndFilterSubjectQuestionsForPractice(subjKey, quizClassFromState, difficultyLabel, countNeeded);
+                finalQuizQuestions.push(...subjectQuestions);
+                totalFetchedCount += subjectQuestions.length;
+                if (subjectQuestions.length < countNeeded) {
+                    infoMessages.push(`Could not find all ${countNeeded} ${difficultyLabel} questions for ${subjKey} (Class ${quizClassFromState || 'Any'}); got ${subjectQuestions.length}.`);
+                }
+            } catch (err) {
+                console.warn(`Error fetching for subject ${subjKey} in practice test:`, err);
+                infoMessages.push(`Could not fetch questions for ${subjKey}.`);
+            }
+        }
+    }
+
+    const uniqueQuestionsMap = new Map();
+    finalQuizQuestions.forEach(q => { if (!uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
+    const uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
+
+    if (uniqueFinalQuizQuestions.length === 0) {
+        throw new Error(`Could not gather any questions for the practice test. Please try different settings or check question availability.`);
+    }
+    if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) {
+        infoMessages.push(`Total questions for test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}.`);
+    }
+    return { questions: uniqueFinalQuizQuestions, info: infoMessages.join(' ') };
+};
+// =========================================================================
+// END: Missing function
+// =========================================================================
 
 const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel, numQuestionsReq, subject) => {
     try {
-        // <<< CHANGE HERE: Using query parameter >>>
         const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
         let fetchedQuestions = response.data;
         if (!Array.isArray(fetchedQuestions)) {
@@ -132,11 +168,9 @@ const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel,
         }
 
         let classFilteredQuestions = fetchedQuestions;
-        // Apply class filter only if quizClassFromState is provided and it's not for GK or Mathematics
         if (quizClassFromState && subject && subject.toLowerCase() !== 'gk' && subject.toLowerCase() !== 'mathematics') {
             classFilteredQuestions = fetchedQuestions.filter(q => !q.class || q.class === quizClassFromState);
         }
-
 
         let difficultyFilteredQuestions;
         if (difficultyLabel === 'mixed') {
@@ -154,10 +188,9 @@ const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel,
             difficultyFilteredQuestions = [...classFilteredQuestions];
         }
         
-        if (difficultyFilteredQuestions.length === 0) { // Check again after fallback
+        if (difficultyFilteredQuestions.length === 0) {
             throw new Error(`No questions found for topic "${topicId}" (Class: ${quizClassFromState || 'Any'}, Difficulty: "${difficultyLabel}"). Try different settings.`);
         }
-
 
         const shuffledQuestions = shuffleArray(difficultyFilteredQuestions);
         return shuffledQuestions.slice(0, numQuestionsReq);
@@ -176,10 +209,8 @@ const fetchChallengeQuestions = async (challengeId, token) => {
             throw new Error('Challenge data is invalid or contains no question IDs.');
         }
         
-        // Fetch all questions for the challenge's topic_id first.
-        // <<< CHANGE HERE: Using query parameter >>>
         const topicQuestionsResponse = await apiClient.get(`/api/questions?topicId=${response.data.topic_id}`, {
-             headers: { Authorization: `Bearer ${token}` } // Add token if questions endpoint ever becomes protected
+             headers: { Authorization: `Bearer ${token}` }
         });
 
         if (!Array.isArray(topicQuestionsResponse.data)) {
@@ -187,35 +218,28 @@ const fetchChallengeQuestions = async (challengeId, token) => {
         }
         const allQuestionsForTopic = topicQuestionsResponse.data;
         
-        // Filter and order these questions based on the question_ids from the challenge.
         const challengeQuestionDetails = response.data.question_ids.map(id => {
-            const qDetail = allQuestionsForTopic.find(q => q.id === id);
-            if (!qDetail) {
-                console.warn(`Question ID ${id} from challenge not found in fetched topic questions.`);
-            }
-            return qDetail;
-        }).filter(q => q !== undefined); // Filter out any undefined if a question ID wasn't found
+            return allQuestionsForTopic.find(q => q.id === id);
+        }).filter(q => q !== undefined);
 
 
         if(challengeQuestionDetails.length !== response.data.question_ids.length) {
-            console.warn("Not all challenge question IDs could be matched to full question details. Some questions might be missing from the quiz.");
+            console.warn("Not all challenge question IDs could be matched to full question details.");
         }
         if(challengeQuestionDetails.length === 0) {
             throw new Error("No valid questions found for this challenge based on the provided IDs.");
         }
 
-        // Add subject and class to challenge questions if not already present from the challengeData
         const challengeQuestionsWithContext = challengeQuestionDetails.map(q => ({
             ...q,
-            subject: response.data.subject || q.subject, // Prefer challenge subject, fallback to question's
-            class: response.data.quiz_class || q.class,   // Prefer challenge class, fallback to question's
+            subject: response.data.subject || q.subject,
+            class: response.data.quiz_class || q.class,
         }));
-
 
         return { challengeData: response.data, questions: challengeQuestionsWithContext };
     } catch (err) {
         console.error("Error in fetchChallengeQuestions:", err);
-        throw err; // Re-throw to be caught by the main fetchQuizData
+        throw err;
     }
 };
 
@@ -274,7 +298,6 @@ function QuizPage({ currentUser }) {
             setCurrentChallengeDetails(challengeData);
             setQuestions(challengeQuestions);
             setEffectiveTopicId(challengeData.topic_id);
-            // Ensure subject is derived from challengeData or fallback
             setEffectiveSubject(challengeData.subject || challengeData.topic_id.split('-')[0] || 'challenge'); 
             setEffectiveTopicName(challengeData.topic_name || `Challenge #${challengeData.id}`);
             setEffectiveDifficulty(challengeData.difficulty);
@@ -360,10 +383,10 @@ function QuizPage({ currentUser }) {
       topicId: effectiveTopicId,
       difficulty: effectiveDifficulty,
       numQuestionsConfigured: effectiveNumQuestions,
-      timeTaken: elapsedTime, // Use the state variable `elapsedTime`
+      timeTaken: elapsedTime,
       quizClass: effectiveQuizClass,
       isPracticeTest: quizType === 'homibhabha-practice',
-      isChallenge: quizType === 'challenge' && !!currentChallengeDetails, // Make sure currentChallengeDetails is not null
+      isChallenge: quizType === 'challenge' && !!currentChallengeDetails,
       challengeDetails: quizType === 'challenge' ? currentChallengeDetails : null,
       score: score,
       percentage: percentage,
@@ -373,7 +396,7 @@ function QuizPage({ currentUser }) {
 
     if (currentUser && currentUser.id && currentUser.token) {
       const payloadToSave = {
-        userId: currentUser.id, // Use currentUser.id consistently
+        userId: currentUser.id,
         subject: effectiveSubject,
         topicId: effectiveTopicId,
         score: score,
@@ -383,7 +406,7 @@ function QuizPage({ currentUser }) {
         difficulty: effectiveDifficulty,
         numQuestionsConfigured: effectiveNumQuestions,
         class: effectiveQuizClass,
-        timeTaken: elapsedTime, // Use the state variable `elapsedTime`
+        timeTaken: elapsedTime,
         questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
         userAnswersSnapshot: relevantUserAnswersSnapshot,
         challenge_id: (quizType === 'challenge' && currentChallengeDetails) ? currentChallengeDetails.id : null
@@ -398,19 +421,9 @@ function QuizPage({ currentUser }) {
         resultIdFromSave = response.data.id; 
 
         if (quizType === 'challenge' && currentChallengeDetails && resultIdFromSave) {
-            const challengeSubmitPayload = {
-                score, 
-                percentage, 
-                timeTaken: elapsedTime, // Use the state variable `elapsedTime`
-                resultId: resultIdFromSave
-            };
-            await apiClient.put(`/api/challenges/${currentChallengeDetails.id}/submit`, 
-                challengeSubmitPayload, 
-                { headers: { Authorization: `Bearer ${currentUser.token}` }}
-            );
+            const challengeSubmitPayload = { score, percentage, timeTaken: elapsedTime, resultId: resultIdFromSave };
+            await apiClient.put(`/api/challenges/${currentChallengeDetails.id}/submit`, challengeSubmitPayload, { headers: { Authorization: `Bearer ${currentUser.token}` }});
             console.log('[QuizPage] Challenge score submitted for challenge ID:', currentChallengeDetails.id);
-            // Potentially update resultNavigationStateBase.challengeDetails if backend returns updated challenge
-            // For now, assume frontend handles displaying "waiting for opponent" or final results based on existing data
         }
         
       } catch (error) {
@@ -570,7 +583,6 @@ function QuizPage({ currentUser }) {
           </Alert>
       )}
 
-
       {questions.map((question, index) => (
         <QuestionItem
           key={question.id || `q-${index}-${Math.random()}`}
@@ -605,5 +617,3 @@ function QuizPage({ currentUser }) {
 }
 
 export default QuizPage;
-
-// --- END OF FILE src/pages/QuizPage.js ---
