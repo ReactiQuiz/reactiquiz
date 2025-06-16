@@ -40,7 +40,7 @@ git commit -m "Deploy: Backend-only snapshot"
 
 # 5. Add your actual remote repository URL.
 #    Replace the URL with your own repository's URL.
-GIT_REMOTE_URL="https://github.com/SanskarSontakke/reactiquiz.git"
+GIT_REMOTE_URL="https://github.com/SanskarSontakke/reactiquiz-backend.git"
 git remote add origin $GIT_REMOTE_URL
 
 # 6. Force push the contents of this directory to the specified backend branch.
