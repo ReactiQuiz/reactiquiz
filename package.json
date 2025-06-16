@@ -46,7 +46,8 @@
     "backend": "node backend/server.js",
     "backend:dev": "nodemon backend/server.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "deploy:backend": "bash deploy-backend.sh"
   },
   "eslintConfig": {
     "extends": [

@@ -6,10 +6,7 @@ import {
 import { alpha } from '@mui/material/styles'; // <<< ENSURE THIS IMPORT IS PRESENT
 import TimerIcon from '@mui/icons-material/Timer';
 import { formatTime } from '../utils/formatTime'; 
-import { subjectAccentColors as themeSubjectAccentColors } from '../theme';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-
-const subjectAccentColors = themeSubjectAccentColors;
 
 const formatTopicName = (topicId) => {
   if (!topicId) return 'N/A';

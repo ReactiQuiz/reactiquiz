@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import {
   Box, Typography, Paper, TextField, Button, Alert, CircularProgress, useTheme, Avatar,
-  Tabs, Tab, Divider, Link as MuiLink, Grid, Stack, Skeleton
+  Tabs, Tab, Divider, Link as MuiLink, Grid, Stack
 } from '@mui/material';
 import { darken, alpha } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -15,7 +15,6 @@ import LockResetIcon from '@mui/icons-material/LockReset';
 import GroupIcon from '@mui/icons-material/Group';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import HomeIcon from '@mui/icons-material/Home';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SchoolIcon from '@mui/icons-material/School';
 
@@ -60,7 +59,9 @@ function AccountPage({
   const [isSubmittingForgotPassword, setIsSubmittingForgotPassword] = useState(false);
   const [forgotPasswordMessage, setForgotPasswordMessage] = useState({ type: '', text: ''});
   const [localPageError, setLocalPageError] = useState('');
+  // eslint-disable-next-line
   const [friendCount, setFriendCount] = useState(0);
+  // eslint-disable-next-line
   const [isLoadingFriendCount, setIsLoadingFriendCount] = useState(false);
   const [changeDetailsModalOpen, setChangeDetailsModalOpen] = useState(false);
 

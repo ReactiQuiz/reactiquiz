@@ -1,7 +1,7 @@
 // src/components/FlashcardItem.js
 import { useState } from 'react';
 import {
-  Paper, Typography, Box, useTheme, IconButton, List, ListItem, ListItemText, ListItemIcon, Divider, Chip
+  Paper, Typography, Box, useTheme, IconButton, List, ListItem, ListItemIcon, Divider, Chip
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import FlipIcon from '@mui/icons-material/Flip';

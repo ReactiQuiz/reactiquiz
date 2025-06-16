@@ -1,8 +1,8 @@
 // src/pages/ChallengesPage.js
 import { useState, useEffect, useCallback } from 'react';
 import {
-  Box, Typography, Paper, List, Grid, darken, ListItem, ListItemText, Button,
-  CircularProgress, Alert, useTheme, Divider, Chip, Stack 
+  Box, Typography, Paper, List, Grid, darken, Button,
+  CircularProgress, Alert, useTheme, Divider, Chip 
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
