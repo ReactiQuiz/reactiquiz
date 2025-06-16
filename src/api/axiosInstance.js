@@ -1,14 +1,12 @@
-// --- FULL CODE for src/api/axiosInstance.js ---
+// src/api/axiosInstance.js
 
 import axios from 'axios';
 
-// On Vercel, the frontend and API are on the same domain.
-// We make relative requests to our own serverless functions.
-const apiClient = axios.create({
-  baseURL: '/api', // This is the correct setting for Vercel
-});
+// The full URL of your deployed Vercel backend API
+const VERCEL_BACKEND_URL = 'https://reactiquiz.vercel.app/api'; 
 
-// REMOVED: No need for process.env.REACT_APP_API_BASE_URL
-// The baseURL will now correctly resolve to https://your-site.vercel.app/api
+const apiClient = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL || VERCEL_BACKEND_URL,
+});
 
 export default apiClient;

@@ -5,8 +5,20 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import { supabase } from './supabaseClient.js'; // <-- Import our new Supabase client
 
+// --- CORS Configuration ---
 const app = express();
-app.use(cors());
+
+// --- CORS Configuration ---
+const GITHUB_PAGES_URL = 'https://SanskarSontakke.github.io';
+const VERCEL_URL = 'https://reactiquiz.vercel.app'; // Your main frontend URL
+
+const corsOptions = {
+  origin: [GITHUB_PAGES_URL, VERCEL_URL, 'http://localhost:3000'], // Allow your GH Pages, Vercel, and local dev server
+  optionsSuccessStatus: 200 // For older browsers
+};
+
+app.use(cors(corsOptions)); // <-- Use the configured options
+
 app.use(express.json({ limit: '5mb' }));
 
 // --- HELPERS ---
