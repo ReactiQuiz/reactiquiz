@@ -1,3 +1,5 @@
+// --- START OF FILE backend/server.js ---
+
 // backend/server.js
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -747,9 +749,18 @@ app.get('/api/topics/:subject', (req, res) => {
 });
 
 // --- Questions API ---
-app.get('/api/questions/:topicId', (req, res) => {
-    const { topicId } = req.params;
-    logApi('[INFO] GET /api/questions/%s', topicId);
+// <<< THIS IS THE CORRECTED ROUTE >>>
+app.get('/api/questions', (req, res) => {
+    // We get the topicId from the query string, e.g., /api/questions?topicId=some-id
+    const { topicId } = req.query; 
+    
+    logApi('[INFO] GET /api/questions for topicId: %s', topicId);
+
+    // Handle case where no topicId is provided
+    if (!topicId) {
+        return res.status(400).json({ message: 'A topicId query parameter is required.' });
+    }
+
     const sql = `
         SELECT 
             q.*, 
@@ -767,19 +778,20 @@ app.get('/api/questions/:topicId', (req, res) => {
 
     questionsDb.all(sql, [topicId], (err, rows) => {
         if (err) {
-            logError('[ERROR] GET /api/questions/%s - DB Error: %s', topicId, err.message);
+            logError('[ERROR] GET /api/questions?topicId=%s - DB Error: %s', topicId, err.message);
             return res.status(500).json({ message: `Failed to fetch questions: ${err.message}` });
         }
         try {
             const questions = rows.map(row => ({ ...row, options: JSON.parse(row.options || '[]') }));
-            logApi('[SUCCESS] GET /api/questions/%s - Found %d questions', topicId, questions.length);
+            logApi('[SUCCESS] GET /api/questions?topicId=%s - Found %d questions', topicId, questions.length);
             res.json(questions);
         } catch (parseError) {
-            logError('[ERROR] /api/questions/%s - JSON parse error for options: %s', topicId, parseError.message);
+            logError('[ERROR] /api/questions?topicId=%s - JSON parse error for options: %s', topicId, parseError.message);
             res.status(500).json({ message: "Error processing question data." })
         }
     });
 });
+
 
 // --- Results API ---
 app.post('/api/results', verifySessionToken, (req, res) => {
@@ -1025,3 +1037,5 @@ app.listen(port, () => {
 
 process.on('unhandledRejection', (reason, promise) => { logError('[ERROR] Unhandled Rejection:', reason, promise); });
 process.on('uncaughtException', (error) => { logError('[ERROR] Uncaught Exception:', error); process.exit(1); })
+
+// --- END OF FILE backend/server.js ---

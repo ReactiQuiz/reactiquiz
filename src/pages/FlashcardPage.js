@@ -1,3 +1,5 @@
+// --- START OF FILE src/pages/FlashcardPage.js ---
+
 // src/pages/FlashcardPage.js
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
@@ -44,7 +46,8 @@ function FlashcardPage() {
       setIsLoading(true);
       setError('');
       try {
-        const response = await apiClient.get(`/api/questions/${topicId}`);
+        // <<< CHANGE HERE: Using query parameter >>>
+        const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
         if (Array.isArray(response.data) && response.data.length > 0) {
           setAllQuestions(response.data);
           const formattedFlashcards = response.data.map(q => ({
@@ -182,3 +185,5 @@ function FlashcardPage() {
 }
 
 export default FlashcardPage;
+
+// --- END OF FILE src/pages/FlashcardPage.js ---

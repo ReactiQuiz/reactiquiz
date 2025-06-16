@@ -1,3 +1,5 @@
+// --- START OF FILE src/pages/ResultsPage.js ---
+
 // src/pages/ResultsPage.js
 import {
   useMemo, useEffect, useState, useCallback
@@ -169,7 +171,8 @@ function ResultsPage({ currentUser }) {
       let headers = {};
       if (currentUser?.token) headers.Authorization = `Bearer ${currentUser.token}`;
 
-      apiClient.get(`/api/questions/${topicIdToFetch}`, { headers })
+      // <<< CHANGE HERE: Using query parameter >>>
+      apiClient.get(`/api/questions?topicId=${topicIdToFetch}`, { headers })
         .then(response => {
           const allTopicQuestions = response.data;
           if (!Array.isArray(allTopicQuestions)) {
@@ -523,3 +526,5 @@ function ResultsPage({ currentUser }) {
 }
 
 export default ResultsPage;
+
+// --- END OF FILE src/pages/ResultsPage.js ---

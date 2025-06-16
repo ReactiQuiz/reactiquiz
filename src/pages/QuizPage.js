@@ -1,3 +1,5 @@
+// --- START OF FILE src/pages/QuizPage.js ---
+
 // src/pages/QuizPage.js
 import {
   useState, useEffect, useCallback
@@ -54,7 +56,8 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
     let allQuestionsForSubject = [];
     for (const topicId of subjectTopicIds) {
       try {
-        const questionsResponse = await apiClient.get(`/api/questions/${topicId}`);
+        // <<< CHANGE HERE: Using query parameter >>>
+        const questionsResponse = await apiClient.get(`/api/questions?topicId=${topicId}`);
         if (Array.isArray(questionsResponse.data)) {
           const topicInfo = topicsResponse.data.find(t => t.id === topicId);
           const questionsWithContext = questionsResponse.data.map(q => ({
@@ -119,9 +122,10 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
 };
 
 
-const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel, numQuestionsReq, subject) => { /* ... as before ... */
+const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel, numQuestionsReq, subject) => {
     try {
-        const response = await apiClient.get(`/api/questions/${topicId}`);
+        // <<< CHANGE HERE: Using query parameter >>>
+        const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
         let fetchedQuestions = response.data;
         if (!Array.isArray(fetchedQuestions)) {
             throw new Error(`Invalid question data received for ${topicId}.`);
@@ -163,44 +167,7 @@ const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel,
     }
 };
 
-const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLabel, questionComposition, desiredTotal) => { /* ... as before, calling fetchAndFilterSubjectQuestionsForPractice ... */ 
-    let finalQuizQuestions = [];
-    let totalFetchedCount = 0;
-    let infoMessages = [];
-    const subjectOrder = ['physics', 'chemistry', 'biology', 'gk'];
-
-    for (const subjKey of subjectOrder) {
-        if (questionComposition[subjKey]) {
-            const countNeeded = questionComposition[subjKey];
-            try {
-                // Use the correctly scoped function here
-                const subjectQuestions = await fetchAndFilterSubjectQuestionsForPractice(subjKey, quizClassFromState, difficultyLabel, countNeeded);
-                finalQuizQuestions.push(...subjectQuestions);
-                totalFetchedCount += subjectQuestions.length;
-                if (subjectQuestions.length < countNeeded) {
-                    infoMessages.push(`Could not find all ${countNeeded} ${difficultyLabel} questions for ${subjKey} (Class ${quizClassFromState || 'Any'}); got ${subjectQuestions.length}.`);
-                }
-            } catch (err) {
-                console.warn(`Error fetching for subject ${subjKey} in practice test:`, err);
-                infoMessages.push(`Could not fetch questions for ${subjKey}.`);
-            }
-        }
-    }
-
-    const uniqueQuestionsMap = new Map();
-    finalQuizQuestions.forEach(q => { if (!uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
-    const uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
-
-    if (uniqueFinalQuizQuestions.length === 0) {
-        throw new Error(`Could not gather any questions for the practice test. Please try different settings or check question availability.`);
-    }
-    if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) {
-        infoMessages.push(`Total questions for test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}.`);
-    }
-    return { questions: uniqueFinalQuizQuestions, info: infoMessages.join(' ') };
-};
-
-const fetchChallengeQuestions = async (challengeId, token) => { /* ... as before ... */
+const fetchChallengeQuestions = async (challengeId, token) => {
     try {
         const response = await apiClient.get(`/api/challenges/${challengeId}`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -210,7 +177,8 @@ const fetchChallengeQuestions = async (challengeId, token) => { /* ... as before
         }
         
         // Fetch all questions for the challenge's topic_id first.
-        const topicQuestionsResponse = await apiClient.get(`/api/questions/${response.data.topic_id}`, {
+        // <<< CHANGE HERE: Using query parameter >>>
+        const topicQuestionsResponse = await apiClient.get(`/api/questions?topicId=${response.data.topic_id}`, {
              headers: { Authorization: `Bearer ${token}` } // Add token if questions endpoint ever becomes protected
         });
 
@@ -354,7 +322,7 @@ function QuizPage({ currentUser }) {
       questionCompositionFromState, quizClassFromState, timeLimitFromState, challengeIdFromState, currentUser
   ]);
 
-  const calculateScoreAndPercentage = useCallback(() => { /* ... same ... */ 
+  const calculateScoreAndPercentage = useCallback(() => {
     if (questions.length === 0) return { score: 0, percentage: 0 };
     let correctAnswers = 0;
     questions.forEach(q => {
@@ -483,7 +451,7 @@ function QuizPage({ currentUser }) {
     }));
   };
 
-  if (isLoading) { /* ... same loading UI ... */ 
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
         <CircularProgress sx={{ color: currentAccentColor }} />
@@ -492,7 +460,7 @@ function QuizPage({ currentUser }) {
     );
   }
 
-  if (error) { /* ... same error UI ... */ 
+  if (error) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto' }}>
         <Alert severity="error">{error}</Alert>
@@ -503,7 +471,7 @@ function QuizPage({ currentUser }) {
     );
   }
 
-  if (!isLoading && questions.length === 0 && !error) { /* ... same no questions UI ... */ 
+  if (!isLoading && questions.length === 0 && !error) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
         <Typography variant="h5" gutterBottom>No Questions Available</Typography>
@@ -637,3 +605,5 @@ function QuizPage({ currentUser }) {
 }
 
 export default QuizPage;
+
+// --- END OF FILE src/pages/QuizPage.js ---
