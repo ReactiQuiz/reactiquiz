@@ -61,67 +61,6 @@ logServer(`[INFO] Users DB Path: ${USERS_DB_PATH}`);
 logServer(`[INFO] Friends DB Path: ${FRIENDS_DB_PATH}`);
 logServer(`[INFO] Challenges DB Path: ${CHALLENGES_DB_PATH}`);
 
-
-
-app.use(cors());
-app.use(express.json({ limit: '5mb' }));
-app.use((req, res, next) => { logApi(`[INFO] Request: ${req.method} ${req.originalUrl}`); next(); });
-
-const generateSecureToken = () => crypto.randomBytes(32).toString('hex');
-const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
-const TOKEN_EXPIRATION_MS = 24 * 60 * 60 * 1000;
-const OTP_EXPIRATION_MS = 10 * 60 * 1000;
-const CHALLENGE_EXPIRATION_DAYS = 7;
-
-let transporter;
-if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-    transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-        tls: { rejectUnauthorized: process.env.NODE_ENV === 'production' }
-    });
-    transporter.verify((error) => {
-        if (error) { logError('[ERROR] Nodemailer transporter verification failed: %s', error); transporter = null; }
-        else logServer('[INFO] Nodemailer transporter is ready.');
-    });
-} else {
-    logServer('[WARN] EMAIL_USER or EMAIL_PASS not found. Email sending will be SIMULATED.');
-}
-
-
-const verifySessionToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ message: 'Authentication token is required.' });
-    }
-    const token = authHeader.split(' ')[1];
-    if (!usersDb || usersDb.open === false) { 
-        return res.status(503).json({ message: 'Service temporarily unavailable.' });
-    }
-    usersDb.get("SELECT * FROM users WHERE active_session_token = ?", [token], (err, user) => { 
-        if (err) return res.status(500).json({ message: "Server error verifying token." });
-        if (!user) return res.status(401).json({ message: "Invalid session token. Please login again." });
-        if (new Date() > new Date(user.active_session_token_expires_at)) return res.status(401).json({ message: "Session token expired. Please login again." });
-        req.user = { id: user.id, identifier: user.identifier, email: user.email };
-        next();
-    });
-};
-
-
-// --- Static file serving & Fallback ---
-if (process.env.NODE_ENV === 'production' || process.env.SERVE_BUILD === 'true') {
-    app.use(express.static(path.join(projectRoot, 'build')));
-    app.get('*', (req, res) => {
-        if (!req.path.startsWith('/api/')) {
-            res.sendFile(path.join(projectRoot, 'build', 'index.html'), (err) => {
-                if (err) res.status(500).send(err.message || 'Error sending index.html');
-            });
-        } else {
-            res.status(404).json({ message: "API endpoint not found" });
-        }
-    });
-}
-
 app.listen(port, () => {
     logServer(`[INFO] Backend API server running on http://localhost:${port}`);
 });
