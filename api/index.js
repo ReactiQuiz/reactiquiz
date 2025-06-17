@@ -9,15 +9,25 @@ import { supabase } from './supabaseClient.js'; // <-- Import our new Supabase c
 const app = express();
 
 // --- CORS Configuration ---
-const GITHUB_PAGES_URL = 'https://SanskarSontakke.github.io';
-const VERCEL_URL = 'https://reactiquiz.vercel.app'; // Your main frontend URL
+const allowedOrigins = [
+  'https://sanskarsontakke.github.io', // Your GH Pages URL
+  'https://reactiquiz.vercel.app',    // Your Vercel frontend URL (if you use it later)
+  'http://localhost:3000'            // For local development
+];
 
 const corsOptions = {
-  origin: [GITHUB_PAGES_URL, VERCEL_URL, 'http://localhost:3000'], // Allow your GH Pages, Vercel, and local dev server
-  optionsSuccessStatus: 200 // For older browsers
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
 };
 
-app.use(cors(corsOptions)); // <-- Use the configured options
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '5mb' }));
 
