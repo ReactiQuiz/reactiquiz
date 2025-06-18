@@ -1,0 +1,56 @@
+[
+  {
+    "id": "physics",
+    "name": "Physics",
+    "description": "Explore the fundamental laws of the universe, from motion to energy and light.",
+    "accentColor": "#2196f3",
+    "iconName": "BoltIcon",
+    "displayOrder": 1,
+    "subjectKey": "physics"
+  },
+  {
+    "id": "chemistry",
+    "name": "Chemistry",
+    "description": "Dive into the building blocks of matter, reactions, and the elements.",
+    "accentColor": "#f44336",
+    "iconName": "ScienceIcon",
+    "displayOrder": 2,
+    "subjectKey": "chemistry"
+  },
+  {
+    "id": "biology",
+    "name": "Biology",
+    "description": "Uncover the mysteries of life, from cells to ecosystems.",
+    "accentColor": "#4caf50",
+    "iconName": "BiotechIcon",
+    "displayOrder": 3,
+    "subjectKey": "biology"
+  },
+  {
+    "id": "mathematics",
+    "name": "Mathematics",
+    "description": "Sharpen your analytical skills with topics from algebra to calculus.",
+    "accentColor": "#ff9800",
+    "iconName": "CalculateIcon",
+    "displayOrder": 4,
+    "subjectKey": "mathematics"
+  },
+  {
+    "id": "gk",
+    "name": "General Knowledge",
+    "description": "Expand your awareness of the world, current events, and diverse facts.",
+    "accentColor": "#FFEB3B",
+    "iconName": "PublicIcon",
+    "displayOrder": 5,
+    "subjectKey": "gk"
+  },
+  {
+    "id": "homibhabha",
+    "name": "Homi Bhabha Balvaidnyanik Spardha",
+    "description": "Specialized resources and practice tests for the Homi Bhabha exam.",
+    "accentColor": "#f48fb1",
+    "iconName": "SchoolIcon",
+    "displayOrder": 6,
+    "subjectKey": "homibhabha"
+  }
+]

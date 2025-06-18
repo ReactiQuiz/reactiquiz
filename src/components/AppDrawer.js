@@ -5,21 +5,26 @@ import {
 import {
   Link as RouterLink
 } from 'react-router-dom';
-import {
-  subjectAccentColors
-} from '../theme';
-import ScienceIcon from '@mui/icons-material/Science';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import BoltIcon from '@mui/icons-material/Bolt';
-import BiotechIcon from '@mui/icons-material/Biotech';
-import SchoolIcon from '@mui/icons-material/School';
-import PublicIcon from '@mui/icons-material/Public';
-import PollIcon from '@mui/icons-material/Poll';
-import InfoIcon from '@mui/icons-material/Info';
+// Removed individual subject accent colors if not used elsewhere directly in this file
+// import { subjectAccentColors } from '../theme';
+
+// Icons that are still needed
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CategoryIcon from '@mui/icons-material/Category'; // For All Subjects
+import SchoolIcon from '@mui/icons-material/School';     // For Homibhabha
+import PollIcon from '@mui/icons-material/Poll';         // For Results
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import InfoIcon from '@mui/icons-material/Info';
+
+// Removed icons for individual subjects if they are no longer directly referenced:
+// import ScienceIcon from '@mui/icons-material/Science';
+// import CalculateIcon from '@mui/icons-material/Calculate';
+// import BoltIcon from '@mui/icons-material/Bolt';
+// import BiotechIcon from '@mui/icons-material/Biotech';
+// import PublicIcon from '@mui/icons-material/Public';
+
 
 const drawerWidth = 250;
 
@@ -28,12 +33,16 @@ function AppDrawer({ open, onClose }) {
 
   const drawerItems = [
     { text: 'Dashboard', icon: <DashboardIcon sx={{ color: theme.palette.dashboardAccent?.main || theme.palette.grey[500] }} />, path: '/dashboard', color: theme.palette.dashboardAccent?.main || theme.palette.grey[500] },
-    { text: 'Chemistry', icon: <ScienceIcon sx={{ color: subjectAccentColors.chemistry }} />, path: '/chemistry', color: subjectAccentColors.chemistry },
-    { text: 'Physics', icon: <BoltIcon sx={{ color: subjectAccentColors.physics }} />, path: '/physics', color: subjectAccentColors.physics },
-    { text: 'Mathematics', icon: <CalculateIcon sx={{ color: subjectAccentColors.mathematics }} />, path: '/mathematics', color: subjectAccentColors.mathematics },
-    { text: 'Biology', icon: <BiotechIcon sx={{ color: subjectAccentColors.biology }} />, path: '/biology', color: subjectAccentColors.biology },
-    { text: 'GK', icon: <PublicIcon sx={{ color: subjectAccentColors.gk }} />, path: '/gk', color: subjectAccentColors.gk },
-    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }} />, path: '/homibhabha', color: theme.palette.secondary.main },
+    { text: 'All Subjects', icon: <CategoryIcon sx={{ color: theme.palette.primary.main }} />, path: '/subjects', color: theme.palette.primary.main },
+    
+    // Individual subject links REMOVED:
+    // { text: 'Physics', icon: <BoltIcon sx={{ color: subjectAccentColors.physics }} />, path: '/subjects/physics', color: subjectAccentColors.physics },
+    // { text: 'Chemistry', icon: <ScienceIcon sx={{ color: subjectAccentColors.chemistry }} />, path: '/subjects/chemistry', color: subjectAccentColors.chemistry },
+    // { text: 'Biology', icon: <BiotechIcon sx={{ color: subjectAccentColors.biology }} />, path: '/subjects/biology', color: subjectAccentColors.biology },
+    // { text: 'Mathematics', icon: <CalculateIcon sx={{ color: subjectAccentColors.mathematics }} />, path: '/subjects/mathematics', color: subjectAccentColors.mathematics },
+    // { text: 'GK', icon: <PublicIcon sx={{ color: subjectAccentColors.gk }} />, path: '/subjects/gk', color: subjectAccentColors.gk },
+    
+    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }} />, path: '/homibhabha', color: theme.palette.secondary.main }, // Kept as per previous discussion
     { text: 'Results', icon: <PollIcon sx={{ color: theme.palette.resultsAccent?.main || theme.palette.info.main }}/>, path: '/results', color: theme.palette.resultsAccent?.main || theme.palette.info.main },
     { type: 'divider' },
     { text: 'My Account', icon: <AccountCircleIcon sx={{ color: theme.palette.accountAccent?.main || theme.palette.success.main }}/>, path: '/account', color: theme.palette.accountAccent?.main || theme.palette.success.main },

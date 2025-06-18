@@ -31,7 +31,7 @@ const DEFAULT_TOPICS_DB_NAME = 'quizTopics.db';
 const DEFAULT_USERS_DB_NAME = 'users.db';
 const DEFAULT_FRIENDS_DB_NAME = 'friends.db';
 const DEFAULT_CHALLENGES_DB_NAME = 'challenges.db';
-
+const DEFAULT_SUBJECTS_DB_NAME = 'subjects.db';
 
 const RESULTS_DB_PATH = process.env.DATABASE_FILE_PATH
     ? path.resolve(projectRoot, process.env.DATABASE_FILE_PATH.startsWith('./') ? process.env.DATABASE_FILE_PATH.substring(2) : process.env.DATABASE_FILE_PATH)
@@ -51,7 +51,9 @@ const FRIENDS_DB_PATH = process.env.FRIENDS_DATABASE_FILE_PATH
 const CHALLENGES_DB_PATH = process.env.CHALLENGES_DATABASE_FILE_PATH
     ? path.resolve(projectRoot, process.env.CHALLENGES_DATABASE_FILE_PATH.startsWith('./') ? process.env.CHALLENGES_DATABASE_FILE_PATH.substring(2) : process.env.CHALLENGES_DATABASE_FILE_PATH)
     : path.join(__dirname, DEFAULT_CHALLENGES_DB_NAME);
-
+const SUBJECTS_DB_PATH = process.env.SUBJECTS_DATABASE_FILE_PATH
+    ? path.resolve(projectRoot, process.env.SUBJECTS_DATABASE_FILE_PATH.startsWith('./') ? process.env.SUBJECTS_DATABASE_FILE_PATH.substring(2) : process.env.SUBJECTS_DATABASE_FILE_PATH)
+    : path.join(__dirname, DEFAULT_SUBJECTS_DB_NAME);
 
 logServer(`[INFO] Results DB Path: ${RESULTS_DB_PATH}`);
 logServer(`[INFO] Questions DB Path: ${QUESTIONS_DB_PATH}`);
@@ -59,7 +61,7 @@ logServer(`[INFO] Topics DB Path: ${TOPICS_DB_PATH}`);
 logServer(`[INFO] Users DB Path: ${USERS_DB_PATH}`);
 logServer(`[INFO] Friends DB Path: ${FRIENDS_DB_PATH}`);
 logServer(`[INFO] Challenges DB Path: ${CHALLENGES_DB_PATH}`);
-
+logServer(`[INFO] Subjects DB Path: ${SUBJECTS_DB_PATH}`);
 
 // --- DB Connections ---
 function initializeDb(dbPath, dbNameLog, createTableSqls, tableNamesArray, logInstance) {
@@ -201,6 +203,12 @@ const challengesDb = initializeDb(
     logDbChallenges
 );
 
+const subjectsDb = initializeReadOnlyDb(
+    SUBJECTS_DB_PATH,
+    'subjects',
+    'subjects',
+    debug('reactiquiz:db:subjects')
+);
 
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
@@ -743,6 +751,25 @@ app.get('/api/topics/:subject', (req, res) => {
             return res.status(500).json({ message: `Failed to fetch topics: ${err.message}` });
         }
         logApi('[SUCCESS] GET /api/topics/%s - Found %d topics', subject, (rows || []).length);
+        res.json(rows || []);
+    });
+});
+
+app.get('/api/subjects', (req, res) => {
+    logApi('[INFO] GET /api/subjects');
+    const sql = `SELECT id, name, description, accentColor, iconName, displayOrder, subjectKey FROM subjects ORDER BY displayOrder ASC`;
+
+    if (!subjectsDb || subjectsDb.open === false) {
+        logError('[ERROR] /api/subjects - Subjects DB unavailable');
+        return res.status(503).json({ message: 'Service temporarily unavailable. Subjects data cannot be fetched.' });
+    }
+
+    subjectsDb.all(sql, [], (err, rows) => {
+        if (err) {
+            logError('[ERROR] GET /api/subjects - DB Error: %s', err.message);
+            return res.status(500).json({ message: `Failed to fetch subjects: ${err.message}` });
+        }
+        logApi('[SUCCESS] GET /api/subjects - Found %d subjects', (rows || []).length);
         res.json(rows || []);
     });
 });

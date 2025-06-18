@@ -1,12 +1,10 @@
 // src/api/axiosInstance.js
-
 import axios from 'axios';
 
-// The full URL of your deployed Vercel backend API
-const VERCEL_BACKEND_URL = 'https://reactiquiz.vercel.app'; 
-
+// This configuration works for BOTH local development (with the proxy)
+// and for the final Vercel deployment.
 const apiClient = axios.create({
-  baseURL: VERCEL_BACKEND_URL,
+  baseURL: '/api',
 });
 
 export default apiClient;

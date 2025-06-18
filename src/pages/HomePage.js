@@ -86,7 +86,7 @@ function HomePage({ currentUser }) { // Added currentUser prop
   };
 
   const renderFeatureCard = (feature, index) => (
-      <Grid item xs={12} key={index}>
+      <Grid item xs={12} key={index}>w
         <Paper
           elevation={2}
           sx={{

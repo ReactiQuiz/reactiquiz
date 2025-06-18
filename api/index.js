@@ -271,5 +271,14 @@ app.post('/api/contact', async (req, res) => {
     } catch (error) { res.status(500).json({ message: 'Failed to send message.' }); }
 });
 
+app.get('/api/subjects', async (req, res) => {
+    const { data, error } = await supabase.from('subjects').select('*').order('displayOrder', { ascending: true });
+    if (error) {
+        console.error("Supabase Error fetching subjects:", error);
+        return res.status(500).json({ message: 'Failed to fetch subjects.' });
+    }
+    res.json(data || []);
+});
+
 // --- FINAL EXPORT FOR VERCEL ---
 export default app;
