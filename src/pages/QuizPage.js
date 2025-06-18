@@ -35,6 +35,28 @@ const shuffleArray = (array) => {
   return newArray;
 };
 
+// Helper function to parse options if they are a string
+const parseQuestionOptions = (questionsArray) => {
+  if (!Array.isArray(questionsArray)) return [];
+  return questionsArray.map(q => {
+    let parsedOptions = [];
+    if (typeof q.options === 'string') {
+      try {
+        parsedOptions = JSON.parse(q.options);
+      } catch (e) {
+        console.error(`[QuizPage] Failed to parse options for question ID ${q.id}:`, q.options, e);
+        // Keep parsedOptions as an empty array or provide default structure
+      }
+    } else if (Array.isArray(q.options)) {
+      parsedOptions = q.options; // Already an array
+    } else {
+      console.warn(`[QuizPage] Question ID ${q.id} has unexpected options format:`, q.options);
+    }
+    return { ...q, options: parsedOptions };
+  });
+};
+
+
 // This helper function is used by fetchHomiBhabhaPracticeQuestions
 const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClass, difficultyLabel, numQuestionsNeeded) => {
   console.log(`[PracticeQuiz] Fetching for subject: ${subjectName}, class: ${targetClass}, difficulty: ${difficultyLabel}, needed: ${numQuestionsNeeded}`);
@@ -117,9 +139,6 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
   }
 };
 
-// =========================================================================
-// START: This is the function that was missing
-// =========================================================================
 const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLabel, questionComposition, desiredTotal) => {
     let finalQuizQuestions = [];
     let totalFetchedCount = 0;
@@ -155,9 +174,6 @@ const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLa
     }
     return { questions: uniqueFinalQuizQuestions, info: infoMessages.join(' ') };
 };
-// =========================================================================
-// END: Missing function
-// =========================================================================
 
 const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel, numQuestionsReq, subject) => {
     try {
@@ -224,10 +240,10 @@ const fetchChallengeQuestions = async (challengeId, token) => {
 
 
         if(challengeQuestionDetails.length !== response.data.question_ids.length) {
-            console.warn("Not all challenge question IDs could be matched to full question details.");
+            console.warn("[QuizPage] Not all challenge question IDs could be matched to full question details.");
         }
         if(challengeQuestionDetails.length === 0) {
-            throw new Error("No valid questions found for this challenge based on the provided IDs.");
+            throw new Error("[QuizPage] No valid questions found for this challenge based on the provided IDs.");
         }
 
         const challengeQuestionsWithContext = challengeQuestionDetails.map(q => ({
@@ -238,7 +254,7 @@ const fetchChallengeQuestions = async (challengeId, token) => {
 
         return { challengeData: response.data, questions: challengeQuestionsWithContext };
     } catch (err) {
-        console.error("Error in fetchChallengeQuestions:", err);
+        console.error("[QuizPage] Error in fetchChallengeQuestions:", err);
         throw err;
     }
 };
@@ -288,15 +304,17 @@ function QuizPage({ currentUser }) {
       setUserAnswers({}); setQuestions([]); setIsSubmitting(false); setCurrentChallengeDetails(null);
 
       try {
+        let rawFetchedQuestions = []; // To hold questions before final processing
+
         if (quizType === 'challenge' && challengeIdFromState) {
             if (!currentUser || !currentUser.token) {
                 setError("You must be logged in to play a challenge.");
                 setIsLoading(false);
                 return;
             }
-            const { challengeData, questions: challengeQuestions } = await fetchChallengeQuestions(challengeIdFromState, currentUser.token);
+            const { challengeData, questions: challengeQuestionsData } = await fetchChallengeQuestions(challengeIdFromState, currentUser.token);
             setCurrentChallengeDetails(challengeData);
-            setQuestions(challengeQuestions);
+            rawFetchedQuestions = challengeQuestionsData;
             setEffectiveTopicId(challengeData.topic_id);
             setEffectiveSubject(challengeData.subject || challengeData.topic_id.split('-')[0] || 'challenge'); 
             setEffectiveTopicName(challengeData.topic_name || `Challenge #${challengeData.id}`);
@@ -304,37 +322,39 @@ function QuizPage({ currentUser }) {
             setEffectiveNumQuestions(challengeData.num_questions);
             setEffectiveQuizClass(challengeData.quiz_class);
             setEffectiveTimeLimit(challengeData.time_limit || null); 
-            if (challengeQuestions.length > 0) setTimerActive(true);
 
         } else if (quizType === 'homibhabha-practice' && questionCompositionFromState) {
-            const { questions: practiceQuestions, info: practiceInfo } = await fetchHomiBhabhaPracticeQuestions(
+            const { questions: practiceQuestionsData, info: practiceInfo } = await fetchHomiBhabhaPracticeQuestions(
                 quizClassFromState, difficultyLabelFromState, questionCompositionFromState, numQuestionsReqFromState
             );
-            setQuestions(practiceQuestions);
+            rawFetchedQuestions = practiceQuestionsData;
             if (practiceInfo) setInfoMessage(practiceInfo);
             setEffectiveTopicId(`homibhabha-practice-${quizClassFromState}-${difficultyLabelFromState}`);
             setEffectiveSubject('homibhabha');
             setEffectiveTopicName(topicNameFromState);
             setEffectiveDifficulty(difficultyLabelFromState);
-            setEffectiveNumQuestions(practiceQuestions.length);
+            setEffectiveNumQuestions(practiceQuestionsData.length); // Use actual length
             setEffectiveQuizClass(quizClassFromState);
             setEffectiveTimeLimit(timeLimitFromState);
-            if (practiceQuestions.length > 0) setTimerActive(true);
 
         } else if (topicId && subjectFromState) { 
-            const topicQuestions = await fetchTopicQuestions(topicId, quizClassFromState, difficultyLabelFromState, numQuestionsReqFromState, subjectFromState);
-            setQuestions(topicQuestions);
+            rawFetchedQuestions = await fetchTopicQuestions(topicId, quizClassFromState, difficultyLabelFromState, numQuestionsReqFromState, subjectFromState);
             setEffectiveTopicId(topicId);
             setEffectiveSubject(subjectFromState);
             setEffectiveTopicName(topicNameFromState);
             setEffectiveDifficulty(difficultyLabelFromState);
-            setEffectiveNumQuestions(topicQuestions.length); 
+            setEffectiveNumQuestions(rawFetchedQuestions.length); // Use actual length
             setEffectiveQuizClass(quizClassFromState);
             setEffectiveTimeLimit(timeLimitFromState);
-            if (topicQuestions.length > 0) setTimerActive(true);
         } else {
             setError("Quiz configuration is missing or invalid.");
         }
+
+        const questionsWithParsedOptions = parseQuestionOptions(rawFetchedQuestions);
+        setQuestions(questionsWithParsedOptions);
+
+        if (questionsWithParsedOptions.length > 0) setTimerActive(true);
+
       } catch (err) {
           setError(`Failed to load quiz: ${err.response?.data?.message || err.message || 'Unknown error'}`);
       }
@@ -376,13 +396,14 @@ function QuizPage({ currentUser }) {
 
     const resultNavigationStateBase = {
       quizAttemptId: quizAttemptIdForDisplay,
-      originalQuestionsForDisplay: questions,
+      originalQuestionsForDisplay: questions, // These questions will have options as arrays
       originalAnswersForDisplay: userAnswers,
       subjectAccentColor: currentAccentColor,
       subject: effectiveSubject,
       topicId: effectiveTopicId,
       difficulty: effectiveDifficulty,
-      numQuestionsConfigured: effectiveNumQuestions,
+      numQuestionsConfigured: effectiveNumQuestions, // This should be the number of questions requested/configured
+      actualNumQuestionsInQuiz: questions.length, // Number of questions actually loaded and displayed
       timeTaken: elapsedTime,
       quizClass: effectiveQuizClass,
       isPracticeTest: quizType === 'homibhabha-practice',
@@ -400,7 +421,7 @@ function QuizPage({ currentUser }) {
         subject: effectiveSubject,
         topicId: effectiveTopicId,
         score: score,
-        totalQuestions: questions.length,
+        totalQuestions: questions.length, // Use actual number of questions in the quiz
         percentage: percentage,
         timestamp: new Date().toISOString(),
         difficulty: effectiveDifficulty,
@@ -477,7 +498,7 @@ function QuizPage({ currentUser }) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto' }}>
         <Alert severity="error">{error}</Alert>
-        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/${effectiveSubject}`)} sx={{ mt: 2, borderColor: currentAccentColor, color: currentAccentColor }}>
+        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/subjects/${effectiveSubject}`)} sx={{ mt: 2, borderColor: currentAccentColor, color: currentAccentColor }}>
           Back to {effectiveSubject ? effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1) : 'Home'}
         </Button>
       </Box>
@@ -492,7 +513,7 @@ function QuizPage({ currentUser }) {
           No questions are currently available for the selected settings.
           Please try different settings or another topic.
         </Typography>
-        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/${effectiveSubject}`)} sx={{ mt: 3, borderColor: currentAccentColor, color: currentAccentColor }}>
+        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/subjects/${effectiveSubject}`)} sx={{ mt: 3, borderColor: currentAccentColor, color: currentAccentColor }}>
           Back to {effectiveSubject ? effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1) : 'Home'}
         </Button>
       </Box>
@@ -586,7 +607,7 @@ function QuizPage({ currentUser }) {
       {questions.map((question, index) => (
         <QuestionItem
           key={question.id || `q-${index}-${Math.random()}`}
-          question={question}
+          question={question} // question.options here will be an array
           questionNumber={index + 1}
           selectedOptionId={userAnswers[question.id]}
           onOptionSelect={handleOptionSelectForQuestion}

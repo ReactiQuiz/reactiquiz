@@ -41,45 +41,61 @@ function FlashcardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchQuestionsForFlashcards = async () => {
-      setIsLoading(true);
-      setError('');
-      try {
-        // <<< CHANGE HERE: Using query parameter >>>
-        const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
-        if (Array.isArray(response.data) && response.data.length > 0) {
-          setAllQuestions(response.data);
-          const formattedFlashcards = response.data.map(q => ({
+useEffect(() => {
+  const fetchQuestionsForFlashcards = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setAllQuestions(response.data);
+        const formattedFlashcards = response.data.map(q => {
+          let parsedOptions = [];
+          try {
+            // Check if q.options is a string and needs parsing
+            if (typeof q.options === 'string') {
+              parsedOptions = JSON.parse(q.options);
+            } else if (Array.isArray(q.options)) {
+              // If it's already an array (e.g., from local dev without stringification)
+              parsedOptions = q.options;
+            } else {
+              console.warn(`Question ID ${q.id} has unexpected options format:`, q.options);
+            }
+          } catch (e) {
+            console.error(`Failed to parse options for question ID ${q.id}:`, q.options, e);
+            // Keep parsedOptions as an empty array or handle as needed
+          }
+          return {
             id: q.id,
             frontText: q.text,
-            options: q.options,
+            options: parsedOptions, // <--- USE THE PARSED OPTIONS (ARRAY)
             correctOptionId: q.correctOptionId,
             explanation: q.explanation,
-          }));
-          setFlashcards(shuffleArray(formattedFlashcards));
-          setCurrentCardIndex(0);
-        } else {
-          setError('No questions found for this topic to create flashcards.');
-          setFlashcards([]);
-          setAllQuestions([]);
-        }
-      } catch (err) {
-        setError(`Failed to load questions: ${err.response?.data?.message || err.message}`);
+          };
+        });
+        setFlashcards(shuffleArray(formattedFlashcards));
+        setCurrentCardIndex(0);
+      } else {
+        setError('No questions found for this topic to create flashcards.');
         setFlashcards([]);
         setAllQuestions([]);
-      } finally {
-        setIsLoading(false);
       }
-    };
-
-    if (topicId) {
-      fetchQuestionsForFlashcards();
-    } else {
-      setError("Topic ID is missing.");
+    } catch (err) {
+      setError(`Failed to load questions: ${err.response?.data?.message || err.message}`);
+      setFlashcards([]);
+      setAllQuestions([]);
+    } finally {
       setIsLoading(false);
     }
-  }, [topicId]);
+  };
+
+  if (topicId) {
+    fetchQuestionsForFlashcards();
+  } else {
+    setError("Topic ID is missing.");
+    setIsLoading(false);
+  }
+}, [topicId]);
 
   const handleNextCard = () => {
     if (flashcards.length > 0) {

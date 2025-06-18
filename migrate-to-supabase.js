@@ -45,7 +45,7 @@ function readFromSqlite(dbPath, tableName) {
   });
 }
 
-async function insertIntoSupabase(tableName, data, chunkSize = 10) {
+async function insertIntoSupabase(tableName, data, chunkSize = 100) {
   if (!data || data.length === 0) {
     console.log(`No data to insert into ${tableName}. Skipping.`);
     return;

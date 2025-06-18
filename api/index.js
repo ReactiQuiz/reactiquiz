@@ -280,5 +280,48 @@ app.get('/api/subjects', async (req, res) => {
     res.json(data || []);
 });
 
+app.get('/api/challenges/pending', verifySessionToken, async (req, res) => {
+    const currentUserId = req.user.id;
+    // console.log('[API_LOG] GET /api/challenges/pending for User ID:', currentUserId); // Good for Vercel logs
+
+    try {
+        const { data: challenges, error } = await supabase
+            .from('challenges')
+            .select(`
+                *,
+                challenger:challenger_id ( id, identifier ),
+                challenged:challenged_id ( id, identifier )
+            `)
+            .eq('challenged_id', currentUserId)
+            .or('status.eq.pending,status.eq.challenger_completed') // Fetch if pending for challenged OR if challenger completed & waiting for challenged
+            .gt('expires_at', new Date().toISOString()) // Check for expiration
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('[API_ERROR] Supabase error fetching pending challenges:', error);
+            return res.status(500).json({ message: 'Error fetching pending challenges.' });
+        }
+
+        if (!challenges || challenges.length === 0) {
+            return res.json([]);
+        }
+
+        // Transform data to match frontend expectations if needed
+        const enrichedChallenges = challenges.map(c => ({
+            ...c,
+            challengerUsername: c.challenger ? c.challenger.identifier : 'Unknown',
+            challengedUsername: c.challenged ? c.challenged.identifier : 'Unknown',
+            // question_ids_json is likely already a string from DB, no need to re-parse here for this list view
+        }));
+        
+        // console.log('[API_LOG] Pending challenges found:', enrichedChallenges.length);
+        res.json(enrichedChallenges);
+
+    } catch (e) {
+        console.error('[API_ERROR] Unexpected error in /api/challenges/pending:', e);
+        res.status(500).json({ message: 'Server error processing pending challenges.' });
+    }
+});
+
 // --- FINAL EXPORT FOR VERCEL ---
 export default app;
