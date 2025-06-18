@@ -1,6 +1,5 @@
 // --- START OF FILE src/pages/ResultsPage.js ---
 
-// src/pages/ResultsPage.js
 import {
   useMemo, useEffect, useState, useCallback
 } from 'react';
@@ -14,7 +13,7 @@ import apiClient from '../api/axiosInstance';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 import LoginIcon from '@mui/icons-material/Login';
-import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Re-added for challenge icon
+// import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Not used for challenge button anymore in ResultsActionButtons
 
 import { subjectAccentColors } from '../theme';
 import QuizResultSummary from '../components/QuizResultSummary';
@@ -23,11 +22,12 @@ import HistoricalResultItem from '../components/HistoricalResultItem';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import ResultsActionButtons from '../components/ResultsActionButtons';
 import ResultRevealOverlay from '../components/ResultRevealOverlay';
-import ChallengeSetupModal from '../components/ChallengeSetupModal'; // Re-added
+import ChallengeSetupModal from '../components/ChallengeSetupModal';
 import { formatTime } from '../utils/formatTime';
 
 const formatTopicNameFromResult = (topicId, topicNameFromState = null, isChallenge = false, challengeDetails = null) => {
   if (isChallenge && challengeDetails?.topic_name) return `Challenge: ${challengeDetails.topic_name}`;
+  if (isChallenge && topicNameFromState) return `Challenge: ${topicNameFromState}`; // Added this for consistency
   if (isChallenge) return `Challenge: ${topicId ? String(topicId).replace(/-/g, ' ') : 'Quiz'}`;
 
   if (topicNameFromState && topicNameFromState !== topicId?.replace(/-/g, ' ')) return topicNameFromState;
@@ -57,6 +57,26 @@ const formatTopicNameFromResult = (topicId, topicNameFromState = null, isChallen
 
   return name;
 };
+
+// Helper function to parse options if they are a string
+const parseQuestionOptionsForResults = (questionsArray) => {
+    if (!Array.isArray(questionsArray)) return [];
+    return questionsArray.map(q => {
+      let parsedOptions = [];
+      if (typeof q.options === 'string') {
+        try {
+          parsedOptions = JSON.parse(q.options);
+        } catch (e) {
+          console.error(`[ResultsPage] Failed to parse options for question ID ${q.id}:`, q.options, e);
+        }
+      } else if (Array.isArray(q.options)) {
+        parsedOptions = q.options;
+      } else {
+        console.warn(`[ResultsPage] Question ID ${q.id} has unexpected options format:`, q.options);
+      }
+      return { ...q, options: parsedOptions };
+    });
+  };
 
 
 function ResultsPage({ currentUser }) {
@@ -92,10 +112,11 @@ function ResultsPage({ currentUser }) {
     subject: currentSubject,
     topicId: currentTopicIdFromState,
     difficulty: currentDifficulty,
-    numQuestionsConfigured: currentNumQuestionsConfigured,
+    numQuestionsConfigured: currentNumQuestionsConfigured, // Number of questions user intended to take
+    actualNumQuestionsInQuiz: currentActualNumQuestions,  // Actual questions loaded (could be less if not enough found)
     quizClass: currentQuizClass,
     timeTaken: currentTimeTaken,
-    originalQuestionsForDisplay,
+    originalQuestionsForDisplay, // These should have options as arrays from QuizPage
     originalAnswersForDisplay,
     subjectAccentColor: currentSubjectAccentColor,
     score: currentScoreFromState,
@@ -110,6 +131,7 @@ function ResultsPage({ currentUser }) {
   const { score, percentage, detailedResultsForCurrentQuiz } = useMemo(() => {
     if (originalQuestionsForDisplay && Array.isArray(originalQuestionsForDisplay) && originalQuestionsForDisplay.length > 0) {
       if (currentScoreFromState !== undefined && currentPercentageFromState !== undefined) {
+        // Assuming originalQuestionsForDisplay from QuizPage already has options parsed
         const results = originalQuestionsForDisplay.map(question => {
           const userAnswerId = originalAnswersForDisplay ? originalAnswersForDisplay[question.id] : null;
           const isCorrect = userAnswerId === question.correctOptionId;
@@ -143,7 +165,6 @@ function ResultsPage({ currentUser }) {
     setIsLoadingHistorical(true);
     setFetchError('');
 
-    // Fetch all results, including challenges, for the main results page
     apiClient.get(`/api/results?userId=${currentUser.id}`, {
       headers: { Authorization: `Bearer ${currentUser.token}` }
     })
@@ -171,17 +192,19 @@ function ResultsPage({ currentUser }) {
       let headers = {};
       if (currentUser?.token) headers.Authorization = `Bearer ${currentUser.token}`;
 
-      // <<< CHANGE HERE: Using query parameter >>>
       apiClient.get(`/api/questions?topicId=${topicIdToFetch}`, { headers })
         .then(response => {
-          const allTopicQuestions = response.data;
-          if (!Array.isArray(allTopicQuestions)) {
+          const allTopicQuestionsRaw = response.data;
+          if (!Array.isArray(allTopicQuestionsRaw)) {
             setDetailsFetchError("Could not load question details: Invalid data format.");
             setProcessedHistoricalDetailedView([]);
             return;
           }
+          
+          const allTopicQuestionsWithParsedOptions = parseQuestionOptionsForResults(allTopicQuestionsRaw);
+
           const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
-            const fullQuestionData = allTopicQuestions.find(q => q.id === qId);
+            const fullQuestionData = allTopicQuestionsWithParsedOptions.find(q => q.id === qId);
             if (!fullQuestionData) {
               return { id: qId, text: `Question data (ID: ${qId}) not found.`, options: [], isCorrect: false, isAnswered: selectedHistoricalResult.userAnswersSnapshot[qId] != null, userAnswerId: selectedHistoricalResult.userAnswersSnapshot[qId], explanation: "Original question data missing." };
             }
@@ -205,12 +228,6 @@ function ResultsPage({ currentUser }) {
       else { setHistoricalResults([]); setIsLoadingHistorical(false); }
     }
   }, [isShowingCurrentQuizResult, selectedHistoricalResult, currentUser, fetchHistoricalData, showRevealAnimation]);
-
-  const handleHistoricalResultClick = (result) => {
-    setShowRevealAnimation(false);
-    setDetailsFetchError('');
-    setSelectedHistoricalResult(result);
-  };
 
   const handleBackToList = () => {
     setSelectedHistoricalResult(null);
@@ -270,7 +287,7 @@ function ResultsPage({ currentUser }) {
       }
       dataForChallenge = {
         topicId: sourceResult.topicId,
-        topicName: formatTopicNameFromResult(sourceResult.topicId, sourceResult.topicName, !!sourceResult.challenge_id, null), // Pass null for challengeDetails if just historical
+        topicName: formatTopicNameFromResult(sourceResult.topicId, sourceResult.topicName, !!sourceResult.challenge_id, null),
         difficulty: sourceResult.difficulty,
         numQuestions: sourceResult.questionsActuallyAttemptedIds.length,
         quizClass: sourceResult.class,
@@ -293,7 +310,6 @@ function ResultsPage({ currentUser }) {
   };
 
 
-  // ---- Main Render Logic ----
   if (showRevealAnimation && isShowingCurrentQuizResult) {
     return <ResultRevealOverlay onAnimationComplete={handleAnimationComplete} />;
   }
@@ -327,9 +343,6 @@ function ResultsPage({ currentUser }) {
           showDeleteButton={currentUser && currentUser.id === selectedHistoricalResult.userId}
           onDeleteClick={() => openDeleteConfirmation(selectedHistoricalResult.id)}
           deleteDisabled={!selectedHistoricalResult.id || !(currentUser && currentUser.id === selectedHistoricalResult.userId)}
-          onChallengeFriend={() => handleOpenChallengeSetup(selectedHistoricalResult)}
-          showChallengeButton={currentUser && !!selectedHistoricalResult.questionsActuallyAttemptedIds && selectedHistoricalResult.questionsActuallyAttemptedIds.length > 0 && !selectedHistoricalResult.challenge_id}
-          currentUser={currentUser}
         />
         <DeleteConfirmationDialog
           open={deleteConfirmationOpen}
@@ -349,13 +362,13 @@ function ResultsPage({ currentUser }) {
       topicId: currentTopicIdFromState,
       topicName: formatTopicNameFromResult(currentTopicIdFromState, (currentQuizDataFromState?.topicName || currentTopicIdFromState?.replace(/-/g, ' ')), currentQuizIsChallenge, currentQuizChallengeDetails),
       score: score,
-      totalQuestions: originalQuestionsForDisplay ? originalQuestionsForDisplay.length : 0,
+      totalQuestions: currentActualNumQuestions || (originalQuestionsForDisplay ? originalQuestionsForDisplay.length : 0),
       percentage: percentage,
       difficulty: currentDifficulty,
       numQuestionsConfigured: currentNumQuestionsConfigured,
       class: currentQuizClass,
       timeTaken: currentTimeTaken,
-      challenge_id: currentQuizIsChallenge ? currentQuizChallengeDetails?.id : null // Pass challenge_id for summary
+      challenge_id: currentQuizIsChallenge ? currentQuizChallengeDetails?.id : null
     };
     const accent = currentSubjectAccentColor || RESULTS_PAGE_ACCENT_COLOR;
     return (
@@ -383,7 +396,7 @@ function ResultsPage({ currentUser }) {
                 <strong>Topic:</strong> {formatTopicNameFromResult(currentQuizChallengeDetails.topic_id, currentQuizChallengeDetails.topic_name, true, currentQuizChallengeDetails)}
               </Typography>
               <Typography>
-                <strong>Your Score:</strong> {score}/{originalQuestionsForDisplay?.length}
+                <strong>Your Score:</strong> {score}/{currentActualNumQuestions || originalQuestionsForDisplay?.length}
                 {currentTimeTaken != null && ` (${formatTime(currentTimeTaken)})`}
               </Typography>
 
@@ -434,17 +447,13 @@ function ResultsPage({ currentUser }) {
           showBackToListButton={false}
           showViewHistoryButton={true}
           accentColor={accent}
-          onChallengeFriend={() => handleOpenChallengeSetup('current')}
-          showChallengeButton={currentUser && !currentQuizIsChallenge && originalQuestionsForDisplay && originalQuestionsForDisplay.length > 0}
-          currentUser={currentUser}
         />
       </Box>
     );
   }
 
-  // Default view: Historical results list or login prompt
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth:'100%', width:'10000px', margin: 'auto', mt: 2 }}>
+    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 1, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
         <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em', color: RESULTS_PAGE_ACCENT_COLOR }} />
         {currentUser ? `${currentUser.name}'s Quiz Results` : 'Past Quiz Results'}
