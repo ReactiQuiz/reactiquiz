@@ -89,11 +89,12 @@ function HomibhabhaPage() {
     '&:hover': {
       transform: 'translateY(-4px)',
       boxShadow: theme.shadows[6],
-    }
+    },
+    width: '100%'
   };
 
   return (
-    <Box sx={{ p: 3, flexGrow: 1 }}>
+    <Box sx={{ p: 3, flexGrow: 1, width: '100%'}}>
       <Typography
         variant="h4"
         gutterBottom
@@ -108,7 +109,7 @@ function HomibhabhaPage() {
       </Typography>
 
       <Grid container spacing={4} justifyContent="center" alignItems="stretch">
-        <Grid item xs={12} sm={6} md={5} sx={{ display: 'flex' }}>
+        <Grid item xs={12} sm={6} md={5} sx={{ display: 'flex', width: '100%' }}>
           <Card sx={cardStyle}>
             <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
               <DescriptionIcon sx={{ fontSize: 60, color: homiBhabhaAccentColor, mb: 2 }} />
@@ -138,7 +139,7 @@ function HomibhabhaPage() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={5} sx={{ display: 'flex' }}>
+        <Grid item xs={12} sm={6} md={5} sx={{ display: 'flex', width: '100%' }}>
           <Card sx={cardStyle}>
             <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
               <EditNoteIcon sx={{ fontSize: 60, color: homiBhabhaAccentColor, mb: 2 }} />

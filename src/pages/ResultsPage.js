@@ -27,7 +27,7 @@ import { formatTime } from '../utils/formatTime';
 
 const formatTopicNameFromResult = (topicId, topicNameFromState = null, isChallenge = false, challengeDetails = null) => {
   if (isChallenge && challengeDetails?.topic_name) return `Challenge: ${challengeDetails.topic_name}`;
-  if (isChallenge && topicNameFromState) return `Challenge: ${topicNameFromState}`; // Added this for consistency
+  if (isChallenge && topicNameFromState) return `Challenge: ${topicNameFromState}`;
   if (isChallenge) return `Challenge: ${topicId ? String(topicId).replace(/-/g, ' ') : 'Quiz'}`;
 
   if (topicNameFromState && topicNameFromState !== topicId?.replace(/-/g, ' ')) return topicNameFromState;
@@ -59,24 +59,20 @@ const formatTopicNameFromResult = (topicId, topicNameFromState = null, isChallen
 };
 
 // Helper function to parse options if they are a string
-const parseQuestionOptionsForResults = (questionsArray) => {
-    if (!Array.isArray(questionsArray)) return [];
-    return questionsArray.map(q => {
-      let parsedOptions = [];
-      if (typeof q.options === 'string') {
-        try {
-          parsedOptions = JSON.parse(q.options);
-        } catch (e) {
-          console.error(`[ResultsPage] Failed to parse options for question ID ${q.id}:`, q.options, e);
-        }
-      } else if (Array.isArray(q.options)) {
-        parsedOptions = q.options;
-      } else {
-        console.warn(`[ResultsPage] Question ID ${q.id} has unexpected options format:`, q.options);
+const parseOptionsString = (optionsData) => {
+    if (typeof optionsData === 'string') {
+      try {
+        return JSON.parse(optionsData);
+      } catch (e) {
+        console.error(`[ResultsPage] Failed to parse options string:`, optionsData, e);
+        return []; // Return empty array on parse error
       }
-      return { ...q, options: parsedOptions };
-    });
-  };
+    } else if (Array.isArray(optionsData)) {
+      return optionsData; // Already an array
+    }
+    console.warn(`[ResultsPage] Unexpected options format, expected string or array, got:`, typeof optionsData);
+    return []; // Default to empty array for unexpected types
+};
 
 
 function ResultsPage({ currentUser }) {
@@ -112,8 +108,8 @@ function ResultsPage({ currentUser }) {
     subject: currentSubject,
     topicId: currentTopicIdFromState,
     difficulty: currentDifficulty,
-    numQuestionsConfigured: currentNumQuestionsConfigured, // Number of questions user intended to take
-    actualNumQuestionsInQuiz: currentActualNumQuestions,  // Actual questions loaded (could be less if not enough found)
+    numQuestionsConfigured: currentNumQuestionsConfigured,
+    actualNumQuestionsInQuiz: currentActualNumQuestions,
     quizClass: currentQuizClass,
     timeTaken: currentTimeTaken,
     originalQuestionsForDisplay, // These should have options as arrays from QuizPage
@@ -130,12 +126,17 @@ function ResultsPage({ currentUser }) {
 
   const { score, percentage, detailedResultsForCurrentQuiz } = useMemo(() => {
     if (originalQuestionsForDisplay && Array.isArray(originalQuestionsForDisplay) && originalQuestionsForDisplay.length > 0) {
+      // CRITICAL: Ensure originalQuestionsForDisplay passed from QuizPage has options already parsed.
+      // If not, you'd parse them here too.
+      // const questionsWithParsedOptions = parseOptionsString(originalQuestionsForDisplay); // This would be needed if QuizPage didn't parse
+      // For now, assuming QuizPage sends them parsed.
+
       if (currentScoreFromState !== undefined && currentPercentageFromState !== undefined) {
-        // Assuming originalQuestionsForDisplay from QuizPage already has options parsed
         const results = originalQuestionsForDisplay.map(question => {
           const userAnswerId = originalAnswersForDisplay ? originalAnswersForDisplay[question.id] : null;
           const isCorrect = userAnswerId === question.correctOptionId;
-          return { ...question, userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
+          // Ensure options are an array here before passing to QuestionBreakdown
+          return { ...question, options: Array.isArray(question.options) ? question.options : [], userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
         });
         return { score: currentScoreFromState, percentage: currentPercentageFromState, detailedResultsForCurrentQuiz: results };
       }
@@ -143,7 +144,7 @@ function ResultsPage({ currentUser }) {
     return { score: 0, percentage: 0, detailedResultsForCurrentQuiz: [] };
   }, [originalQuestionsForDisplay, originalAnswersForDisplay, currentScoreFromState, currentPercentageFromState]);
 
-  const isShowingCurrentQuizResult = !!(originalQuestionsForDisplay && Array.isArray(originalQuestionsForDisplay) && originalQuestionsForDisplay.length > 0 && currentQuizAttemptId);
+  const isShowingCurrentQuizResult = !!(detailedResultsForCurrentQuiz && detailedResultsForCurrentQuiz.length > 0 && currentQuizAttemptId);
 
   const handleAnimationComplete = () => {
     setShowRevealAnimation(false);
@@ -194,14 +195,18 @@ function ResultsPage({ currentUser }) {
 
       apiClient.get(`/api/questions?topicId=${topicIdToFetch}`, { headers })
         .then(response => {
-          const allTopicQuestionsRaw = response.data;
+          const allTopicQuestionsRaw = response.data; // These will have options as strings
           if (!Array.isArray(allTopicQuestionsRaw)) {
-            setDetailsFetchError("Could not load question details: Invalid data format.");
+            setDetailsFetchError("Could not load question details: Invalid data format from API.");
             setProcessedHistoricalDetailedView([]);
             return;
           }
           
-          const allTopicQuestionsWithParsedOptions = parseQuestionOptionsForResults(allTopicQuestionsRaw);
+          // Parse options for each question fetched for the historical result
+          const allTopicQuestionsWithParsedOptions = allTopicQuestionsRaw.map(q => ({
+            ...q,
+            options: parseOptionsString(q.options) // Ensure options are parsed
+          }));
 
           const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
             const fullQuestionData = allTopicQuestionsWithParsedOptions.find(q => q.id === qId);
@@ -209,15 +214,19 @@ function ResultsPage({ currentUser }) {
               return { id: qId, text: `Question data (ID: ${qId}) not found.`, options: [], isCorrect: false, isAnswered: selectedHistoricalResult.userAnswersSnapshot[qId] != null, userAnswerId: selectedHistoricalResult.userAnswersSnapshot[qId], explanation: "Original question data missing." };
             }
             const userAnswerId = selectedHistoricalResult.userAnswersSnapshot[qId];
+            // fullQuestionData.options is now an array due to the parsing above
             return { ...fullQuestionData, userAnswerId, isCorrect: userAnswerId === fullQuestionData.correctOptionId, isAnswered: userAnswerId != null };
           });
           setProcessedHistoricalDetailedView(populatedQuestions);
         })
-        .catch(err => setDetailsFetchError(`Failed to load question details: ${err.response?.data?.message || err.message}`))
+        .catch(err => {
+            console.error("Error fetching/processing historical question details:", err);
+            setDetailsFetchError(`Failed to load question details: ${err.response?.data?.message || err.message}`);
+        })
         .finally(() => setIsLoadingHistoricalDetails(false));
     } else {
       setProcessedHistoricalDetailedView([]);
-      if (selectedHistoricalResult) setDetailsFetchError("No question data to display details for this result.");
+      if (selectedHistoricalResult) setDetailsFetchError("No question data to display details for this result (missing IDs or snapshot).");
     }
   }, [selectedHistoricalResult, currentUser]);
 
@@ -259,6 +268,12 @@ function ResultsPage({ currentUser }) {
   };
   const handleNavigateHome = () => navigate('/');
   const handleNavigateToAccount = () => navigate('/account');
+
+  const handleHistoricalResultClick = (result) => {
+  setShowRevealAnimation(false);
+  setDetailsFetchError('');
+  setSelectedHistoricalResult(result);
+};
 
   const handleOpenChallengeSetup = (sourceResult) => {
     if (!currentUser) {
@@ -314,6 +329,7 @@ function ResultsPage({ currentUser }) {
     return <ResultRevealOverlay onAnimationComplete={handleAnimationComplete} />;
   }
 
+  // Displaying details of a selected historical result
   if (selectedHistoricalResult) {
     const accent = subjectAccentColors[selectedHistoricalResult.subject?.toLowerCase()] || RESULTS_PAGE_ACCENT_COLOR;
     return (
@@ -331,7 +347,7 @@ function ResultsPage({ currentUser }) {
         ) : detailsFetchError ? (
           <Alert severity="error" sx={{ mt: 2 }}>{detailsFetchError}</Alert>
         ) : processedHistoricalDetailedView.length > 0 ? (
-          <QuestionBreakdown detailedQuestionsToDisplay={processedHistoricalDetailedView} />
+          <QuestionBreakdown detailedQuestionsToDisplay={processedHistoricalDetailedView} /> 
         ) : (
           <Alert severity="info" sx={{ mt: 2 }}>No detailed question breakdown available or no questions were attempted for this result.</Alert>
         )}
@@ -356,6 +372,7 @@ function ResultsPage({ currentUser }) {
     );
   }
 
+  // Displaying the result of the quiz just taken
   if (isShowingCurrentQuizResult && !showRevealAnimation) {
     const currentQuizResultForView = {
       subject: currentSubject,
@@ -434,7 +451,7 @@ function ResultsPage({ currentUser }) {
         )}
 
         {detailedResultsForCurrentQuiz && detailedResultsForCurrentQuiz.length > 0 &&
-          <QuestionBreakdown detailedQuestionsToDisplay={detailedResultsForCurrentQuiz} />
+          <QuestionBreakdown detailedQuestionsToDisplay={detailedResultsForCurrentQuiz} /> /* This gets parsed options from current quiz */
         }
         <ResultsActionButtons
           onNavigateHome={handleNavigateHome}
@@ -452,8 +469,9 @@ function ResultsPage({ currentUser }) {
     );
   }
 
+  // Default view: Historical results list or login prompt
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
+    <Box sx={{ p: { xs: 2, sm: 3 }, width: '100%', margin: 'auto', mt: 2 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 1, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
         <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em', color: RESULTS_PAGE_ACCENT_COLOR }} />
         {currentUser ? `${currentUser.name}'s Quiz Results` : 'Past Quiz Results'}
@@ -535,5 +553,4 @@ function ResultsPage({ currentUser }) {
 }
 
 export default ResultsPage;
-
 // --- END OF FILE src/pages/ResultsPage.js ---

@@ -1,22 +1,25 @@
 // src/pages/AllSubjectsPage.js
 import { useState, useEffect } from 'react';
-import { Box, Typography, CircularProgress, Alert, Grid } from '@mui/material';
+import { Box, Typography, CircularProgress, Alert, /* Grid, NO LONGER NEEDED FOR CARD LAYOUT */ TextField, InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
+import SearchIcon from '@mui/icons-material/Search';
 
 import apiClient from '../api/axiosInstance';
 import SubjectOverviewCard from '../components/SubjectOverviewCard';
-import ScienceIcon from '@mui/icons-material/Science';
+
+const FIXED_CARD_WIDTH = 280; // Define your desired fixed card width in pixels
+const CARD_SPACING = 2; // Theme spacing units (e.g., 2 * 8px = 16px)
 
 function AllSubjectsPage() {
   const navigate = useNavigate();
-  const theme = useTheme();
 
   const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    // ... fetchSubjects logic remains the same ...
     const fetchSubjects = async () => {
       setIsLoading(true);
       setError('');
@@ -36,92 +39,77 @@ function AllSubjectsPage() {
         setIsLoading(false);
       }
     };
-
     fetchSubjects();
   }, []);
 
   const handleExploreSubject = (subjectKey) => {
-    navigate(`/subjects/${subjectKey.toLowerCase()}`); // Ensure subjectKey is lowercase for consistency
+    navigate(`/subjects/${subjectKey.toLowerCase()}`);
   };
 
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
-        <CircularProgress />
-        <Typography sx={{ ml: 2 }}>Loading subjects...</Typography>
-      </Box>
-    );
-  }
+  const filteredSubjects = subjects.filter(subject =>
+    subject.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (subject.description && subject.description.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
-  if (error) {
-    return (
-      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
-        <Alert severity="error">{error}</Alert>
-      </Box>
-    );
-  }
-
-  if (subjects.length === 0) {
-    return (
-      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
-        <Typography variant="h5" gutterBottom>No Subjects Available</Typography>
-        <Typography>It looks like there are no subjects configured in the database yet.</Typography>
-      </Box>
-    );
-  }
+  if (isLoading) { return ( <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh"><CircularProgress /><Typography sx={{ ml: 2 }}>Loading subjects...</Typography></Box> ); }
+  if (error) { return ( <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}><Alert severity="error">{error}</Alert></Box> ); }
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '100%', margin: 'auto' }}>
-      <Typography
-        variant="h4"
-        gutterBottom
+      <Box sx={{ mb: {xs: 2, sm: 3, md: 4}, mt: {xs: 1, sm: 1} }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Search Subjects"
+          placeholder="Enter subject name or keyword..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          InputProps={{
+            startAdornment: ( <InputAdornment position="start"><SearchIcon /></InputAdornment> ),
+          }}
+        />
+      </Box>
+
+      {subjects.length > 0 && filteredSubjects.length === 0 && searchTerm && (
+        <Typography sx={{ textAlign: 'center', my: 3 }}>
+          No subjects found matching "{searchTerm}".
+        </Typography>
+      )}
+      {subjects.length === 0 && !isLoading && (
+         <Typography sx={{ textAlign: 'center', my: 3 }}>
+           No subjects available at the moment.
+         </Typography>
+      )}
+
+      {/* Flex container for fixed-width cards */}
+      <Box
         sx={{
-          color: theme.palette.primary.main,
-          fontWeight: 'bold',
-          textAlign: 'center',
-          mb: { xs: 3, sm: 4 },
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
+          flexWrap: 'wrap', // Allow items to wrap to the next line
+          justifyContent: 'center', // Center the items horizontally
+          gap: CARD_SPACING, // Use theme spacing for gap
+          py: 2 // Some vertical padding for the container
         }}
       >
-        <ScienceIcon sx={{ mr: 1, fontSize: '1.2em' }} />
-        Explore Subjects
-      </Typography>
-
-      <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
-        {subjects.map((subject) => (
-          <Grid
-            item
-            // These props define the flex-basis for the grid item at different breakpoints
-            xs={12} // 1 item per row on extra-small
-            sm={6}  // 2 items per row on small
-            md={4}  // 3 items per row on medium
-            lg={3}  // 4 items per row on large
+        {filteredSubjects.map((subject) => (
+          // Each item wrapper has a fixed width
+          <Box
             key={subject.id}
             sx={{
-              // The sx.width prop can also be responsive.
-              // This will work in conjunction with the flex-basis set by xs, sm, etc.
-              // For 1 card on xs: width is 100%
-              // For 2 cards on sm: width is 50%
-              // For 3 cards on md: width is ~33.33%
-              // For 4 cards on lg: width is 25%
-              width: {
-                xs: '100%',
-                sm: '50%',
-                md: 'calc(100% / 3)', // More precise for 3 columns than 33.33%
-                lg: '25%',
-              },
-              display: 'flex', // To ensure the card inside fills the height
+              width: FIXED_CARD_WIDTH, // Apply fixed width
+              minWidth: FIXED_CARD_WIDTH, // Ensure it doesn't shrink below this
+              // Optionally, a maxWidth if you don't want it to stretch in some edge cases
+              // maxWidth: FIXED_CARD_WIDTH,
+              display: 'flex', // To make the card inside stretch to 100% height if needed
             }}
           >
             <SubjectOverviewCard
               subject={subject}
               onExploreClick={handleExploreSubject}
             />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }
