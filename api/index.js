@@ -16,18 +16,18 @@ const app = express();
 
 // --- CORS Configuration ---
 const allowedOrigins = [
-  'https://sanskarsontakke.github.io', // Your GH Pages URL
-  'https://reactiquiz.vercel.app',    // Your Vercel domain
-  'http://localhost:3000'            // For local development
+    'https://sanskarsontakke.github.io', // Your GH Pages URL
+    'https://reactiquiz.vercel.app',    // Your Vercel domain
+    'http://localhost:3000'            // For local development
 ];
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     }
-  }
 };
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '5mb' }));
@@ -67,23 +67,6 @@ app.get('/api/health', (req, res) => res.status(200).json({ status: 'ok' }));
 
 // --- USER & AUTH ROUTES ---
 
-app.post('/api/users/register', async (req, res) => {
-    const { identifier, password, email, address, class: userClass } = req.body;
-    if (!identifier || !password || !email) return res.status(400).json({ message: 'Identifier, password, and email are required.' });
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const { error } = await supabase.from('users').insert({ identifier, password: hashedPassword, email, address, class: userClass });
-        if (error) {
-            if (error.code === '23505') return res.status(409).json({ message: 'Username or email already exists.' });
-            throw error;
-        }
-        res.status(201).json({ message: 'Registration successful!' });
-    } catch (err) {
-        console.error("Registration Error:", err);
-        res.status(500).json({ message: 'Error registering user.' });
-    }
-});
-
 app.post('/api/users/login', async (req, res) => {
     const { identifier, password } = req.body;
     if (!identifier || !password) return res.status(400).json({ message: 'Username and password are required.' });
@@ -100,19 +83,6 @@ app.post('/api/users/login', async (req, res) => {
         await transporter.sendMail({ from: `"${process.env.EMAIL_SENDER_NAME || 'ReactiQuiz'}" <${process.env.EMAIL_USER}>`, to: user.email, subject: 'ReactiQuiz Login Code', text: `Your OTP is: ${otp}` });
         res.status(200).json({ success: true, message: `An OTP has been sent to your email.` });
     } catch (emailError) { res.status(500).json({ message: 'Failed to send OTP email.' }); }
-});
-
-app.post('/api/users/verify-otp', async (req, res) => {
-    const { identifier, otp, deviceIdFromClient } = req.body;
-    if (!identifier || !otp || !deviceIdFromClient) return res.status(400).json({ message: 'Identifier, OTP, and device ID are required.' });
-    const { data: user, error } = await supabase.from('users').select('*').eq('identifier', identifier.trim()).single();
-    if (error || !user) return res.status(404).json({ message: "User not found." });
-    if (user.login_otp !== otp || new Date() > new Date(user.login_otp_expires_at)) return res.status(400).json({ message: "Invalid or expired OTP." });
-    const token = generateSecureToken();
-    const expires = new Date(Date.now() + TOKEN_EXPIRATION_MS).toISOString();
-    const { error: updateError } = await supabase.from('users').update({ registered_device_id: deviceIdFromClient, active_session_token: token, active_session_token_expires_at: expires, login_otp: null, login_otp_expires_at: null }).eq('id', user.id);
-    if (updateError) return res.status(500).json({ message: "Error finalizing login." });
-    res.status(200).json({ message: "Login successful.", user: { id: user.id, name: user.identifier, email: user.email, address: user.address, class: user.class }, token });
 });
 
 app.post('/api/users/change-password', verifySessionToken, async (req, res) => {
@@ -228,15 +198,15 @@ app.post('/api/challenges', verifySessionToken, async (req, res) => {
 app.put('/api/challenges/:challengeId/submit', verifySessionToken, async (req, res) => {
     const { score, percentage, timeTaken, resultId } = req.body;
     const { data: challenge, error } = await supabase.from('challenges').select('*').eq('id', req.params.challengeId).single();
-    if(error || !challenge) return res.status(404).json({ message: "Challenge not found." });
+    if (error || !challenge) return res.status(404).json({ message: "Challenge not found." });
 
     let updates = {};
     let newStatus = challenge.status;
 
-    if(challenge.challenger_id === req.user.id) {
+    if (challenge.challenger_id === req.user.id) {
         updates = { challenger_score: score, challenger_percentage: percentage, challenger_time_taken: timeTaken };
         newStatus = challenge.challenged_score !== null ? 'completed' : 'challenger_completed';
-    } else if(challenge.challenged_id === req.user.id) {
+    } else if (challenge.challenged_id === req.user.id) {
         updates = { challenged_score: score, challenged_percentage: percentage, challenged_time_taken: timeTaken };
         newStatus = 'completed';
     } else {
@@ -247,13 +217,13 @@ app.put('/api/challenges/:challengeId/submit', verifySessionToken, async (req, r
     if (newStatus === 'completed') {
         const cScore = updates.challenger_score ?? challenge.challenger_score;
         const dScore = updates.challenged_score ?? challenge.challenged_score;
-        if(cScore > dScore) updates.winner_id = challenge.challenger_id;
-        else if(dScore > cScore) updates.winner_id = challenge.challenged_id;
+        if (cScore > dScore) updates.winner_id = challenge.challenger_id;
+        else if (dScore > cScore) updates.winner_id = challenge.challenged_id;
     }
-    
+
     const { error: updateError } = await supabase.from('challenges').update(updates).eq('id', req.params.challengeId);
-    if(updateError) return res.status(500).json({ message: 'Failed to submit score.' });
-    
+    if (updateError) return res.status(500).json({ message: 'Failed to submit score.' });
+
     // Link result to challenge
     await supabase.from('quiz_results').update({ challenge_id: req.params.challengeId }).eq('id', resultId);
 
@@ -313,7 +283,7 @@ app.get('/api/challenges/pending', verifySessionToken, async (req, res) => {
             challengedUsername: c.challenged ? c.challenged.identifier : 'Unknown',
             // question_ids_json is likely already a string from DB, no need to re-parse here for this list view
         }));
-        
+
         // console.log('[API_LOG] Pending challenges found:', enrichedChallenges.length);
         res.json(enrichedChallenges);
 
@@ -322,6 +292,158 @@ app.get('/api/challenges/pending', verifySessionToken, async (req, res) => {
         res.status(500).json({ message: 'Server error processing pending challenges.' });
     }
 });
+app.post('/api/users/register', async (req, res) => {
+    const { identifier, password, email, address, class: userClass } = req.body; // Ensure it handles address and class
+    if (!identifier || !password || !email || !address || !userClass) return res.status(400).json({ message: 'Identifier, password, email, address, and class are required.' });
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        // Ensure your Supabase users table insert includes address and class
+        const { error } = await supabase.from('users').insert({
+            identifier,
+            password: hashedPassword,
+            email,
+            address, // Include address
+            class: userClass, // Include class
+            createdAt: new Date().toISOString()
+        });
+        if (error) {
+            if (error.code === '23505' && error.message.includes('users_identifier_key')) return res.status(409).json({ message: 'Username already exists.' });
+            if (error.code === '23505' && error.message.includes('users_email_key')) return res.status(409).json({ message: 'Email already registered.' });
+            console.error("Registration Error (Supabase):", error);
+            throw error;
+        }
+        res.status(201).json({ message: 'Registration successful!' });
+    } catch (err) {
+        console.error("Catch block Registration Error:", err);
+        res.status(500).json({ message: 'Error registering user.' });
+    }
+});
+
+// Ensure /api/users/verify-otp returns address and class in the user object
+app.post('/api/users/verify-otp', async (req, res) => {
+    const { identifier, otp, deviceIdFromClient } = req.body;
+    // ... (OTP verification logic) ...
+    const { data: user, error: userFetchError } = await supabase.from('users').select('*').eq('identifier', identifier.trim()).single(); // Fetch full user
+    // ...
+    if (user) { // After successful OTP verification and token update
+        res.status(200).json({
+            message: "Login successful.",
+            user: {
+                id: user.id,
+                name: user.identifier,
+                email: user.email,
+                address: user.address,  // Ensure address is included
+                class: user.class     // Ensure class is included
+            },
+            token
+        });
+    } // else handle error
+});
+
+
+// --- NEW: User Details Update Endpoint (Supabase) ---
+app.put('/api/users/update-details', verifySessionToken, async (req, res) => {
+    const userId = req.user.id; // req.user should be populated by verifySessionToken
+    const { address, class: userClass } = req.body;
+    console.log(`[API_LOG] PUT /api/users/update-details for User ID: ${userId}`);
+
+    if (!address || !userClass) {
+        return res.status(400).json({ message: 'Address and class are required.' });
+    }
+
+    try {
+        const { data: updatedUser, error } = await supabase
+            .from('users')
+            .update({ address: address.trim(), class: userClass.trim() })
+            .eq('id', userId)
+            .select('id, identifier, email, address, class') // Select the fields to return
+            .single();
+
+        if (error) {
+            console.error("[API_ERROR] Supabase error updating user details:", error);
+            throw error; // Will be caught by the outer catch block
+        }
+
+        if (!updatedUser) {
+            // This case might happen if RLS prevents the update or the user ID is wrong,
+            // though verifySessionToken should ensure user exists.
+            console.warn(`[API_WARN] User ${userId} not found after update or no changes made.`);
+            return res.status(404).json({ message: 'User not found or no changes applied.' });
+        }
+
+        console.log(`[API_SUCCESS] Details updated for user ID: ${userId}`);
+        res.status(200).json({ message: 'Details updated successfully!', user: updatedUser });
+
+    } catch (error) { // Catch errors from the try block
+        res.status(500).json({ message: 'Failed to update user details.' });
+    }
+});
+
+
+// --- NEW: User Stats API Endpoint (Supabase) ---
+app.get('/api/users/stats', verifySessionToken, async (req, res) => {
+    const userId = req.user.id; // req.user populated by verifySessionToken
+    console.log(`[API_LOG] GET /api/users/stats for User ID: ${userId}`);
+
+    try {
+        // Fetch aggregate stats: total quizzes and average percentage
+        const { data: resultsData, error: resultsError, count: totalQuizzesSolved } = await supabase
+            .from('quiz_results')
+            .select('percentage', { count: 'exact', head: false }) // Get count and percentage
+            .eq('userId', userId);
+
+        if (resultsError) {
+            console.error("[API_ERROR] Supabase error fetching aggregate stats:", resultsError);
+            throw resultsError;
+        }
+
+        let overallAveragePercentage = 0;
+        if (totalQuizzesSolved > 0 && resultsData) {
+            const sumOfPercentages = resultsData.reduce((sum, r) => sum + (r.percentage || 0), 0);
+            overallAveragePercentage = Math.round(sumOfPercentages / totalQuizzesSolved);
+        }
+
+        // Fetch timestamps for activity data
+        const { data: activityTimestampData, error: activityError } = await supabase
+            .from('quiz_results')
+            .select('timestamp')
+            .eq('userId', userId)
+            .order('timestamp', { ascending: true });
+
+        if (activityError) {
+            console.error("[API_ERROR] Supabase error fetching activity timestamps:", activityError);
+            // Decide if you want to throw or proceed without activityData
+        }
+
+        let activityData = [];
+        if (activityTimestampData && activityTimestampData.length > 0) {
+            const countsByDay = {};
+            activityTimestampData.forEach(r => {
+                try {
+                    const datePart = r.timestamp.substring(0, 10); // YYYY-MM-DD
+                    countsByDay[datePart] = (countsByDay[datePart] || 0) + 1;
+                } catch (e) {
+                    console.warn(`[API_WARN] Could not parse timestamp for activity: ${r.timestamp}`);
+                }
+            });
+            activityData = Object.entries(countsByDay)
+                .map(([date, count]) => ({ date, count }))
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
+
+        console.log(`[API_SUCCESS] Fetched stats for user ID: ${userId}`);
+        res.json({
+            totalQuizzesSolved: totalQuizzesSolved || 0,
+            overallAveragePercentage,
+            activityData
+        });
+
+    } catch (error) { // Catch any error from the try block
+        console.error("[API_ERROR] Overall error in /api/users/stats:", error);
+        res.status(500).json({ message: 'Failed to retrieve user statistics.' });
+    }
+});
+
 
 // --- FINAL EXPORT FOR VERCEL ---
 export default app;

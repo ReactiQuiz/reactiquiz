@@ -42,7 +42,7 @@ const QUESTIONS_DB_PATH = process.env.QUESTIONS_DATABASE_FILE_PATH
 const TOPICS_DB_PATH = process.env.TOPICS_DATABASE_FILE_PATH
     ? path.resolve(projectRoot, process.env.TOPICS_DATABASE_FILE_PATH.startsWith('./') ? process.env.TOPICS_DATABASE_FILE_PATH.substring(2) : process.env.TOPICS_DATABASE_FILE_PATH)
     : path.join(__dirname, DEFAULT_TOPICS_DB_NAME);
-const USERS_DB_PATH = process.env.USERS_DATABASE_FILE_PATH 
+const USERS_DB_PATH = process.env.USERS_DATABASE_FILE_PATH
     ? path.resolve(projectRoot, process.env.USERS_DATABASE_FILE_PATH.startsWith('./') ? process.env.USERS_DATABASE_FILE_PATH.substring(2) : process.env.USERS_DATABASE_FILE_PATH)
     : path.join(__dirname, DEFAULT_USERS_DB_NAME);
 const FRIENDS_DB_PATH = process.env.FRIENDS_DATABASE_FILE_PATH
@@ -89,15 +89,15 @@ function initializeDb(dbPath, dbNameLog, createTableSqls, tableNamesArray, logIn
 
 function initializeReadOnlyDb(dbPath, dbNameLog, tableName, logInstance, attachDbs = []) {
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY, (err) => {
-        if (err) { 
-            logError(`[ERROR] Could not connect to ${dbNameLog} database (read-only): %s`, err.message); 
-            process.exit(1); 
+        if (err) {
+            logError(`[ERROR] Could not connect to ${dbNameLog} database (read-only): %s`, err.message);
+            process.exit(1);
         }
         else {
             logInstance(`[INFO] Connected to ${dbNameLog} DB (read-only): ${dbPath}`);
-            
+
             attachDbs.forEach(attachInfo => {
-                const attachPath = attachInfo.path.replace(/\\/g, '/'); 
+                const attachPath = attachInfo.path.replace(/\\/g, '/');
                 db.run(`ATTACH DATABASE '${attachPath}' AS ${attachInfo.alias};`, (attachErr) => {
                     if (attachErr) {
                         logError(`[ERROR] Failed to attach ${attachInfo.alias} (${attachPath}) to ${dbNameLog}Db: %s`, attachErr.message);
@@ -128,11 +128,11 @@ const resultsDb = initializeDb(RESULTS_DB_PATH, 'results', [`CREATE TABLE IF NOT
 )`], ['quiz_results'], logDbResults);
 
 const questionsDb = initializeReadOnlyDb(
-    QUESTIONS_DB_PATH, 
-    'questions', 
-    'questions', 
+    QUESTIONS_DB_PATH,
+    'questions',
+    'questions',
     logDbQuestions,
-    [{ path: TOPICS_DB_PATH, alias: 'topics_db' }] 
+    [{ path: TOPICS_DB_PATH, alias: 'topics_db' }]
 );
 
 const topicsDb = initializeReadOnlyDb(TOPICS_DB_PATH, 'topics', 'quiz_topics', logDbTopics);
@@ -242,10 +242,10 @@ const verifySessionToken = (req, res, next) => {
         return res.status(401).json({ message: 'Authentication token is required.' });
     }
     const token = authHeader.split(' ')[1];
-    if (!usersDb || usersDb.open === false) { 
+    if (!usersDb || usersDb.open === false) {
         return res.status(503).json({ message: 'Service temporarily unavailable.' });
     }
-    usersDb.get("SELECT * FROM users WHERE active_session_token = ?", [token], (err, user) => { 
+    usersDb.get("SELECT * FROM users WHERE active_session_token = ?", [token], (err, user) => {
         if (err) return res.status(500).json({ message: "Server error verifying token." });
         if (!user) return res.status(401).json({ message: "Invalid session token. Please login again." });
         if (new Date() > new Date(user.active_session_token_expires_at)) return res.status(401).json({ message: "Session token expired. Please login again." });
@@ -263,7 +263,7 @@ app.post('/api/users/register', async (req, res) => {
     }
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        usersDb.run("INSERT INTO users (identifier, password, email, createdAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP)", 
+        usersDb.run("INSERT INTO users (identifier, password, email, createdAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP)",
             [identifier.trim(), hashedPassword, email.trim().toLowerCase()],
             function (err) {
                 if (err) {
@@ -285,7 +285,7 @@ app.post('/api/users/login', async (req, res) => {
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    usersDb.get("SELECT * FROM users WHERE identifier = ?", [identifier.trim()], async (err, user) => { 
+    usersDb.get("SELECT * FROM users WHERE identifier = ?", [identifier.trim()], async (err, user) => {
         if (err) {
             logError('[ERROR] /api/users/login - DB Error finding user: %s', err.message);
             return res.status(500).json({ message: 'Server error during login.' });
@@ -301,7 +301,7 @@ app.post('/api/users/login', async (req, res) => {
         }
         const otp = generateOtp();
         const otpExpiresAt = new Date(Date.now() + OTP_EXPIRATION_MS).toISOString();
-        usersDb.run( 
+        usersDb.run(
             "UPDATE users SET login_otp = ?, login_otp_expires_at = ? WHERE id = ?",
             [otp, otpExpiresAt, user.id],
             async (updateErr) => {
@@ -337,18 +337,18 @@ app.post('/api/users/verify-otp', (req, res) => {
     const { identifier, otp, deviceIdFromClient } = req.body;
     logApi('[VERIFY_OTP] Identifier: %s, DeviceID: %s', identifier, deviceIdFromClient);
     if (!identifier || !otp || !deviceIdFromClient) return res.status(400).json({ message: 'Identifier, OTP, and device ID are required.' });
-    usersDb.get("SELECT * FROM users WHERE identifier = ?", [identifier.trim()], (err, user) => { 
+    usersDb.get("SELECT * FROM users WHERE identifier = ?", [identifier.trim()], (err, user) => {
         if (err) { logError('[ERROR] /verify-otp DB: %s', err.message); return res.status(500).json({ message: "Server error." }); }
         if (!user) { logApi('[WARN] /verify-otp User not found: %s', identifier); return res.status(404).json({ message: "User not found." }); }
         if (user.login_otp !== otp) { logApi('[WARN] /verify-otp Invalid OTP for: %s', identifier); return res.status(400).json({ message: "Invalid OTP." }); }
         if (new Date() > new Date(user.login_otp_expires_at)) {
             logApi('[WARN] /verify-otp OTP expired for: %s', identifier);
-            usersDb.run("UPDATE users SET login_otp = NULL, login_otp_expires_at = NULL WHERE id = ?", [user.id]); 
+            usersDb.run("UPDATE users SET login_otp = NULL, login_otp_expires_at = NULL WHERE id = ?", [user.id]);
             return res.status(400).json({ message: "OTP has expired." });
         }
         const token = generateSecureToken();
         const expires = new Date(Date.now() + TOKEN_EXPIRATION_MS).toISOString();
-        usersDb.run("UPDATE users SET registered_device_id = ?, active_session_token = ?, active_session_token_expires_at = ?, login_otp = NULL, login_otp_expires_at = NULL WHERE id = ?", 
+        usersDb.run("UPDATE users SET registered_device_id = ?, active_session_token = ?, active_session_token_expires_at = ?, login_otp = NULL, login_otp_expires_at = NULL WHERE id = ?",
             [deviceIdFromClient, token, expires, user.id], (updateErr) => {
                 if (updateErr) { logError('[ERROR] /verify-otp Session update: %s', updateErr.message); return res.status(500).json({ message: "Error finalizing login." }); }
                 logApi('[SUCCESS] /verify-otp Login successful for: %s', identifier);
@@ -363,13 +363,13 @@ app.post('/api/users/change-password', verifySessionToken, async (req, res) => {
     if (!oldPassword || !newPassword || newPassword.length < 6 || oldPassword === newPassword) {
         return res.status(400).json({ message: 'Invalid input for password change.' });
     }
-    usersDb.get("SELECT password FROM users WHERE id = ?", [userId], async (err, user) => { 
+    usersDb.get("SELECT password FROM users WHERE id = ?", [userId], async (err, user) => {
         if (err || !user) return res.status(500).json({ message: 'Server error or user not found.' });
         const passwordMatch = await bcrypt.compare(oldPassword, user.password);
         if (!passwordMatch) return res.status(401).json({ message: 'Incorrect old password.' });
         try {
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-            usersDb.run("UPDATE users SET password = ? WHERE id = ?", [hashedNewPassword, userId], (updateErr) => { 
+            usersDb.run("UPDATE users SET password = ? WHERE id = ?", [hashedNewPassword, userId], (updateErr) => {
                 if (updateErr) return res.status(500).json({ message: 'Error changing password.' });
                 res.status(200).json({ message: 'Password changed successfully.' });
             });
@@ -382,15 +382,15 @@ app.post('/api/users/reset-password-with-otp', async (req, res) => {
     if (!identifier || !otp || !newPassword || newPassword.length < 6) {
         return res.status(400).json({ message: 'Username, OTP, and valid new password are required.' });
     }
-    usersDb.get("SELECT * FROM users WHERE identifier = ?", [identifier.trim()], async (err, user) => { 
+    usersDb.get("SELECT * FROM users WHERE identifier = ?", [identifier.trim()], async (err, user) => {
         if (err || !user) return res.status(404).json({ message: "User not found or OTP is invalid/expired." });
         if (user.login_otp !== otp || new Date() > new Date(user.login_otp_expires_at)) {
-            usersDb.run("UPDATE users SET login_otp = NULL, login_otp_expires_at = NULL WHERE id = ?", [user.id]); 
+            usersDb.run("UPDATE users SET login_otp = NULL, login_otp_expires_at = NULL WHERE id = ?", [user.id]);
             return res.status(400).json({ message: "Invalid or expired OTP." });
         }
         try {
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-            usersDb.run("UPDATE users SET password = ?, login_otp = NULL, login_otp_expires_at = NULL, active_session_token = NULL, active_session_token_expires_at = NULL WHERE id = ?", [hashedNewPassword, user.id], (updateErr) => { 
+            usersDb.run("UPDATE users SET password = ?, login_otp = NULL, login_otp_expires_at = NULL, active_session_token = NULL, active_session_token_expires_at = NULL WHERE id = ?", [hashedNewPassword, user.id], (updateErr) => {
                 if (updateErr) return res.status(500).json({ message: "Error resetting password." });
                 res.status(200).json({ message: "Password reset successfully." });
             });
@@ -410,7 +410,7 @@ app.get('/api/users/search', verifySessionToken, (req, res) => {
     }
     const searchTerm = `%${username.trim()}%`;
 
-    usersDb.all( 
+    usersDb.all(
         "SELECT id, identifier FROM users WHERE identifier LIKE ? AND id != ? LIMIT 10",
         [searchTerm, currentUserId],
         (err, users) => {
@@ -428,7 +428,7 @@ app.post('/api/friends/request', verifySessionToken, (req, res) => {
 
     if (!receiverUsername) return res.status(400).json({ message: 'Receiver username is required.' });
 
-    usersDb.get("SELECT id FROM users WHERE identifier = ?", [receiverUsername.trim()], (err, receiver) => { 
+    usersDb.get("SELECT id FROM users WHERE identifier = ?", [receiverUsername.trim()], (err, receiver) => {
         if (err) { logError('[ERROR] /api/friends/request - DB error finding receiver: %s', err.message); return res.status(500).json({ message: 'Error processing request (finding receiver).' }); }
         if (!receiver) { logApi('[WARN] /api/friends/request - Receiver username "%s" not found.', receiverUsername); return res.status(404).json({ message: 'User to send request to not found.' }); }
         const receiverId = receiver.id;
@@ -436,7 +436,7 @@ app.post('/api/friends/request', verifySessionToken, (req, res) => {
         if (requesterId === receiverId) { logApi('[WARN] /api/friends/request - User %s tried to friend themselves.', requesterId); return res.status(400).json({ message: "You cannot send a friend request to yourself." }); }
 
         const checkExistingSql = `SELECT * FROM friendships WHERE (requester_id = ? AND receiver_id = ?) OR (requester_id = ? AND receiver_id = ?)`;
-        friendsDb.get(checkExistingSql, [requesterId, receiverId, receiverId, requesterId], (err, existingFriendship) => { 
+        friendsDb.get(checkExistingSql, [requesterId, receiverId, receiverId, requesterId], (err, existingFriendship) => {
             if (err) { logError('[ERROR] /api/friends/request - DB error checking existing friendship: %s', err.message); return res.status(500).json({ message: 'Error processing request (checking existing).' }); }
             if (existingFriendship) {
                 if (existingFriendship.status === 'accepted') { return res.status(400).json({ message: 'You are already friends with this user.' }); }
@@ -446,7 +446,7 @@ app.post('/api/friends/request', verifySessionToken, (req, res) => {
                 }
             }
             const insertSql = "INSERT INTO friendships (requester_id, receiver_id, status, created_at, updated_at) VALUES (?, ?, 'pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
-            friendsDb.run(insertSql, [requesterId, receiverId], function (insertErr) { 
+            friendsDb.run(insertSql, [requesterId, receiverId], function (insertErr) {
                 if (insertErr) {
                     logError('[ERROR] /api/friends/request - DB error inserting request: %s', insertErr.message);
                     return res.status(500).json({ message: 'Failed to send friend request.' });
@@ -461,9 +461,9 @@ app.post('/api/friends/request', verifySessionToken, (req, res) => {
 app.get('/api/friends/requests/pending', verifySessionToken, (req, res) => {
     const currentUserId = req.user.id;
     logApi('[INFO] GET /api/friends/requests/pending - User ID: %s', currentUserId);
-    
+
     const sql = `SELECT id as requestId, requester_id as userId, created_at FROM friendships WHERE receiver_id = ? AND status = 'pending' ORDER BY created_at DESC`;
-    friendsDb.all(sql, [currentUserId], (err, requests) => { 
+    friendsDb.all(sql, [currentUserId], (err, requests) => {
         if (err) { logError('[ERROR] /api/friends/requests/pending - DB error: %s', err.message); return res.status(500).json({ message: 'Error fetching pending requests.' }); }
         if (!requests || requests.length === 0) {
             return res.json([]);
@@ -495,11 +495,11 @@ app.put('/api/friends/request/:requestId', verifySessionToken, (req, res) => {
     logApi('[INFO] PUT /api/friends/request/%s - User ID: %s, Action: %s', requestId, currentUserId, action);
     if (!['accept', 'decline'].includes(action)) return res.status(400).json({ message: 'Invalid action.' });
     if (isNaN(requestId)) return res.status(400).json({ message: 'Invalid request ID.' });
-    friendsDb.get("SELECT * FROM friendships WHERE id = ? AND receiver_id = ? AND status = 'pending'", [requestId, currentUserId], (err, request) => { 
+    friendsDb.get("SELECT * FROM friendships WHERE id = ? AND receiver_id = ? AND status = 'pending'", [requestId, currentUserId], (err, request) => {
         if (err) { logError('[ERROR] /api/friends/request/:requestId - DB error finding request: %s', err.message); return res.status(500).json({ message: 'Error processing request.' }); }
         if (!request) { logApi('[WARN] /api/friends/request/:requestId - Request %s not found or not pending for user %s.', requestId, currentUserId); return res.status(404).json({ message: 'Pending friend request not found or you are not the receiver.' }); }
         const newStatus = action === 'accept' ? 'accepted' : 'declined';
-        friendsDb.run("UPDATE friendships SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", [newStatus, requestId], function (updateErr) { 
+        friendsDb.run("UPDATE friendships SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", [newStatus, requestId], function (updateErr) {
             if (updateErr) { logError('[ERROR] /api/friends/request/:requestId - DB error updating status: %s', updateErr.message); return res.status(500).json({ message: `Failed to ${action} friend request.` }); }
             logDbFriends('[SUCCESS] Friend request ID %s %s by user %s', requestId, newStatus, currentUserId);
             res.status(200).json({ message: `Friend request ${newStatus}.` });
@@ -511,16 +511,16 @@ app.get('/api/friends', verifySessionToken, (req, res) => {
     const currentUserId = req.user.id;
     logApi('[INFO] GET /api/friends - User ID: %s', currentUserId);
     const sql = `SELECT CASE WHEN requester_id = ? THEN receiver_id ELSE requester_id END as friendId, id as friendshipId FROM friendships WHERE (requester_id = ? OR receiver_id = ?) AND status = 'accepted'`;
-    friendsDb.all(sql, [currentUserId, currentUserId, currentUserId], (err, friendRelations) => { 
+    friendsDb.all(sql, [currentUserId, currentUserId, currentUserId], (err, friendRelations) => {
         if (err) { logError('[ERROR] /api/friends - DB error fetching relations: %s', err.message); return res.status(500).json({ message: 'Error fetching friends list (relations).' }); }
         if (!friendRelations || friendRelations.length === 0) {
             return res.json([]);
         }
         const friendIds = friendRelations.map(fr => fr.friendId);
-        if (friendIds.length === 0) return res.json([]); 
+        if (friendIds.length === 0) return res.json([]);
         const placeholders = friendIds.map(() => '?').join(',');
         const userSql = `SELECT id as friendId, identifier as friendUsername FROM users WHERE id IN (${placeholders}) ORDER BY identifier COLLATE NOCASE ASC`;
-        usersDb.all(userSql, friendIds, (userErr, userRows) => { 
+        usersDb.all(userSql, friendIds, (userErr, userRows) => {
             if (userErr) { logError('[ERROR] /api/friends - DB error fetching usernames: %s', userErr.message); return res.status(500).json({ message: 'Error fetching friends list (usernames).' }); }
             const friendsWithUsernames = userRows.map(u => {
                 const relation = friendRelations.find(fr => fr.friendId === u.friendId);
@@ -539,7 +539,7 @@ app.delete('/api/friends/unfriend/:friendUserId', verifySessionToken, (req, res)
     if (isNaN(friendUserIdToRemove)) return res.status(400).json({ message: 'Invalid friend user ID.' });
     if (currentUserId === friendUserIdToRemove) { logApi('[WARN] /api/friends/unfriend - User %s tried to unfriend themselves.', currentUserId); return res.status(400).json({ message: 'Cannot unfriend yourself.' }); }
     const sql = `DELETE FROM friendships WHERE status = 'accepted' AND ((requester_id = ? AND receiver_id = ?) OR (requester_id = ? AND receiver_id = ?))`;
-    friendsDb.run(sql, [currentUserId, friendUserIdToRemove, friendUserIdToRemove, currentUserId], function (err) { 
+    friendsDb.run(sql, [currentUserId, friendUserIdToRemove, friendUserIdToRemove, currentUserId], function (err) {
         if (err) { logError('[ERROR] /api/friends/unfriend - DB error: %s', err.message); return res.status(500).json({ message: 'Error unfriending user.' }); }
         if (this.changes === 0) { logApi('[WARN] /api/friends/unfriend - No friendship found for %s and %s.', currentUserId, friendUserIdToRemove); return res.status(404).json({ message: 'Friendship not found or already removed.' }); }
         logDbFriends('[SUCCESS] User %s unfriended user %s. Rows affected: %d', currentUserId, friendUserIdToRemove, this.changes);
@@ -570,10 +570,10 @@ app.post('/api/challenges', verifySessionToken, async (req, res) => {
     if (isNaN(challengedIdNum)) { return res.status(400).json({ message: 'Invalid challenged friend ID format.' }); }
     if (challengerId === challengedIdNum) { return res.status(400).json({ message: "You cannot challenge yourself." }); }
 
-    usersDb.get("SELECT id FROM users WHERE id = ?", [challengedIdNum], (userErr, challengedUser) => { 
+    usersDb.get("SELECT id FROM users WHERE id = ?", [challengedIdNum], (userErr, challengedUser) => {
         if (userErr || !challengedUser) { return res.status(userErr ? 500 : 404).json({ message: userErr ? 'Server error.' : `Challenged user not found.` }); }
-        
-        friendsDb.get( 
+
+        friendsDb.get(
             "SELECT * FROM friendships WHERE status = 'accepted' AND ((requester_id = ? AND receiver_id = ?) OR (requester_id = ? AND receiver_id = ?))",
             [challengerId, challengedIdNum, challengedIdNum, challengerId],
             (friendErr, friendship) => {
@@ -582,11 +582,11 @@ app.post('/api/challenges', verifySessionToken, async (req, res) => {
 
                 const expiresAt = new Date(Date.now() + CHALLENGE_EXPIRATION_DAYS * 24 * 60 * 60 * 1000).toISOString();
                 const insertSql = `INSERT INTO challenges (challenger_id, challenged_id, topic_id, topic_name, difficulty, num_questions, quiz_class, question_ids_json, subject, expires_at, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`;
-                
-                challengesDb.run(insertSql, [challengerId, challengedIdNum, topic_id, topic_name || null, difficulty, num_questions, quiz_class || null, question_ids_json, subject, expiresAt], function (insertErr) { 
-                    if (insertErr) { 
-                        logError('[ERROR] /api/challenges - DB create error: %s', insertErr.message); 
-                        return res.status(500).json({ message: 'Failed to create challenge.' }); 
+
+                challengesDb.run(insertSql, [challengerId, challengedIdNum, topic_id, topic_name || null, difficulty, num_questions, quiz_class || null, question_ids_json, subject, expiresAt], function (insertErr) {
+                    if (insertErr) {
+                        logError('[ERROR] /api/challenges - DB create error: %s', insertErr.message);
+                        return res.status(500).json({ message: 'Failed to create challenge.' });
                     }
                     logDbChallenges('[SUCCESS] Challenge ID %s created by %s for %s', this.lastID, challengerId, challengedIdNum);
                     res.status(201).json({ message: `Challenge sent!`, challengeId: this.lastID });
@@ -601,7 +601,7 @@ app.get('/api/challenges/pending', verifySessionToken, (req, res) => {
     const currentUserId = req.user.id;
     logApi('[CHALLENGE] GET Pending for User ID: %s', currentUserId);
     const sql = `SELECT * FROM challenges WHERE challenged_id = ? AND (status = 'pending' OR (status = 'challenger_completed' AND challenged_id = ?)) AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP) ORDER BY created_at DESC`;
-    challengesDb.all(sql, [currentUserId, currentUserId], async (err, challenges) => { 
+    challengesDb.all(sql, [currentUserId, currentUserId], async (err, challenges) => {
         if (err) { logError('[ERROR] /api/challenges/pending: %s', err.message); return res.status(500).json({ message: 'Error fetching pending challenges.' }); }
         if (!challenges || challenges.length === 0) return res.json([]);
 
@@ -624,7 +624,7 @@ app.get('/api/challenges/:challengeId', verifySessionToken, (req, res) => {
     const challengeId = parseInt(req.params.challengeId, 10);
     const userId = req.user.id;
     if (isNaN(challengeId)) return res.status(400).json({ message: 'Invalid challenge ID.' });
-    challengesDb.get("SELECT * FROM challenges WHERE id = ?", [challengeId], async (err, challenge) => { 
+    challengesDb.get("SELECT * FROM challenges WHERE id = ?", [challengeId], async (err, challenge) => {
         if (err || !challenge) return res.status(err ? 500 : 404).json({ message: err ? 'Error fetching.' : 'Challenge not found.' });
         if (challenge.challenger_id !== userId && challenge.challenged_id !== userId) return res.status(403).json({ message: 'Not part of this challenge.' });
 
@@ -632,9 +632,9 @@ app.get('/api/challenges/:challengeId', verifySessionToken, (req, res) => {
             new Promise((resolve) => usersDb.get("SELECT identifier FROM users WHERE id = ?", [challenge.challenger_id], (_, row) => resolve(row))),
             new Promise((resolve) => usersDb.get("SELECT identifier FROM users WHERE id = ?", [challenge.challenged_id], (_, row) => resolve(row)))
         ]);
-        
-        res.json({ 
-            ...challenge, 
+
+        res.json({
+            ...challenge,
             question_ids: JSON.parse(challenge.question_ids_json || '[]'),
             challengerUsername: challengerUser ? challengerUser.identifier : 'Unknown',
             challengedUsername: challengedUser ? challengedUser.identifier : 'Unknown'
@@ -645,16 +645,16 @@ app.get('/api/challenges/:challengeId', verifySessionToken, (req, res) => {
 app.put('/api/challenges/:challengeId/submit', verifySessionToken, (req, res) => {
     const challengeId = parseInt(req.params.challengeId, 10);
     const userId = req.user.id;
-    const { score, percentage, timeTaken, resultId } = req.body; 
+    const { score, percentage, timeTaken, resultId } = req.body;
     logApi('[CHALLENGE] Submit Score - ChallengeID: %s, UserID: %s, Score: %s, ResultID: %s', challengeId, userId, score, resultId);
 
     if (isNaN(challengeId) || score === undefined || percentage === undefined || timeTaken === undefined || resultId === undefined) {
         return res.status(400).json({ message: 'Missing parameters for challenge submission.' });
     }
-    challengesDb.get("SELECT * FROM challenges WHERE id = ?", [challengeId], (err, challenge) => { 
+    challengesDb.get("SELECT * FROM challenges WHERE id = ?", [challengeId], (err, challenge) => {
         if (err || !challenge) return res.status(err ? 500 : 404).json({ message: err ? 'Error.' : 'Challenge not found.' });
         let updateFields = [], params = [], newStatus = challenge.status;
-        
+
         if (challenge.challenger_id === userId) {
             if (challenge.status !== 'pending' && challenge.status !== 'accepted') return res.status(400).json({ message: 'Challenger cannot submit score at this stage.' });
             updateFields = ['challenger_score = ?', 'challenger_percentage = ?', 'challenger_time_taken = ?'];
@@ -666,13 +666,13 @@ app.put('/api/challenges/:challengeId/submit', verifySessionToken, (req, res) =>
             }
             updateFields = ['challenged_score = ?', 'challenged_percentage = ?', 'challenged_time_taken = ?'];
             params = [score, percentage, timeTaken];
-            newStatus = (challenge.challenger_score !== null || challenge.status === 'challenger_completed') ? 'completed' : 'pending'; 
-            if(challenge.status === 'pending' && challenge.challenger_score === null){ 
-                 if (challenge.challenger_score === null) {
-                    newStatus = 'completed'; 
-                 } else {
+            newStatus = (challenge.challenger_score !== null || challenge.status === 'challenger_completed') ? 'completed' : 'pending';
+            if (challenge.status === 'pending' && challenge.challenger_score === null) {
+                if (challenge.challenger_score === null) {
                     newStatus = 'completed';
-                 }
+                } else {
+                    newStatus = 'completed';
+                }
             } else {
                 newStatus = 'completed';
             }
@@ -690,11 +690,11 @@ app.put('/api/challenges/:challengeId/submit', verifySessionToken, (req, res) =>
         const updateSql = `UPDATE challenges SET ${updateFields.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
         challengesDb.run(updateSql, params, function (updateErr) {
             if (updateErr) { logError('[ERROR] Challenge submit update: %s', updateErr.message); return res.status(500).json({ message: 'Failed to submit score.' }); }
-            
+
             resultsDb.run("UPDATE quiz_results SET challenge_id = ? WHERE id = ? AND userId = ?", [challengeId, resultId, userId], (linkErr) => {
                 if (linkErr) logError('[ERROR] Link result %s to challenge %s for user %s: %s', resultId, challengeId, userId, linkErr.message);
             });
-            
+
             logDbChallenges('[SUCCESS] Score for challenge %s by user %s. Status: %s', challengeId, userId, newStatus);
             res.status(200).json({ message: 'Challenge score submitted.', status: newStatus });
         });
@@ -705,13 +705,13 @@ app.get('/api/challenges/history', verifySessionToken, (req, res) => {
     const currentUserId = req.user.id;
     logApi('[CHALLENGE] GET History for User ID: %s', currentUserId);
     const sql = `SELECT * FROM challenges WHERE (challenger_id = ? OR challenged_id = ?) AND status IN ('completed', 'declined', 'expired') ORDER BY updated_at DESC`;
-    challengesDb.all(sql, [currentUserId, currentUserId], async (err, challenges) => { 
-        if (err) { 
-            logError('[ERROR] /api/challenges/history - DB error fetching challenges: %s', err.message); 
-            return res.status(500).json({ message: 'Error fetching challenge history.' }); 
+    challengesDb.all(sql, [currentUserId, currentUserId], async (err, challenges) => {
+        if (err) {
+            logError('[ERROR] /api/challenges/history - DB error fetching challenges: %s', err.message);
+            return res.status(500).json({ message: 'Error fetching challenge history.' });
         }
         if (!challenges || challenges.length === 0) return res.json([]);
-        
+
         try {
             const enrichedChallenges = await Promise.all(challenges.map(async (c) => {
                 const [challengerUser, challengedUser, winnerUser] = await Promise.all([
@@ -738,9 +738,9 @@ app.get('/api/challenges/history', verifySessionToken, (req, res) => {
 app.get('/api/topics/:subject', (req, res) => {
     const { subject } = req.params;
     logApi('[INFO] GET /api/topics/%s', subject);
-    const sql = `SELECT id, name, description, class, genre, subject FROM quiz_topics WHERE subject = ? ORDER BY class, name`; 
+    const sql = `SELECT id, name, description, class, genre, subject FROM quiz_topics WHERE subject = ? ORDER BY class, name`;
 
-    if (!topicsDb || topicsDb.open === false) { 
+    if (!topicsDb || topicsDb.open === false) {
         logError('[ERROR] /api/topics - Topics DB unavailable');
         return res.status(503).json({ message: 'Service temporarily unavailable. Topics data cannot be fetched.' });
     }
@@ -778,8 +778,8 @@ app.get('/api/subjects', (req, res) => {
 // NEW, MORE ROBUST VERSION
 app.get('/api/questions', (req, res) => {
     // We get the topicId from the query string, e.g., /api/questions?topicId=some-id
-    const { topicId } = req.query; 
-    
+    const { topicId } = req.query;
+
     logApi('[INFO] GET /api/questions for topicId: %s', topicId);
 
     // Handle case where no topicId is provided
@@ -797,7 +797,7 @@ app.get('/api/questions', (req, res) => {
         WHERE q.topicId = ?
     `;
 
-    if (!questionsDb || questionsDb.open === false) { 
+    if (!questionsDb || questionsDb.open === false) {
         logError('[ERROR] /api/questions - Questions DB unavailable');
         return res.status(503).json({ message: 'Service temporarily unavailable. Questions data cannot be fetched.' });
     }
@@ -821,12 +821,12 @@ app.get('/api/questions', (req, res) => {
 
 // --- Results API ---
 app.post('/api/results', verifySessionToken, (req, res) => {
-    const dbUserId = req.user.id; 
+    const dbUserId = req.user.id;
     logApi('[INFO] POST /api/results - User ID: %s', dbUserId);
     const {
         subject, topicId, score, totalQuestions, percentage, timestamp,
         difficulty, numQuestionsConfigured, class: className, timeTaken,
-        questionsActuallyAttemptedIds, userAnswersSnapshot, challenge_id 
+        questionsActuallyAttemptedIds, userAnswersSnapshot, challenge_id
     } = req.body;
 
     const requiredFields = ['subject', 'topicId', 'score', 'totalQuestions', 'percentage', 'timestamp', 'questionsActuallyAttemptedIds', 'userAnswersSnapshot'];
@@ -856,7 +856,7 @@ app.post('/api/results', verifySessionToken, (req, res) => {
     const insertParams = [
         dbUserId, subject, topicId, score, totalQuestions, percentage, timestamp,
         difficulty || null, numQuestionsConfigured || null, className || null, timeTaken || null,
-        questionsIdsString, answersSnapshotString, challenge_id || null 
+        questionsIdsString, answersSnapshotString, challenge_id || null
     ];
 
     if (!resultsDb || resultsDb.open === false) {
@@ -989,14 +989,14 @@ app.post('/api/contact', async (req, res) => {
 
 // --- PASSWORD RESET REQUEST ---
 app.post('/api/users/request-password-reset', async (req, res) => {
-    const { identifier } = req.body; 
+    const { identifier } = req.body;
     logApi('[INFO] POST /api/users/request-password-reset - Identifier: %s', identifier);
 
     if (!identifier) {
         return res.status(400).json({ message: 'Username is required.' });
     }
 
-    usersDb.get("SELECT id, email FROM users WHERE identifier = ?", [identifier.trim()], async (err, user) => { 
+    usersDb.get("SELECT id, email FROM users WHERE identifier = ?", [identifier.trim()], async (err, user) => {
         if (err) {
             logError('[ERROR] /request-password-reset - DB Error finding user: %s', err.message);
             return res.status(500).json({ message: 'Server error while finding user.' });
@@ -1009,7 +1009,7 @@ app.post('/api/users/request-password-reset', async (req, res) => {
         const otp = generateOtp();
         const otpExpiresAt = new Date(Date.now() + OTP_EXPIRATION_MS).toISOString();
 
-        usersDb.run( 
+        usersDb.run(
             "UPDATE users SET login_otp = ?, login_otp_expires_at = ? WHERE id = ?",
             [otp, otpExpiresAt, user.id],
             async (updateErr) => {
@@ -1042,6 +1042,68 @@ app.post('/api/users/request-password-reset', async (req, res) => {
         );
     });
 });
+
+app.get('/api/users/stats', verifySessionToken, (req, res) => {
+    const userId = req.user.id;
+    logApi('[INFO] GET /api/users/stats for User ID: %s', userId);
+
+    if (!resultsDb || resultsDb.open === false) {
+        logError('[ERROR] GET /api/users/stats - Results DB unavailable');
+        return res.status(503).json({ message: 'Service temporarily unavailable. Cannot fetch user stats.' });
+    }
+
+    const statsQuery = `
+        SELECT
+            COUNT(*) as totalQuizzesSolved,
+            AVG(percentage) as overallAveragePercentage
+        FROM quiz_results
+        WHERE userId = ?;
+    `;
+    const activityQuery = `
+        SELECT timestamp
+        FROM quiz_results
+        WHERE userId = ?
+        ORDER BY timestamp ASC;
+    `;
+
+    let userStats = {
+        totalQuizzesSolved: 0,
+        overallAveragePercentage: 0,
+        activityData: []
+    };
+
+    resultsDb.get(statsQuery, [userId], (err, row) => {
+        if (err) {
+            logError('[ERROR] /api/users/stats - DB Error fetching main stats for user %s: %s', userId, err.message);
+            return res.status(500).json({ message: 'Failed to retrieve user statistics (main).' });
+        }
+        if (row) {
+            userStats.totalQuizzesSolved = row.totalQuizzesSolved || 0;
+            userStats.overallAveragePercentage = row.overallAveragePercentage ? Math.round(row.overallAveragePercentage) : 0;
+        }
+        resultsDb.all(activityQuery, [userId], (activityErr, activityRows) => {
+            if (activityErr) {
+                logError('[ERROR] /api/users/stats - DB Error fetching activity data for user %s: %s', userId, activityErr.message);
+                return res.json(userStats); // Return main stats even if activity fails
+            }
+            if (activityRows && activityRows.length > 0) {
+                const countsByDay = {};
+                activityRows.forEach(r => {
+                    try {
+                        const datePart = r.timestamp.substring(0, 10);
+                        countsByDay[datePart] = (countsByDay[datePart] || 0) + 1;
+                    } catch (e) { console.warn(`Could not parse timestamp for activity: ${r.timestamp}`); }
+                });
+                userStats.activityData = Object.entries(countsByDay).map(([date, count]) => ({ date, count }));
+                userStats.activityData.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+            logApi('[SUCCESS] GET /api/users/stats - Fetched stats for user ID %s.', userId);
+            res.json(userStats);
+        });
+    });
+});
+
+
 
 // --- Static file serving & Fallback ---
 if (process.env.NODE_ENV === 'production' || process.env.SERVE_BUILD === 'true') {
