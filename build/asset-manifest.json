@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/reactiquiz/static/js/main.6f29cef4.js",
+    "index.html": "/reactiquiz/index.html",
+    "main.6f29cef4.js.map": "/reactiquiz/static/js/main.6f29cef4.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.6f29cef4.js"
+  ]
+}
