@@ -322,22 +322,63 @@ app.post('/api/users/register', async (req, res) => {
 // Ensure /api/users/verify-otp returns address and class in the user object
 app.post('/api/users/verify-otp', async (req, res) => {
     const { identifier, otp, deviceIdFromClient } = req.body;
-    // ... (OTP verification logic) ...
-    const { data: user, error: userFetchError } = await supabase.from('users').select('*').eq('identifier', identifier.trim()).single(); // Fetch full user
-    // ...
-    if (user) { // After successful OTP verification and token update
-        res.status(200).json({
-            message: "Login successful.",
-            user: {
-                id: user.id,
-                name: user.identifier,
-                email: user.email,
-                address: user.address,  // Ensure address is included
-                class: user.class     // Ensure class is included
-            },
-            token
-        });
-    } // else handle error
+    // ... (initial checks for identifier, otp, deviceIdFromClient) ...
+
+    const { data: user, error: userFetchError } = await supabase
+        .from('users')
+        .select('*') // Select all necessary fields
+        .eq('identifier', identifier.trim())
+        .single();
+
+    if (userFetchError || !user) {
+        console.error("[API_ERROR] /verify-otp - User not found or DB error:", userFetchError);
+        return res.status(404).json({ message: "User not found." });
+    }
+
+    if (user.login_otp !== otp) {
+        console.warn(`[API_WARN] /verify-otp - Invalid OTP for user: ${identifier}`);
+        return res.status(400).json({ message: "Invalid OTP." });
+    }
+
+    if (new Date() > new Date(user.login_otp_expires_at)) {
+        console.warn(`[API_WARN] /verify-otp - OTP expired for user: ${identifier}`);
+        // Optionally clear the expired OTP from the database
+        await supabase.from('users').update({ login_otp: null, login_otp_expires_at: null }).eq('id', user.id);
+        return res.status(400).json({ message: "OTP has expired. Please try logging in again." });
+    }
+
+    // If OTP is valid and not expired, generate a NEW session token
+    const newSessionToken = generateSecureToken(); // Use a different variable name here
+    const expires = new Date(Date.now() + TOKEN_EXPIRATION_MS).toISOString();
+
+    const { error: updateError } = await supabase
+        .from('users')
+        .update({
+            registered_device_id: deviceIdFromClient,
+            active_session_token: newSessionToken, // Use the new variable
+            active_session_token_expires_at: expires,
+            login_otp: null, // Clear the used OTP
+            login_otp_expires_at: null
+        })
+        .eq('id', user.id);
+
+    if (updateError) {
+        console.error("[API_ERROR] /verify-otp - Supabase error updating user session:", updateError);
+        return res.status(500).json({ message: "Error finalizing login. Please try again." });
+    }
+
+    console.log(`[API_SUCCESS] /verify-otp - Login successful for: ${identifier}`);
+    res.status(200).json({
+        message: "Login successful.",
+        user: {
+            id: user.id,
+            name: user.identifier,
+            email: user.email,
+            address: user.address,
+            class: user.class
+        },
+        token: newSessionToken // Send the NEWLY generated token back to the client
+    });
 });
 
 
