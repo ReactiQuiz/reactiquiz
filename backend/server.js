@@ -21,7 +21,7 @@ const logDbChallenges = debug('reactiquiz:db:challenges');
 const logError = debug('reactiquiz:error');
 
 const app = express();
-const port = process.env.PORT || 3001; // Render will use process.env.PORT
+const port = process.env.PORT || 3001;
 const projectRoot = path.resolve(__dirname, '../');
 
 // --- DB Paths ---
