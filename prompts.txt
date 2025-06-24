@@ -1,69 +1,107 @@
-/* ====reactiquiz\src\App.js==== */
-/* ====Make By Sanskar==== */
+# --- ReactiQuiz Question Generation Prompt ---
 
+## User Input Section:
 
+   PDF Chapter Number:                                        [1]
+   Target Grade/Class Suffix (for topicId):                   [9th]
+   Number of Questions to Generate (in this batch):           [100]
+   Starting Question Number (for unique IDs in this batch):   [1]
 
-Give me 125 MCQ questions on chapter 18 of the given PDF with 4 options a, b, c, d with one correct option. 30% questions should be easy 30% medium and 30% hard and 10% out of the PDF but related to the text. The questions should be independent of eachother and of the text. Questions should not be like "Find x in previous question" or "What is this fig in page 65". You have to give questions in the form of json format. topicid will be "observing-space-telescopes-9th. You have to give difficulty rating from 11-13 easy 14-17 medium and 18-20 hard. You have to give difficulty rating to each question. You also have to give correct option and explanation for each question.
-Example :   {
-    "id": "study-of-sound-9th-q124",
-    "topicId": "study-of-sound-9th",
-    "text": "If the speed of sound in a medium is 1500 m/s and a wave has a frequency of 30 kHz, what is its wavelength?",
+---
+
+## AI Instructions:
+
+Based on the provided PDF and the "User Input Section" above, please generate MCQ (Multiple Choice Questions).
+
+Key Requirements:
+
+1.  Chapter Identification:
+       From the "PDF Chapter Number" provided by the user, identify the main title or theme of that chapter within the PDF.
+       Create a `topicId` using this identified chapter name, formatted as lowercase words separated by hyphens, and append the "Target Grade/Class Suffix". For example, if the chapter is "Observing Space : Telescopes" and the suffix is "9th", the `topicId` should be `observing-space-telescopes-9th`.
+
+2.  Question Generation:
+       Generate the specified "Number of Questions to Generate" for the identified chapter.
+       Ensure questions are independent of each other and do not refer to previous questions (e.g., "In the previous question...") or specific page numbers/figures from the PDF within the question text or options (e.g., "What is shown in Fig 2.1 on page 34?").
+       Strictly MCQ: All questions must have exactly four options, labeled "a", "b", "c", and "d".
+       Content Source:
+           Approximately 70% of the questions should be directly based on the content of the specified PDF chapter.
+           Approximately 20% of the questions should be more challenging, requiring deeper understanding or application of concepts from the chapter.
+           Approximately 10% of the questions should be "out of the PDF" but directly related to the core concepts and themes of the chapter, encouraging broader thinking.
+
+3.  Question Types to Include (Distribute these types among the generated questions):
+       Standard MCQ: Direct question with four distinct options, one correct.
+       "How many statements are true/false?" MCQ:
+           Present 3-5 short statements related to a concept from the chapter.
+           Options should be like:
+               a) Only 1 statement is true.
+               b) Only 2 statements are true.
+               c) All statements are true.
+               d) No statements are true.
+           (Or similar for "false" statements).
+       Assertion-Reason MCQ:
+           Provide an Assertion (A) and a Reason (R).
+           Options should be structured like:
+               a) Both A and R are true, and R is the correct explanation of A.
+               b) Both A and R are true, but R is NOT the correct explanation of A.
+               c) A is true, but R is false.
+               d) A is false, but R is true.
+               (You can also include an option e) Both A and R are false, if you adapt to 5 options, but for 4 options, stick to the standard format above or a variation where one option covers "A is false" and another "R is false" or "Both are false".) Self-correction: Stick to 4 options. One option can be "Both A and R are false." or "A is false and R is true/false" etc.
+               Let's refine Assertion-Reason options for strict 4-option MCQ:
+                   a) Both Assertion (A) and Reason (R) are true, and R is the correct explanation of A.
+                   b) Both Assertion (A) and Reason (R) are true, but R is NOT the correct explanation of A.
+                   c) Assertion (A) is true, but Reason (R) is false.
+                   d) Assertion (A) is false, but Reason (R) is true.
+                (If you need "Both A and R are false", you'd have to replace one of the above, e.g., option d could become "Both A and R are false")
+
+4.  Difficulty Distribution & Rating:
+       Aim for approximately:
+           30% Easy questions
+           40% Medium questions (to accommodate the "more challenging" ones)
+           30% Hard questions (including "out of PDF" and complex Assertion-Reason/Statement types)
+       Assign a `difficulty` rating to each question:
+           Easy: Integer between 11-13
+           Medium: Integer between 14-17
+           Hard: Integer between 18-20
+
+5.  JSON Output Format:
+       Provide the output as a single JSON array of question objects.
+       Each question object must follow this exact structure:
+        ```json
+        {
+          "id": "topicId-qXXX",
+          "topicId": "actual-topic-id-generated-by-ai",
+          "text": "Question text here...",
+          "options": [
+            { "id": "a", "text": "Option A text" },
+            { "id": "b", "text": "Option B text" },
+            { "id": "c", "text": "Option C text" },
+            { "id": "d", "text": "Option D text" }
+          ],
+          "correctOptionId": "a", // or "b", "c", "d"
+          "explanation": "Detailed explanation of why the correct option is correct and others are incorrect. If the question is based on the PDF, mention the relevant Page Number from the PDF here, e.g., (Page XXX).",
+          "difficulty": 16 // Example rating
+        }
+        ```
+       `id` field: Must be unique for each question. Use the format `topicId-qXXX`, where `XXX` is a sequential number starting from the "Starting Question Number" provided in the User Input Section (e.g., if starting number is 1, then q1, q2, q3...; if starting number is 126, then q126, q127...). Ensure leading zeros if needed for consistent sorting (e.g., q001, q010, q100). For this batch, let's use 3 digits for the question number part, e.g., `q001`, `q025`, `q125`. So, if the user provides Starting Question Number as 1, the first ID will be `topicId-q001`. If 25, then `topicId-q025`.
+       `topicId` field: Use the `topicId` you generated in step 1.
+       `explanation` field: Provide a clear explanation. Crucially, if the answer can be found in the PDF, include the page number in the format `(Page XXX)` at the end of the explanation. Do not include any other citation style.
+
+6.  Output:
+       Provide the output as plain text containing only the JSON array. Do not include any other text, headings like "Objective:", or introductory/concluding remarks.
+
+Example of a generated question (for a different topic, just for structure):
+```json
+{
+    "id": "introduction-to-biotechnology-9th-q001",
+    "topicId": "introduction-to-biotechnology-9th",
+    "text": "The success of agritourism often depends on offering visitors:",
     "options": [
-      {
-        "id": "a",
-        "text": "0.05 m"
-      },
-      {
-        "id": "b",
-        "text": "0.5 m"
-      },
-      {
-        "id": "c",
-        "text": "50 m"
-      },
-      {
-        "id": "d",
-        "text": "20 m"
-      }
+        { "id": "a", "text": "Only high-tech agricultural machinery demonstrations." },
+        { "id": "b", "text": "Access to urban shopping malls near the farm." },
+        { "id": "c", "text": "Authentic farm experiences, local produce, and a connection with nature and agriculture." },
+        { "id": "d", "text": "Opportunities for intensive industrial labor." }
     ],
-    "correctOptionId": "a",
-    "explanation": "Frequency ν = 30 kHz = 30,000 Hz. Wavelength λ = v / ν = 1500 m/s / 30000 Hz = 0.05 m. (Page 129)",
-    "difficulty": 16
-  },
-  {
-    "id": "study-of-sound-9th-q125",
-    "topicId": "study-of-sound-9th",
-    "text": "If the speed of sound in a medium is 1500 m/s and a wave has a frequency of 30 kHz, what is its wavelength?",
-    "options": [
-      {
-        "id": "a",
-        "text": "0.05 m"
-      },
-      {
-        "id": "b",
-        "text": "0.5 m"
-      },
-      {
-        "id": "c",
-        "text": "50 m"
-      },
-      {
-        "id": "d",
-        "text": "20 m"
-      }
-    ],
-    "correctOptionId": "a",
-    "explanation": "Frequency ν = 30 kHz = 30,000 Hz. Wavelength λ = v / ν = 1500 m/s / 30000 Hz = 0.05 m. (Page 129)",
-    "difficulty": 16
-  }
-
-
-
-
-
-
-
-
-
-
-
+    "correctOptionId": "c",
+    "explanation": "Successful agritourism typically focuses on providing visitors with authentic experiences related to farming, an opportunity to enjoy local produce, and a chance to connect with the rural environment and agricultural practices. (Page 187)",
+    "difficulty": 15
+}

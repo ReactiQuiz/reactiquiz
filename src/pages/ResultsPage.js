@@ -1,154 +1,71 @@
-// --- START OF FILE src/pages/ResultsPage.js ---
-
+// src/pages/ResultsPage.js
+import { useMemo, useEffect, useState, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  useMemo, useEffect, useState, useCallback
-} from 'react';
-import {
-  useLocation, useNavigate
-} from 'react-router-dom';
-import {
-  Box, Typography, darken, Paper, Divider, Alert, CircularProgress, Button, useTheme, alpha, Grid, Stack
+  Box, Typography, Button, CircularProgress, Alert, useTheme, darken, Paper
 } from '@mui/material';
 import apiClient from '../api/axiosInstance';
-import HomeIcon from '@mui/icons-material/Home';
+import { useAuth } from '../contexts/AuthContext';
 import HistoryIcon from '@mui/icons-material/History';
 import LoginIcon from '@mui/icons-material/Login';
-// import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Not used for challenge button anymore in ResultsActionButtons
 
-import { subjectAccentColors } from '../theme';
-import QuizResultSummary from '../components/results/QuizResultSummary';
-import QuestionBreakdown from '../components/results/QuestionBreakdown';
-import HistoricalResultItem from '../components/results/HistoricalResultItem';
-import DeleteConfirmationDialog from '../components/shared/DeleteConfirmationDialog';
-import ResultsActionButtons from '../components/results/ResultsActionButtons';
+import { parseQuestionOptions as parseQuestionOptionsForResults, formatDisplayTopicName } from '../utils/quizUtils';
+
+// Import result-specific components from their new location
+import CurrentResultView from '../components/results/CurrentResultView';
+import HistoricalResultsList from '../components/results/HistoricalResultsList';
+import HistoricalResultDetailView from '../components/results/HistoricalResultDetailView';
 import ResultRevealOverlay from '../components/results/ResultRevealOverlay';
-import ChallengeSetupModal from '../components/challenges/ChallengeSetupModal';
-import { formatTime } from '../utils/formatTime';
-import { parseQuestionOptions } from '../utils/quizUtils';
+import ResultsActionButtons from '../components/results/ResultsActionButtons'; // For fallback actions on list view
 
-const formatTopicNameFromResult = (topicId, topicNameFromState = null, isChallenge = false, challengeDetails = null) => {
-  if (isChallenge && challengeDetails?.topic_name) return `Challenge: ${challengeDetails.topic_name}`;
-  if (isChallenge && topicNameFromState) return `Challenge: ${topicNameFromState}`;
-  if (isChallenge) return `Challenge: ${topicId ? String(topicId).replace(/-/g, ' ') : 'Quiz'}`;
+// Shared and other components
+import DeleteConfirmationDialog from '../components/shared/DeleteConfirmationDialog';
+import ChallengeSetupModal from '../components/challenges/ChallengeSetupModal'; // Path might differ
+import { subjectAccentColors } from '../theme'; // For ChallengeSetupModal accent
 
-  if (topicNameFromState && topicNameFromState !== topicId?.replace(/-/g, ' ')) return topicNameFromState;
-  if (!topicId) return 'N/A';
-  let name = String(topicId).replace(/-/g, ' ');
-
-  name = name.replace(/^homibhabha practice /i, 'Homi Bhabha Practice - ');
-  name = name.replace(/^pyq /i, 'PYQ ');
-
-  const classSuffixRegex = /\s(\d+(?:st|nd|rd|th))$/i;
-  name = name.replace(classSuffixRegex, (match, p1) => ` - Class ${p1.toUpperCase()}`).trim();
-
-  name = name.split(' ').map(word => {
-    if (word.toLowerCase() === 'class' || word.toLowerCase() === 'std') return word;
-    if (word.includes('-')) {
-      return word.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()).join('-');
-    }
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  }).join(' ');
-
-  name = name.replace(/Homi Bhabha Practice - (\w+) (\w+)/i, (match, quizClass, difficulty) =>
-    `Homi Bhabha Practice - Std ${quizClass} (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})`
-  );
-  name = name.replace(/Pyq (\w+) (\d+)/i, (match, quizClass, year) =>
-    `PYQ - Std ${quizClass} (${year})`
-  );
-
-  return name;
-};
-
-// Helper function to parse options if they are a string
-const parseOptionsString = (optionsData) => {
-    if (typeof optionsData === 'string') {
-      try {
-        return JSON.parse(optionsData);
-      } catch (e) {
-        console.error(`[ResultsPage] Failed to parse options string:`, optionsData, e);
-        return []; // Return empty array on parse error
-      }
-    } else if (Array.isArray(optionsData)) {
-      return optionsData; // Already an array
-    }
-    console.warn(`[ResultsPage] Unexpected options format, expected string or array, got:`, typeof optionsData);
-    return []; // Default to empty array for unexpected types
-};
-
-
-function ResultsPage({ currentUser }) {
+function ResultsPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const currentQuizDataFromState = location.state;
+  const { currentUser, isLoadingAuth } = useAuth(); // Use auth context
+  const currentQuizDataFromState = location.state; // Data from QuizPage navigation
   const RESULTS_PAGE_ACCENT_COLOR = theme.palette.resultsAccent?.main || theme.palette.info.main;
 
   const [showRevealAnimation, setShowRevealAnimation] = useState(
     currentQuizDataFromState?.isFirstResultView === true
   );
 
+  // State for historical results list
   const [historicalResults, setHistoricalResults] = useState([]);
-  const [isLoadingHistorical, setIsLoadingHistorical] = useState(false);
-  const [fetchError, setFetchError] = useState('');
-  const [detailsFetchError, setDetailsFetchError] = useState('');
+  const [isLoadingHistoricalList, setIsLoadingHistoricalList] = useState(false);
+  const [fetchListError, setFetchListError] = useState('');
 
+  // State for viewing details of a selected historical result
   const [selectedHistoricalResult, setSelectedHistoricalResult] = useState(null);
   const [processedHistoricalDetailedView, setProcessedHistoricalDetailedView] = useState([]);
   const [isLoadingHistoricalDetails, setIsLoadingHistoricalDetails] = useState(false);
+  const [detailsFetchError, setDetailsFetchError] = useState('');
 
+  // State for delete confirmation
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [resultToDeleteId, setResultToDeleteId] = useState(null);
   const [deleteError, setDeleteError] = useState('');
 
+  // State for challenge setup modal
   const [challengeSetupModalOpen, setChallengeSetupModalOpen] = useState(false);
   const [quizDataForChallenge, setQuizDataForChallenge] = useState(null);
 
-
-  const {
-    quizAttemptId: currentQuizAttemptId,
-    subject: currentSubject,
-    topicId: currentTopicIdFromState,
-    difficulty: currentDifficulty,
-    numQuestionsConfigured: currentNumQuestionsConfigured,
-    actualNumQuestionsInQuiz: currentActualNumQuestions,
-    quizClass: currentQuizClass,
-    timeTaken: currentTimeTaken,
-    originalQuestionsForDisplay, // These should have options as arrays from QuizPage
-    originalAnswersForDisplay,
-    subjectAccentColor: currentSubjectAccentColor,
-    score: currentScoreFromState,
-    percentage: currentPercentageFromState,
-    savedToHistory,
-    isChallenge: currentQuizIsChallenge,
-    challengeDetails: currentQuizChallengeDetails
-  } = useMemo(() => {
-    return currentQuizDataFromState || {};
-  }, [currentQuizDataFromState]);
-
-  const { score, percentage, detailedResultsForCurrentQuiz } = useMemo(() => {
-    if (originalQuestionsForDisplay && Array.isArray(originalQuestionsForDisplay) && originalQuestionsForDisplay.length > 0) {
-      // CRITICAL: Ensure originalQuestionsForDisplay passed from QuizPage has options already parsed.
-      // If not, you'd parse them here too.
-      // const questionsWithParsedOptions = parseOptionsString(originalQuestionsForDisplay); // This would be needed if QuizPage didn't parse
-      // For now, assuming QuizPage sends them parsed.
-
-      if (currentScoreFromState !== undefined && currentPercentageFromState !== undefined) {
-        const results = originalQuestionsForDisplay.map(question => {
-          const userAnswerId = originalAnswersForDisplay ? originalAnswersForDisplay[question.id] : null;
-          const isCorrect = userAnswerId === question.correctOptionId;
-          // Ensure options are an array here before passing to QuestionBreakdown
-          return { ...question, options: Array.isArray(question.options) ? question.options : [], userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined && userAnswerId !== null };
-        });
-        return { score: currentScoreFromState, percentage: currentPercentageFromState, detailedResultsForCurrentQuiz: results };
-      }
-    }
-    return { score: 0, percentage: 0, detailedResultsForCurrentQuiz: [] };
-  }, [originalQuestionsForDisplay, originalAnswersForDisplay, currentScoreFromState, currentPercentageFromState]);
-
-  const isShowingCurrentQuizResult = !!(detailedResultsForCurrentQuiz && detailedResultsForCurrentQuiz.length > 0 && currentQuizAttemptId);
+  // Determine if we are showing a result from the quiz just taken
+  const isShowingCurrentQuizResult = useMemo(() =>
+    !!(currentQuizDataFromState?.originalQuestionsForDisplay &&
+       currentQuizDataFromState?.quizAttemptId && // Use quizAttemptId for uniqueness
+       !selectedHistoricalResult),
+    [currentQuizDataFromState, selectedHistoricalResult]
+  );
 
   const handleAnimationComplete = () => {
     setShowRevealAnimation(false);
+    // Update state to prevent re-animation on refresh/navigation
     if (currentQuizDataFromState && currentQuizDataFromState.isFirstResultView) {
       navigate(location.pathname, {
         state: { ...currentQuizDataFromState, isFirstResultView: false },
@@ -159,325 +76,204 @@ function ResultsPage({ currentUser }) {
 
   const fetchHistoricalData = useCallback(() => {
     if (!currentUser?.id || !currentUser?.token) {
-      setHistoricalResults([]);
-      setIsLoadingHistorical(false);
-      setFetchError('');
-      return;
+      setHistoricalResults([]); setIsLoadingHistoricalList(false); setFetchListError(''); return;
     }
-    setIsLoadingHistorical(true);
-    setFetchError('');
-
-    apiClient.get(`/api/results?userId=${currentUser.id}`, {
-      headers: { Authorization: `Bearer ${currentUser.token}` }
-    })
+    setIsLoadingHistoricalList(true); setFetchListError('');
+    apiClient.get(`/api/results?userId=${currentUser.id}`, { headers: { Authorization: `Bearer ${currentUser.token}` } })
       .then(response => {
         if (Array.isArray(response.data)) {
-          setHistoricalResults(response.data);
+          // Ensure topicName is formatted for each historical result
+          const formattedResults = response.data.map(result => ({
+            ...result,
+            topicName: formatDisplayTopicName(result.topicId, result.topicName, !!result.challenge_id, result)
+          }));
+          setHistoricalResults(formattedResults);
         } else {
-          setHistoricalResults([]);
-          setFetchError('Received invalid data format for your past results.');
+          setHistoricalResults([]); setFetchListError('Invalid data format for your past results.');
         }
       })
       .catch(error => {
-        setFetchError(`Failed to load your past results: ${error.response?.data?.message || error.message}`);
+        setFetchListError(`Failed to load your past results: ${error.response?.data?.message || error.message}`);
         setHistoricalResults([]);
       })
-      .finally(() => setIsLoadingHistorical(false));
+      .finally(() => setIsLoadingHistoricalList(false));
   }, [currentUser]);
 
+  // Effect to fetch details when a historical result is selected
   useEffect(() => {
-    if (selectedHistoricalResult?.questionsActuallyAttemptedIds && selectedHistoricalResult?.userAnswersSnapshot) {
-      setIsLoadingHistoricalDetails(true);
-      setDetailsFetchError('');
+    if (selectedHistoricalResult?.id && selectedHistoricalResult?.questionsActuallyAttemptedIds) {
+      setIsLoadingHistoricalDetails(true); setDetailsFetchError('');
       const topicIdToFetch = selectedHistoricalResult.topicId;
+      let headers = {}; if (currentUser?.token) headers.Authorization = `Bearer ${currentUser.token}`;
 
-      let headers = {};
-      if (currentUser?.token) headers.Authorization = `Bearer ${currentUser.token}`;
-
-      apiClient.get(`/api/questions?topicId=${topicIdToFetch}`, { headers })
+      apiClient.get(`/api/questions?topicId=${topicIdToFetch}`, { headers }) // Fetches questions for the topic
         .then(response => {
-          const allTopicQuestionsRaw = response.data; // These will have options as strings
+          const allTopicQuestionsRaw = response.data;
           if (!Array.isArray(allTopicQuestionsRaw)) {
-            setDetailsFetchError("Could not load question details: Invalid data format from API.");
-            setProcessedHistoricalDetailedView([]);
-            return;
+            setDetailsFetchError("Could not load question details: Invalid data format.");
+            setProcessedHistoricalDetailedView([]); return;
           }
-          
-          // Parse options for each question fetched for the historical result
-          const allTopicQuestionsWithParsedOptions = parseQuestionOptions(allTopicQuestionsRaw);
-
+          const allTopicQuestionsParsed = parseQuestionOptionsForResults(allTopicQuestionsRaw);
           const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
-            const fullQuestionData = allTopicQuestionsWithParsedOptions.find(q => q.id === qId);
+            const fullQuestionData = allTopicQuestionsParsed.find(q => q.id === qId);
             if (!fullQuestionData) {
               return { id: qId, text: `Question data (ID: ${qId}) not found.`, options: [], isCorrect: false, isAnswered: selectedHistoricalResult.userAnswersSnapshot[qId] != null, userAnswerId: selectedHistoricalResult.userAnswersSnapshot[qId], explanation: "Original question data missing." };
             }
             const userAnswerId = selectedHistoricalResult.userAnswersSnapshot[qId];
-            // fullQuestionData.options is now an array due to the parsing above
             return { ...fullQuestionData, userAnswerId, isCorrect: userAnswerId === fullQuestionData.correctOptionId, isAnswered: userAnswerId != null };
           });
           setProcessedHistoricalDetailedView(populatedQuestions);
         })
-        .catch(err => {
-            console.error("Error fetching/processing historical question details:", err);
-            setDetailsFetchError(`Failed to load question details: ${err.response?.data?.message || err.message}`);
-        })
+        .catch(err => setDetailsFetchError(`Failed to load question details for history: ${err.response?.data?.message || err.message}`))
         .finally(() => setIsLoadingHistoricalDetails(false));
     } else {
-      setProcessedHistoricalDetailedView([]);
-      if (selectedHistoricalResult) setDetailsFetchError("No question data to display details for this result (missing IDs or snapshot).");
+      setProcessedHistoricalDetailedView([]); // Clear if no result selected or no question IDs
+      // if (selectedHistoricalResult) setDetailsFetchError("No question IDs found for this historical result to fetch details.");
     }
   }, [selectedHistoricalResult, currentUser]);
 
-
+  // Effect for initial load or when returning to list view
   useEffect(() => {
-    if (!isShowingCurrentQuizResult && !selectedHistoricalResult && !showRevealAnimation) {
-      if (currentUser?.id) fetchHistoricalData();
-      else { setHistoricalResults([]); setIsLoadingHistorical(false); }
+    if (!isShowingCurrentQuizResult && !selectedHistoricalResult && !showRevealAnimation && !isLoadingAuth) {
+      if (currentUser?.id) {
+        fetchHistoricalData();
+      } else {
+        setHistoricalResults([]);
+        setIsLoadingHistoricalList(false);
+        setFetchListError(''); // Clear error if user logs out
+      }
     }
-  }, [isShowingCurrentQuizResult, selectedHistoricalResult, currentUser, fetchHistoricalData, showRevealAnimation]);
+  }, [isShowingCurrentQuizResult, selectedHistoricalResult, currentUser, fetchHistoricalData, showRevealAnimation, isLoadingAuth]);
+
+  const handleViewHistoricalResultDetail = (result) => {
+    setShowRevealAnimation(false); // Ensure animation doesn't play when viewing history
+    setDetailsFetchError('');
+    // The result from historicalResults should already have a formatted topicName
+    setSelectedHistoricalResult(result);
+  };
 
   const handleBackToList = () => {
     setSelectedHistoricalResult(null);
     setProcessedHistoricalDetailedView([]);
     setDetailsFetchError('');
+    // Optionally re-fetch historical data if needed, or assume it's current
     if (currentUser?.id) fetchHistoricalData();
   }
 
-  const openDeleteConfirmation = (id) => {
-    setResultToDeleteId(id);
-    setDeleteConfirmationOpen(true);
-    setDeleteError('');
-  };
+  const openDeleteConfirmation = (id) => { setResultToDeleteId(id); setDeleteConfirmationOpen(true); setDeleteError(''); };
+
   const handleConfirmDelete = async () => {
-    if (!resultToDeleteId || !currentUser?.token) {
-      setDeleteError("Cannot delete: Missing data.");
-      return;
-    }
+    if (!resultToDeleteId || !currentUser?.token) { setDeleteError("Cannot delete: Missing data."); return; }
     try {
       await apiClient.delete(`/api/results/${resultToDeleteId}`, { headers: { Authorization: `Bearer ${currentUser.token}` } });
       setDeleteConfirmationOpen(false);
+      const deletedId = resultToDeleteId; // Store before resetting
       setResultToDeleteId(null);
       setDeleteError('');
-      if (selectedHistoricalResult?.id === resultToDeleteId) handleBackToList();
-      else fetchHistoricalData();
-    } catch (err) {
-      setDeleteError(err.response?.data?.message || "Failed to delete result.");
-    }
+      if (selectedHistoricalResult?.id === deletedId) {
+        handleBackToList(); // If deleting the currently viewed detail, go back to list
+      } else {
+        fetchHistoricalData(); // Otherwise, just refresh the list
+      }
+    } catch (err) { setDeleteError(err.response?.data?.message || "Failed to delete result."); }
   };
+
   const handleNavigateHome = () => navigate('/');
   const handleNavigateToAccount = () => navigate('/account');
 
-  const handleHistoricalResultClick = (result) => {
-  setShowRevealAnimation(false);
-  setDetailsFetchError('');
-  setSelectedHistoricalResult(result);
-};
+  const handleOpenChallengeSetup = (sourceResultOrIdentifier) => {
+    if (!currentUser) { navigate('/account', { state: { from: location.pathname, message: "Login to challenge." } }); return; }
 
-  const handleOpenChallengeSetup = (sourceResult) => {
-    if (!currentUser) {
-      navigate('/account', { state: { from: location.pathname, message: "Please login to challenge a friend." } });
-      return;
-    }
-    let dataForChallenge;
-    if (sourceResult === 'current' && isShowingCurrentQuizResult) {
-      if (!originalQuestionsForDisplay || originalQuestionsForDisplay.length === 0) {
-        alert("Cannot challenge: Current quiz has no questions.");
-        return;
-      }
-      dataForChallenge = {
-        topicId: currentTopicIdFromState,
-        topicName: formatTopicNameFromResult(currentTopicIdFromState, (currentQuizDataFromState?.topicName || currentTopicIdFromState?.replace(/-/g, ' ')), currentQuizIsChallenge, currentQuizChallengeDetails),
-        difficulty: currentDifficulty,
-        numQuestions: originalQuestionsForDisplay.length,
-        quizClass: currentQuizClass,
-        questionIds: originalQuestionsForDisplay.map(q => q.id),
-        subject: currentSubject
-      };
-    } else if (sourceResult && sourceResult.id) {
-      if (!sourceResult.questionsActuallyAttemptedIds || sourceResult.questionsActuallyAttemptedIds.length === 0) {
-        alert("Cannot challenge with this historical result as question details are missing.");
-        return;
-      }
-      dataForChallenge = {
-        topicId: sourceResult.topicId,
-        topicName: formatTopicNameFromResult(sourceResult.topicId, sourceResult.topicName, !!sourceResult.challenge_id, null),
-        difficulty: sourceResult.difficulty,
-        numQuestions: sourceResult.questionsActuallyAttemptedIds.length,
-        quizClass: sourceResult.class,
-        questionIds: sourceResult.questionsActuallyAttemptedIds,
-        subject: sourceResult.subject
-      };
+    let resultDataToUse;
+    let sourceQuestions;
+
+    if (sourceResultOrIdentifier === 'current' && isShowingCurrentQuizResult && currentQuizDataFromState) {
+      resultDataToUse = currentQuizDataFromState;
+      sourceQuestions = resultDataToUse.originalQuestionsForDisplay;
+    } else if (typeof sourceResultOrIdentifier === 'object' && sourceResultOrIdentifier !== null) {
+      resultDataToUse = sourceResultOrIdentifier;
+      sourceQuestions = resultDataToUse.questionsActuallyAttemptedIds; // This contains IDs
     } else {
-      console.error("Invalid sourceResult for challenge setup", sourceResult);
-      alert("Could not determine quiz data for challenge.");
-      return;
+      alert("Could not determine quiz data for challenge."); return;
     }
 
-    if (!dataForChallenge.questionIds || dataForChallenge.questionIds.length === 0) {
-      alert("Cannot initiate challenge: No questions found in the selected result.");
-      return;
+    const questionIds = Array.isArray(sourceQuestions) && sourceQuestions[0]?.id
+        ? sourceQuestions.map(q => q.id) // If it's an array of question objects
+        : sourceQuestions; // Assume it's already an array of IDs if not objects
+
+    if (!questionIds || !Array.isArray(questionIds) || questionIds.length === 0) {
+      alert("No questions found in the selected result to base a challenge on."); return;
     }
 
-    setQuizDataForChallenge(dataForChallenge);
+    setQuizDataForChallenge({
+      topicId: resultDataToUse.topicId,
+      topicName: formatDisplayTopicName(resultDataToUse.topicId, resultDataToUse.topicName, !!resultDataToUse.challenge_id || resultDataToUse.isChallenge, resultDataToUse.challengeDetails || resultDataToUse),
+      difficulty: resultDataToUse.difficulty,
+      numQuestions: questionIds.length,
+      quizClass: resultDataToUse.class || resultDataToUse.quizClass, // 'class' from historical, 'quizClass' from current
+      questionIds: questionIds,
+      subject: resultDataToUse.subject
+    });
     setChallengeSetupModalOpen(true);
   };
 
+
+  // --- Render Logic ---
+
+  if (isLoadingAuth) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="calc(100vh - 128px)">
+        <CircularProgress sx={{ color: RESULTS_PAGE_ACCENT_COLOR }} />
+        <Typography sx={{ ml: 2 }}>Loading Authentication...</Typography>
+      </Box>
+    );
+  }
 
   if (showRevealAnimation && isShowingCurrentQuizResult) {
     return <ResultRevealOverlay onAnimationComplete={handleAnimationComplete} />;
   }
 
-  // Displaying details of a selected historical result
   if (selectedHistoricalResult) {
-    const accent = subjectAccentColors[selectedHistoricalResult.subject?.toLowerCase()] || RESULTS_PAGE_ACCENT_COLOR;
     return (
-      <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
-        <QuizResultSummary
-          quizResult={selectedHistoricalResult}
-          quizTitle={selectedHistoricalResult.challenge_id ? "Past Challenge Details" : "Past Quiz Details"}
-          accentColor={accent}
-          isChallenge={!!selectedHistoricalResult.challenge_id}
-        />
-        {isLoadingHistoricalDetails ? (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="20vh" sx={{ my: 2 }}>
-            <CircularProgress sx={{ color: accent }} /> <Typography sx={{ ml: 2 }}>Loading question details...</Typography>
-          </Box>
-        ) : detailsFetchError ? (
-          <Alert severity="error" sx={{ mt: 2 }}>{detailsFetchError}</Alert>
-        ) : processedHistoricalDetailedView.length > 0 ? (
-          <QuestionBreakdown detailedQuestionsToDisplay={processedHistoricalDetailedView} /> 
-        ) : (
-          <Alert severity="info" sx={{ mt: 2 }}>No detailed question breakdown available or no questions were attempted for this result.</Alert>
-        )}
-        <ResultsActionButtons
-          onBackToList={handleBackToList}
-          onNavigateHome={handleNavigateHome}
-          showBackToListButton={true}
-          accentColor={accent}
-          showDeleteButton={currentUser && currentUser.id === selectedHistoricalResult.userId}
-          onDeleteClick={() => openDeleteConfirmation(selectedHistoricalResult.id)}
-          deleteDisabled={!selectedHistoricalResult.id || !(currentUser && currentUser.id === selectedHistoricalResult.userId)}
-        />
-        <DeleteConfirmationDialog
-          open={deleteConfirmationOpen}
-          onClose={() => { setDeleteConfirmationOpen(false); setDeleteError(''); }}
-          onConfirm={handleConfirmDelete}
-          error={deleteError}
-          title="Confirm Deletion"
-          message={`Are you sure you want to delete this quiz result? This action cannot be undone.`}
-        />
-      </Box>
+      <HistoricalResultDetailView
+        selectedResult={selectedHistoricalResult}
+        detailedQuestions={processedHistoricalDetailedView}
+        isLoadingDetails={isLoadingHistoricalDetails}
+        detailsError={detailsFetchError}
+        onBackToList={handleBackToList}
+        onNavigateHome={handleNavigateHome}
+        onOpenDeleteDialog={openDeleteConfirmation}
+        onOpenChallengeSetup={handleOpenChallengeSetup}
+        currentUser={currentUser}
+        accentColor={RESULTS_PAGE_ACCENT_COLOR} // Pass main page accent
+      />
     );
   }
 
-  // Displaying the result of the quiz just taken
   if (isShowingCurrentQuizResult && !showRevealAnimation) {
-    const currentQuizResultForView = {
-      subject: currentSubject,
-      topicId: currentTopicIdFromState,
-      topicName: formatTopicNameFromResult(currentTopicIdFromState, (currentQuizDataFromState?.topicName || currentTopicIdFromState?.replace(/-/g, ' ')), currentQuizIsChallenge, currentQuizChallengeDetails),
-      score: score,
-      totalQuestions: currentActualNumQuestions || (originalQuestionsForDisplay ? originalQuestionsForDisplay.length : 0),
-      percentage: percentage,
-      difficulty: currentDifficulty,
-      numQuestionsConfigured: currentNumQuestionsConfigured,
-      class: currentQuizClass,
-      timeTaken: currentTimeTaken,
-      challenge_id: currentQuizIsChallenge ? currentQuizChallengeDetails?.id : null
-    };
-    const accent = currentSubjectAccentColor || RESULTS_PAGE_ACCENT_COLOR;
     return (
-      <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto', mt: 2 }}>
-        <QuizResultSummary
-          quizResult={currentQuizResultForView}
-          quizTitle={currentQuizIsChallenge ? "Challenge Results" : "Quiz Results"}
-          accentColor={accent}
-          isChallenge={currentQuizIsChallenge}
-        />
-        {savedToHistory === false && !currentUser && (<Alert severity="info" sx={{ my: 2 }}>This result was not saved. Please <Button size="small" onClick={handleNavigateToAccount}>Login/Register</Button> to save future results.</Alert>)}
-        {savedToHistory === false && currentUser && (<Alert severity="warning" sx={{ my: 2 }}>There was an issue saving this result to your history. It is displayed for this session only.</Alert>)}
-        {savedToHistory === true && (<Alert severity="success" sx={{ my: 2 }}>This result has been saved to your history.</Alert>)}
-
-        {currentQuizIsChallenge && currentQuizChallengeDetails && (
-          <Paper elevation={2} sx={{ p: 2, my: 2, backgroundColor: alpha(theme.palette.info.dark, 0.1) }}>
-            <Typography variant="h6" gutterBottom>Challenge Details</Typography>
-            <Divider sx={{ mb: 1 }} />
-            <Stack spacing={0.5}>
-              <Typography>
-                <strong>{currentUser?.id === currentQuizChallengeDetails.challenger_id ? 'You Challenged:' : 'Challenged by:'}</strong>{' '}
-                {currentUser?.id === currentQuizChallengeDetails.challenger_id ? currentQuizChallengeDetails.challengedUsername : currentQuizChallengeDetails.challengerUsername}
-              </Typography>
-              <Typography>
-                <strong>Topic:</strong> {formatTopicNameFromResult(currentQuizChallengeDetails.topic_id, currentQuizChallengeDetails.topic_name, true, currentQuizChallengeDetails)}
-              </Typography>
-              <Typography>
-                <strong>Your Score:</strong> {score}/{currentActualNumQuestions || originalQuestionsForDisplay?.length}
-                {currentTimeTaken != null && ` (${formatTime(currentTimeTaken)})`}
-              </Typography>
-
-              {currentQuizChallengeDetails.challenger_id === currentUser?.id && currentQuizChallengeDetails.challenged_score !== null && (
-                <Typography>
-                  <strong>{currentQuizChallengeDetails.challengedUsername}'s Score:</strong> {currentQuizChallengeDetails.challenged_score}/{currentQuizChallengeDetails.num_questions}
-                  {currentQuizChallengeDetails.challenged_time_taken != null && ` (${formatTime(currentQuizChallengeDetails.challenged_time_taken)})`}
-                </Typography>
-              )}
-              {currentQuizChallengeDetails.challenged_id === currentUser?.id && currentQuizChallengeDetails.challenger_score !== null && (
-                <Typography>
-                  <strong>{currentQuizChallengeDetails.challengerUsername}'s Score:</strong> {currentQuizChallengeDetails.challenger_score}/{currentQuizChallengeDetails.num_questions}
-                  {currentQuizChallengeDetails.challenger_time_taken != null && ` (${formatTime(currentQuizChallengeDetails.challenger_time_taken)})`}
-                </Typography>
-              )}
-
-              {currentQuizChallengeDetails.status === 'completed' && (
-                <Typography sx={{
-                  fontWeight: 'bold', mt: 1, color:
-                    currentQuizChallengeDetails.winner_id === null ? theme.palette.info.main :
-                      (currentQuizChallengeDetails.winner_id === currentUser?.id ? theme.palette.success.main : theme.palette.error.main)
-                }}>
-                  {currentQuizChallengeDetails.winner_id === null ? "It's a Tie!" :
-                    (currentQuizChallengeDetails.winner_id === currentUser?.id ? "🎉 You Won!" :
-                      `${currentQuizChallengeDetails.winnerUsername || 'Opponent'} Won.`)}
-                </Typography>
-              )}
-              {currentQuizChallengeDetails.status === 'challenger_completed' && currentQuizChallengeDetails.challenger_id === currentUser?.id && (
-                <Typography sx={{ fontStyle: 'italic', color: theme.palette.text.secondary, mt: 1 }}>
-                  Waiting for {currentQuizChallengeDetails.challengedUsername} to play.
-                </Typography>
-              )}
-            </Stack>
-          </Paper>
-        )}
-
-        {detailedResultsForCurrentQuiz && detailedResultsForCurrentQuiz.length > 0 &&
-          <QuestionBreakdown detailedQuestionsToDisplay={detailedResultsForCurrentQuiz} /> /* This gets parsed options from current quiz */
-        }
-        <ResultsActionButtons
-          onNavigateHome={handleNavigateHome}
-          onViewHistory={() => {
-            navigate('/results', { replace: true, state: null });
+      <CurrentResultView
+        currentQuizDataFromState={currentQuizDataFromState}
+        onViewHistory={() => {
+            navigate('/results', { replace: true, state: null }); // Clear state
             setSelectedHistoricalResult(null);
-            setShowRevealAnimation(false);
+            setShowRevealAnimation(false); // Ensure this is false
             if (currentUser?.id) fetchHistoricalData();
-          }}
-          showBackToListButton={false}
-          showViewHistoryButton={true}
-          accentColor={accent}
-        />
-      </Box>
+        }}
+        onNavigateHome={handleNavigateHome}
+        onOpenChallengeSetup={handleOpenChallengeSetup}
+        currentUser={currentUser}
+      />
     );
   }
 
   // Default view: Historical results list or login prompt
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, width: '100%', margin: 'auto', mt: 2 }}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 1, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
-        <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em', color: RESULTS_PAGE_ACCENT_COLOR }} />
+    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth:'900px', margin: 'auto', mt: 2 }}>
+      <Typography variant="h4" gutterBottom sx={{ mb: 2, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
+        <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em' }} />
         {currentUser ? `${currentUser.name}'s Quiz Results` : 'Past Quiz Results'}
       </Typography>
-
-      {fetchError && !currentUser && <Alert severity="info" variant="outlined" sx={{ mb: 2 }}>Could not load general history. {fetchError}</Alert>}
-      {fetchError && currentUser && <Alert severity="error" variant="filled" sx={{ mb: 2 }}>{fetchError}</Alert>}
-      {deleteError && !deleteConfirmationOpen && <Alert severity="error" variant="filled" sx={{ mb: 2 }}>{deleteError}</Alert>}
 
       {!currentUser ? (
         <Paper elevation={2} sx={{ p: 3, textAlign: 'center', mt: 3, borderTop: `5px solid ${RESULTS_PAGE_ACCENT_COLOR}` }}>
@@ -487,44 +283,25 @@ function ResultsPage({ currentUser }) {
             Login / Register
           </Button>
         </Paper>
-      ) : isLoadingHistorical ? (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-          <CircularProgress sx={{ color: RESULTS_PAGE_ACCENT_COLOR }} /> <Typography sx={{ ml: 2 }}>Loading your results...</Typography>
-        </Box>
-      ) : historicalResults.length === 0 && !fetchError ? (
-        <Paper elevation={2} sx={{ p: 3, textAlign: 'center', borderTop: `5px solid ${RESULTS_PAGE_ACCENT_COLOR}` }}>
-          <Typography variant="h6" gutterBottom>No Saved Results Found</Typography>
-          <Typography>You haven't completed and saved any quizzes yet under this account.</Typography>
-          <Button variant="contained" startIcon={<HomeIcon />} onClick={handleNavigateHome} sx={{ mt: 2, backgroundColor: RESULTS_PAGE_ACCENT_COLOR, '&:hover': { backgroundColor: darken(RESULTS_PAGE_ACCENT_COLOR, 0.2) } }} >
-            Go to Home & Take a Quiz
-          </Button>
-        </Paper>
-      ) : (
-        <Box sx={{ mt: 2}}>
-          {Array.isArray(historicalResults) && historicalResults.map((result) => (
-            <HistoricalResultItem
-              key={result.id}
-              result={result}
-              onResultClick={handleHistoricalResultClick}
-              onDeleteClick={openDeleteConfirmation}
-              showDeleteButton={currentUser && currentUser.id === result.userId}
-              isChallengeResult={!!result.challenge_id}
-            />
-          ))}
-        </Box>
+      ) : ( // currentUser exists, show list or loading/error for list
+        <HistoricalResultsList
+          results={historicalResults}
+          isLoading={isLoadingHistoricalList}
+          error={fetchListError}
+          deleteError={deleteError && !deleteConfirmationOpen ? deleteError : ''}
+          onResultClick={handleViewHistoricalResultDetail}
+          onDeleteClick={openDeleteConfirmation}
+          currentUser={currentUser}
+          accentColor={RESULTS_PAGE_ACCENT_COLOR}
+        />
       )}
-      {!selectedHistoricalResult && (
+      {/* Fallback action buttons for the list view if it's the main view */}
+      {!selectedHistoricalResult && !isShowingCurrentQuizResult && (
         <ResultsActionButtons
           onNavigateHome={handleNavigateHome}
-          showBackToListButton={false}
-          showViewHistoryButton={isShowingCurrentQuizResult}
+          showBackToListButton={false} // Not applicable when already on list
+          showViewHistoryButton={false} // Already viewing history
           accentColor={RESULTS_PAGE_ACCENT_COLOR}
-          onViewHistory={() => {
-            navigate('/results', { replace: true, state: null });
-            setSelectedHistoricalResult(null);
-            setShowRevealAnimation(false);
-            if (currentUser?.id) fetchHistoricalData();
-          }}
         />
       )}
 
@@ -541,7 +318,6 @@ function ResultsPage({ currentUser }) {
         <ChallengeSetupModal
           open={challengeSetupModalOpen}
           onClose={() => setChallengeSetupModalOpen(false)}
-          currentUser={currentUser}
           quizDataForChallenge={quizDataForChallenge}
           accentColor={subjectAccentColors[quizDataForChallenge.subject?.toLowerCase()] || theme.palette.secondary.main}
         />
@@ -551,4 +327,3 @@ function ResultsPage({ currentUser }) {
 }
 
 export default ResultsPage;
-// --- END OF FILE src/pages/ResultsPage.js ---

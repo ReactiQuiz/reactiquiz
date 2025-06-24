@@ -545,7 +545,7 @@
     {
         "id": "laws-of-motion-9th",
         "name": "Laws of Motion",
-        "description": "Study of motion, force, and Newtons laws.",
+        "description": "Understanding concepts of motion, displacement, distance, speed, velocity, acceleration, and Newton's laws of motion with related equations.",
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"
@@ -553,7 +553,7 @@
     {
         "id": "work-and-energy-9th",
         "name": "Work and Energy",
-        "description": "Concepts of work, energy, power, and conservation of energy.",
+        "description": "Exploring concepts of work, energy (kinetic and potential), power, the law of conservation of energy, and free fall.",
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"
@@ -561,15 +561,71 @@
     {
         "id": "current-electricity-9th",
         "name": "Current Electricity",
-        "description": "Basics of electric current, circuits, voltage, and resistance.",
+        "description": "Learning about potential difference, conductors, insulators, electrical resistance, Ohm's law, and series/parallel connections of resistors.",
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"
     },
     {
+        "id": "measurement-of-matter-9th",
+        "name": "Measurement of Matter",
+        "description": "Understanding laws of chemical combination, atoms (shape, mass, valency), molecular mass, and the concept of the mole and Avogadro's number.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "acids-bases-and-salts-9th",
+        "name": "Acids, Bases and Salts",
+        "description": "Exploring Arrhenius theory, concentration, pH, neutralization, properties of acids, bases, salts, water of crystallisation, and electrolysis.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "classification-of-plants-9th",
+        "name": "Classification of Plants",
+        "description": "Studying the kingdom Plantae, basis for classification, and the characteristics of Thallophyta, Bryophyta, Pteridophyta, Gymnosperms, and Angiosperms.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "energy-flow-in-an-ecosystem-9th",
+        "name": "Energy Flow in an Ecosystem",
+        "description": "Understanding food chains, food webs, trophic levels, the energy pyramid, and bio-geo-chemical cycles (carbon, oxygen, nitrogen).",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "useful-and-harmful-microbes-9th",
+        "name": "Useful and Harmful Microbes",
+        "description": "Learning about useful microbes like Lactobacilli, Rhizobium, yeast, and harmful microbes like Clostridium and others causing diseases.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "environmental-management-9th",
+        "name": "Environmental Management",
+        "description": "Studying weather, climate, meteorology, solid waste management principles, and disaster management including first aid.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "general"
+    },
+    {
+        "id": "information-communication-technology-ict-9th",
+        "name": "Information Communication Technology (ICT): The new direction of progress",
+        "description": "Exploring components of a computer, hardware, software, and using applications like Word and Excel for documentation and data analysis.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "general"
+    },
+    {
         "id": "reflection-of-light-9th",
         "name": "Reflection of Light",
-        "description": "Understanding how light bounces off surfaces.",
+        "description": "Understanding mirrors (plane and spherical), image formation, terms related to spherical mirrors, magnification, and sign conventions.",
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"
@@ -577,15 +633,55 @@
     {
         "id": "study-of-sound-9th",
         "name": "Study of Sound",
-        "description": "Properties of sound waves, production, and propagation.",
+        "description": "Exploring sound waves, velocity of sound, reflection, echoes, reverberation, SONAR, and the structure and function of the human ear.",
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"
     },
     {
+        "id": "carbon-an-important-element-9th",
+        "name": "Carbon : An important element",
+        "description": "Studying carbon's occurrence, properties, allotropes (diamond, graphite, fullerene), hydrocarbons, carbon dioxide, methane, and biogas.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "substances-in-common-use-9th",
+        "name": "Substances in Common Use",
+        "description": "Learning about important salts (NaCl, NaHCO3, Na2CO3), bleaching powder, crystalline salts, radioactive substances, food colours, dyes, and Teflon.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "life-processes-in-living-organisms-9th",
+        "name": "Life Processes in Living Organisms",
+        "description": "Understanding transportation in plants (root pressure, transpiration), excretion (plants and humans), and co-ordination (plants and human nervous/endocrine systems).",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "heredity-and-variation-9th",
+        "name": "Heredity and Variation",
+        "description": "Exploring inheritance, chromosomes, DNA, RNA, Mendel's laws of heredity, and genetic disorders (chromosomal and monogenic).",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "introduction-to-biotechnology-9th",
+        "name": "Introduction to Biotechnology",
+        "description": "Learning about tissues (animal and plant), tissue culture, agricultural biotechnology (GM crops, agritourism), animal husbandry, poultry farming, and sericulture.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
         "id": "observing-space-telescopes-9th",
         "name": "Observing Space : Telescopes",
-        "description": "Introduction to space observation and telescopes.",
+        "description": "Understanding different forms of light, types of telescopes (optical, radio, X-ray), telescopes in space (Hubble, Chandra), and ISRO's contributions.",
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"

@@ -14,6 +14,8 @@ import DashboardPage from '../pages/DashboardPage';
 import AllSubjectsPage from '../pages/AllSubjectsPage';
 import SubjectTopicsPage from '../pages/SubjectTopicsPage';
 import { useAuth } from '../contexts/AuthContext'; // <-- IMPORT and USE
+import { Box } from '@mui/material';
+import {CircularProgress} from '@mui/material';
 
 function AppRoutes({
   // REMOVED: currentUser, handleLogout, setCurrentUser from props

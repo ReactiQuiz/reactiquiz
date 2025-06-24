@@ -7,28 +7,25 @@ import { alpha } from '@mui/material/styles';
 import TimerIcon from '@mui/icons-material/Timer';
 import { formatTime } from '../../utils/formatTime'; // Ensure this path is correct
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-// Removed: import { formatDisplayTopicName } from '../../utils/quizUtils';
-// The topicName should be pre-formatted and passed in via quizResult.topicName
+// No need to import formatDisplayTopicName here, as topicName should be passed in pre-formatted
 
 function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
   const theme = useTheme();
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
   // Destructure directly from quizResult.
-  // 'topicName' should be passed in `quizResult` already formatted.
-  // 'challenge_id' is also directly from `quizResult`.
+  // 'topicName' (the display name) and 'challenge_id' should be properties of the quizResult object.
   const {
-    // topicId, // Not directly used for display if topicName is present
-    topicName, // This should be the pre-formatted name
+    topicName, // This should be the pre-formatted display name passed in quizResult
     score,
     totalQuestions,
     percentage,
     difficulty,
-    numQuestionsConfigured, // This might be from current quiz state, or historical
+    // numQuestionsConfigured, // Not typically displayed in summary, but totalQuestions is
     class: quizClassFromResult,
     timeTaken,
-    challenge_id // This comes from the quizResult object
-  } = quizResult || {}; // Provide default empty object to prevent errors if quizResult is null/undefined initially
+    challenge_id // This comes directly from the quizResult object
+  } = quizResult || {}; // Default to empty object if quizResult is initially undefined
 
   const [animatedScore, setAnimatedScore] = useState(0);
   const [animatedPercentage, setAnimatedPercentage] = useState(0);
@@ -41,26 +38,25 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
         setAnimatedPercentage(0);
         return;
     }
-    // ... (rest of animation useEffect - no changes needed here) ...
-    const scoreTarget = Math.max(0, score); 
-    const percentageTarget = Math.max(0, Math.min(100, percentage)); 
-    const animationDuration = 1200; 
+    const scoreTarget = Math.max(0, score);
+    const percentageTarget = Math.max(0, Math.min(100, percentage));
+    const animationDuration = 1200;
     const animateValue = (startValue, endValue, duration, setter, animationRef) => {
         let startTime = null;
         const step = (timestamp) => {
             if (!startTime) startTime = timestamp;
             const progress = Math.min((timestamp - startTime) / duration, 1);
-            const easedProgress = 1 - Math.pow(1 - progress, 3); 
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
             setter(Math.floor(easedProgress * (endValue - startValue) + startValue));
             if (progress < 1) {
                 animationRef.current = requestAnimationFrame(step);
             } else {
-                 setter(endValue); 
+                 setter(endValue);
             }
         };
         animationRef.current = requestAnimationFrame(step);
     };
-    setAnimatedScore(0); 
+    setAnimatedScore(0);
     setAnimatedPercentage(0);
     if (scoreAnimationRef.current) cancelAnimationFrame(scoreAnimationRef.current);
     if (percentageAnimationRef.current) cancelAnimationFrame(percentageAnimationRef.current);
@@ -98,7 +94,7 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
             fontSize: { xs: '1.8rem', sm: '2.125rem' }
         }}
       >
-        {quizTitle || (challenge_id ? "Challenge Results" : "Quiz Results")} {/* Use challenge_id here */}
+        {quizTitle || (challenge_id ? "Challenge Results" : "Quiz Results")}
       </Typography>
       <Typography
         variant="h6"
@@ -132,7 +128,6 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
             <Chip label={difficulty} size="small" variant="outlined" sx={{ textTransform: 'capitalize', borderColor: effectiveAccentColor, color: effectiveAccentColor }} />
           </Grid>
         )}
-        {/* Display totalQuestions (actual questions in quiz) instead of numQuestionsConfigured for clarity here */}
         {(totalQuestions != null && totalQuestions > 0) && (
           <Grid item>
             <Chip label={`${totalQuestions} Qs`} size="small" variant="outlined" sx={{borderColor: effectiveAccentColor, color: effectiveAccentColor}}/>
@@ -168,7 +163,7 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
                 fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }
             }}
           >
-            {animatedScore} / {totalQuestions}
+            {animatedScore} / {totalQuestions || 0} {/* Added fallback for totalQuestions */}
           </Typography>
         </Typography>
 

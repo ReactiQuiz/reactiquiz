@@ -1,8 +1,5 @@
-// --- FULL AND CORRECTED CODE for src/pages/QuizPage.js ---
-
-import {
-  useState, useEffect, useCallback
-} from 'react';
+// src/pages/QuizPage.js
+import { useState, useEffect, useCallback } from 'react';
 import {
   Box, Typography, Button, CircularProgress, Alert
 } from '@mui/material';
@@ -10,35 +7,25 @@ import {
   useParams, useNavigate, useLocation
 } from 'react-router-dom';
 import {
-  darken, useTheme, alpha
+  darken, useTheme
 } from '@mui/material/styles';
 import apiClient from '../api/axiosInstance';
+import { useAuth } from '../contexts/AuthContext';
 
 import {
   subjectAccentColors as themeSubjectAccentColors
 } from '../theme';
-import QuestionItem from '../components/quiz/QuestionItem';
-import { formatTime } from '../utils/formatTime';
-import { parseQuestionOptions } from '../utils/quizUtils';
+import { parseQuestionOptions, shuffleArray } from '../utils/quizUtils';
+
+// Import separated components
+import QuizHeader from '../components/quiz/QuizHeader';
+import QuizQuestionList from '../components/quiz/QuizQuestionList';
 
 const subjectAccentColors = themeSubjectAccentColors;
 
-const shuffleArray = (array) => {
-  if (!array || !Array.isArray(array)) return [];
-  let newArray = [...array];
-  let currentIndex = newArray.length, randomIndex;
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-    [newArray[currentIndex], newArray[randomIndex]] = [
-      newArray[randomIndex], newArray[currentIndex]];
-  }
-  return newArray;
-};
-
-// This helper function is used by fetchHomiBhabhaPracticeQuestions
+// Helper function to fetch questions for Homi Bhabha practice tests
 const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClass, difficultyLabel, numQuestionsNeeded) => {
-  console.log(`[PracticeQuiz] Fetching for subject: ${subjectName}, class: ${targetClass}, difficulty: ${difficultyLabel}, needed: ${numQuestionsNeeded}`);
+  // console.log(`[PracticeQuiz] Fetching for subject: ${subjectName}, class: ${targetClass}, difficulty: ${difficultyLabel}, needed: ${numQuestionsNeeded}`);
   try {
     const topicsResponse = await apiClient.get(`/api/topics/${subjectName.toLowerCase()}`);
     if (!Array.isArray(topicsResponse.data) || topicsResponse.data.length === 0) {
@@ -56,11 +43,12 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
       try {
         const questionsResponse = await apiClient.get(`/api/questions?topicId=${topicId}`);
         if (Array.isArray(questionsResponse.data)) {
-          const topicInfo = topicsResponse.data.find(t => t.id === topicId);
+          // Find the topic info from the initial topicsResponse, not the questionsResponse
+          const correctTopicInfo = topicsResponse.data.find(t => t.id === topicId);
           const questionsWithContext = questionsResponse.data.map(q => ({
             ...q,
             subject: subjectName.toLowerCase(),
-            class: q.class || topicInfo?.class || null
+            class: q.class || correctTopicInfo?.class || null
           }));
           allQuestionsForSubject = allQuestionsForSubject.concat(questionsWithContext);
         }
@@ -74,44 +62,40 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
     let classFilteredQuestions = allQuestionsForSubject;
     if (targetClass) {
       classFilteredQuestions = allQuestionsForSubject.filter(q =>
-        !q.class || q.class === targetClass
+        !q.class || String(q.class) === String(targetClass) // Ensure type consistency for comparison
       );
     }
     if (classFilteredQuestions.length === 0 && targetClass) {
       console.warn(`[PracticeQuiz] No questions for ${subjectName} matched class ${targetClass}. Trying without class filter.`);
-      classFilteredQuestions = allQuestionsForSubject;
+      classFilteredQuestions = allQuestionsForSubject; // Fallback to all questions for subject if class filter yields none
     }
     if (classFilteredQuestions.length === 0) return [];
+
 
     let difficultyFilteredQuestions;
     if (difficultyLabel === 'mixed') {
       difficultyFilteredQuestions = [...classFilteredQuestions];
     } else {
-      let minScore = 0;
-      let maxScore = Infinity;
+      let minScore = 0, maxScore = Infinity;
       if (difficultyLabel === 'easy') { minScore = 10; maxScore = 13; }
       else if (difficultyLabel === 'medium') { minScore = 14; maxScore = 17; }
       else if (difficultyLabel === 'hard') { minScore = 18; maxScore = 20; }
-
       difficultyFilteredQuestions = classFilteredQuestions.filter(q =>
-        q.hasOwnProperty('difficulty') &&
-        typeof q.difficulty === 'number' &&
-        q.difficulty >= minScore &&
-        q.difficulty <= maxScore
+        q.hasOwnProperty('difficulty') && typeof q.difficulty === 'number' &&
+        q.difficulty >= minScore && q.difficulty <= maxScore
       );
     }
 
     if (difficultyFilteredQuestions.length === 0 && difficultyLabel !== 'mixed' && classFilteredQuestions.length > 0) {
-      console.warn(`[PracticeQuiz] No questions for ${subjectName} (class: ${targetClass || 'any'}) matched difficulty ${difficultyLabel}. Using from any difficulty.`);
-      difficultyFilteredQuestions = [...classFilteredQuestions];
+      console.warn(`[PracticeQuiz] No questions for ${subjectName} (class: ${targetClass || 'any'}) matched difficulty ${difficultyLabel}. Using questions from any difficulty for this subject and class.`);
+      difficultyFilteredQuestions = [...classFilteredQuestions]; // Fallback to class-filtered if specific difficulty not found
     }
-    if (difficultyFilteredQuestions.length === 0) return [];
+    if (difficultyFilteredQuestions.length === 0) return []; // No questions match criteria
 
     const shuffled = shuffleArray(difficultyFilteredQuestions);
     const selected = shuffled.slice(0, numQuestionsNeeded);
-    console.log(`[PracticeQuiz] Selected ${selected.length} questions for ${subjectName}.`);
+    // console.log(`[PracticeQuiz] Selected ${selected.length} questions for ${subjectName}.`);
     return selected;
-
   } catch (error) {
     console.error(`[PracticeQuiz] Overall error fetching questions for subject ${subjectName}:`, error);
     return [];
@@ -122,7 +106,7 @@ const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLa
   let finalQuizQuestions = [];
   let totalFetchedCount = 0;
   let infoMessages = [];
-  const subjectOrder = ['physics', 'chemistry', 'biology', 'gk'];
+  const subjectOrder = ['physics', 'chemistry', 'biology', 'gk']; // Define order for consistency
 
   for (const subjKey of subjectOrder) {
     if (questionComposition[subjKey]) {
@@ -135,21 +119,30 @@ const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLa
           infoMessages.push(`Could not find all ${countNeeded} ${difficultyLabel} questions for ${subjKey} (Class ${quizClassFromState || 'Any'}); got ${subjectQuestions.length}.`);
         }
       } catch (err) {
-        console.warn(`Error fetching for subject ${subjKey} in practice test:`, err);
+        console.warn(`Error fetching Homi Bhabha questions for subject ${subjKey}:`, err);
         infoMessages.push(`Could not fetch questions for ${subjKey}.`);
       }
     }
   }
 
   const uniqueQuestionsMap = new Map();
-  finalQuizQuestions.forEach(q => { if (!uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
-  const uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
+  finalQuizQuestions.forEach(q => { if (q && q.id && !uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
+  let uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
+
+  // If not enough unique questions, shuffle and pick to meet desiredTotal if possible
+  if (uniqueFinalQuizQuestions.length < desiredTotal && uniqueFinalQuizQuestions.length > 0) {
+      console.warn(`[HomiBhabha] Not enough unique questions (${uniqueFinalQuizQuestions.length}/${desiredTotal}). Shuffling and taking up to desired total.`);
+      uniqueFinalQuizQuestions = shuffleArray(uniqueFinalQuizQuestions).slice(0, desiredTotal);
+  } else if (uniqueFinalQuizQuestions.length > desiredTotal) {
+      uniqueFinalQuizQuestions = shuffleArray(uniqueFinalQuizQuestions).slice(0, desiredTotal);
+  }
+
 
   if (uniqueFinalQuizQuestions.length === 0) {
-    throw new Error(`Could not gather any questions for the practice test. Please try different settings or check question availability.`);
+    throw new Error(`Could not gather any questions for the Homi Bhabha practice test. Please try different settings or check question availability.`);
   }
-  if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) {
-    infoMessages.push(`Total questions for test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}.`);
+  if (uniqueFinalQuizQuestions.length < desiredTotal) { // Check after potential slicing
+    infoMessages.push(`Total questions for Homi Bhabha test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}. Some subjects might have fewer questions than requested.`);
   }
   return { questions: uniqueFinalQuizQuestions, info: infoMessages.join(' ') };
 };
@@ -163,8 +156,9 @@ const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel,
     }
 
     let classFilteredQuestions = fetchedQuestions;
+    // Apply class filter only if quizClassFromState is provided and subject is not GK/Maths (which might not have classes)
     if (quizClassFromState && subject && subject.toLowerCase() !== 'gk' && subject.toLowerCase() !== 'mathematics') {
-      classFilteredQuestions = fetchedQuestions.filter(q => !q.class || q.class === quizClassFromState);
+      classFilteredQuestions = fetchedQuestions.filter(q => !q.class || String(q.class) === String(quizClassFromState));
     }
 
     let difficultyFilteredQuestions;
@@ -175,16 +169,24 @@ const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel,
       if (difficultyLabel === 'easy') { minScore = 10; maxScore = 13; }
       else if (difficultyLabel === 'medium') { minScore = 14; maxScore = 17; }
       else if (difficultyLabel === 'hard') { minScore = 18; maxScore = 20; }
-      difficultyFilteredQuestions = classFilteredQuestions.filter(q => q.hasOwnProperty('difficulty') && typeof q.difficulty === 'number' && q.difficulty >= minScore && q.difficulty <= maxScore);
+      difficultyFilteredQuestions = classFilteredQuestions.filter(q =>
+        q.hasOwnProperty('difficulty') && typeof q.difficulty === 'number' &&
+        q.difficulty >= minScore && q.difficulty <= maxScore
+      );
     }
 
     if (difficultyFilteredQuestions.length === 0 && classFilteredQuestions.length > 0 && difficultyLabel !== 'mixed') {
-      console.warn(`[QuizPage] No questions for topic ${topicId} matched difficulty ${difficultyLabel}. Using questions from any difficulty for this topic.`);
-      difficultyFilteredQuestions = [...classFilteredQuestions];
+      console.warn(`[QuizPage] No questions for topic ${topicId} (Class: ${quizClassFromState || 'Any'}) matched difficulty ${difficultyLabel}. Using questions from any difficulty for this topic.`);
+      difficultyFilteredQuestions = [...classFilteredQuestions]; // Fallback to class-filtered
     }
 
     if (difficultyFilteredQuestions.length === 0) {
-      throw new Error(`No questions found for topic "${topicId}" (Class: ${quizClassFromState || 'Any'}, Difficulty: "${difficultyLabel}"). Try different settings.`);
+      // If still no questions, try fetching without class and difficulty filters as a last resort for this topicId
+      console.warn(`[QuizPage] No questions found for topic ${topicId} with class/difficulty. Fetching all for topic.`);
+      difficultyFilteredQuestions = [...fetchedQuestions]; // Use all fetched for the topic
+      if (difficultyFilteredQuestions.length === 0) {
+         throw new Error(`No questions found at all for topic "${topicId}". Try different settings.`);
+      }
     }
 
     const shuffledQuestions = shuffleArray(difficultyFilteredQuestions);
@@ -204,8 +206,10 @@ const fetchChallengeQuestions = async (challengeId, token) => {
       throw new Error('Challenge data is invalid or contains no question IDs.');
     }
 
+    // Fetch all questions for the challenge's topicId to get full details
     const topicQuestionsResponse = await apiClient.get(`/api/questions?topicId=${response.data.topic_id}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      // No token needed if questions are public, or add token if questions are protected
+      // headers: { Authorization: `Bearer ${token}` } // Optional, depends on your /api/questions security
     });
 
     if (!Array.isArray(topicQuestionsResponse.data)) {
@@ -215,20 +219,20 @@ const fetchChallengeQuestions = async (challengeId, token) => {
 
     const challengeQuestionDetails = response.data.question_ids.map(id => {
       return allQuestionsForTopic.find(q => q.id === id);
-    }).filter(q => q !== undefined);
-
+    }).filter(q => q !== undefined); // Filter out any undefined if an ID wasn't found
 
     if (challengeQuestionDetails.length !== response.data.question_ids.length) {
-      console.warn("[QuizPage] Not all challenge question IDs could be matched to full question details.");
+      console.warn("[QuizPage] Not all challenge question IDs could be matched to full question details. Some questions may be missing.");
     }
     if (challengeQuestionDetails.length === 0) {
-      throw new Error("[QuizPage] No valid questions found for this challenge based on the provided IDs.");
+      throw new Error("[QuizPage] No valid questions found for this challenge based on the provided IDs. The original questions may have been removed or changed.");
     }
 
+    // Add context like subject and class from the challenge data to each question
     const challengeQuestionsWithContext = challengeQuestionDetails.map(q => ({
       ...q,
-      subject: response.data.subject || q.subject,
-      class: response.data.quiz_class || q.class,
+      subject: response.data.subject || q.subject, // Prefer challenge's subject
+      class: response.data.quiz_class || q.class,   // Prefer challenge's class
     }));
 
     return { challengeData: response.data, questions: challengeQuestionsWithContext };
@@ -238,8 +242,8 @@ const fetchChallengeQuestions = async (challengeId, token) => {
   }
 };
 
-
-function QuizPage({ currentUser }) {
+function QuizPage() {
+  const { currentUser } = useAuth();
   const { topicId, challengeId: challengeIdFromParams } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -270,7 +274,7 @@ function QuizPage({ currentUser }) {
   const [effectiveSubject, setEffectiveSubject] = useState(subjectFromState);
   const [effectiveTopicName, setEffectiveTopicName] = useState(topicNameFromState);
   const [effectiveDifficulty, setEffectiveDifficulty] = useState(difficultyLabelFromState);
-  const [effectiveNumQuestions, setEffectiveNumQuestions] = useState(numQuestionsReqFromState);
+  const [effectiveNumQuestionsConfigured, setEffectiveNumQuestionsConfigured] = useState(numQuestionsReqFromState);
   const [effectiveQuizClass, setEffectiveQuizClass] = useState(quizClassFromState);
   const [effectiveTimeLimit, setEffectiveTimeLimit] = useState(timeLimitFromState);
 
@@ -283,171 +287,116 @@ function QuizPage({ currentUser }) {
       setUserAnswers({}); setQuestions([]); setIsSubmitting(false); setCurrentChallengeDetails(null);
 
       try {
-        let rawFetchedQuestions = []; // To hold questions before final processing
+        let rawFetchedQuestions = [];
 
         if (quizType === 'challenge' && challengeIdFromState) {
-          if (!currentUser || !currentUser.token) {
-            setError("You must be logged in to play a challenge.");
-            setIsLoading(false);
-            return;
-          }
-          const { challengeData, questions: challengeQuestionsData } = await fetchChallengeQuestions(challengeIdFromState, currentUser.token);
-          setCurrentChallengeDetails(challengeData);
-          rawFetchedQuestions = challengeQuestionsData;
-          setEffectiveTopicId(challengeData.topic_id);
-          setEffectiveSubject(challengeData.subject || challengeData.topic_id.split('-')[0] || 'challenge');
-          setEffectiveTopicName(challengeData.topic_name || `Challenge #${challengeData.id}`);
-          setEffectiveDifficulty(challengeData.difficulty);
-          setEffectiveNumQuestions(challengeData.num_questions);
-          setEffectiveQuizClass(challengeData.quiz_class);
-          setEffectiveTimeLimit(challengeData.time_limit || null);
-
+            if (!currentUser || !currentUser.token) {
+                setError("You must be logged in to play a challenge."); setIsLoading(false); return;
+            }
+            const { challengeData, questions: challengeQuestionsData } = await fetchChallengeQuestions(challengeIdFromState, currentUser.token);
+            setCurrentChallengeDetails(challengeData); rawFetchedQuestions = challengeQuestionsData;
+            setEffectiveTopicId(challengeData.topic_id);
+            setEffectiveSubject(challengeData.subject || challengeData.topic_id.split('-')[0] || 'challenge');
+            setEffectiveTopicName(challengeData.topic_name || `Challenge #${challengeData.id}`);
+            setEffectiveDifficulty(challengeData.difficulty);
+            setEffectiveNumQuestionsConfigured(challengeData.num_questions);
+            setEffectiveQuizClass(challengeData.quiz_class);
+            setEffectiveTimeLimit(challengeData.time_limit || null);
         } else if (quizType === 'homibhabha-practice' && questionCompositionFromState) {
-          const { questions: practiceQuestionsData, info: practiceInfo } = await fetchHomiBhabhaPracticeQuestions(
-            quizClassFromState, difficultyLabelFromState, questionCompositionFromState, numQuestionsReqFromState
-          );
-          rawFetchedQuestions = practiceQuestionsData;
-          if (practiceInfo) setInfoMessage(practiceInfo);
-          setEffectiveTopicId(`homibhabha-practice-${quizClassFromState}-${difficultyLabelFromState}`);
-          setEffectiveSubject('homibhabha');
-          setEffectiveTopicName(topicNameFromState);
-          setEffectiveDifficulty(difficultyLabelFromState);
-          setEffectiveNumQuestions(practiceQuestionsData.length); // Use actual length
-          setEffectiveQuizClass(quizClassFromState);
-          setEffectiveTimeLimit(timeLimitFromState);
-
+            const { questions: practiceQuestionsData, info: practiceInfo } = await fetchHomiBhabhaPracticeQuestions(
+                quizClassFromState, difficultyLabelFromState, questionCompositionFromState, numQuestionsReqFromState);
+            rawFetchedQuestions = practiceQuestionsData;
+            if (practiceInfo) setInfoMessage(practiceInfo);
+            setEffectiveTopicId(`homibhabha-practice-${quizClassFromState}-${difficultyLabelFromState}`);
+            setEffectiveSubject('homibhabha');
+            setEffectiveTopicName(topicNameFromState);
+            setEffectiveDifficulty(difficultyLabelFromState);
+            setEffectiveNumQuestionsConfigured(numQuestionsReqFromState);
+            setEffectiveQuizClass(quizClassFromState);
+            setEffectiveTimeLimit(timeLimitFromState);
         } else if (topicId && subjectFromState) {
-          rawFetchedQuestions = await fetchTopicQuestions(topicId, quizClassFromState, difficultyLabelFromState, numQuestionsReqFromState, subjectFromState);
-          setEffectiveTopicId(topicId);
-          setEffectiveSubject(subjectFromState);
-          setEffectiveTopicName(topicNameFromState);
-          setEffectiveDifficulty(difficultyLabelFromState);
-          setEffectiveNumQuestions(rawFetchedQuestions.length); // Use actual length
-          setEffectiveQuizClass(quizClassFromState);
-          setEffectiveTimeLimit(timeLimitFromState);
-        } else {
-          setError("Quiz configuration is missing or invalid.");
-        }
+            rawFetchedQuestions = await fetchTopicQuestions(topicId, quizClassFromState, difficultyLabelFromState, numQuestionsReqFromState, subjectFromState);
+            setEffectiveTopicId(topicId);
+            setEffectiveSubject(subjectFromState);
+            setEffectiveTopicName(topicNameFromState);
+            setEffectiveDifficulty(difficultyLabelFromState);
+            setEffectiveNumQuestionsConfigured(numQuestionsReqFromState);
+            setEffectiveQuizClass(quizClassFromState);
+            setEffectiveTimeLimit(timeLimitFromState);
+        } else { setError("Quiz configuration is missing or invalid."); }
 
         const questionsWithParsedOptions = parseQuestionOptions(rawFetchedQuestions);
         setQuestions(questionsWithParsedOptions);
-
         if (questionsWithParsedOptions.length > 0) setTimerActive(true);
-
-      } catch (err) {
-        setError(`Failed to load quiz: ${err.response?.data?.message || err.message || 'Unknown error'}`);
-      }
+      } catch (err) { setError(`Failed to load quiz: ${err.response?.data?.message || err.message || 'Unknown error'}`); }
       setIsLoading(false);
     };
     fetchQuizData();
   }, [quizType, topicId, subjectFromState, difficultyLabelFromState, numQuestionsReqFromState, topicNameFromState,
-    questionCompositionFromState, quizClassFromState, timeLimitFromState, challengeIdFromState, currentUser
-  ]);
+      questionCompositionFromState, quizClassFromState, timeLimitFromState, challengeIdFromState, currentUser]);
+
 
   const calculateScoreAndPercentage = useCallback(() => {
     if (questions.length === 0) return { score: 0, percentage: 0 };
     let correctAnswers = 0;
-    questions.forEach(q => {
-      if (userAnswers[q.id] === q.correctOptionId) {
-        correctAnswers++;
-      }
-    });
-    return {
-      score: correctAnswers,
-      percentage: Math.round((correctAnswers / questions.length) * 100),
-    };
+    questions.forEach(q => { if (q && q.id && userAnswers[q.id] === q.correctOptionId) correctAnswers++; });
+    return { score: correctAnswers, percentage: Math.round((correctAnswers / questions.length) * 100) };
   }, [questions, userAnswers]);
 
   const submitAndNavigate = useCallback(async () => {
     if (isSubmitting) return;
-    setIsSubmitting(true);
-    setTimerActive(false);
-
+    setIsSubmitting(true); setTimerActive(false);
     const { score, percentage } = calculateScoreAndPercentage();
     const questionsActuallyAttemptedIds = questions.map(q => q.id);
     const relevantUserAnswersSnapshot = {};
-    questionsActuallyAttemptedIds.forEach(id => {
-      relevantUserAnswersSnapshot[id] = userAnswers[id] || null;
-    });
-
+    questionsActuallyAttemptedIds.forEach(id => { relevantUserAnswersSnapshot[id] = userAnswers[id] || null; });
     const quizAttemptIdForDisplay = `attempt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     let resultIdFromSave = null;
 
     const resultNavigationStateBase = {
-      quizAttemptId: quizAttemptIdForDisplay,
-      originalQuestionsForDisplay: questions, // These questions will have options as arrays
-      originalAnswersForDisplay: userAnswers,
-      subjectAccentColor: currentAccentColor,
-      subject: effectiveSubject,
-      topicId: effectiveTopicId,
-      difficulty: effectiveDifficulty,
-      numQuestionsConfigured: effectiveNumQuestions, // This should be the number of questions requested/configured
-      actualNumQuestionsInQuiz: questions.length, // Number of questions actually loaded and displayed
-      timeTaken: elapsedTime,
-      quizClass: effectiveQuizClass,
+      quizAttemptId: quizAttemptIdForDisplay, originalQuestionsForDisplay: questions,
+      originalAnswersForDisplay: userAnswers, subjectAccentColor: currentAccentColor,
+      subject: effectiveSubject, topicId: effectiveTopicId, difficulty: effectiveDifficulty,
+      numQuestionsConfigured: effectiveNumQuestionsConfigured,
+      actualNumQuestionsInQuiz: questions.length,
+      timeTaken: elapsedTime, quizClass: effectiveQuizClass,
       isPracticeTest: quizType === 'homibhabha-practice',
       isChallenge: quizType === 'challenge' && !!currentChallengeDetails,
       challengeDetails: quizType === 'challenge' ? currentChallengeDetails : null,
-      score: score,
-      percentage: percentage,
-      savedToHistory: false,
-      isFirstResultView: true,
+      score: score, percentage: percentage, savedToHistory: false, isFirstResultView: true,
     };
 
     if (currentUser && currentUser.id && currentUser.token) {
       const payloadToSave = {
-        userId: currentUser.id,
-        subject: effectiveSubject,
-        topicId: effectiveTopicId,
-        score: score,
-        totalQuestions: questions.length, // Use actual number of questions in the quiz
-        percentage: percentage,
-        timestamp: new Date().toISOString(),
-        difficulty: effectiveDifficulty,
-        numQuestionsConfigured: effectiveNumQuestions,
-        class: effectiveQuizClass,
-        timeTaken: elapsedTime,
+        userId: currentUser.id, subject: effectiveSubject, topicId: effectiveTopicId, score: score,
+        totalQuestions: questions.length, percentage: percentage, timestamp: new Date().toISOString(),
+        difficulty: effectiveDifficulty, numQuestionsConfigured: effectiveNumQuestionsConfigured,
+        class: effectiveQuizClass, timeTaken: elapsedTime,
         questionsActuallyAttemptedIds: questionsActuallyAttemptedIds,
         userAnswersSnapshot: relevantUserAnswersSnapshot,
         challenge_id: (quizType === 'challenge' && currentChallengeDetails) ? currentChallengeDetails.id : null
       };
-
       try {
-        const response = await apiClient.post('/api/results', payloadToSave, {
-          headers: { Authorization: `Bearer ${currentUser.token}` }
-        });
-        console.log('[QuizPage] Quiz results saved successfully:', response.data);
-        resultNavigationStateBase.savedToHistory = true;
-        resultIdFromSave = response.data.id;
-
+        const response = await apiClient.post('/api/results', payloadToSave, { headers: { Authorization: `Bearer ${currentUser.token}` }});
+        resultNavigationStateBase.savedToHistory = true; resultIdFromSave = response.data.id;
         if (quizType === 'challenge' && currentChallengeDetails && resultIdFromSave) {
           const challengeSubmitPayload = { score, percentage, timeTaken: elapsedTime, resultId: resultIdFromSave };
-          await apiClient.put(`/api/challenges/${currentChallengeDetails.id}/submit`, challengeSubmitPayload, { headers: { Authorization: `Bearer ${currentUser.token}` } });
-          console.log('[QuizPage] Challenge score submitted for challenge ID:', currentChallengeDetails.id);
+          await apiClient.put(`/api/challenges/${currentChallengeDetails.id}/submit`, challengeSubmitPayload, { headers: { Authorization: `Bearer ${currentUser.token}` }});
         }
-
-      } catch (error) {
-        console.error('[QuizPage] Error saving quiz results or submitting challenge score:', error.response ? error.response.data : error.message);
-      }
-    } else {
-      console.log("[QuizPage] User not logged in or token missing. Displaying result without saving.");
+      } catch (error) { console.error('[QuizPage] Error saving/submitting challenge:', error.response?.data || error.message); }
     }
-
-    setIsSubmitting(false);
-    navigate('/results', { state: resultNavigationStateBase });
-
-  }, [userAnswers, questions, navigate, currentAccentColor, effectiveSubject, effectiveTopicId, effectiveDifficulty, effectiveNumQuestions, elapsedTime, effectiveQuizClass, isSubmitting, quizType, currentUser, calculateScoreAndPercentage, currentChallengeDetails]);
+    setIsSubmitting(false); navigate('/results', { state: resultNavigationStateBase });
+  }, [userAnswers, questions, navigate, currentAccentColor, effectiveSubject, effectiveTopicId, effectiveDifficulty, effectiveNumQuestionsConfigured, elapsedTime, effectiveQuizClass, isSubmitting, quizType, currentUser, calculateScoreAndPercentage, currentChallengeDetails]);
 
   useEffect(() => {
     let intervalId;
-    if (timerActive) {
+    if (timerActive && questions.length > 0) {
       intervalId = setInterval(() => {
         setElapsedTime(prevTime => {
           const newTime = prevTime + 1;
           if (effectiveTimeLimit && newTime >= effectiveTimeLimit) {
-            clearInterval(intervalId);
-            setTimerActive(false);
-            submitAndNavigate();
+            clearInterval(intervalId); setTimerActive(false);
+            if (!isSubmitting) submitAndNavigate();
             return effectiveTimeLimit;
           }
           return newTime;
@@ -455,13 +404,10 @@ function QuizPage({ currentUser }) {
       }, 1000);
     }
     return () => clearInterval(intervalId);
-  }, [timerActive, effectiveTimeLimit, submitAndNavigate]);
+  }, [timerActive, effectiveTimeLimit, submitAndNavigate, questions.length, isSubmitting]);
 
   const handleOptionSelectForQuestion = (questionId, selectedOptionId) => {
-    setUserAnswers(prevAnswers => ({
-      ...prevAnswers,
-      [questionId]: selectedOptionId,
-    }));
+    setUserAnswers(prevAnswers => ({ ...prevAnswers, [questionId]: selectedOptionId }));
   };
 
   if (isLoading) {
@@ -475,9 +421,9 @@ function QuizPage({ currentUser }) {
 
   if (error) {
     return (
-      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto' }}>
+      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
         <Alert severity="error">{error}</Alert>
-        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/subjects/${effectiveSubject}`)} sx={{ mt: 2, borderColor: currentAccentColor, color: currentAccentColor }}>
+        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/subjects/${effectiveSubject.toLowerCase()}`)} sx={{ mt: 2, borderColor: currentAccentColor, color: currentAccentColor }}>
           Back to {effectiveSubject ? effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1) : 'Home'}
         </Button>
       </Box>
@@ -492,107 +438,37 @@ function QuizPage({ currentUser }) {
           No questions are currently available for the selected settings.
           Please try different settings or another topic.
         </Typography>
-        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/subjects/${effectiveSubject}`)} sx={{ mt: 3, borderColor: currentAccentColor, color: currentAccentColor }}>
+        <Button variant="outlined" onClick={() => navigate(effectiveSubject === 'homibhabha' || quizType === 'challenge' ? '/' : `/subjects/${effectiveSubject.toLowerCase()}`)} sx={{ mt: 3, borderColor: currentAccentColor, color: currentAccentColor }}>
           Back to {effectiveSubject ? effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1) : 'Home'}
         </Button>
       </Box>
     );
   }
 
-  const remainingTime = effectiveTimeLimit ? Math.max(0, effectiveTimeLimit - elapsedTime) : elapsedTime;
-  const displayTime = effectiveTimeLimit ? remainingTime : elapsedTime;
-
-  const baseTimerColorForAlpha = effectiveTimeLimit && remainingTime < 600
-    ? theme.palette.error.main
-    : theme.palette.text.primary;
-  const timerDisplayTextColor = effectiveTimeLimit && remainingTime < 600
-    ? theme.palette.error.main
-    : theme.palette.text.primary;
-
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}>
-      {(timerActive || elapsedTime > 0) && questions.length > 0 && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: { xs: `calc(56px + ${theme.spacing(1)})`, sm: `calc(64px + ${theme.spacing(1)})` },
-            left: '50%',
-            transform: 'translateX(-50%)',
-            backgroundColor: alpha(theme.palette.background.paper, 0.95),
-            color: timerDisplayTextColor,
-            padding: theme.spacing(0.75, 2),
-            borderRadius: theme.shape.borderRadius,
-            zIndex: 1050,
-            boxShadow: theme.shadows[3],
-            minWidth: '100px',
-            textAlign: 'center',
-            border: `1px solid ${alpha(baseTimerColorForAlpha, 0.5)}`
-          }}
-        >
-          <Typography variant="h6" component="div" sx={{ fontWeight: 500, lineHeight: 1.2 }}>
-            {effectiveTimeLimit ? 'Time Left: ' : 'Time: '} {formatTime(displayTime)}
-          </Typography>
-        </Box>
-      )}
+    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '900px', margin: 'auto' }}>
+      <QuizHeader
+        quizType={quizType}
+        effectiveSubject={effectiveSubject}
+        effectiveTopicName={effectiveTopicName}
+        effectiveQuizClass={effectiveQuizClass}
+        effectiveDifficulty={effectiveDifficulty}
+        questionsLength={questions.length}
+        currentChallengeDetails={currentChallengeDetails}
+        currentUser={currentUser}
+        timerActive={timerActive}
+        elapsedTime={elapsedTime}
+        effectiveTimeLimit={effectiveTimeLimit}
+        accentColor={currentAccentColor}
+        infoMessage={infoMessage}
+      />
 
-      {infoMessage && (
-        <Alert severity="info" sx={{ my: 2, mt: (timerActive || elapsedTime > 0) && questions.length > 0 ? theme.spacing(8) : 2 }}>
-          {infoMessage}
-        </Alert>
-      )}
-
-      <Typography
-        variant="h4"
-        gutterBottom
-        component="div"
-        sx={{
-          mb: 1,
-          textAlign: 'center',
-          color: currentAccentColor,
-          fontWeight: 'bold',
-          mt: !infoMessage && ((timerActive || elapsedTime > 0) && questions.length > 0) ? theme.spacing(8) : ((timerActive || elapsedTime > 0) && questions.length > 0 ? theme.spacing(1) : theme.spacing(4.5))
-        }}
-      >
-        {quizType === 'challenge' && currentChallengeDetails ? `Challenge: ${currentChallengeDetails.topic_name || 'Quiz'}` :
-          (effectiveSubject ? `${effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1)} Quiz` : 'Quiz')}
-      </Typography>
-      <Typography
-        variant="h6"
-        component="div"
-        sx={{
-          mb: 3,
-          textAlign: 'center',
-          color: theme.palette.text.secondary,
-          fontWeight: 'normal',
-          textTransform: 'capitalize'
-        }}
-      >
-        {quizType !== 'challenge' && `Topic: ${effectiveTopicName}`}
-        {quizType === 'challenge' && currentChallengeDetails &&
-          `Challenged by: ${currentChallengeDetails.challenger_id === currentUser?.id ?
-            (currentChallengeDetails.challengedUsername ? `You challenged ${currentChallengeDetails.challengedUsername}` : 'Awaiting opponent')
-            :
-            (currentChallengeDetails.challengerUsername || 'A User')}`
-        }
-        {effectiveQuizClass && ` (Class ${effectiveQuizClass})`}
-        {' '}({effectiveDifficulty}, {questions.length} Questions)
-      </Typography>
-      {quizType === 'challenge' && currentChallengeDetails && currentChallengeDetails.challenger_id !== currentUser?.id && currentChallengeDetails.challenger_score !== null && (
-        <Alert severity="info" sx={{ mb: 2 }}>
-          Your friend {currentChallengeDetails.challengerUsername || 'Your opponent'} has already completed this challenge, scoring {currentChallengeDetails.challenger_score}/{currentChallengeDetails.num_questions}. Good luck!
-        </Alert>
-      )}
-
-      {questions.map((question, index) => (
-        <QuestionItem
-          key={question.id || `q-${index}-${Math.random()}`}
-          question={question} // question.options here will be an array
-          questionNumber={index + 1}
-          selectedOptionId={userAnswers[question.id]}
-          onOptionSelect={handleOptionSelectForQuestion}
-          accentColor={currentAccentColor}
-        />
-      ))}
+      <QuizQuestionList
+        questions={questions}
+        userAnswers={userAnswers}
+        onOptionSelect={handleOptionSelectForQuestion}
+        currentAccentColor={currentAccentColor}
+      />
 
       <Box display="flex" justifyContent="center" sx={{ mt: 3, mb: 4 }}>
         <Button
@@ -603,9 +479,7 @@ function QuizPage({ currentUser }) {
           sx={{
             backgroundColor: currentAccentColor,
             color: theme.palette.getContrastText(currentAccentColor),
-            '&:hover': {
-              backgroundColor: darken(currentAccentColor, 0.15),
-            },
+            '&:hover': { backgroundColor: darken(currentAccentColor, 0.15) },
             minWidth: '200px',
           }}
         >

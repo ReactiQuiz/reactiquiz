@@ -52,5 +52,14 @@
     "iconName": "SchoolIcon",
     "displayOrder": 6,
     "subjectKey": "homibhabha"
+  },
+  {
+    "id": "general",
+    "name": "General",
+    "description": "General topics for study.",
+    "accentColor": "#ffffff",
+    "iconName": "SchoolIcon",
+    "displayOrder": 7,
+    "subjectKey": "general"
   }
 ]
