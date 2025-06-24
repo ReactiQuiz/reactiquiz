@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search'; // For search bar
 
 import apiClient from '../api/axiosInstance';
 import TopicCard from '../components/TopicCard';
-import QuizSettingsModal from '../components/QuizSettingsModal';
+import QuizSettingsModal from '../components/quiz/QuizSettingsModal';
 
 function SubjectTopicsPage() {
   const { subjectKey } = useParams();

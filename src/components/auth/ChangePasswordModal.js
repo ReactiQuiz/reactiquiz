@@ -8,7 +8,7 @@ import { darken } from '@mui/material/styles';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import apiClient from '../api/axiosInstance';
+import apiClient from '../../api/axiosInstance';
 
 function ChangePasswordModal({ open, onClose, currentUser }) {
   const theme = useTheme();

@@ -1,0 +1,52 @@
+// src/components/friends/FriendsListDisplay.js
+import React from 'react';
+import {
+  Box, Typography, List, ListItem, ListItemText, IconButton,
+  CircularProgress, Alert, Stack, Tooltip, useTheme
+} from '@mui/material';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+
+function FriendsListDisplay({
+  friends,
+  isLoading,
+  error,
+  onUnfriend,
+  accentColor
+}) {
+  const theme = useTheme();
+  const effectiveAccentColor = accentColor || theme.palette.info.main;
+
+  return (
+    <Box>
+      <Typography variant="h6" gutterBottom sx={{ color: effectiveAccentColor, opacity: 0.85 }}>
+        My Friends
+      </Typography>
+      {isLoading && <CircularProgress size={24} sx={{ color: effectiveAccentColor, display: 'block', mx: 'auto' }} />}
+      {error && <Alert severity="error" sx={{ mb: 1 }}>{error}</Alert>}
+      {!isLoading && friends.length === 0 && !error && (
+        <Typography color="text.secondary">You currently have no friends. Find some above!</Typography>
+      )}
+      {friends.length > 0 && (
+        <List dense sx={{ maxHeight: 300, overflow: 'auto', border: `1px solid ${theme.palette.divider}`, borderRadius: 1 }}>
+          {friends.map(friend => (
+            <ListItem
+              key={friend.friendId}
+              secondaryAction={
+                <Tooltip title="Unfriend">
+                  <IconButton size="small" color="error" onClick={() => onUnfriend(friend)} aria-label={`unfriend ${friend.friendUsername}`}>
+                    <PersonRemoveIcon />
+                  </IconButton>
+                </Tooltip>
+              }
+              sx={{pr: '50px'}} // Ensure space for action
+            >
+              <ListItemText primary={friend.friendUsername} />
+            </ListItem>
+          ))}
+        </List>
+      )}
+    </Box>
+  );
+}
+
+export default FriendsListDisplay;

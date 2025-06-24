@@ -1,12 +1,6 @@
 // src/components/AppRoutes.js
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
-// REMOVE individual subject page imports:
-// import ChemistryPage from '../pages/ChemistryPage';
-// import PhysicsPage from '../pages/PhysicsPage';
-// import MathematicsPage from '../pages/MathematicsPage';
-// import BiologyPage from '../pages/BiologyPage';
-// import GKPage from '../pages/GKPage';
 import HomibhabhaPage from '../pages/HomibhabhaPage';
 import QuizPage from '../pages/QuizPage';
 import ResultsPage from '../pages/ResultsPage';
@@ -18,55 +12,51 @@ import FriendsPage from '../pages/FriendsPage';
 import ChallengesPage from '../pages/ChallengesPage';
 import DashboardPage from '../pages/DashboardPage';
 import AllSubjectsPage from '../pages/AllSubjectsPage';
-import SubjectTopicsPage from '../pages/SubjectTopicsPage'; // <--- IMPORT NEW DYNAMIC PAGE
+import SubjectTopicsPage from '../pages/SubjectTopicsPage';
+import { useAuth } from '../contexts/AuthContext'; // <-- IMPORT and USE
 
 function AppRoutes({
-  currentUser,
-  handleLogout,
-  authError,
-  setAuthError,
-  setCurrentUser,
-  onOpenChangePasswordModal
+  // REMOVED: currentUser, handleLogout, setCurrentUser from props
+  authError,      // Keep for AccountPage's forms
+  setAuthError,   // Keep for AccountPage's forms
+  onOpenChangePasswordModal // Keep for AccountPage
 }) {
+  const { currentUser, isLoadingAuth } = useAuth(); // Get currentUser for route protection
+
+  // Display a global loading indicator while initial authentication check is in progress
+  if (isLoadingAuth) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}> {/* Adjust height as needed */}
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Routes>
-      <Route path="/" element={currentUser ? <Navigate to="/subjects" replace /> : <HomePage currentUser={currentUser} />} />
+      <Route path="/" element={currentUser ? <Navigate to="/subjects" replace /> : <HomePage />} />
       <Route path="/subjects" element={<AllSubjectsPage />} />
-      
-      {/* NEW DYNAMIC ROUTE FOR SUBJECT TOPICS */}
-      <Route path="/subjects/:subjectKey" element={<SubjectTopicsPage />} /> {/* <--- ADD THIS */}
+      <Route path="/subjects/:subjectKey" element={<SubjectTopicsPage />} />
 
-      {/* REMOVE OLD INDIVIDUAL SUBJECT ROUTES */}
-      {/* <Route path="/chemistry" element={<ChemistryPage />} /> */}
-      {/* <Route path="/physics" element={<PhysicsPage />} /> */}
-      {/* <Route path="/mathematics" element={<MathematicsPage />} /> */}
-      {/* <Route path="/biology" element={<BiologyPage />} /> */}
-      {/* <Route path="/gk" element={<GKPage />} /> */}
-      
-      {/* Keep HomibhabhaPage if it's significantly different and not just a "subject" */}
-      <Route path="/homibhabha" element={<HomibhabhaPage />} /> 
-      {/* Or, if Homi Bhabha is treated like other subjects, you could route it via /subjects/homibhabha */}
+      <Route path="/dashboard" element={currentUser ? <DashboardPage /> : <Navigate to="/account" state={{ message: "Please login to view dashboard."}} replace />} />
 
-      <Route path="/quiz/:topicId" element={<QuizPage currentUser={currentUser} />} />
-      <Route path="/quiz/challenge-:challengeId" element={<QuizPage currentUser={currentUser} />} />
-      <Route path="/results" element={<ResultsPage currentUser={currentUser} />} />
+      <Route path="/quiz/:topicId" element={<QuizPage />} />
+      <Route path="/quiz/challenge-:challengeId" element={<QuizPage />} />
+      <Route path="/results" element={<ResultsPage />} />
+      <Route path="/friends" element={<FriendsPage />} />
+      <Route path="/challenges" element={<ChallengesPage />} />
+
+      <Route path="/homibhabha" element={<HomibhabhaPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/account" element={
         <AccountPage
-          currentUser={currentUser}
-          handleLogout={handleLogout}
           authError={authError}
           setAuthError={setAuthError}
-          setCurrentUser={setCurrentUser}
           onOpenChangePasswordModal={onOpenChangePasswordModal}
         />}
       />
-      <Route path="/confirm-device" element={<ConfirmDevicePage setCurrentUser={setCurrentUser} />} />
+      <Route path="/confirm-device" element={<ConfirmDevicePage />} />
       <Route path="/flashcards/:topicId" element={<FlashcardPage />} />
-      <Route path="/friends" element={<FriendsPage currentUser={currentUser} />} />
-      <Route path="/challenges" element={<ChallengesPage currentUser={currentUser} />} />
-      <Route path="/dashboard" element={currentUser ? <DashboardPage currentUser={currentUser} /> : <Navigate to="/account" state={{ message: "Please login to view dashboard."}} replace />} />
-
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

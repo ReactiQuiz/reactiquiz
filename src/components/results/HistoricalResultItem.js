@@ -5,8 +5,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import TimerIcon from '@mui/icons-material/Timer';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Import challenge icon
-import { formatTime } from '../utils/formatTime';
-import { subjectAccentColors } from '../theme';
+import { formatTime } from '../../utils/formatTime';
+import { subjectAccentColors } from '../../theme';
+import { formatDisplayTopicName } from '../../utils/quizUtils';
 
 const formatTopicName = (topicId, topicNameFromResult = null, isChallenge = false, challengeDetails = null) => {
   if (isChallenge && challengeDetails?.topic_name) return `Challenge: ${challengeDetails.topic_name}`;
@@ -49,7 +50,8 @@ function HistoricalResultItem({ result, onResultClick, onDeleteClick, showDelete
     return null;
   }
 
-  const topicName = formatTopicName(result.topicId, result.topicName, isChallengeResult, result); // Pass isChallengeResult and result for context
+  const topicName = formatDisplayTopicName(result.topicId, result.topicName, isChallengeResult, result); // Pass isChallengeResult and result for context
+  
   const itemAccentColor = subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.grey[700];
 
   return (

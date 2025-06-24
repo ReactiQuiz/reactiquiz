@@ -6,19 +6,20 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import VpnKeyIcon from '@mui/icons-material/VpnKey'; 
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext'; // <-- IMPORT and USE
 
-function NavBar({ 
-    onIconButtonClick, 
-    currentUser, 
-    handleLogout, 
+function NavBar({
+    onIconButtonClick,
+    // REMOVED: currentUser, handleLogout props
     onOpenChangePasswordModal,
-    showMenuIcon = true, // New prop with default
-    forceLoginButton = false // New prop with default
+    showMenuIcon = true,
+    forceLoginButton = false
 }) {
     const navigate = useNavigate();
+    const { currentUser, logout } = useAuth(); // <-- USE CONTEXT
     const [anchorElUser, setAnchorElUser] = useState(null);
 
     const handleOpenUserMenu = (event) => {
@@ -43,13 +44,13 @@ function NavBar({
 
     const handleLogoutClick = () => {
         handleCloseUserMenu();
-        handleLogout();
+        logout(); // <-- USE logout from context
     };
 
     return (
         <AppBar position="fixed">
             <Toolbar>
-                {showMenuIcon && onIconButtonClick && ( // Conditionally render menu icon
+                {showMenuIcon && onIconButtonClick && (
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -64,11 +65,16 @@ function NavBar({
                     ReactiQuiz
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {forceLoginButton || !currentUser ? (
+                    {/* Use currentUser from context to decide which button to show */}
+                    {forceLoginButton && !currentUser ? ( // if forceLogin is true AND user is not logged in
+                         <Button color="inherit" onClick={() => navigate('/account')} startIcon={<AccountCircleIcon />}>
+                            Login / Register
+                        </Button>
+                    ) : !currentUser ? ( // if not forcing, and user is not logged in
                         <Button color="inherit" onClick={() => navigate('/account')} startIcon={<AccountCircleIcon />}>
                             Login / Register
                         </Button>
-                    ) : (
+                    ) : ( // User is logged in
                         <>
                             <Tooltip title="Account options">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>

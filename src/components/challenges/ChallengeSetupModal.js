@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
-import apiClient from '../api/axiosInstance';
+import apiClient from '../../api/axiosInstance';
 
 function ChallengeSetupModal({
   open,

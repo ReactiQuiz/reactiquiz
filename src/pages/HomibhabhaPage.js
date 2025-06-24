@@ -7,8 +7,8 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useNavigate } from 'react-router-dom';
 
-import PYQPapersModal from '../components/PYQPapersModal';
-import PracticeTestModal from '../components/PracticeTestModal'; // Ensure this is correctly imported
+import PYQPapersModal from '../components/quiz/homibhabha/PYQPapersModal';
+import PracticeTestModal from '../components/quiz/homibhabha/PracticeTestModal'; // Ensure this is correctly imported
 
 function HomibhabhaPage() {
   const theme = useTheme();

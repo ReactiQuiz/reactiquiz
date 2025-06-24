@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import apiClient from '../api/axiosInstance';
+import apiClient from '../../api/axiosInstance';
 
 const CLASS_OPTIONS = ['6', '7', '8', '9', '10', '11', '12'];
 

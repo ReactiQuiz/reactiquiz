@@ -17,8 +17,9 @@ import apiClient from '../api/axiosInstance';
 import {
   subjectAccentColors as themeSubjectAccentColors
 } from '../theme';
-import QuestionItem from '../components/QuestionItem';
+import QuestionItem from '../components/quiz/QuestionItem';
 import { formatTime } from '../utils/formatTime';
+import { parseQuestionOptions } from '../utils/quizUtils';
 
 const subjectAccentColors = themeSubjectAccentColors;
 
@@ -34,28 +35,6 @@ const shuffleArray = (array) => {
   }
   return newArray;
 };
-
-// Helper function to parse options if they are a string
-const parseQuestionOptions = (questionsArray) => {
-  if (!Array.isArray(questionsArray)) return [];
-  return questionsArray.map(q => {
-    let parsedOptions = [];
-    if (typeof q.options === 'string') {
-      try {
-        parsedOptions = JSON.parse(q.options);
-      } catch (e) {
-        console.error(`[QuizPage] Failed to parse options for question ID ${q.id}:`, q.options, e);
-        // Keep parsedOptions as an empty array or provide default structure
-      }
-    } else if (Array.isArray(q.options)) {
-      parsedOptions = q.options; // Already an array
-    } else {
-      console.warn(`[QuizPage] Question ID ${q.id} has unexpected options format:`, q.options);
-    }
-    return { ...q, options: parsedOptions };
-  });
-};
-
 
 // This helper function is used by fetchHomiBhabhaPracticeQuestions
 const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClass, difficultyLabel, numQuestionsNeeded) => {
@@ -140,127 +119,127 @@ const fetchAndFilterSubjectQuestionsForPractice = async (subjectName, targetClas
 };
 
 const fetchHomiBhabhaPracticeQuestions = async (quizClassFromState, difficultyLabel, questionComposition, desiredTotal) => {
-    let finalQuizQuestions = [];
-    let totalFetchedCount = 0;
-    let infoMessages = [];
-    const subjectOrder = ['physics', 'chemistry', 'biology', 'gk'];
+  let finalQuizQuestions = [];
+  let totalFetchedCount = 0;
+  let infoMessages = [];
+  const subjectOrder = ['physics', 'chemistry', 'biology', 'gk'];
 
-    for (const subjKey of subjectOrder) {
-        if (questionComposition[subjKey]) {
-            const countNeeded = questionComposition[subjKey];
-            try {
-                const subjectQuestions = await fetchAndFilterSubjectQuestionsForPractice(subjKey, quizClassFromState, difficultyLabel, countNeeded);
-                finalQuizQuestions.push(...subjectQuestions);
-                totalFetchedCount += subjectQuestions.length;
-                if (subjectQuestions.length < countNeeded) {
-                    infoMessages.push(`Could not find all ${countNeeded} ${difficultyLabel} questions for ${subjKey} (Class ${quizClassFromState || 'Any'}); got ${subjectQuestions.length}.`);
-                }
-            } catch (err) {
-                console.warn(`Error fetching for subject ${subjKey} in practice test:`, err);
-                infoMessages.push(`Could not fetch questions for ${subjKey}.`);
-            }
+  for (const subjKey of subjectOrder) {
+    if (questionComposition[subjKey]) {
+      const countNeeded = questionComposition[subjKey];
+      try {
+        const subjectQuestions = await fetchAndFilterSubjectQuestionsForPractice(subjKey, quizClassFromState, difficultyLabel, countNeeded);
+        finalQuizQuestions.push(...subjectQuestions);
+        totalFetchedCount += subjectQuestions.length;
+        if (subjectQuestions.length < countNeeded) {
+          infoMessages.push(`Could not find all ${countNeeded} ${difficultyLabel} questions for ${subjKey} (Class ${quizClassFromState || 'Any'}); got ${subjectQuestions.length}.`);
         }
+      } catch (err) {
+        console.warn(`Error fetching for subject ${subjKey} in practice test:`, err);
+        infoMessages.push(`Could not fetch questions for ${subjKey}.`);
+      }
     }
+  }
 
-    const uniqueQuestionsMap = new Map();
-    finalQuizQuestions.forEach(q => { if (!uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
-    const uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
+  const uniqueQuestionsMap = new Map();
+  finalQuizQuestions.forEach(q => { if (!uniqueQuestionsMap.has(q.id)) uniqueQuestionsMap.set(q.id, q); });
+  const uniqueFinalQuizQuestions = Array.from(uniqueQuestionsMap.values());
 
-    if (uniqueFinalQuizQuestions.length === 0) {
-        throw new Error(`Could not gather any questions for the practice test. Please try different settings or check question availability.`);
-    }
-    if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) {
-        infoMessages.push(`Total questions for test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}.`);
-    }
-    return { questions: uniqueFinalQuizQuestions, info: infoMessages.join(' ') };
+  if (uniqueFinalQuizQuestions.length === 0) {
+    throw new Error(`Could not gather any questions for the practice test. Please try different settings or check question availability.`);
+  }
+  if (uniqueFinalQuizQuestions.length < desiredTotal && totalFetchedCount < desiredTotal) {
+    infoMessages.push(`Total questions for test is ${uniqueFinalQuizQuestions.length} instead of desired ${desiredTotal}.`);
+  }
+  return { questions: uniqueFinalQuizQuestions, info: infoMessages.join(' ') };
 };
 
 const fetchTopicQuestions = async (topicId, quizClassFromState, difficultyLabel, numQuestionsReq, subject) => {
-    try {
-        const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
-        let fetchedQuestions = response.data;
-        if (!Array.isArray(fetchedQuestions)) {
-            throw new Error(`Invalid question data received for ${topicId}.`);
-        }
-
-        let classFilteredQuestions = fetchedQuestions;
-        if (quizClassFromState && subject && subject.toLowerCase() !== 'gk' && subject.toLowerCase() !== 'mathematics') {
-            classFilteredQuestions = fetchedQuestions.filter(q => !q.class || q.class === quizClassFromState);
-        }
-
-        let difficultyFilteredQuestions;
-        if (difficultyLabel === 'mixed') {
-            difficultyFilteredQuestions = [...classFilteredQuestions];
-        } else {
-            let minScore = 0, maxScore = Infinity;
-            if (difficultyLabel === 'easy') { minScore = 10; maxScore = 13; }
-            else if (difficultyLabel === 'medium') { minScore = 14; maxScore = 17; }
-            else if (difficultyLabel === 'hard') { minScore = 18; maxScore = 20; }
-            difficultyFilteredQuestions = classFilteredQuestions.filter(q => q.hasOwnProperty('difficulty') && typeof q.difficulty === 'number' && q.difficulty >= minScore && q.difficulty <= maxScore);
-        }
-        
-        if (difficultyFilteredQuestions.length === 0 && classFilteredQuestions.length > 0 && difficultyLabel !== 'mixed') {
-            console.warn(`[QuizPage] No questions for topic ${topicId} matched difficulty ${difficultyLabel}. Using questions from any difficulty for this topic.`);
-            difficultyFilteredQuestions = [...classFilteredQuestions];
-        }
-        
-        if (difficultyFilteredQuestions.length === 0) {
-            throw new Error(`No questions found for topic "${topicId}" (Class: ${quizClassFromState || 'Any'}, Difficulty: "${difficultyLabel}"). Try different settings.`);
-        }
-
-        const shuffledQuestions = shuffleArray(difficultyFilteredQuestions);
-        return shuffledQuestions.slice(0, numQuestionsReq);
-    } catch (err) {
-        console.error(`Error in fetchTopicQuestions for ${topicId}:`, err);
-        throw err; 
+  try {
+    const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
+    let fetchedQuestions = response.data;
+    if (!Array.isArray(fetchedQuestions)) {
+      throw new Error(`Invalid question data received for ${topicId}.`);
     }
+
+    let classFilteredQuestions = fetchedQuestions;
+    if (quizClassFromState && subject && subject.toLowerCase() !== 'gk' && subject.toLowerCase() !== 'mathematics') {
+      classFilteredQuestions = fetchedQuestions.filter(q => !q.class || q.class === quizClassFromState);
+    }
+
+    let difficultyFilteredQuestions;
+    if (difficultyLabel === 'mixed') {
+      difficultyFilteredQuestions = [...classFilteredQuestions];
+    } else {
+      let minScore = 0, maxScore = Infinity;
+      if (difficultyLabel === 'easy') { minScore = 10; maxScore = 13; }
+      else if (difficultyLabel === 'medium') { minScore = 14; maxScore = 17; }
+      else if (difficultyLabel === 'hard') { minScore = 18; maxScore = 20; }
+      difficultyFilteredQuestions = classFilteredQuestions.filter(q => q.hasOwnProperty('difficulty') && typeof q.difficulty === 'number' && q.difficulty >= minScore && q.difficulty <= maxScore);
+    }
+
+    if (difficultyFilteredQuestions.length === 0 && classFilteredQuestions.length > 0 && difficultyLabel !== 'mixed') {
+      console.warn(`[QuizPage] No questions for topic ${topicId} matched difficulty ${difficultyLabel}. Using questions from any difficulty for this topic.`);
+      difficultyFilteredQuestions = [...classFilteredQuestions];
+    }
+
+    if (difficultyFilteredQuestions.length === 0) {
+      throw new Error(`No questions found for topic "${topicId}" (Class: ${quizClassFromState || 'Any'}, Difficulty: "${difficultyLabel}"). Try different settings.`);
+    }
+
+    const shuffledQuestions = shuffleArray(difficultyFilteredQuestions);
+    return shuffledQuestions.slice(0, numQuestionsReq);
+  } catch (err) {
+    console.error(`Error in fetchTopicQuestions for ${topicId}:`, err);
+    throw err;
+  }
 };
 
 const fetchChallengeQuestions = async (challengeId, token) => {
-    try {
-        const response = await apiClient.get(`/api/challenges/${challengeId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        if (!response.data || !Array.isArray(response.data.question_ids) || response.data.question_ids.length === 0) {
-            throw new Error('Challenge data is invalid or contains no question IDs.');
-        }
-        
-        const topicQuestionsResponse = await apiClient.get(`/api/questions?topicId=${response.data.topic_id}`, {
-             headers: { Authorization: `Bearer ${token}` }
-        });
-
-        if (!Array.isArray(topicQuestionsResponse.data)) {
-            throw new Error(`Invalid question data received for challenge topic ${response.data.topic_id}.`);
-        }
-        const allQuestionsForTopic = topicQuestionsResponse.data;
-        
-        const challengeQuestionDetails = response.data.question_ids.map(id => {
-            return allQuestionsForTopic.find(q => q.id === id);
-        }).filter(q => q !== undefined);
-
-
-        if(challengeQuestionDetails.length !== response.data.question_ids.length) {
-            console.warn("[QuizPage] Not all challenge question IDs could be matched to full question details.");
-        }
-        if(challengeQuestionDetails.length === 0) {
-            throw new Error("[QuizPage] No valid questions found for this challenge based on the provided IDs.");
-        }
-
-        const challengeQuestionsWithContext = challengeQuestionDetails.map(q => ({
-            ...q,
-            subject: response.data.subject || q.subject,
-            class: response.data.quiz_class || q.class,
-        }));
-
-        return { challengeData: response.data, questions: challengeQuestionsWithContext };
-    } catch (err) {
-        console.error("[QuizPage] Error in fetchChallengeQuestions:", err);
-        throw err;
+  try {
+    const response = await apiClient.get(`/api/challenges/${challengeId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!response.data || !Array.isArray(response.data.question_ids) || response.data.question_ids.length === 0) {
+      throw new Error('Challenge data is invalid or contains no question IDs.');
     }
+
+    const topicQuestionsResponse = await apiClient.get(`/api/questions?topicId=${response.data.topic_id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!Array.isArray(topicQuestionsResponse.data)) {
+      throw new Error(`Invalid question data received for challenge topic ${response.data.topic_id}.`);
+    }
+    const allQuestionsForTopic = topicQuestionsResponse.data;
+
+    const challengeQuestionDetails = response.data.question_ids.map(id => {
+      return allQuestionsForTopic.find(q => q.id === id);
+    }).filter(q => q !== undefined);
+
+
+    if (challengeQuestionDetails.length !== response.data.question_ids.length) {
+      console.warn("[QuizPage] Not all challenge question IDs could be matched to full question details.");
+    }
+    if (challengeQuestionDetails.length === 0) {
+      throw new Error("[QuizPage] No valid questions found for this challenge based on the provided IDs.");
+    }
+
+    const challengeQuestionsWithContext = challengeQuestionDetails.map(q => ({
+      ...q,
+      subject: response.data.subject || q.subject,
+      class: response.data.quiz_class || q.class,
+    }));
+
+    return { challengeData: response.data, questions: challengeQuestionsWithContext };
+  } catch (err) {
+    console.error("[QuizPage] Error in fetchChallengeQuestions:", err);
+    throw err;
+  }
 };
 
 
-function QuizPage({ currentUser }) { 
+function QuizPage({ currentUser }) {
   const { topicId, challengeId: challengeIdFromParams } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -285,7 +264,7 @@ function QuizPage({ currentUser }) {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const [currentChallengeDetails, setCurrentChallengeDetails] = useState(null);
   const [effectiveTopicId, setEffectiveTopicId] = useState(topicId);
   const [effectiveSubject, setEffectiveSubject] = useState(subjectFromState);
@@ -307,47 +286,47 @@ function QuizPage({ currentUser }) {
         let rawFetchedQuestions = []; // To hold questions before final processing
 
         if (quizType === 'challenge' && challengeIdFromState) {
-            if (!currentUser || !currentUser.token) {
-                setError("You must be logged in to play a challenge.");
-                setIsLoading(false);
-                return;
-            }
-            const { challengeData, questions: challengeQuestionsData } = await fetchChallengeQuestions(challengeIdFromState, currentUser.token);
-            setCurrentChallengeDetails(challengeData);
-            rawFetchedQuestions = challengeQuestionsData;
-            setEffectiveTopicId(challengeData.topic_id);
-            setEffectiveSubject(challengeData.subject || challengeData.topic_id.split('-')[0] || 'challenge'); 
-            setEffectiveTopicName(challengeData.topic_name || `Challenge #${challengeData.id}`);
-            setEffectiveDifficulty(challengeData.difficulty);
-            setEffectiveNumQuestions(challengeData.num_questions);
-            setEffectiveQuizClass(challengeData.quiz_class);
-            setEffectiveTimeLimit(challengeData.time_limit || null); 
+          if (!currentUser || !currentUser.token) {
+            setError("You must be logged in to play a challenge.");
+            setIsLoading(false);
+            return;
+          }
+          const { challengeData, questions: challengeQuestionsData } = await fetchChallengeQuestions(challengeIdFromState, currentUser.token);
+          setCurrentChallengeDetails(challengeData);
+          rawFetchedQuestions = challengeQuestionsData;
+          setEffectiveTopicId(challengeData.topic_id);
+          setEffectiveSubject(challengeData.subject || challengeData.topic_id.split('-')[0] || 'challenge');
+          setEffectiveTopicName(challengeData.topic_name || `Challenge #${challengeData.id}`);
+          setEffectiveDifficulty(challengeData.difficulty);
+          setEffectiveNumQuestions(challengeData.num_questions);
+          setEffectiveQuizClass(challengeData.quiz_class);
+          setEffectiveTimeLimit(challengeData.time_limit || null);
 
         } else if (quizType === 'homibhabha-practice' && questionCompositionFromState) {
-            const { questions: practiceQuestionsData, info: practiceInfo } = await fetchHomiBhabhaPracticeQuestions(
-                quizClassFromState, difficultyLabelFromState, questionCompositionFromState, numQuestionsReqFromState
-            );
-            rawFetchedQuestions = practiceQuestionsData;
-            if (practiceInfo) setInfoMessage(practiceInfo);
-            setEffectiveTopicId(`homibhabha-practice-${quizClassFromState}-${difficultyLabelFromState}`);
-            setEffectiveSubject('homibhabha');
-            setEffectiveTopicName(topicNameFromState);
-            setEffectiveDifficulty(difficultyLabelFromState);
-            setEffectiveNumQuestions(practiceQuestionsData.length); // Use actual length
-            setEffectiveQuizClass(quizClassFromState);
-            setEffectiveTimeLimit(timeLimitFromState);
+          const { questions: practiceQuestionsData, info: practiceInfo } = await fetchHomiBhabhaPracticeQuestions(
+            quizClassFromState, difficultyLabelFromState, questionCompositionFromState, numQuestionsReqFromState
+          );
+          rawFetchedQuestions = practiceQuestionsData;
+          if (practiceInfo) setInfoMessage(practiceInfo);
+          setEffectiveTopicId(`homibhabha-practice-${quizClassFromState}-${difficultyLabelFromState}`);
+          setEffectiveSubject('homibhabha');
+          setEffectiveTopicName(topicNameFromState);
+          setEffectiveDifficulty(difficultyLabelFromState);
+          setEffectiveNumQuestions(practiceQuestionsData.length); // Use actual length
+          setEffectiveQuizClass(quizClassFromState);
+          setEffectiveTimeLimit(timeLimitFromState);
 
-        } else if (topicId && subjectFromState) { 
-            rawFetchedQuestions = await fetchTopicQuestions(topicId, quizClassFromState, difficultyLabelFromState, numQuestionsReqFromState, subjectFromState);
-            setEffectiveTopicId(topicId);
-            setEffectiveSubject(subjectFromState);
-            setEffectiveTopicName(topicNameFromState);
-            setEffectiveDifficulty(difficultyLabelFromState);
-            setEffectiveNumQuestions(rawFetchedQuestions.length); // Use actual length
-            setEffectiveQuizClass(quizClassFromState);
-            setEffectiveTimeLimit(timeLimitFromState);
+        } else if (topicId && subjectFromState) {
+          rawFetchedQuestions = await fetchTopicQuestions(topicId, quizClassFromState, difficultyLabelFromState, numQuestionsReqFromState, subjectFromState);
+          setEffectiveTopicId(topicId);
+          setEffectiveSubject(subjectFromState);
+          setEffectiveTopicName(topicNameFromState);
+          setEffectiveDifficulty(difficultyLabelFromState);
+          setEffectiveNumQuestions(rawFetchedQuestions.length); // Use actual length
+          setEffectiveQuizClass(quizClassFromState);
+          setEffectiveTimeLimit(timeLimitFromState);
         } else {
-            setError("Quiz configuration is missing or invalid.");
+          setError("Quiz configuration is missing or invalid.");
         }
 
         const questionsWithParsedOptions = parseQuestionOptions(rawFetchedQuestions);
@@ -356,13 +335,13 @@ function QuizPage({ currentUser }) {
         if (questionsWithParsedOptions.length > 0) setTimerActive(true);
 
       } catch (err) {
-          setError(`Failed to load quiz: ${err.response?.data?.message || err.message || 'Unknown error'}`);
+        setError(`Failed to load quiz: ${err.response?.data?.message || err.message || 'Unknown error'}`);
       }
       setIsLoading(false);
     };
     fetchQuizData();
-  }, [quizType, topicId, subjectFromState, difficultyLabelFromState, numQuestionsReqFromState, topicNameFromState, 
-      questionCompositionFromState, quizClassFromState, timeLimitFromState, challengeIdFromState, currentUser
+  }, [quizType, topicId, subjectFromState, difficultyLabelFromState, numQuestionsReqFromState, topicNameFromState,
+    questionCompositionFromState, quizClassFromState, timeLimitFromState, challengeIdFromState, currentUser
   ]);
 
   const calculateScoreAndPercentage = useCallback(() => {
@@ -411,7 +390,7 @@ function QuizPage({ currentUser }) {
       challengeDetails: quizType === 'challenge' ? currentChallengeDetails : null,
       score: score,
       percentage: percentage,
-      savedToHistory: false, 
+      savedToHistory: false,
       isFirstResultView: true,
     };
 
@@ -439,21 +418,21 @@ function QuizPage({ currentUser }) {
         });
         console.log('[QuizPage] Quiz results saved successfully:', response.data);
         resultNavigationStateBase.savedToHistory = true;
-        resultIdFromSave = response.data.id; 
+        resultIdFromSave = response.data.id;
 
         if (quizType === 'challenge' && currentChallengeDetails && resultIdFromSave) {
-            const challengeSubmitPayload = { score, percentage, timeTaken: elapsedTime, resultId: resultIdFromSave };
-            await apiClient.put(`/api/challenges/${currentChallengeDetails.id}/submit`, challengeSubmitPayload, { headers: { Authorization: `Bearer ${currentUser.token}` }});
-            console.log('[QuizPage] Challenge score submitted for challenge ID:', currentChallengeDetails.id);
+          const challengeSubmitPayload = { score, percentage, timeTaken: elapsedTime, resultId: resultIdFromSave };
+          await apiClient.put(`/api/challenges/${currentChallengeDetails.id}/submit`, challengeSubmitPayload, { headers: { Authorization: `Bearer ${currentUser.token}` } });
+          console.log('[QuizPage] Challenge score submitted for challenge ID:', currentChallengeDetails.id);
         }
-        
+
       } catch (error) {
         console.error('[QuizPage] Error saving quiz results or submitting challenge score:', error.response ? error.response.data : error.message);
       }
     } else {
       console.log("[QuizPage] User not logged in or token missing. Displaying result without saving.");
     }
-    
+
     setIsSubmitting(false);
     navigate('/results', { state: resultNavigationStateBase });
 
@@ -468,7 +447,7 @@ function QuizPage({ currentUser }) {
           if (effectiveTimeLimit && newTime >= effectiveTimeLimit) {
             clearInterval(intervalId);
             setTimerActive(false);
-            submitAndNavigate(); 
+            submitAndNavigate();
             return effectiveTimeLimit;
           }
           return newTime;
@@ -574,8 +553,8 @@ function QuizPage({ currentUser }) {
           mt: !infoMessage && ((timerActive || elapsedTime > 0) && questions.length > 0) ? theme.spacing(8) : ((timerActive || elapsedTime > 0) && questions.length > 0 ? theme.spacing(1) : theme.spacing(4.5))
         }}
       >
-        {quizType === 'challenge' && currentChallengeDetails ? `Challenge: ${currentChallengeDetails.topic_name || 'Quiz'}` : 
-         (effectiveSubject ? `${effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1)} Quiz` : 'Quiz')}
+        {quizType === 'challenge' && currentChallengeDetails ? `Challenge: ${currentChallengeDetails.topic_name || 'Quiz'}` :
+          (effectiveSubject ? `${effectiveSubject.charAt(0).toUpperCase() + effectiveSubject.slice(1)} Quiz` : 'Quiz')}
       </Typography>
       <Typography
         variant="h6"
@@ -589,19 +568,19 @@ function QuizPage({ currentUser }) {
         }}
       >
         {quizType !== 'challenge' && `Topic: ${effectiveTopicName}`}
-        {quizType === 'challenge' && currentChallengeDetails && 
-            `Challenged by: ${currentChallengeDetails.challenger_id === currentUser?.id ? 
-                (currentChallengeDetails.challengedUsername ? `You challenged ${currentChallengeDetails.challengedUsername}` : 'Awaiting opponent') 
-                : 
-                (currentChallengeDetails.challengerUsername || 'A User')}`
+        {quizType === 'challenge' && currentChallengeDetails &&
+          `Challenged by: ${currentChallengeDetails.challenger_id === currentUser?.id ?
+            (currentChallengeDetails.challengedUsername ? `You challenged ${currentChallengeDetails.challengedUsername}` : 'Awaiting opponent')
+            :
+            (currentChallengeDetails.challengerUsername || 'A User')}`
         }
         {effectiveQuizClass && ` (Class ${effectiveQuizClass})`}
         {' '}({effectiveDifficulty}, {questions.length} Questions)
       </Typography>
       {quizType === 'challenge' && currentChallengeDetails && currentChallengeDetails.challenger_id !== currentUser?.id && currentChallengeDetails.challenger_score !== null && (
-          <Alert severity="info" sx={{mb: 2}}>
-              Your friend {currentChallengeDetails.challengerUsername || 'Your opponent'} has already completed this challenge, scoring {currentChallengeDetails.challenger_score}/{currentChallengeDetails.num_questions}. Good luck!
-          </Alert>
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Your friend {currentChallengeDetails.challengerUsername || 'Your opponent'} has already completed this challenge, scoring {currentChallengeDetails.challenger_score}/{currentChallengeDetails.num_questions}. Good luck!
+        </Alert>
       )}
 
       {questions.map((question, index) => (

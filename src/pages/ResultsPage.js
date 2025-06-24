@@ -16,14 +16,15 @@ import LoginIcon from '@mui/icons-material/Login';
 // import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Not used for challenge button anymore in ResultsActionButtons
 
 import { subjectAccentColors } from '../theme';
-import QuizResultSummary from '../components/QuizResultSummary';
-import QuestionBreakdown from '../components/QuestionBreakdown';
-import HistoricalResultItem from '../components/HistoricalResultItem';
-import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
-import ResultsActionButtons from '../components/ResultsActionButtons';
-import ResultRevealOverlay from '../components/ResultRevealOverlay';
-import ChallengeSetupModal from '../components/ChallengeSetupModal';
+import QuizResultSummary from '../components/results/QuizResultSummary';
+import QuestionBreakdown from '../components/results/QuestionBreakdown';
+import HistoricalResultItem from '../components/results/HistoricalResultItem';
+import DeleteConfirmationDialog from '../components/shared/DeleteConfirmationDialog';
+import ResultsActionButtons from '../components/results/ResultsActionButtons';
+import ResultRevealOverlay from '../components/results/ResultRevealOverlay';
+import ChallengeSetupModal from '../components/challenges/ChallengeSetupModal';
 import { formatTime } from '../utils/formatTime';
+import { parseQuestionOptions } from '../utils/quizUtils';
 
 const formatTopicNameFromResult = (topicId, topicNameFromState = null, isChallenge = false, challengeDetails = null) => {
   if (isChallenge && challengeDetails?.topic_name) return `Challenge: ${challengeDetails.topic_name}`;
@@ -203,10 +204,7 @@ function ResultsPage({ currentUser }) {
           }
           
           // Parse options for each question fetched for the historical result
-          const allTopicQuestionsWithParsedOptions = allTopicQuestionsRaw.map(q => ({
-            ...q,
-            options: parseOptionsString(q.options) // Ensure options are parsed
-          }));
+          const allTopicQuestionsWithParsedOptions = parseQuestionOptions(allTopicQuestionsRaw);
 
           const populatedQuestions = selectedHistoricalResult.questionsActuallyAttemptedIds.map(qId => {
             const fullQuestionData = allTopicQuestionsWithParsedOptions.find(q => q.id === qId);
