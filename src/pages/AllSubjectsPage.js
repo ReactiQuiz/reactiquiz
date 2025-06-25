@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 
 import apiClient from '../api/axiosInstance';
-import SubjectOverviewCard from '../components/SubjectOverviewCard';
+import SubjectOverviewCard from '../components/topics/SubjectOverviewCard';
 
 const FIXED_CARD_WIDTH = 280; // Define your desired fixed card width in pixels
 const CARD_SPACING = 2; // Theme spacing units (e.g., 2 * 8px = 16px)

@@ -22,7 +22,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
 import ChangeDetailsModal from '../components/auth/ChangeDetailsModal';
-import UserActivityChart from '../components/UserActivityChart';
+import UserActivityChart from '../components/account/UserActivityChart';
 import { useAuth } from '../contexts/AuthContext';
 
 import UserProfileCard from '../components/account/UserProfileCard';

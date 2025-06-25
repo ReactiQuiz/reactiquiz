@@ -2,7 +2,7 @@
 // ... (imports) ...
 import { Card, CardContent, Typography, Button, useTheme, alpha, Box } from '@mui/material'; // Ensure Box is imported if used
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { getIconComponent } from '../utils/getIconComponent';
+import { getIconComponent } from '../../utils/getIconComponent';
 
 
 function SubjectOverviewCard({ subject, onExploreClick }) {

@@ -7,7 +7,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import SearchIcon from '@mui/icons-material/Search'; // For search bar
 
 import apiClient from '../api/axiosInstance';
-import TopicCard from '../components/TopicCard';
+import TopicCard from '../components/topics/TopicCard';
 import QuizSettingsModal from '../components/quiz/QuizSettingsModal';
 
 function SubjectTopicsPage() {
