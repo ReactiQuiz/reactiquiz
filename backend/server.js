@@ -149,11 +149,9 @@ const usersDb = initializeDb(
           active_session_token TEXT,
           active_session_token_expires_at TEXT,
           login_otp TEXT,                      
-          login_otp_expires_at TEXT,           
-          device_change_otp TEXT,              
-          device_change_otp_expires_at TEXT,   
+          login_otp_expires_at TEXT,
           createdAt TEXT NOT NULL
-      )`],
+      )`], // <-- REMOVED device_change_otp and device_change_otp_expires_at
     ['users'],
     logDbUsers
 );

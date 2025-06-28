@@ -1,4 +1,4 @@
-// src/components/SubjectPerformanceGrid.js
+// src/components/dashboard/SubjectPerformanceGrid.js
 import React, { useState } from 'react';
 import { Box, Typography, Paper, Grid, useTheme, Chip, Divider, Button, Collapse } from '@mui/material';
 import { alpha } from '@mui/material/styles';
@@ -23,14 +23,23 @@ function SubjectPerformanceGrid({ subjectStats, subjectsToShow }) {
     );
   }
 
+  // --- FIX IS HERE ---
+  // The object from `subjectsToShow` (which is `allSubjects` from the API) has `subjectKey`, not `key`.
   const statsToDisplay = subjectsToShow.map(subjConfig => {
-    const stat = subjectStats[subjConfig.key.toLowerCase()];
-    return stat ? { ...stat, key: subjConfig.key } : null;
-  }).filter(Boolean);
+    // Add a defensive check to prevent errors if subjConfig is malformed or null
+    if (!subjConfig || !subjConfig.subjectKey) {
+      console.warn("SubjectPerformanceGrid: Found an invalid subject configuration object:", subjConfig);
+      return null;
+    }
+    const stat = subjectStats[subjConfig.subjectKey.toLowerCase()];
+    // Add the `subjectKey` to the stat object itself for use as a unique React key in the renderer.
+    return stat ? { ...stat, subjectKey: subjConfig.subjectKey } : null;
+  }).filter(Boolean); // Filter out any nulls from malformed configs
 
 
-  const renderCard = (stats, key) => (
-    <Grid item key={key} sx={{ width: { xs: '100%', sm: '47.5%' } }}>
+  const renderCard = (stats) => (
+    // The key here now uses the unique subjectKey from the stats object
+    <Grid item key={stats.subjectKey} sx={{ width: { xs: '100%', sm: '47.5%' } }}>
         <Paper
             elevation={2}
             sx={{
@@ -65,8 +74,8 @@ function SubjectPerformanceGrid({ subjectStats, subjectsToShow }) {
       <Divider sx={{ my: 3, mb: 4 }}><Chip label="Performance by Subject" sx={{color: theme.palette.text.secondary}} /></Divider>
       
       <Grid container justifyContent="space-between" rowGap={2.5}>
-        {statsToDisplay.slice(0, INITIAL_SUBJECT_CARDS_TO_SHOW).map((stats, index) => (
-          renderCard(stats, `initial-subj-${index}`)
+        {statsToDisplay.slice(0, INITIAL_SUBJECT_CARDS_TO_SHOW).map((stats) => (
+          renderCard(stats)
         ))}
       </Grid>
 
@@ -77,8 +86,8 @@ function SubjectPerformanceGrid({ subjectStats, subjectsToShow }) {
           unmountOnExit 
         >
           <Grid container justifyContent="space-between" rowGap={2.5} sx={{ mt: 2.5 }}> 
-              {statsToDisplay.slice(INITIAL_SUBJECT_CARDS_TO_SHOW).map((stats, index) => (
-                  renderCard(stats, `more-subj-${index}`)
+              {statsToDisplay.slice(INITIAL_SUBJECT_CARDS_TO_SHOW).map((stats) => (
+                  renderCard(stats)
               ))}
           </Grid>
         </Collapse>

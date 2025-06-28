@@ -1,34 +1,35 @@
-// src/components/AppRoutes.js
+// src/components/core/AppRoutes.js
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
+import { useAuth } from '../contexts/AuthContext';
+
+// Page Imports
 import HomePage from '../pages/HomePage';
+import AllSubjectsPage from '../pages/AllSubjectsPage';
+import SubjectTopicsPage from '../pages/SubjectTopicsPage';
+import DashboardPage from '../pages/DashboardPage';
 import HomibhabhaPage from '../pages/HomibhabhaPage';
 import QuizPage from '../pages/QuizPage';
 import ResultsPage from '../pages/ResultsPage';
 import AboutPage from '../pages/AboutPage';
-import AccountPage from '../pages/AccountPage';
-import ConfirmDevicePage from '../pages/ConfirmDevicePage';
+import AccountPage from '../pages/AccountPage'; // Page for logged-in user profile
+import LoginPage from '../pages/LoginPage';     // NEW page for login/register forms
+//import ConfirmDevicePage from '../pages/ConfirmDevicePage';
 import FlashcardPage from '../pages/FlashcardPage';
 import FriendsPage from '../pages/FriendsPage';
 import ChallengesPage from '../pages/ChallengesPage';
-import DashboardPage from '../pages/DashboardPage';
-import AllSubjectsPage from '../pages/AllSubjectsPage';
-import SubjectTopicsPage from '../pages/SubjectTopicsPage';
-import { useAuth } from '../contexts/AuthContext'; // <-- IMPORT and USE
-import { Box } from '@mui/material';
-import {CircularProgress} from '@mui/material';
+import NotFoundPage from '../pages/NotFoundPage';
+import ProtectedRoute from './core/ProtectedRoute';
 
 function AppRoutes({
-  // REMOVED: currentUser, handleLogout, setCurrentUser from props
-  authError,      // Keep for AccountPage's forms
-  setAuthError,   // Keep for AccountPage's forms
-  onOpenChangePasswordModal // Keep for AccountPage
+  // Removed authError, setAuthError as LoginPage will manage its own form errors
+  onOpenChangePasswordModal // Still pass this to AccountPage for the logged-in view
 }) {
-  const { currentUser, isLoadingAuth } = useAuth(); // Get currentUser for route protection
+  const { currentUser, isLoadingAuth } = useAuth();
 
-  // Display a global loading indicator while initial authentication check is in progress
   if (isLoadingAuth) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}> {/* Adjust height as needed */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
         <CircularProgress />
       </Box>
     );
@@ -36,30 +37,59 @@ function AppRoutes({
 
   return (
     <Routes>
+      {/* Root Path */}
       <Route path="/" element={currentUser ? <Navigate to="/subjects" replace /> : <HomePage />} />
+
+      {/* Authentication Routes */}
+      <Route path="/login" element={currentUser ? <Navigate to="/subjects" replace /> : <LoginPage />} />
+      {/*<Route path="/confirm-device" element={<ConfirmDevicePage />} /> {/* ConfirmDevice will use useAuth().login */}
+
+      {/* Publicly Accessible Content Pages */}
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/subjects" element={<AllSubjectsPage />} />
       <Route path="/subjects/:subjectKey" element={<SubjectTopicsPage />} />
-
-      <Route path="/dashboard" element={currentUser ? <DashboardPage /> : <Navigate to="/account" state={{ message: "Please login to view dashboard."}} replace />} />
-
-      <Route path="/quiz/:topicId" element={<QuizPage />} />
-      <Route path="/quiz/challenge-:challengeId" element={<QuizPage />} />
-      <Route path="/results" element={<ResultsPage />} />
-      <Route path="/friends" element={<FriendsPage />} />
-      <Route path="/challenges" element={<ChallengesPage />} />
-
-      <Route path="/homibhabha" element={<HomibhabhaPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/account" element={
-        <AccountPage
-          authError={authError}
-          setAuthError={setAuthError}
-          onOpenChangePasswordModal={onOpenChangePasswordModal}
-        />}
-      />
-      <Route path="/confirm-device" element={<ConfirmDevicePage />} />
       <Route path="/flashcards/:topicId" element={<FlashcardPage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/homibhabha" element={<HomibhabhaPage />} />
+
+      {/* Protected Routes */}
+      <Route path="/account" element={
+        <ProtectedRoute message="Please login to view your account.">
+          <AccountPage onOpenChangePasswordModal={onOpenChangePasswordModal} />
+        </ProtectedRoute>
+      } />
+      <Route path="/quiz/:topicId" element={
+        <ProtectedRoute message="Please login to start a quiz.">
+          <QuizPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/quiz/challenge-:challengeId" element={
+        <ProtectedRoute message="Please login to play a challenge.">
+          <QuizPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/results" element={
+        <ProtectedRoute message="Please login to view your results.">
+          <ResultsPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/friends" element={
+        <ProtectedRoute message="Please login to manage your friends.">
+          <FriendsPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/challenges" element={
+        <ProtectedRoute message="Please login to view your challenges.">
+          <ChallengesPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/dashboard" element={
+        <ProtectedRoute message="Please login to view your dashboard.">
+          <DashboardPage />
+        </ProtectedRoute>
+      } />
+
+      {/* Fallback Route */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

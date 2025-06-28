@@ -1,83 +1,27 @@
 // src/pages/HomibhabhaPage.js
-import { useState } from 'react';
-import {
-  Box, Typography, useTheme, Card, CardContent, CardActions, Button, Grid
-} from '@mui/material';
+import { Box, Typography, useTheme, Card, CardContent, CardActions, Button, Grid } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import { useNavigate } from 'react-router-dom';
 
+import { useHomibhabha } from '../hooks/useHomibhabha'; // <-- Import the new hook
 import PYQPapersModal from '../components/quiz/homibhabha/PYQPapersModal';
-import PracticeTestModal from '../components/quiz/homibhabha/PracticeTestModal'; // Ensure this is correctly imported
+import PracticeTestModal from '../components/quiz/homibhabha/PracticeTestModal';
 
 function HomibhabhaPage() {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const homiBhabhaAccentColor = theme.palette.secondary.main;
 
-  const [pyqModalOpen, setPyqModalOpen] = useState(false);
-  const [practiceTestModalOpen, setPracticeTestModalOpen] = useState(false);
-
-  const handleOpenPyqModal = () => {
-    setPyqModalOpen(true);
-  };
-
-  const handleClosePyqModal = () => {
-    setPyqModalOpen(false);
-  };
-
-  const handleStartPyqTest = (settings) => {
-    console.log("Starting PYQ Test with settings:", settings);
-    // This logic remains for actual PYQ papers if you have specific topicIds for them
-    navigate(`/quiz/pyq-${settings.class}-${settings.year}`, {
-      state: {
-        difficulty: 'mixed', 
-        numQuestions: 100, 
-        topicName: `Homi Bhabha PYQ ${settings.class}th - ${settings.year}`,
-        accentColor: homiBhabhaAccentColor,
-        quizClass: settings.class,
-        subject: "homibhabha-pyq", // Differentiate from general practice
-        isPYQ: true,
-        year: settings.year
-      }
-    });
-    handleClosePyqModal();
-  };
-
-  const handleOpenPracticeTestModal = () => {
-    setPracticeTestModalOpen(true);
-  };
-
-  const handleClosePracticeTestModal = () => {
-    setPracticeTestModalOpen(false);
-  };
-
-  const handleStartPracticeTest = (settings) => {
-    console.log("Starting Homi Bhabha Practice Test with settings:", settings);
-    
-    // For a Homi Bhabha practice test, we'll use a special identifier
-    // or pass detailed composition instructions to QuizPage.
-    // The 'topicId' here is more of a placeholder for the QuizPage routing.
-    navigate(`/quiz/homibhabha-practice-${settings.class}`, { 
-      state: {
-        quizType: 'homibhabha-practice', // Special flag for QuizPage
-        quizClass: settings.class, // e.g., "6" or "9"
-        difficulty: settings.difficulty, // e.g., "easy", "medium", "hard", "mixed"
-        topicName: `Homi Bhabha Practice Test - Std ${settings.class}th (${settings.difficulty})`,
-        accentColor: homiBhabhaAccentColor,
-        subject: "homibhabha", // General subject category
-        timeLimit: 90 * 60, // 90 minutes in seconds
-        questionComposition: { // Desired number of questions per subject
-          physics: 30,
-          chemistry: 30,
-          biology: 30,
-          gk: 10
-        },
-        totalQuestions: 100 // Explicitly set total questions
-      }
-    });
-    handleClosePracticeTestModal();
-  };
+  // Use the custom hook to get all state and logic
+  const {
+    pyqModalOpen,
+    practiceTestModalOpen,
+    homiBhabhaAccentColor,
+    handleOpenPyqModal,
+    handleClosePyqModal,
+    handleStartPyqTest,
+    handleOpenPracticeTestModal,
+    handleClosePracticeTestModal,
+    handleStartPracticeTest,
+  } = useHomibhabha();
 
   const cardStyle = {
     display: 'flex',
@@ -94,7 +38,7 @@ function HomibhabhaPage() {
   };
 
   return (
-    <Box sx={{ p: 3, flexGrow: 1, width: '100%'}}>
+    <Box sx={{ p: 3, flexGrow: 1, width: '100%' }}>
       <Typography
         variant="h4"
         gutterBottom

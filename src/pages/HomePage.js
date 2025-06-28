@@ -10,9 +10,6 @@ import HomiBhabhaSpotlight from '../components/home/HomiBhabhaSpotlight';
 import CallToActionSection from '../components/home/CallToActionSection';
 
 function HomePage() {
-  // AppRoutes handles redirection if user is logged in.
-  // This page is for logged-out users.
-
   return (
     <Box sx={{ width: '100%' }}> {/* Ensures sections can be full width if they choose */}
       <HeroSection />

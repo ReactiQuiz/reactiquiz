@@ -1,118 +1,62 @@
 // src/pages/SubjectTopicsPage.js
-import { useState, useEffect, useMemo } from 'react';
-import { Box, Typography, Button, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert, Breadcrumbs, Link as MuiLink, Grid, InputAdornment } from '@mui/material';
-import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert, Breadcrumbs, Link as MuiLink, Grid, InputAdornment } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import SearchIcon from '@mui/icons-material/Search'; // For search bar
+import SearchIcon from '@mui/icons-material/Search';
 
-import apiClient from '../api/axiosInstance';
+import { useSubjectTopics } from '../hooks/useSubjectTopics'; // <-- Import the new hook
 import TopicCard from '../components/topics/TopicCard';
 import QuizSettingsModal from '../components/quiz/QuizSettingsModal';
 
 function SubjectTopicsPage() {
-  const { subjectKey } = useParams();
-  const navigate = useNavigate();
   const theme = useTheme();
 
-  const [currentSubject, setCurrentSubject] = useState(null);
-  const [topics, setTopics] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState(''); // New state for genre filter
-
-  useEffect(() => {
-    // ... (fetchSubjectDetailsAndTopics remains the same)
-    if (!subjectKey) {
-      setError('Subject key is missing from URL.');
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    setError('');
-    // Reset filters when subject changes
-    setSearchTerm('');
-    setSelectedClass('');
-    setSelectedGenre('');
-
-    const fetchSubjectDetailsAndTopics = async () => {
-      try {
-        const subjectsResponse = await apiClient.get('/api/subjects');
-        if (!Array.isArray(subjectsResponse.data)) {
-          throw new Error('Invalid subjects data format received.');
-        }
-        const foundSubject = subjectsResponse.data.find(s => s.subjectKey.toLowerCase() === subjectKey.toLowerCase());
-
-        if (!foundSubject) {
-          throw new Error(`Subject '${subjectKey}' not found.`);
-        }
-        setCurrentSubject(foundSubject);
-
-        const topicsResponse = await apiClient.get(`/api/topics/${foundSubject.subjectKey}`);
-        if (Array.isArray(topicsResponse.data)) {
-          setTopics(topicsResponse.data);
-        } else {
-          console.error(`Fetched topics for ${foundSubject.name} is not an array:`, topicsResponse.data);
-          setTopics([]);
-          setError(`Invalid topic data received for ${foundSubject.name}.`);
-        }
-      } catch (err) {
-        console.error(`Error fetching data for subject ${subjectKey}:`, err);
-        setError(`Failed to load data for ${subjectKey}: ${err.message}`);
-        setCurrentSubject(null);
-        setTopics([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSubjectDetailsAndTopics();
-  }, [subjectKey]);
+  // Get all state and logic from the custom hook
+  const {
+    subjectKey,
+    currentSubject,
+    topics,
+    isLoading,
+    error,
+    modalOpen,
+    selectedTopicForQuiz,
+    searchTerm,
+    setSearchTerm,
+    selectedClass,
+    setSelectedClass,
+    selectedGenre,
+    setSelectedGenre,
+    availableClasses,
+    availableGenres,
+    filteredTopics,
+    handleOpenQuizModal,
+    handleCloseQuizModal,
+    handleStartQuizWithSettings,
+    handleStudyFlashcards
+  } = useSubjectTopics();
 
   const accentColor = currentSubject?.accentColor || theme.palette.primary.main;
   const subjectDisplayName = currentSubject?.name || subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1);
 
-  const handleOpenQuizModal = (topic) => {/* ... */ setSelectedTopicForQuiz(topic); setModalOpen(true); };
-  const handleCloseQuizModal = () => {/* ... */ setModalOpen(false); setSelectedTopicForQuiz(null); };
-  const handleStartQuizWithSettings = (settings) => {/* ... */ if (selectedTopicForQuiz && currentSubject) { navigate(`/quiz/${selectedTopicForQuiz.id}`, { state: { difficulty: settings.difficulty, numQuestions: settings.numQuestions, topicName: selectedTopicForQuiz.name, accentColor: accentColor, subject: currentSubject.subjectKey, quizClass: selectedTopicForQuiz.class, } }); } handleCloseQuizModal(); };
-  const handleStudyFlashcards = (topic) => {/* ... */ if (currentSubject) { navigate(`/flashcards/${topic.id}`, { state: { topicName: topic.name, accentColor: accentColor, subject: currentSubject.subjectKey, quizClass: topic.class, } }); } };
+  // --- Render Logic ---
 
-  const availableClasses = useMemo(() => { /* ... (remains the same) ... */ const allClasses = topics.map(topic => topic.class).filter(Boolean); return [...new Set(allClasses)].sort((a, b) => { const numA = parseInt(a); const numB = parseInt(b); if (!isNaN(numA) && !isNaN(numB)) return numA - numB; return a.localeCompare(b); }); }, [topics]);
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
+        <CircularProgress />
+        <Typography sx={{ ml: 2 }}>Loading topics for {subjectKey}...</Typography>
+      </Box>
+    );
+  }
 
-  // New: Memoized list of available genres
-  const availableGenres = useMemo(() => {
-    const allGenres = topics.map(topic => topic.genre).filter(Boolean);
-    return [...new Set(allGenres)].sort();
-  }, [topics]);
-
-  const filteredTopics = useMemo(() => {
-    let currentTopics = topics;
-    if (selectedClass) {
-      currentTopics = currentTopics.filter(topic => topic.class === selectedClass);
-    }
-    if (selectedGenre) { // Filter by genre
-      currentTopics = currentTopics.filter(topic => topic.genre === selectedGenre);
-    }
-    if (searchTerm) {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      currentTopics = currentTopics.filter(topic =>
-        topic.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-        (topic.description && topic.description.toLowerCase().includes(lowerCaseSearchTerm))
-        // Removed genre from search term as there's a dedicated filter now
-      );
-    }
-    return currentTopics;
-  }, [searchTerm, selectedClass, selectedGenre, topics]);
-
-
-  if (isLoading) {/* ... */ }
-  if (error || !currentSubject) {/* ... */ }
+  if (error || !currentSubject) {
+    return (
+      <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
+        <Alert severity="error">{error || `Subject "${subjectKey}" could not be found.`}</Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
@@ -122,21 +66,6 @@ function SubjectTopicsPage() {
         </MuiLink>
         <Typography color={accentColor} sx={{ fontWeight: 'medium' }}>{subjectDisplayName}</Typography>
       </Breadcrumbs>
-
-      {/* Titles and paragraph REMOVED */}
-      {/*
-      <Typography
-        variant="h4"
-        // ... (removed)
-      >
-        {subjectDisplayName} Quiz Topics
-      </Typography>
-      <Typography paragraph sx={{ mb: 3 }}>
-        Select a topic below to start a quiz or study with flashcards for {subjectDisplayName}.
-      </Typography>
-      */}
-
-      {/* Filter Controls Section - Using Grid for responsive layout */}
       <Grid container spacing={{ xs: 1.5, md: 2 }} sx={{ mb: { xs: 2, sm: 3, md: 4 }, mt: { xs: 1, sm: 1 } }} alignItems="flex-end">
         <Grid item xs={12} md={4}> {/* Takes full width on xs, 1/3rd on md+ */}
           <TextField

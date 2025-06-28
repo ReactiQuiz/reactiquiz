@@ -67,11 +67,11 @@ function NavBar({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     {/* Use currentUser from context to decide which button to show */}
                     {forceLoginButton && !currentUser ? ( // if forceLogin is true AND user is not logged in
-                         <Button color="inherit" onClick={() => navigate('/account')} startIcon={<AccountCircleIcon />}>
+                         <Button color="inherit" onClick={() => navigate('/login')} startIcon={<AccountCircleIcon />}>
                             Login / Register
                         </Button>
                     ) : !currentUser ? ( // if not forcing, and user is not logged in
-                        <Button color="inherit" onClick={() => navigate('/account')} startIcon={<AccountCircleIcon />}>
+                        <Button color="inherit" onClick={() => navigate('/login')} startIcon={<AccountCircleIcon />}>
                             Login / Register
                         </Button>
                     ) : ( // User is logged in
