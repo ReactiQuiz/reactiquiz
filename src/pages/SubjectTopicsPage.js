@@ -66,10 +66,18 @@ function SubjectTopicsPage() {
         </MuiLink>
         <Typography color={accentColor} sx={{ fontWeight: 'medium' }}>{subjectDisplayName}</Typography>
       </Breadcrumbs>
-      <Grid container spacing={{ xs: 1.5, md: 2 }} sx={{ mb: { xs: 2, sm: 3, md: 4 }, mt: { xs: 1, sm: 1 } }} alignItems="flex-end">
-        <Grid item xs={12} md={4}> {/* Takes full width on xs, 1/3rd on md+ */}
+      <Grid container sx={{ mb: { xs: 2, sm: 3, md: 4 }, mt: { xs: 1, sm: 1 } }} alignItems="flex-end">
+        <Grid item sx={{
+          width: {
+            xs: '100%',
+            sm: '100%',
+            md: '50%',
+            lg: '50%',
+            xl: '50%'
+          }
+        }}> {/* Takes full width on xs, 1/3rd on md+ */}
           <TextField
-            fullWidth // Makes TextField take full width of its Grid item
+            fullWidth
             label="Search Topics"
             variant="outlined"
             value={searchTerm}
@@ -85,7 +93,17 @@ function SubjectTopicsPage() {
           />
         </Grid>
         {availableClasses.length > 0 && (
-          <Grid item xs={12} sm={6} md={4}> {/* Full width on xs, half on sm, 1/3rd on md+ */}
+          <Grid item
+            sx={{
+              width: {
+                xs: '100%',
+                sm: '50%',
+                md: '25%',
+                lg: '25%',
+                xl: '25%'
+              }
+            }}
+          > {/* Full width on xs, half on sm, 1/3rd on md+ */}
             <FormControl fullWidth variant="outlined">
               <InputLabel id="class-select-label-dynamic">Filter by Class/Level</InputLabel>
               <Select
@@ -107,7 +125,17 @@ function SubjectTopicsPage() {
           </Grid>
         )}
         {availableGenres.length > 0 && (
-          <Grid item xs={12} sm={availableClasses.length > 0 ? 6 : 12} md={4}> {/* Responsive based on class filter visibility */}
+          <Grid item
+            sx={{
+              width: {
+                xs: '100%',
+                sm: '50%',
+                md: '25%',
+                lg: '25%',
+                xl: '25%'
+              }
+            }}
+          > {/* Responsive based on class filter visibility */}
             <FormControl fullWidth variant="outlined">
               <InputLabel id="genre-select-label-dynamic">Filter by Genre</InputLabel>
               <Select
@@ -130,24 +158,36 @@ function SubjectTopicsPage() {
         )}
       </Grid>
 
-      {!isLoading && topics.length > 0 && filteredTopics.length === 0 && (searchTerm || selectedClass || selectedGenre) && (
-        <Alert severity="info" sx={{ my: 2 }}>No topics found for {subjectDisplayName} matching your current filters.</Alert>
-      )}
-      {!isLoading && topics.length === 0 && !error && (
-        <Alert severity="info" sx={{ my: 2 }}>No topics are currently available for {subjectDisplayName}.</Alert>
-      )}
+      {
+        !isLoading && topics.length > 0 && filteredTopics.length === 0 && (searchTerm || selectedClass || selectedGenre) && (
+          <Alert severity="info" sx={{ my: 2 }}>No topics found for {subjectDisplayName} matching your current filters.</Alert>
+        )
+      }
+      {
+        !isLoading && topics.length === 0 && !error && (
+          <Alert severity="info" sx={{ my: 2 }}>No topics are currently available for {subjectDisplayName}.</Alert>
+        )
+      }
 
 
-      <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
+      <Grid container justifyContent="center">
         {filteredTopics.map((topic) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={topic.id} sx={{
             display: 'flex',
             width: {
               xs: '100%',
-              sm: '50%',
-              md: '37.5%',
-              lg: '25%',
+              sm: '49.5%',
+              md: '24.5%',
+              lg: '24.5%',
+              xl: '24.5%'
             },
+            mb: {
+              xs: '0.5%',
+              sm: '0.5%',
+              md: '0.5%',
+              lg: '0.5%',
+              xl: '0.5%',
+            }
           }}>
             <TopicCard
               topic={topic}
@@ -155,20 +195,32 @@ function SubjectTopicsPage() {
               onStudyFlashcards={() => handleStudyFlashcards(topic)}
               accentColor={accentColor}
             />
+            <Grid sx={{
+              width: {
+                xs: '0%',
+                sm: '1%',
+                md: '2%',
+                lg: '2%',
+                xl: '2%',
+              }
+            }}>
+            </Grid>
           </Grid>
         ))}
       </Grid>
 
-      {selectedTopicForQuiz && (
-        <QuizSettingsModal
-          open={modalOpen}
-          onClose={handleCloseQuizModal}
-          onSubmit={handleStartQuizWithSettings}
-          topicName={selectedTopicForQuiz.name}
-          accentColor={accentColor}
-        />
-      )}
-    </Box>
+      {
+        selectedTopicForQuiz && (
+          <QuizSettingsModal
+            open={modalOpen}
+            onClose={handleCloseQuizModal}
+            onSubmit={handleStartQuizWithSettings}
+            topicName={selectedTopicForQuiz.name}
+            accentColor={accentColor}
+          />
+        )
+      }
+    </Box >
   );
 }
 

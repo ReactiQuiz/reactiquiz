@@ -1,106 +1,114 @@
-// src/pages/AboutPage.js
-import {
-  Box, Typography, Paper, Divider, Dialog, DialogTitle,
-  DialogContent, DialogContentText, DialogActions, Button, useTheme
-} from '@mui/material';
+// src/pages/AccountPage.js
+import { Box, Paper, Grid, CircularProgress, Alert, useTheme, Typography, Stack } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 
-// Import the new custom hook
-import { useAboutPage } from '../hooks/useAboutPage';
+import { useAuth } from '../contexts/AuthContext';
+import { useAccount } from '../hooks/useAccount'; // <-- Import our new hook
 
-// Import sub-components
-import AboutHeader from '../components/about/AboutHeader';
-import CreatorProfile from '../components/about/CreatorProfile';
-import ContactFormSection from '../components/about/ContactFormSection';
+// Import Presentational Components
+import ChangeDetailsModal from '../components/auth/ChangeDetailsModal';
+import UserProfileCard from '../components/account/UserProfileCard';
+import AccountManagementActions from '../components/account/AccountManagementActions';
+import UserActivityChart from '../components/account/UserActivityChart';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
-// Constants for creator profile can remain here as they are static data for this page
-const YOUR_PROFILE_IMAGE_URL = `${process.env.PUBLIC_URL}/profile-placeholder.png`;
-const YOUR_NAME = "Sanskar Sontakke";
-const YOUR_TITLE = "Owner, Developer, Creator";
-const YOUR_BIO = "I am a passionate developer with a keen interest in creating educational tools. ReactiQuiz started as a project to combine my love for learning and coding, aiming to provide a useful resource for students. I believe in making education accessible and engaging through technology.";
-const YOUR_EMAIL = "sanskarsontakke@gmail.com";
-const YOUR_PHONE = "+91 82084 35506";
-const YOUR_LINKEDIN_URL = "https://www.linkedin.com/in/sanskar-sontakke-249576357/";
-const YOUR_GITHUB_URL = "https://github.com/sanskarsontakke";
-const YOUR_DISCORD_INVITE_OR_SERVER = "https://discord.gg/w3fuaTPadQ";
-
-function AboutPage() {
+function AccountPage({ onOpenChangePasswordModal }) {
   const theme = useTheme();
-  const ABOUT_US_ACCENT_COLOR = theme.palette.aboutAccent?.main || theme.palette.warning.main;
+  const { currentUser, logout, updateCurrentUserDetails } = useAuth(); // Get user and actions from AuthContext
+  const ACCENT_COLOR = theme.palette.accountAccent?.main || theme.palette.primary.main;
 
-  // Use the custom hook to get state and handlers for the page
+  // Use the custom hook to get all state and logic for this page
   const {
-    isContactDialogOpen,
-    dialogContent,
-    dialogTitle,
-    handleOpenContactDialog,
-    handleCloseContactDialog,
-  } = useAboutPage();
+    userStats,
+    isLoadingStats,
+    statsError,
+    changeDetailsModalOpen,
+    handleOpenChangeDetailsModal,
+    handleCloseChangeDetailsModal,
+  } = useAccount();
+
+  // The main AccountPage component is now only responsible for rendering the UI.
+  // It should not contain any direct data fetching or complex state logic.
+
+  if (!currentUser) {
+    // This case is primarily handled by ProtectedRoute, but as a fallback:
+    return (
+      <Box sx={{ p: 3, textAlign: 'center' }}>
+        <CircularProgress />
+        <Typography>Loading user...</Typography>
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: '900px', margin: 'auto' }}>
-      <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, borderTop: `5px solid ${ABOUT_US_ACCENT_COLOR}` }}>
-        <AboutHeader
-          title="About ReactiQuiz"
-          subtitle="Sharpening Minds, One Quiz at a Time."
-          accentColor={ABOUT_US_ACCENT_COLOR}
-        />
+    <>
+      <Box sx={{
+        width: '100%',
+        p: { xs: 1, sm: 1, md: 2, lg: 3 },
+        backgroundColor: theme.palette.background.default,
+        margin: '0 auto'
+      }}>
+        <Grid container>
+          {/* === Left Column (Profile Info Card) === */}
+          <Grid item sx={{
+            width: { xs: '100%', sm: '100%', md: '24.5%', lg: '24.5%', xl: '24.5%' },
+            marginLeft: { xs: '0%', sm: '0%', md: '0%', lg: '2%', xl: '2%' },
+            paddingRight: { md: '1%', lg: '1%', xl: '1%' },
+            marginBottom: { xs: 2, sm: 2, md: 0 }
+          }}>
+            <UserProfileCard
+              currentUser={currentUser}
+              userStats={userStats}
+              isLoadingStats={isLoadingStats}
+              statsError={statsError}
+              onEditDetailsClick={handleOpenChangeDetailsModal}
+              onLogoutClick={logout}
+              accentColor={ACCENT_COLOR}
+            />
+          </Grid>
 
-        <Divider sx={{ my: 3 }} />
+          {/* === Right Column (Account Management & Quiz Activity) === */}
+          <Grid item sx={{
+            width: { xs: '100%', sm: '100%', md: '74.5%', lg: '72.5%', xl: '72.5%' },
+          }}>
+            <Stack spacing={{ xs: 2, md: 3 }} width={'100%'}>
+              <AccountManagementActions
+                onOpenChangePasswordModal={onOpenChangePasswordModal}
+                onOpenChangeDetailsModal={handleOpenChangeDetailsModal}
+                accentColor={ACCENT_COLOR}
+              />
+              <Paper elevation={3} sx={{ p: { xs: 1.5, sm: 2, md: 3 }, borderTop: `3px solid ${theme.palette.info.main}`, width: '100%', boxSizing: 'border-box', borderRadius: { xs: 0, sm: theme.shape.borderRadius } }}>
+                <Typography variant="h6" gutterBottom sx={{ color: theme.palette.text.secondary, fontWeight: 'medium', display: 'flex', alignItems: 'center', fontSize: { xs: '1rem', sm: '1.125rem' } }}>
+                  <BarChartIcon sx={{ mr: 1, color: theme.palette.info.light }} /> Quiz Activity (Last Year)
+                </Typography>
+                {isLoadingStats ? (
+                  <Box sx={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CircularProgress sx={{ color: theme.palette.info.main }} />
+                  </Box>
+                ) : statsError ? (
+                  <Alert severity="warning" sx={{ mt: 1, fontSize: '0.8rem' }}>{`Could not load activity: ${statsError}`}</Alert>
+                ) : userStats.activityData && userStats.activityData.length > 0 ? (
+                  <UserActivityChart activityData={userStats.activityData} accentColor={ACCENT_COLOR} />
+                ) : (
+                  <Box sx={{ height: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: alpha(theme.palette.background.default, 0.5), borderRadius: 1 }}>
+                    <Typography color="text.secondary" sx={{ fontSize: '0.875rem' }}>No quiz activity recorded yet.</Typography>
+                  </Box>
+                )}
+              </Paper>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Box>
 
-        <Typography variant="body1" paragraph sx={{fontSize: {xs: '0.9rem', sm:'1rem'}}}>
-          ReactiQuiz is a dynamic and engaging quiz application designed to help students and enthusiasts test and improve their knowledge across various subjects.
-          Built with modern web technologies, it aims to provide a seamless and enjoyable learning experience.
-        </Typography>
-
-        <Divider sx={{ my: 4 }} />
-
-        <CreatorProfile
-          profileImageUrl={YOUR_PROFILE_IMAGE_URL}
-          name={YOUR_NAME}
-          title={YOUR_TITLE}
-          bio={YOUR_BIO}
-          email={YOUR_EMAIL}
-          phone={YOUR_PHONE}
-          linkedinUrl={YOUR_LINKEDIN_URL}
-          githubUrl={YOUR_GITHUB_URL}
-          discordUrl={YOUR_DISCORD_INVITE_OR_SERVER}
-          accentColor={ABOUT_US_ACCENT_COLOR}
-          onOpenContactDialog={handleOpenContactDialog} // Pass handler from hook
-        />
-
-        <Divider sx={{ my: 4 }} />
-
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'medium', color: ABOUT_US_ACCENT_COLOR, opacity: 0.85, fontSize: {xs: '1.1rem', sm: '1.25rem'} }}>
-          Our Mission
-        </Typography>
-        <Typography variant="body1" paragraph sx={{fontSize: {xs: '0.9rem', sm:'1rem'}}}>
-          Our mission is to provide a high-quality, ad-free, and user-friendly platform for learning and self-assessment. We strive to continuously improve ReactiQuiz by adding new features, more topics, and ensuring the accuracy of our content.
-        </Typography>
-
-        <Divider sx={{ my: 4 }} />
-
-        <ContactFormSection
-            recipientEmail={YOUR_EMAIL}
-            accentColor={ABOUT_US_ACCENT_COLOR}
-        />
-      </Paper>
-
-      {/* Contact Info Dialog uses state and handlers from the hook */}
-      <Dialog open={isContactDialogOpen} onClose={handleCloseContactDialog}>
-        <DialogTitle sx={{ color: ABOUT_US_ACCENT_COLOR }}>{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ textAlign: 'center', fontSize: '1.1rem', wordBreak: 'break-all' }}>
-            {dialogContent}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseContactDialog} sx={{ color: ABOUT_US_ACCENT_COLOR }}>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+      {/* The ChangeDetailsModal now gets the user and the update function from the AuthContext */}
+      <ChangeDetailsModal
+        open={changeDetailsModalOpen}
+        onClose={handleCloseChangeDetailsModal}
+        currentUser={currentUser}
+        setCurrentUser={updateCurrentUserDetails}
+      />
+    </>
   );
 }
 
-export default AboutPage;
+export default AccountPage;
