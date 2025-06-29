@@ -98,9 +98,9 @@ export const generateDashboardPdfReport = async ({
     pdf.text('ReactiQuiz User Analytics Report', pageWidth / 2, currentY, { align: 'center' });
     currentY += 10;
     pdf.setFontSize(14); pdf.setFont(undefined, 'normal');
-    pdf.text(`User: ${currentUser.name || 'N/A'}`, margin, currentY); currentY += 7;
-    pdf.text(`Report Generated: ${format(new Date(), 'MMM d, yyyy HH:mm')}`, margin, currentY); currentY += 7;
-    pdf.text(`Time Period: ${timeFrequencyLabel}`, margin, currentY); currentY += 10;
+    pdf.text(`User:     \t\t\t${currentUser.name || 'N/A'}`, margin, currentY); currentY += 7;
+    pdf.text(`Report Generated:\t${format(new Date(), 'MMM d, yyyy HH:mm')}`, margin, currentY); currentY += 7;
+    pdf.text(`Time Period:  \t\t${timeFrequencyLabel}`, margin, currentY); currentY += 10;
 
     // --- Overall Stats ---
     pdf.setFontSize(16); pdf.setFont(undefined, 'bold');

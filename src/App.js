@@ -1,37 +1,33 @@
 // src/App.js
-import { useState } from 'react'; // Removed useEffect here, moved to AuthProvider
-import { BrowserRouter as Router, useLocation } from 'react-router-dom'; // Removed useNavigate, auth logic moves
+import { useState } from 'react';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, Box, Toolbar, CircularProgress } from '@mui/material';
 import { darkTheme } from './theme';
 import AppDrawer from './components/core/AppDrawer';
 import Footer from './components/core/Footer';
-import NavBar from './components/core/Navbar'; // NavBar will use useAuth
-import AppRoutes from './components/AppRoutes'; // AppRoutes will pass down fewer props
-// Removed apiClient import, AuthProvider handles token in headers
+import NavBar from './components/core/Navbar';
+import AppRoutes from './components/AppRoutes';
 import ChangePasswordModal from './components/auth/ChangePasswordModal';
-import { AuthProvider, useAuth } from './contexts/AuthContext'; // <-- IMPORT AuthProvider and useAuth
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-// AppContent will consume the auth context
 function AppContent() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
-  const { currentUser, isLoadingAuth } = useAuth(); // <-- Get currentUser from context
+  const { currentUser, isLoadingAuth } = useAuth();
 
   const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
-  const [authError, setAuthError] = useState(''); // For login/register form errors, local to AccountPage via AppRoutes
 
-  const isHomePage = location.pathname === '/';
+  // Updated to check for the new base path
+  const isHomePage = location.pathname === '/' || location.pathname === '/reactiquiz/';
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
-
   const handleOpenChangePasswordModal = () => setChangePasswordModalOpen(true);
   const handleCloseChangePasswordModal = () => setChangePasswordModalOpen(false);
 
-  // If still loading initial auth state, you might want to show a global loader
   if (isLoadingAuth) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress /> {/* Or your custom loading component */}
+        <CircularProgress />
       </Box>
     );
   }
@@ -41,30 +37,21 @@ function AppContent() {
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <NavBar
-          onIconButtonClick={!isHomePage ? handleDrawerToggle : undefined}
-          // currentUser passed from useAuth() to NavBar automatically
+          onIconButtonClick={handleDrawerToggle}
           onOpenChangePasswordModal={handleOpenChangePasswordModal}
           showMenuIcon={!isHomePage}
-          forceLoginButton={isHomePage && !currentUser} // Show login if on home and not logged in
+          forceLoginButton={isHomePage && !currentUser}
         />
-        <Toolbar /> {/* Spacer for fixed AppBar */}
-
+        <Toolbar />
         {!isHomePage && <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />}
-
-        <AppRoutes
-          // No need to pass currentUser, handleLogout, setCurrentUser from here
-          authError={authError} // For login/register forms in AccountPage
-          setAuthError={setAuthError} // For login/register forms
-          onOpenChangePasswordModal={handleOpenChangePasswordModal} // For AccountPage logged-in view
-        />
+        <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
         <Footer />
       </Box>
-      {/* ChangePasswordModal still needs currentUser if it doesn't use useAuth directly */}
       {currentUser && (
         <ChangePasswordModal
           open={changePasswordModalOpen}
           onClose={handleCloseChangePasswordModal}
-        // currentUser={currentUser} // Can be removed if ChangePasswordModal uses useAuth
+          currentUser={currentUser}
         />
       )}
     </ThemeProvider>
@@ -73,8 +60,9 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider> {/* <--- WRAP AppContent with AuthProvider */}
+    // Set the basename for the entire application
+    <Router basename="/reactiquiz">
+      <AuthProvider>
         <AppContent />
       </AuthProvider>
     </Router>

@@ -26,6 +26,8 @@ export const useSubjectTopics = () => {
   // --- State for Modals ---
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
+  const [pdfModalOpen, setPdfModalOpen] = useState(false);
+  const [selectedTopicForPdf, setSelectedTopicForPdf] = useState(null);
 
   // --- Data Fetching Logic ---
   const fetchSubjectData = useCallback(async () => {
@@ -37,13 +39,11 @@ export const useSubjectTopics = () => {
 
     setIsLoading(true);
     setError('');
-    // Reset filters when subject changes
     setSearchTerm('');
     setSelectedClass('');
     setSelectedGenre('');
 
     try {
-      // Fetch both subjects and topics concurrently
       const [subjectsResponse, topicsResponse] = await Promise.all([
         apiClient.get('/api/subjects'),
         apiClient.get(`/api/topics/${subjectKey}`)
@@ -128,6 +128,16 @@ export const useSubjectTopics = () => {
     }
   };
 
+  const handleOpenPdfModal = (topic) => {
+    setSelectedTopicForPdf(topic);
+    setPdfModalOpen(true);
+  };
+  
+  const handleClosePdfModal = () => {
+    setSelectedTopicForPdf(null);
+    setPdfModalOpen(false);
+  };
+
   return {
     subjectKey,
     currentSubject,
@@ -136,6 +146,8 @@ export const useSubjectTopics = () => {
     error,
     modalOpen,
     selectedTopicForQuiz,
+    pdfModalOpen,
+    selectedTopicForPdf,
     searchTerm,
     setSearchTerm,
     selectedClass,
@@ -148,6 +160,8 @@ export const useSubjectTopics = () => {
     handleOpenQuizModal,
     handleCloseQuizModal,
     handleStartQuizWithSettings,
-    handleStudyFlashcards
+    handleStudyFlashcards,
+    handleOpenPdfModal,
+    handleClosePdfModal,
   };
 };

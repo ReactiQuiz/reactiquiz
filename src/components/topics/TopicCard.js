@@ -1,11 +1,10 @@
-// src/components/TopicCard.js
-import {
-  Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box, CardActions, Stack
-} from '@mui/material';
+// src/components/topics/TopicCard.js
+import { Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box, CardActions, Stack } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import StyleIcon from '@mui/icons-material/Style';
+import PrintIcon from '@mui/icons-material/Print'; // <-- Import new icon
 
-function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) {
+function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, accentColor }) { // <-- Add onPrintQuestions prop
   const theme = useTheme();
   const { name, description, class: topicClass, genre: topicGenre } = topic;
 
@@ -22,8 +21,8 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) {
     },
     display: 'flex',
     flexDirection: 'column',
-    height: '100%', // For equal height within a Grid row
-    width: '100%'   // Explicitly set width to fill parent Grid item
+    height: '100%',
+    width: '100%'
   };
 
   return (
@@ -34,12 +33,8 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) {
             {name}
           </Typography>
           <Box sx={{display: 'flex', gap: 0.5, alignItems: 'center', flexWrap: 'wrap'}}>
-            {topicClass && (
-              <Chip label={`Class ${topicClass}`} size="small" sx={{ backgroundColor: alpha(theme.palette.info.dark, 0.3), color: theme.palette.info.light, fontSize: '0.7rem' }} />
-            )}
-            {topicGenre && (
-              <Chip label={topicGenre} size="small" sx={{ backgroundColor: alpha(theme.palette.success.dark, 0.2), color: theme.palette.success.light, fontSize: '0.7rem' }} />
-            )}
+            {topicClass && <Chip label={`Class ${topicClass}`} size="small" sx={{ backgroundColor: alpha(theme.palette.info.dark, 0.3), color: theme.palette.info.light, fontSize: '0.7rem' }} />}
+            {topicGenre && <Chip label={topicGenre} size="small" sx={{ backgroundColor: alpha(theme.palette.success.dark, 0.2), color: theme.palette.success.light, fontSize: '0.7rem' }} />}
           </Box>
         </Box>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5, minHeight: '3.2em', fontSize: '0.85rem' }}>
@@ -47,48 +42,24 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, accentColor }) {
         </Typography>
       </CardContent>
       <CardActions sx={{ p: 1.5, pt:0, alignSelf: 'stretch' }}>
-        <Stack direction="row" spacing={1} sx={{width: '100%'}}>
-            {onStartQuiz && (
-                <Button
-                    variant="outlined"
-                    onClick={onStartQuiz}
-                    fullWidth
-                    startIcon={<SchoolIcon />}
-                    sx={{
-                        borderColor: effectiveAccentColor,
-                        color: effectiveAccentColor,
-                        fontWeight: 'medium',
-                        py: 0.8,
-                        fontSize: '0.875rem',
-                        '&:hover': {
-                        backgroundColor: alpha(effectiveAccentColor, 0.1),
-                        borderColor: effectiveAccentColor,
-                        },
-                    }}
-                >
-                    Start Quiz
-                </Button>
-            )}
-            {onStudyFlashcards && (
-                 <Button
-                    variant="outlined"
-                    onClick={onStudyFlashcards}
-                    fullWidth
-                    startIcon={<StyleIcon />}
-                    sx={{
-                        borderColor: alpha(effectiveAccentColor, 0.7),
-                        color: alpha(effectiveAccentColor, 0.9),
-                        fontWeight: 'medium',
-                        py: 0.8,
-                        fontSize: '0.875rem',
-                        '&:hover': {
-                        backgroundColor: alpha(effectiveAccentColor, 0.05),
-                        borderColor: effectiveAccentColor,
-                        },
-                    }}
-                >
-                    Flashcards
-                </Button>
+        <Stack direction="column" spacing={1} sx={{width: '100%'}}>
+            <Stack direction="row" spacing={1}>
+                {onStartQuiz && (
+                    <Button variant="outlined" onClick={onStartQuiz} fullWidth startIcon={<SchoolIcon />}
+                        sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, fontWeight: 'medium', py: 0.8, fontSize: '0.875rem', '&:hover': { backgroundColor: alpha(effectiveAccentColor, 0.1), borderColor: effectiveAccentColor } }}
+                    > Start Quiz </Button>
+                )}
+                {onStudyFlashcards && (
+                    <Button variant="outlined" onClick={onStudyFlashcards} fullWidth startIcon={<StyleIcon />}
+                        sx={{ borderColor: alpha(effectiveAccentColor, 0.7), color: alpha(effectiveAccentColor, 0.9), fontWeight: 'medium', py: 0.8, fontSize: '0.875rem', '&:hover': { backgroundColor: alpha(effectiveAccentColor, 0.05), borderColor: effectiveAccentColor } }}
+                    > Flashcards </Button>
+                )}
+            </Stack>
+            {/* New Button for Printing */}
+            {onPrintQuestions && (
+                <Button variant="outlined" onClick={onPrintQuestions} fullWidth startIcon={<PrintIcon />}
+                    sx={{ borderColor: alpha(theme.palette.grey[500], 0.5), color: theme.palette.text.secondary, fontWeight: 'medium', py: 0.8, fontSize: '0.875rem', '&:hover': { backgroundColor: alpha(theme.palette.grey[500], 0.1), borderColor: theme.palette.grey[500] } }}
+                > Print Questions </Button>
             )}
         </Stack>
       </CardActions>

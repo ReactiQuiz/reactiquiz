@@ -3,7 +3,7 @@ import { Box, Typography, Button, CircularProgress, Alert } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import { darken, useTheme } from '@mui/material/styles';
 
-import { useQuiz } from '../hooks/useQuiz'; // <-- Import the new hook
+import { useQuiz } from '../hooks/useQuiz';
 import { useAuth } from '../contexts/AuthContext';
 import { subjectAccentColors } from '../theme';
 import QuizHeader from '../components/quiz/QuizHeader';
@@ -26,6 +26,7 @@ function QuizPage() {
     quizContext,
     handleOptionSelect,
     submitAndNavigate,
+    handleAbandonQuiz
   } = useQuiz();
 
   const accentColor = subjectAccentColors[quizContext.subject?.toLowerCase()] || quizContext.accentColor || theme.palette.primary.main;
@@ -71,13 +72,14 @@ function QuizPage() {
         effectiveQuizClass={quizContext.quizClass}
         effectiveDifficulty={quizContext.difficulty}
         questionsLength={questions.length}
-        currentChallengeDetails={quizContext.challengeId ? quizContext : null} // Pass context if it's a challenge
+        currentChallengeDetails={quizContext.challengeId ? quizContext : null}
         currentUser={currentUser}
         timerActive={timerActive}
         elapsedTime={elapsedTime}
         effectiveTimeLimit={quizContext.timeLimit}
         accentColor={accentColor}
         infoMessage={infoMessage}
+        onAbandon={handleAbandonQuiz}
       />
 
       <QuizQuestionList
@@ -91,7 +93,7 @@ function QuizPage() {
         <Button
           variant="contained"
           size="large"
-          onClick={submitAndNavigate}
+          onClick={() => submitAndNavigate()}
           disabled={isSubmitting || questions.length === 0}
           sx={{
             backgroundColor: accentColor,

@@ -5,9 +5,10 @@ import { useTheme } from '@mui/material/styles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import SearchIcon from '@mui/icons-material/Search';
 
-import { useSubjectTopics } from '../hooks/useSubjectTopics'; // <-- Import the new hook
+import { useSubjectTopics } from '../hooks/useSubjectTopics';
 import TopicCard from '../components/topics/TopicCard';
 import QuizSettingsModal from '../components/quiz/QuizSettingsModal';
+import QuestionsPdfModal from '../components/quiz/QuestionsPdfModal';
 
 function SubjectTopicsPage() {
   const theme = useTheme();
@@ -21,6 +22,8 @@ function SubjectTopicsPage() {
     error,
     modalOpen,
     selectedTopicForQuiz,
+    pdfModalOpen,
+    selectedTopicForPdf,
     searchTerm,
     setSearchTerm,
     selectedClass,
@@ -33,11 +36,13 @@ function SubjectTopicsPage() {
     handleOpenQuizModal,
     handleCloseQuizModal,
     handleStartQuizWithSettings,
-    handleStudyFlashcards
+    handleStudyFlashcards,
+    handleOpenPdfModal,
+    handleClosePdfModal
   } = useSubjectTopics();
 
   const accentColor = currentSubject?.accentColor || theme.palette.primary.main;
-  const subjectDisplayName = currentSubject?.name || subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1);
+  const subjectDisplayName = currentSubject?.name || (subjectKey ? subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1) : '');
 
   // --- Render Logic ---
 
@@ -75,7 +80,7 @@ function SubjectTopicsPage() {
             lg: '50%',
             xl: '50%'
           }
-        }}> {/* Takes full width on xs, 1/3rd on md+ */}
+        }}>
           <TextField
             fullWidth
             label="Search Topics"
@@ -103,7 +108,7 @@ function SubjectTopicsPage() {
                 xl: '25%'
               }
             }}
-          > {/* Full width on xs, half on sm, 1/3rd on md+ */}
+          >
             <FormControl fullWidth variant="outlined">
               <InputLabel id="class-select-label-dynamic">Filter by Class/Level</InputLabel>
               <Select
@@ -135,7 +140,7 @@ function SubjectTopicsPage() {
                 xl: '25%'
               }
             }}
-          > {/* Responsive based on class filter visibility */}
+          >
             <FormControl fullWidth variant="outlined">
               <InputLabel id="genre-select-label-dynamic">Filter by Genre</InputLabel>
               <Select
@@ -169,7 +174,6 @@ function SubjectTopicsPage() {
         )
       }
 
-
       <Grid container justifyContent="center">
         {filteredTopics.map((topic) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={topic.id} sx={{
@@ -193,6 +197,7 @@ function SubjectTopicsPage() {
               topic={topic}
               onStartQuiz={() => handleOpenQuizModal(topic)}
               onStudyFlashcards={() => handleStudyFlashcards(topic)}
+              onPrintQuestions={() => handleOpenPdfModal(topic)}
               accentColor={accentColor}
             />
             <Grid sx={{
@@ -209,17 +214,24 @@ function SubjectTopicsPage() {
         ))}
       </Grid>
 
-      {
-        selectedTopicForQuiz && (
-          <QuizSettingsModal
-            open={modalOpen}
-            onClose={handleCloseQuizModal}
-            onSubmit={handleStartQuizWithSettings}
-            topicName={selectedTopicForQuiz.name}
-            accentColor={accentColor}
-          />
-        )
-      }
+      {selectedTopicForQuiz && (
+        <QuizSettingsModal
+          open={modalOpen}
+          onClose={handleCloseQuizModal}
+          onSubmit={handleStartQuizWithSettings}
+          topicName={selectedTopicForQuiz.name}
+          accentColor={accentColor}
+        />
+      )}
+      
+      {selectedTopicForPdf && (
+        <QuestionsPdfModal
+          open={pdfModalOpen}
+          onClose={handleClosePdfModal}
+          topic={selectedTopicForPdf}
+          accentColor={accentColor}
+        />
+      )}
     </Box >
   );
 }

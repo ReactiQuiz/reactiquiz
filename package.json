@@ -1,6 +1,6 @@
 {
   "name": "reactiquiz",
-  "homepage": "https://sanskarsontakke.github.io/reactiquiz/",
+  "homepage": "/reactiquiz",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,6 +30,7 @@
     "express": "^5.1.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "mui": "^0.0.1",
     "mysql2": "^3.14.1",
     "nodemailer": "^7.0.3",
