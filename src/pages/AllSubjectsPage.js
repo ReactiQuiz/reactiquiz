@@ -1,10 +1,7 @@
 // src/pages/AllSubjectsPage.js
-import { useState, useEffect } from 'react';
 import { Box, Typography, CircularProgress, Alert, /* Grid, NO LONGER NEEDED FOR CARD LAYOUT */ TextField, InputAdornment } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSubjects } from '../hooks/useSubjects';
-import apiClient from '../api/axiosInstance';
 import SubjectOverviewCard from '../components/topics/SubjectOverviewCard';
 
 function AllSubjectsPage() {

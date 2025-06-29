@@ -1,5 +1,5 @@
 // src/hooks/useResults.js
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';

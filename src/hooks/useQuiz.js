@@ -147,6 +147,7 @@ export const useQuiz = () => {
         setIsLoading(false);
     };
     fetchQuizData();
+    // eslint-disable-next-line
   }, [topicIdFromParams, challengeIdFromParams, location.state, currentUser, getStorageKey]);
 
   useEffect(() => {

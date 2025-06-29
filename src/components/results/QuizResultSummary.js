@@ -63,7 +63,9 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
     animateValue(0, scoreTarget, animationDuration, setAnimatedScore, scoreAnimationRef);
     animateValue(0, percentageTarget, animationDuration, setAnimatedPercentage, percentageAnimationRef);
     return () => {
+      // eslint-disable-next-line
         if (scoreAnimationRef.current) cancelAnimationFrame(scoreAnimationRef.current);
+        // eslint-disable-next-line
         if (percentageAnimationRef.current) cancelAnimationFrame(percentageAnimationRef.current);
     };
   }, [score, percentage]);

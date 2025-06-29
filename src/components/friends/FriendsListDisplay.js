@@ -1,8 +1,7 @@
 // src/components/friends/FriendsListDisplay.js
-import React from 'react';
 import {
   Box, Typography, List, ListItem, ListItemText, IconButton,
-  CircularProgress, Alert, Stack, Tooltip, useTheme
+  CircularProgress, Alert, Tooltip, useTheme
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 

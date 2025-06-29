@@ -1,5 +1,5 @@
 // src/pages/LoginPage.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, useTheme, Avatar, Tabs, Tab, Alert } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -17,6 +17,7 @@ function LoginPage() {
 
   const [activeTab, setActiveTab] = useState(0);
   const [inForgotPasswordFlow, setInForgotPasswordFlow] = useState(false);
+  // eslint-disable-next-line
   const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
 
   // Use the custom hook to get all form logic and state

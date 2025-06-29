@@ -1,8 +1,8 @@
 // src/components/friends/FriendSearch.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box, Typography, TextField, Button, Alert, CircularProgress,
-  List, ListItem, ListItemText, IconButton, Tooltip, useTheme
+  List, ListItem, ListItemText, Tooltip, useTheme
 } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
@@ -57,6 +57,7 @@ function FriendSearch({ accentColor }) {
     }
     setFriendRequestStatus(prev => ({ ...prev, [receiverUsername]: 'sending' }));
     try {
+      // eslint-disable-next-line
       const response = await apiClient.post('/api/friends/request',
         { receiverUsername },
         { headers: { Authorization: `Bearer ${currentUser.token}` } }

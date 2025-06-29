@@ -1,7 +1,5 @@
 // src/components/dashboard/OverallStatsCards.js
-import React from 'react';
-import { Paper, Grid, Typography, Box, useTheme } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { Paper, Grid, Typography, useTheme } from '@mui/material';
 
 function OverallStatsCards({ totalQuizzes, averageScore, accentColor }) {
   const theme = useTheme();
