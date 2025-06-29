@@ -1,10 +1,14 @@
 {
   "files": {
-    "main.js": "/reactiquiz/static/js/main.6f29cef4.js",
+    "main.js": "/reactiquiz/static/js/main.f07ed341.js",
+    "static/js/977.3276289e.chunk.js": "/reactiquiz/static/js/977.3276289e.chunk.js",
+    "static/js/455.7bb262b9.chunk.js": "/reactiquiz/static/js/455.7bb262b9.chunk.js",
     "index.html": "/reactiquiz/index.html",
-    "main.6f29cef4.js.map": "/reactiquiz/static/js/main.6f29cef4.js.map"
+    "main.f07ed341.js.map": "/reactiquiz/static/js/main.f07ed341.js.map",
+    "977.3276289e.chunk.js.map": "/reactiquiz/static/js/977.3276289e.chunk.js.map",
+    "455.7bb262b9.chunk.js.map": "/reactiquiz/static/js/455.7bb262b9.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.6f29cef4.js"
+    "static/js/main.f07ed341.js"
   ]
 }
