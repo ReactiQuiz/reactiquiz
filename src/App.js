@@ -77,7 +77,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/reactiquiz">
+    <Router>
       <AuthProvider>
         <AppContent />
       </AuthProvider>

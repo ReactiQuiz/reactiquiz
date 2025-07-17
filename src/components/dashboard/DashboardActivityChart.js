@@ -1,18 +1,16 @@
-// src/components/DashboardActivityChart.js
-import React from 'react';
+// src/components/dashboard/DashboardActivityChart.js
+import React, { forwardRef } from 'react'; // <-- 1. Import forwardRef
 import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { parseISO, format, isValid } from 'date-fns';
 import { alpha } from '@mui/material/styles';
 
-
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
-function DashboardActivityChart({ activityData, timeFrequency }) {
+// 2. Wrap the component definition in forwardRef
+const DashboardActivityChart = forwardRef(({ activityData, timeFrequency }, ref) => {
   const theme = useTheme();
 
   const chartOptions = {
@@ -20,7 +18,7 @@ function DashboardActivityChart({ activityData, timeFrequency }) {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: true, position: 'top', labels: { color: theme.palette.text.primary } },
-      title: { display: false, text: 'Quiz Activity Trend', color: theme.palette.text.primary, font: { size: 16 } },
+      title: { display: false },
       tooltip: {
         callbacks: {
             title: function(context) {
@@ -36,11 +34,7 @@ function DashboardActivityChart({ activityData, timeFrequency }) {
         time: {
           unit: timeFrequency === 7 ? 'day' : (timeFrequency === 30 ? 'day' : (timeFrequency === 90 ? 'week' : 'month')),
           tooltipFormat: 'PPP',
-           displayFormats: {
-             day: 'MMM d',
-             week: 'MMM d, yy',
-             month: 'MMM yyyy'
-           }
+           displayFormats: { day: 'MMM d', week: 'MMM d, yy', month: 'MMM yyyy' }
         },
         ticks: { color: theme.palette.text.secondary, maxRotation: 0, autoSkipPadding: 10 },
         grid: { color: alpha(theme.palette.text.secondary, 0.1) }
@@ -52,14 +46,12 @@ function DashboardActivityChart({ activityData, timeFrequency }) {
         title: { display: true, text: 'Number of Quizzes', color: theme.palette.text.secondary}
       }
     },
-    interaction: {
-        intersect: false,
-        mode: 'index',
-    },
+    interaction: { intersect: false, mode: 'index' },
   };
 
   return (
-    <Paper elevation={3} sx={{ p: {xs: 1, sm: 2}, mt: 3, backgroundColor: theme.palette.background.paper }}>
+    // 3. Attach the forwarded ref to the root Paper element
+    <Paper ref={ref} elevation={3} sx={{ p: {xs: 1, sm: 2}, mt: 3, backgroundColor: theme.palette.background.paper }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
         <Typography variant="h6" sx={{color: theme.palette.text.primary, ml: {xs:1, sm:0}}}>Activity Overview</Typography>
       </Box>
@@ -72,6 +64,6 @@ function DashboardActivityChart({ activityData, timeFrequency }) {
       </Box>
     </Paper>
   );
-}
+});
 
 export default DashboardActivityChart;

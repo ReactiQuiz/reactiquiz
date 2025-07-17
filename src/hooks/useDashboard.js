@@ -20,20 +20,44 @@ export const useDashboard = (currentUser) => {
   // --- State for Data Fetching ---
   const [userResults, setUserResults] = useState([]);
   const [allSubjects, setAllSubjects] = useState([]);
-  const [allTopics, setAllTopics] = useState([]); // New state for topics
+  const [allTopics, setAllTopics] = useState([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [error, setError] = useState('');
+  const topicPerformanceRef = useRef(null);
 
   // --- State for UI Controls ---
   const [timeFrequency, setTimeFrequency] = useState(30);
-  const [selectedSubject, setSelectedSubject] = useState('all'); // New state for subject filter
+  const [selectedSubject, setSelectedSubject] = useState('all');
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   // --- Refs for PDF Generation ---
   const activityChartRef = useRef(null);
   const subjectAveragesChartRef = useRef(null);
 
-  // --- Data Fetching Logic (Now fetches topics too) ---
+  // --- Event Handlers ---
+  const handleTimeFrequencyChange = (event) => setTimeFrequency(event.target.value);
+  const handleSubjectChange = (event) => setSelectedSubject(event.target.value);
+
+  const handleGenerateReport = async () => {
+    setIsGeneratingPdf(true);
+    const timeFreqOption = timeFrequencyOptions.find(opt => opt.value === timeFrequency);
+
+    await generateDashboardPdfReport({
+      currentUser: currentUser,
+      overallStats: {
+        totalQuizzes: processedStats.totalQuizzes,
+        overallAverageScore: processedStats.overallAverageScore,
+      },
+      activityChartElement: activityChartRef.current,
+      subjectAveragesChartElement: subjectAveragesChartRef.current,
+      topicPerformanceElement: topicPerformanceRef.current, // <-- PASS THE NEW REF'S CURRENT VALUE
+      isSubjectSelected: selectedSubject !== 'all', // <-- Pass a flag
+      timeFrequencyLabel: timeFreqOption ? timeFreqOption.label : String(timeFrequency),
+    });
+    setIsGeneratingPdf(false);
+  };
+
+  // --- Data Fetching Logic ---
   const fetchDashboardData = useCallback(async () => {
     if (!currentUser || !currentUser.id) { setIsLoadingData(false); return; }
     setIsLoadingData(true);
@@ -46,7 +70,7 @@ export const useDashboard = (currentUser) => {
         apiClient.get('/api/subjects'),
         apiClient.get('/api/topics') // Assuming a general /api/topics endpoint exists
       ]);
-      
+
       setUserResults((resultsRes.data || []).map(r => ({ ...r, percentage: parseFloat(r.percentage) })).filter(r => !isNaN(r.percentage)));
       setAllSubjects(subjectsRes.data || []);
       setAllTopics(topicsRes.data || []);
@@ -65,61 +89,61 @@ export const useDashboard = (currentUser) => {
   // --- Memoized Data Processing (Heavily Updated) ---
   const processedStats = useMemo(() => {
     if (!userResults || allSubjects.length === 0) {
-        return { filteredResults: [], totalQuizzes: 0, overallAverageScore: 0, subjectStats: {}, activityData: { labels: [], datasets: [] }, subjectAverageScoreChartData: { labels: [], datasets: [] }, bestSubject: null, weakestSubject: null, topicPerformance: [] };
+      return { filteredResults: [], totalQuizzes: 0, overallAverageScore: 0, subjectStats: {}, activityData: { labels: [], datasets: [] }, subjectAverageScoreChartData: { labels: [], datasets: [] }, bestSubject: null, weakestSubject: null, topicPerformance: [] };
     }
 
     // 1. Filter results by TIME period
     const today = startOfDay(new Date());
     const startDate = timeFrequency === 'all'
-        ? startOfDay(min(userResults.map(r => parseISO(r.timestamp)).filter(isValid)))
-        : startOfDay(subDays(today, Number(timeFrequency) - 1));
-    
+      ? startOfDay(min(userResults.map(r => parseISO(r.timestamp)).filter(isValid)))
+      : startOfDay(subDays(today, Number(timeFrequency) - 1));
+
     let resultsInTimePeriod = userResults.filter(r => {
-        const resultDate = parseISO(r.timestamp);
-        return isValid(resultDate) && resultDate >= startDate && resultDate <= today;
+      const resultDate = parseISO(r.timestamp);
+      return isValid(resultDate) && resultDate >= startDate && resultDate <= today;
     });
 
     // 2. Filter results by SUBJECT (if selected)
     const filteredResults = selectedSubject === 'all'
-        ? resultsInTimePeriod
-        : resultsInTimePeriod.filter(r => r.subject?.toLowerCase() === selectedSubject.toLowerCase());
+      ? resultsInTimePeriod
+      : resultsInTimePeriod.filter(r => r.subject?.toLowerCase() === selectedSubject.toLowerCase());
 
     // 3. Calculate KPIs from the time-filtered (but not subject-filtered) results
     const subjectStats = {};
     allSubjects.forEach(subj => {
-        const keyLower = subj.subjectKey.toLowerCase();
-        const results = resultsInTimePeriod.filter(r => r.subject?.toLowerCase() === keyLower);
-        if (results.length > 0) {
-            const percentages = results.map(r => r.percentage).filter(p => !isNaN(p));
-            subjectStats[keyLower] = {
-                count: results.length,
-                average: percentages.length > 0 ? Math.round(percentages.reduce((a, b) => a + b, 0) / percentages.length) : 0,
-                name: subj.name, color: subj.accentColor || theme.palette.grey[500]
-            };
-        }
+      const keyLower = subj.subjectKey.toLowerCase();
+      const results = resultsInTimePeriod.filter(r => r.subject?.toLowerCase() === keyLower);
+      if (results.length > 0) {
+        const percentages = results.map(r => r.percentage).filter(p => !isNaN(p));
+        subjectStats[keyLower] = {
+          count: results.length,
+          average: percentages.length > 0 ? Math.round(percentages.reduce((a, b) => a + b, 0) / percentages.length) : 0,
+          name: subj.name, color: subj.accentColor || theme.palette.grey[500]
+        };
+      }
     });
-    
+
     let bestSubject = null, weakestSubject = null;
     const subjectsWithStats = Object.values(subjectStats);
     if (subjectsWithStats.length > 0) {
-        bestSubject = subjectsWithStats.reduce((max, subj) => (subj.average > max.average ? subj : max), subjectsWithStats[0]);
-        weakestSubject = subjectsWithStats.reduce((min, subj) => (subj.average < min.average ? subj : min), subjectsWithStats[0]);
-        if (bestSubject === weakestSubject && subjectsWithStats.length > 1) weakestSubject = null;
+      bestSubject = subjectsWithStats.reduce((max, subj) => (subj.average > max.average ? subj : max), subjectsWithStats[0]);
+      weakestSubject = subjectsWithStats.reduce((min, subj) => (subj.average < min.average ? subj : min), subjectsWithStats[0]);
+      if (bestSubject === weakestSubject && subjectsWithStats.length > 1) weakestSubject = null;
     }
 
 
     // 4. Calculate Topic-Level performance for the *currently selected subject*
     let topicPerformance = [];
     if (selectedSubject !== 'all' && allTopics.length > 0) {
-        const topicsForSelectedSubject = allTopics.filter(t => t.subject?.toLowerCase() === selectedSubject.toLowerCase());
-        topicPerformance = topicsForSelectedSubject.map(topic => {
-            const topicResults = filteredResults.filter(r => r.topicId === topic.id);
-            if (topicResults.length > 0) {
-                const avgScore = Math.round(topicResults.reduce((acc, r) => acc + r.percentage, 0) / topicResults.length);
-                return { id: topic.id, name: topic.name, count: topicResults.length, average: avgScore };
-            }
-            return null;
-        }).filter(Boolean).sort((a, b) => b.average - a.average); // Sort by best-performing
+      const topicsForSelectedSubject = allTopics.filter(t => t.subject?.toLowerCase() === selectedSubject.toLowerCase());
+      topicPerformance = topicsForSelectedSubject.map(topic => {
+        const topicResults = filteredResults.filter(r => r.topicId === topic.id);
+        if (topicResults.length > 0) {
+          const avgScore = Math.round(topicResults.reduce((acc, r) => acc + r.percentage, 0) / topicResults.length);
+          return { id: topic.id, name: topic.name, count: topicResults.length, average: avgScore };
+        }
+        return null;
+      }).filter(Boolean).sort((a, b) => b.average - a.average); // Sort by best-performing
     }
 
     // 5. Generate Chart data based on the *currently filtered* results
@@ -127,25 +151,25 @@ export const useDashboard = (currentUser) => {
     const overallAverageScore = totalQuizzes > 0 ? Math.round(filteredResults.reduce((acc, r) => acc + r.percentage, 0) / totalQuizzes) : 0;
     const activityCounts = {};
     filteredResults.forEach(r => {
-        const dayKey = format(startOfDay(parseISO(r.timestamp)), 'yyyy-MM-dd');
-        activityCounts[dayKey] = (activityCounts[dayKey] || 0) + 1;
+      const dayKey = format(startOfDay(parseISO(r.timestamp)), 'yyyy-MM-dd');
+      activityCounts[dayKey] = (activityCounts[dayKey] || 0) + 1;
     });
     const chartLabels = eachDayOfInterval({ start: startDate, end: today }).map(d => format(d, 'yyyy-MM-dd'));
     const activityData = {
-        labels: chartLabels,
-        datasets: [{
-            label: 'Quizzes Taken', data: chartLabels.map(day => activityCounts[day] || 0), fill: true,
-            backgroundColor: alpha(theme.palette.primary.main, 0.3), borderColor: theme.palette.primary.main, tension: 0.1,
-        }],
+      labels: chartLabels,
+      datasets: [{
+        label: 'Quizzes Taken', data: chartLabels.map(day => activityCounts[day] || 0), fill: true,
+        backgroundColor: alpha(theme.palette.primary.main, 0.3), borderColor: theme.palette.primary.main, tension: 0.1,
+      }],
     };
-    
+
     const subjectAverageScoreChartData = {
-        labels: Object.values(subjectStats).map(s => s.name),
-        datasets: [{
-            label: 'Average Score (%)', data: Object.values(subjectStats).map(s => s.average),
-            backgroundColor: Object.values(subjectStats).map(s => alpha(s.color, 0.7)),
-            borderColor: Object.values(subjectStats).map(s => s.color), borderWidth: 1,
-        }],
+      labels: Object.values(subjectStats).map(s => s.name),
+      datasets: [{
+        label: 'Average Score (%)', data: Object.values(subjectStats).map(s => s.average),
+        backgroundColor: Object.values(subjectStats).map(s => alpha(s.color, 0.7)),
+        borderColor: Object.values(subjectStats).map(s => s.color), borderWidth: 1,
+      }],
     };
 
 
@@ -163,12 +187,6 @@ export const useDashboard = (currentUser) => {
     }
   }), [theme.palette.text.secondary]);
 
-  // --- Event Handlers ---
-  const handleTimeFrequencyChange = (event) => setTimeFrequency(event.target.value);
-  const handleSubjectChange = (event) => setSelectedSubject(event.target.value);
-  const handleGenerateReport = async () => { /* ... */ };
-
-
   // --- START OF FIX ---
   // Add 'handleSubjectChange' to the return object
   return {
@@ -182,6 +200,7 @@ export const useDashboard = (currentUser) => {
     processedStats,
     subjectAverageScoreChartOptions,
     activityChartRef,
+    topicPerformanceRef,
     subjectAveragesChartRef,
     fetchDashboardData,
     handleTimeFrequencyChange,

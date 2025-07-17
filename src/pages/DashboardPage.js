@@ -17,6 +17,15 @@ import SubjectPerformanceGrid from '../components/dashboard/SubjectPerformanceGr
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 
+const offscreenStyle = {
+  position: 'absolute',
+  top: '-9999px',
+  left: '-9999px',
+  // Give it a defined size so html2canvas can render it properly
+  width: '1000px',
+  height: '600px',
+};
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 
 function DashboardPage() {
@@ -35,6 +44,7 @@ function DashboardPage() {
     processedStats,
     subjectAverageScoreChartOptions,
     activityChartRef,
+    topicPerformanceRef,
     subjectAveragesChartRef,
     fetchDashboardData,
     handleTimeFrequencyChange,
@@ -187,15 +197,16 @@ function DashboardPage() {
       {/* --- END OF UNIFIED GRID LAYOUT --- */}
 
       {/* Topic list is not in the grid, it's a full-width item */}
-      {
-        selectedSubject !== 'all' && (
+      <Box ref={topicPerformanceRef}>
+        {selectedSubject !== 'all' && (
           <TopicPerformanceList
             topics={processedStats.topicPerformance}
             subjectName={allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}
           />
-        )
-      }
+        )}
+      </Box>
 
+      {/* The component with the ref is ALWAYS rendered. We just hide it with CSS. */}
       <Box ref={activityChartRef}>
         <DashboardActivityChart
           activityData={processedStats.activityData}
@@ -203,16 +214,13 @@ function DashboardPage() {
         />
       </Box>
 
-      {
-        selectedSubject === 'all' && (
-          <Box ref={subjectAveragesChartRef}>
-            <SubjectAveragesChart
-              chartData={processedStats.subjectAverageScoreChartData}
-              chartOptions={subjectAverageScoreChartOptions}
-            />
-          </Box>
-        )
-      }
+      {/* Same fix for the second chart: always render the Box, hide with CSS. */}
+      <Box ref={subjectAveragesChartRef} sx={selectedSubject === 'all' ? {} : offscreenStyle}>
+        <SubjectAveragesChart
+          chartData={processedStats.subjectAverageScoreChartData}
+          chartOptions={subjectAverageScoreChartOptions}
+        />
+      </Box>
 
       <GenerateReportButton
         onGenerate={handleGenerateReport}

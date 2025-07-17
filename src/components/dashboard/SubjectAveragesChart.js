@@ -1,17 +1,15 @@
 // src/components/dashboard/SubjectAveragesChart.js
-import React from 'react';
+import React, { forwardRef } from 'react'; // <-- 1. Import forwardRef
 import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
-// Chart.js and scales are already registered in DashboardPage.js,
-// but for a standalone component, it's good practice to ensure they are,
-// or document that the parent must register them.
-// For now, we assume parent (DashboardPage) handles registration.
 
-function SubjectAveragesChart({ chartData, chartOptions }) {
+// 2. Wrap the component definition in forwardRef
+const SubjectAveragesChart = forwardRef(({ chartData, chartOptions }, ref) => {
   const theme = useTheme();
 
   return (
-    <Paper elevation={3} sx={{ p: {xs:1, sm: 2}, mt: 3, backgroundColor: theme.palette.background.paper }}>
+    // 3. Attach the forwarded ref to the root Paper element
+    <Paper ref={ref} elevation={3} sx={{ p: {xs:1, sm: 2}, mt: 3, backgroundColor: theme.palette.background.paper }}>
       <Typography variant="h6" sx={{color: theme.palette.text.primary, ml: {xs:1, sm:0}, mb: 2}}>
         Average Score by Subject
       </Typography>
@@ -26,6 +24,6 @@ function SubjectAveragesChart({ chartData, chartOptions }) {
       </Box>
     </Paper>
   );
-}
+});
 
 export default SubjectAveragesChart;

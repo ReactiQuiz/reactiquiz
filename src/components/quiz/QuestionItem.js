@@ -1,10 +1,7 @@
 // src/components/quiz/QuestionItem.js
-import {
-  Box, Typography, Button, Paper, useTheme
-} from '@mui/material';
-import {
-  lighten, darken, alpha
-} from '@mui/material/styles';
+import { Box, Typography, Button, Paper, useTheme } from '@mui/material';
+import { alpha, darken } from '@mui/material/styles';
+import MarkdownRenderer from '../shared/MarkdownRenderer'; // <-- IMPORT
 
 const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOptionId, accentColor }) => {
   const theme = useTheme();
@@ -15,9 +12,13 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
       <Typography variant="h6" gutterBottom component="div" sx={{ color: theme.palette.text.secondary, fontWeight: 500 }}>
         Question {questionNumber}:
       </Typography>
-      <Typography variant="body1" sx={{ mb: 2.5, color: theme.palette.text.primary, fontSize: '1.1rem', whiteSpace: 'pre-wrap' }}>
-        {question.text}
-      </Typography>
+
+      {/* --- START OF FIX --- */}
+      <Box sx={{ mb: 2.5, color: theme.palette.text.primary, fontSize: '1.1rem' }}>
+        <MarkdownRenderer text={question.text} />
+      </Box>
+      {/* --- END OF FIX --- */}
+
       <Box display="flex" flexDirection="column" gap={1.5}>
         {question.options.map((option) => {
           const isSelected = option.id === selectedOptionId;
@@ -52,7 +53,8 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
                 fontWeight: isSelected ? 500 : 400,
               }}
             >
-              {option.text}
+              {/* Also render options with the renderer */}
+              <MarkdownRenderer text={option.text} />
             </Button>
           );
         })}

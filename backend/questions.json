@@ -34912,32 +34912,6 @@
         "difficulty": 16
     },
     {
-        "id": "substances-in-common-use-9th-q042_revised",
-        "topicId": "substances-in-common-use-9th",
-        "text": "Which of the following is an example of an advanced ceramic material?",
-        "options": [
-            {
-                "id": "a",
-                "text": "Terracotta"
-            },
-            {
-                "id": "b",
-                "text": "Mangalore roofing tiles"
-            },
-            {
-                "id": "c",
-                "text": "Silicon Carbide (SiC)"
-            },
-            {
-                "id": "d",
-                "text": "Kaolin clay"
-            }
-        ],
-        "correctOptionId": "c",
-        "explanation": "Advanced ceramics include oxides like Alumina and Zirconia, and other compounds like silicon carbide (SiC) and boron carbide (B4C). Terracotta and roofing tiles are common ceramics. Kaolin is a raw material for porcelain. (Page 171)",
-        "difficulty": 16
-    },
-    {
         "id": "substances-in-common-use-9th-q043",
         "topicId": "substances-in-common-use-9th",
         "text": "The ionic compounds which do not contain H+ and OH- ions and contain only one kind of cation and anion are called:",
@@ -44243,5 +44217,57 @@
         "correctOptionId": "b",
         "explanation": "Astrosat launched by ISRO has ultraviolet and X-ray telescopes and detectors. Most of the parts used in this satellite are made in India. It is a unique system having different kinds of telescopes on a single satellite. (Page 214)",
         "difficulty": 15
+    },
+    {
+        "id": "calculus-intro-q001",
+        "topicId": "calculus-intro",
+        "text": "What is the result of the definite integral of $f(x) = 3x^2 + 2x + 5$ from $a=0$ to $b=2$? The formula for a definite integral is $\\int_{a}^{b} f(x) \\,dx = F(b) - F(a)$, where $F(x)$ is the antiderivative of $f(x)$.",
+        "options": [
+            {
+                "id": "a",
+                "text": "18"
+            },
+            {
+                "id": "b",
+                "text": "22"
+            },
+            {
+                "id": "c",
+                "text": "26"
+            },
+            {
+                "id": "d",
+                "text": "14"
+            }
+        ],
+        "correctOptionId": "b",
+        "explanation": "The antiderivative is $F(x) = x^3 + x^2 + 5x$. Evaluating at the limits: $F(2) = 2^3 + 2^2 + 5(2) = 8 + 4 + 10 = 22$. $F(0) = 0$. So, the result is $22 - 0 = 22$.",
+        "difficulty": 18
+    },
+    {
+        "id": "algebra-q001",
+        "topicId": "algebra",
+        "text": "The quadratic formula is used to solve equations of the form $ax^2 + bx + c = 0$. Which of the following correctly represents this formula?",
+        "options": [
+            {
+                "id": "a",
+                "text": "$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2c}$"
+            },
+            {
+                "id": "b",
+                "text": "$x = \\frac{b \\pm \\sqrt{b^2-4ac}}{2a}$"
+            },
+            {
+                "id": "c",
+                "text": "$x = \\frac{-b \\pm \\sqrt{b^2+4ac}}{2a}$"
+            },
+            {
+                "id": "d",
+                "text": "$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$"
+            }
+        ],
+        "correctOptionId": "d",
+        "explanation": "The correct quadratic formula provides the roots of a quadratic equation. The standard form is $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$. The other options contain common mistakes, such as dividing by 2c, having a plus sign under the square root, or missing the negative sign on the first 'b'.",
+        "difficulty": 14
     }
 ]

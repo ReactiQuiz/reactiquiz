@@ -6,6 +6,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import MarkdownRenderer from '../shared/MarkdownRenderer'; // <-- IMPORT
 
 function QuestionBreakdown({ detailedQuestionsToDisplay }) {
   const theme = useTheme();
@@ -14,7 +15,7 @@ function QuestionBreakdown({ detailedQuestionsToDisplay }) {
   const neutralColor = theme.palette.grey[700];
 
   if (!detailedQuestionsToDisplay || detailedQuestionsToDisplay.length === 0) {
-    return <Typography sx={{textAlign: 'center', my: 2}}>No question breakdown available for this result.</Typography>;
+    return <Typography sx={{ textAlign: 'center', my: 2 }}>No question breakdown available for this result.</Typography>;
   }
 
   return (
@@ -31,8 +32,10 @@ function QuestionBreakdown({ detailedQuestionsToDisplay }) {
               <Chip icon={<HighlightOffIcon />} label="Incorrect" color="error" size="small" variant="outlined" />
             ) : (<Chip label="Not Answered" size="small" variant="outlined" />)}
           </Box>
-          <Typography variant="body1" sx={{ mb: 2, color: theme.palette.text.primary, whiteSpace: 'pre-wrap' }}>{result.text}</Typography>
-          
+          <Box sx={{ mb: 2, color: theme.palette.text.primary, whiteSpace: 'pre-wrap' }}>
+            <MarkdownRenderer text={result.text} />
+          </Box>
+
           {/* Robust check for options before mapping */}
           {Array.isArray(result.options) && result.options.length > 0 ? (
             <List dense sx={{ py: 0, mb: result.explanation ? 1.5 : 0 }}>
@@ -54,19 +57,20 @@ function QuestionBreakdown({ detailedQuestionsToDisplay }) {
                 return (
                   <ListItem key={opt.id} sx={{ my: 0.5, borderRadius: theme.shape.borderRadius, py: 1, px: 1.5, border: `1px solid ${theme.palette.divider}`, transition: 'background-color 0.2s, border-color 0.2s', ...optionStyle }} >
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 1.5, alignItems: 'center' }}>{icon}</ListItemIcon>
-                    <ListItemText primary={opt.text} primaryTypographyProps={{ variant: 'body1', fontWeight: isUserSelected ? 'bold' : 'normal', color: optionStyle.color || theme.palette.text.primary, whiteSpace: 'pre-wrap' }} />
+                    <ListItemText primary={<MarkdownRenderer text={opt.text} />} primaryTypographyProps={{ variant: 'body1', fontWeight: isUserSelected ? 'bold' : 'normal', color: optionStyle.color || theme.palette.text.primary, whiteSpace: 'pre-wrap' }}
+                    />
                   </ListItem>
                 );
               })}
             </List>
           ) : (
-            <Typography variant="body2" color="text.secondary" sx={{fontStyle: 'italic'}}>Options not available for this question.</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>Options not available for this question.</Typography>
           )}
 
           {result.explanation && (
             <Paper elevation={0} sx={{ mt: 1.5, p: 1.5, backgroundColor: alpha(theme.palette.info.dark, 0.2), borderRadius: 1 }}>
               <Typography variant="subtitle2" sx={{ color: theme.palette.info.light, fontWeight: 'bold', mb: 0.5 }}>Explanation:</Typography>
-              <Typography variant="body2" sx={{ color: theme.palette.text.secondary, whiteSpace: 'pre-wrap' }}>{result.explanation}</Typography>
+              <MarkdownRenderer text={result.explanation} />
             </Paper>
           )}
           <Divider sx={{ mt: 2, display: index === detailedQuestionsToDisplay.length - 1 ? 'none' : 'block' }} />
