@@ -1,41 +1,37 @@
 // src/components/dashboard/OverallStatsCards.js
-import { Paper, Grid, Typography, useTheme } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 
-function OverallStatsCards({ totalQuizzes, averageScore, accentColor }) {
-  const theme = useTheme();
-  const effectiveAccentColor = accentColor || theme.palette.grey[700];
+function OverallStatsCards({ totalQuizzes, averageScore, accentColor, isFiltered }) {
+  const effectiveAccentColor = accentColor || '#757575'; // fallback grey
 
   return (
-    // This outer Paper is just a container for the Grid, helps with overall spacing/background
-    <Paper elevation={0} sx={{ p: {xs: 0, sm: 0}, mb: 3, backgroundColor: 'transparent'}}> {/* Changed to transparent, padding to 0 */}
-      <Grid container> {/* spacing between the two cards */}
+    <>
         {/* Card 1: Total Quizzes Solved */}
-        <Grid width='49.5%'> {/* Takes full width on xs, half width on sm and up */}
-          <Paper sx={{ p: {xs: 2, sm: 2.5}, textAlign: 'center', height: '100%', borderTop: `4px solid ${effectiveAccentColor}` }}>
-            <Typography variant="h6" color="text.secondary" sx={{fontSize: {xs: '1rem', sm: '1.125rem'}}}>Total Quizzes Solved</Typography>
-            <Typography variant="h3" sx={{ color: effectiveAccentColor, fontWeight: 'bold', fontSize: {xs: '2rem', sm: '2.5rem'} }}>
-              {totalQuizzes}
+        <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${effectiveAccentColor}` }}>
+            <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
+                Total Quizzes Solved
             </Typography>
-            <Typography variant="caption" color="text.secondary">(in selected period)</Typography>
-          </Paper>
-        </Grid>
-
-        <Grid width='1%'>
-
-        </Grid>
+            <Typography variant="h3" sx={{ color: effectiveAccentColor, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>
+                {totalQuizzes}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+                {isFiltered ? '(in selected filter)' : '(in selected period)'}
+            </Typography>
+        </Paper>
 
         {/* Card 2: Overall Average Score */}
-        <Grid width='49.5%'> {/* Takes full width on xs, half width on sm and up */}
-          <Paper sx={{ p: {xs:2, sm:2.5}, textAlign: 'center', height: '100%', borderTop: `4px solid ${effectiveAccentColor}` }}>
-            <Typography variant="h6" color="text.secondary" sx={{fontSize: {xs: '1rem', sm: '1.125rem'}}}>Overall Average Score</Typography>
-            <Typography variant="h3" sx={{ color: effectiveAccentColor, fontWeight: 'bold', fontSize: {xs: '2rem', sm: '2.5rem'} }}>
-              {averageScore}%
+        <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${effectiveAccentColor}` }}>
+            <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
+                Overall Average Score
             </Typography>
-            <Typography variant="caption" color="text.secondary">(in selected period)</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Paper>
+            <Typography variant="h3" sx={{ color: effectiveAccentColor, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>
+                {averageScore}%
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+                {isFiltered ? '(in selected filter)' : '(in selected period)'}
+            </Typography>
+        </Paper>
+    </>
   );
 }
 

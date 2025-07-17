@@ -1,20 +1,18 @@
 // src/pages/FriendsPage.js
-import { Box, Typography, Paper, Divider, useTheme, Alert } from '@mui/material';
+import { Box, Typography, Paper, Divider, useTheme } from '@mui/material';
 import GroupIcon from '@mui/icons-material/Group';
 
-import { useFriends } from '../hooks/useFriends'; // <-- Import the new hook
-
-// Import Presentational Components
+import { useFriends } from '../hooks/useFriends';
 import FriendSearch from '../components/friends/FriendSearch';
 import PendingRequestsList from '../components/friends/PendingRequestsList';
 import FriendsListDisplay from '../components/friends/FriendsListDisplay';
 import DeleteConfirmationDialog from '../components/shared/DeleteConfirmationDialog';
+import StatusAlert from '../components/shared/StatusAlert';
 
 function FriendsPage() {
   const theme = useTheme();
   const FRIENDS_ACCENT_COLOR = theme.palette.friendsAccent?.main || theme.palette.info.main;
 
-  // Use the custom hook to get all state and logic
   const {
     friendsList,
     isLoadingFriends,
@@ -41,11 +39,11 @@ function FriendsPage() {
 
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 } }}>
           <FriendSearch accentColor={FRIENDS_ACCENT_COLOR} />
-          
+
           <Divider sx={{ my: 3 }} />
 
-          {responseMessage.text && <Alert severity={responseMessage.type} sx={{ mb: 2 }}>{responseMessage.text}</Alert>}
-          
+          {responseMessage.text && <StatusAlert severity={responseMessage.type} message={responseMessage.text} sx={{ mb: 2 }} />}
+
           <PendingRequestsList
             requests={pendingRequests}
             isLoading={isLoadingRequests}
@@ -53,9 +51,9 @@ function FriendsPage() {
             onRespond={handleRespondToRequest}
             accentColor={FRIENDS_ACCENT_COLOR}
           />
-          
+
           <Divider sx={{ my: 3 }} />
-          
+
           <FriendsListDisplay
             friends={friendsList}
             isLoading={isLoadingFriends}

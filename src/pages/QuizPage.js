@@ -1,5 +1,5 @@
 // src/pages/QuizPage.js
-import { Box, Typography, Button, CircularProgress, Alert } from '@mui/material';
+import { Box, Typography, Button, CircularProgress, Alert, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { darken, useTheme } from '@mui/material/styles';
 
@@ -65,22 +65,24 @@ function QuizPage() {
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '900px', margin: 'auto' }}>
-      <QuizHeader
-        quizType={quizContext.quizType}
-        effectiveSubject={quizContext.subject}
-        effectiveTopicName={quizContext.topicName}
-        effectiveQuizClass={quizContext.quizClass}
-        effectiveDifficulty={quizContext.difficulty}
-        questionsLength={questions.length}
-        currentChallengeDetails={quizContext.challengeId ? quizContext : null}
-        currentUser={currentUser}
-        timerActive={timerActive}
-        elapsedTime={elapsedTime}
-        effectiveTimeLimit={quizContext.timeLimit}
-        accentColor={accentColor}
-        infoMessage={infoMessage}
-        onAbandon={handleAbandonQuiz}
-      />
+      <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 }, mb: 3, borderTop: `4px solid ${accentColor}` }}>
+        <QuizHeader
+          quizType={quizContext.quizType}
+          effectiveSubject={quizContext.subject}
+          effectiveTopicName={quizContext.topicName}
+          effectiveQuizClass={quizContext.quizClass}
+          effectiveDifficulty={quizContext.difficulty}
+          questionsLength={questions.length}
+          currentChallengeDetails={quizContext.challengeId ? quizContext : null}
+          currentUser={currentUser}
+          timerActive={timerActive}
+          elapsedTime={elapsedTime}
+          effectiveTimeLimit={quizContext.timeLimit}
+          accentColor={accentColor}
+          infoMessage={infoMessage}
+          onAbandon={handleAbandonQuiz}
+        />
+      </Paper>
 
       <QuizQuestionList
         questions={questions}
@@ -99,10 +101,12 @@ function QuizPage() {
             backgroundColor: accentColor,
             color: theme.palette.getContrastText(accentColor),
             '&:hover': { backgroundColor: darken(accentColor, 0.15) },
-            minWidth: '200px',
+            minWidth: '220px',
+            py: 1.5,
+            fontSize: '1.1rem'
           }}
         >
-          {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Submit Quiz"}
+          {isSubmitting ? <CircularProgress size={26} color="inherit" /> : "Submit Quiz"}
         </Button>
       </Box>
     </Box>

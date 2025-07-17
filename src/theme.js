@@ -7,7 +7,8 @@ export const subjectAccentColors = {
   mathematics: '#ff9800',
   biology: '#4caf50',
   gk: '#FFEB3B',
-  default: '#90caf9', // Used for primary
+  homibhabha: '#f48fb1',
+  default: '#90caf9',
 };
 
 export const darkTheme = createTheme({
@@ -91,6 +92,11 @@ export const darkTheme = createTheme({
       main: subjectAccentColors.gk,
       light: lighten(subjectAccentColors.gk, 0.2),
       dark: darken(subjectAccentColors.gk, 0.1),
+      contrastText: '#000000',
+    }, aiCenterAccent: { // New AI Center Accent
+      main: '#00BFA5', // A teal color, for example
+      light: lighten('#00BFA5', 0.2),
+      dark: darken('#00BFA5', 0.15),
       contrastText: '#000000',
     },
     error: {

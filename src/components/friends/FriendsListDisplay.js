@@ -4,6 +4,8 @@ import {
   CircularProgress, Alert, Tooltip, useTheme
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import EmptyState from '../shared/EmptyState'; // Ensure this path is correct
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 function FriendsListDisplay({
   friends,
@@ -14,6 +16,16 @@ function FriendsListDisplay({
 }) {
   const theme = useTheme();
   const effectiveAccentColor = accentColor || theme.palette.info.main;
+
+  if (friends.length === 0) {
+    return (
+      <EmptyState
+        IconComponent={GroupAddIcon}
+        title="Your Friends List is Empty"
+        message="Use the search bar above to find and add friends to start challenging them!"
+      />
+    );
+  }
 
   return (
     <Box>
@@ -37,7 +49,7 @@ function FriendsListDisplay({
                   </IconButton>
                 </Tooltip>
               }
-              sx={{pr: '50px'}} // Ensure space for action
+              sx={{ pr: '50px' }} // Ensure space for action
             >
               <ListItemText primary={friend.friendUsername} />
             </ListItem>

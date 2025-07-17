@@ -1,5 +1,5 @@
 // src/pages/DashboardPage.js
-import { Box, Typography, Paper, CircularProgress, Alert, useTheme, Button } from '@mui/material';
+import { Box, Typography, Paper, CircularProgress, Alert, useTheme, Grid, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend } from 'chart.js';
 import 'chartjs-adapter-date-fns';
@@ -10,9 +10,12 @@ import { useDashboard } from '../hooks/useDashboard';
 import DashboardControls from '../components/dashboard/DashboardControls';
 import OverallStatsCards from '../components/dashboard/OverallStatsCards';
 import SubjectAveragesChart from '../components/dashboard/SubjectAveragesChart';
+import KpiCards from '../components/dashboard/KpiCards';
+import KpiDisplay from '../components/dashboard/KpiCards';
 import DashboardActivityChart from '../components/dashboard/DashboardActivityChart';
 import SubjectPerformanceGrid from '../components/dashboard/SubjectPerformanceGrid';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
+import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 
@@ -36,6 +39,8 @@ function DashboardPage() {
     fetchDashboardData,
     handleTimeFrequencyChange,
     handleGenerateReport,
+    handleSubjectChange,
+    selectedSubject,
   } = useDashboard(currentUser);
 
   if (isLoadingAuth) {
@@ -96,13 +101,100 @@ function DashboardPage() {
       <DashboardControls
         timeFrequency={timeFrequency}
         onTimeFrequencyChange={handleTimeFrequencyChange}
+        allSubjects={allSubjects}
+        selectedSubject={selectedSubject}
+        onSubjectChange={handleSubjectChange}
       />
 
-      <OverallStatsCards
-        totalQuizzes={processedStats.totalQuizzes}
-        averageScore={processedStats.overallAverageScore}
-        accentColor={DASHBOARD_ACCENT_COLOR}
-      />
+      {/* --- START OF UNIFIED GRID LAYOUT --- */}
+      <Grid container spacing={{
+        xs: '1%',
+        sm: '1%',
+        md: '0.667%',
+        lg: '0.667%',
+        xl: '0.667%'
+      }} sx={{ mb: 3 }}>
+        <Grid item
+          width={{
+            xs: '49.5%',
+            sm: '49.5%',
+            md: '24.5%',
+            lg: '24.5%',
+            xl: '24.5%'
+          }}>
+          <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
+            <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
+              Total Quizzes Solved
+            </Typography>
+            <Typography variant="h3" sx={{ color: DASHBOARD_ACCENT_COLOR, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>
+              {processedStats.totalQuizzes}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {selectedSubject !== 'all' ? '(in selected filter)' : '(in selected period)'}
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item
+          width={{
+            xs: '49.5%',
+            sm: '49.5%',
+            md: '24.5%',
+            lg: '24.5%',
+            xl: '24.5%'
+          }}
+        >
+          <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
+            <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
+              Overall Average Score
+            </Typography>
+            <Typography variant="h3" sx={{ color: DASHBOARD_ACCENT_COLOR, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>
+              {processedStats.overallAverageScore}%
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {selectedSubject !== 'all' ? '(in selected filter)' : '(in selected period)'}
+            </Typography>
+          </Paper>
+        </Grid>
+
+        {/* Conditionally render KPI cards in the same grid. Each gets its own Grid item. */}
+        {selectedSubject === 'all' && (
+          <>
+            <Grid item
+              width={{
+                xs: '49.5%',
+                sm: '49.5%',
+                md: '24.5%',
+                lg: '24.5%',
+                xl: '24.5%'
+              }}
+              mt={{ xs: 2, sm: 2, md: 0, lg: 0, xl: 0 }}>
+              <KpiDisplay bestSubject={processedStats.bestSubject} />
+            </Grid>
+            <Grid item
+              width={{
+                xs: '49.5%',
+                sm: '49.5%',
+                md: '24.5%',
+                lg: '24.5%',
+                xl: '24.5%'
+              }}
+              mt={{ xs: 2, sm: 2, md: 0, lg: 0, xl: 0 }}>
+              <KpiDisplay weakestSubject={processedStats.weakestSubject} />
+            </Grid>
+          </>
+        )}
+      </Grid>
+      {/* --- END OF UNIFIED GRID LAYOUT --- */}
+
+      {/* Topic list is not in the grid, it's a full-width item */}
+      {
+        selectedSubject !== 'all' && (
+          <TopicPerformanceList
+            topics={processedStats.topicPerformance}
+            subjectName={allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}
+          />
+        )
+      }
 
       <Box ref={activityChartRef}>
         <DashboardActivityChart
@@ -111,24 +203,23 @@ function DashboardPage() {
         />
       </Box>
 
-      <Box ref={subjectAveragesChartRef}>
-        <SubjectAveragesChart
-          chartData={processedStats.subjectAverageScoreChartData}
-          chartOptions={subjectAverageScoreChartOptions}
-        />
-      </Box>
-
-      <SubjectPerformanceGrid
-        subjectStats={processedStats.subjectStats}
-        subjectsToShow={allSubjects}
-      />
+      {
+        selectedSubject === 'all' && (
+          <Box ref={subjectAveragesChartRef}>
+            <SubjectAveragesChart
+              chartData={processedStats.subjectAverageScoreChartData}
+              chartOptions={subjectAverageScoreChartOptions}
+            />
+          </Box>
+        )
+      }
 
       <GenerateReportButton
         onGenerate={handleGenerateReport}
         isLoading={isGeneratingPdf}
         accentColor={DASHBOARD_ACCENT_COLOR}
       />
-    </Box>
+    </Box >
   );
 }
 

@@ -52,7 +52,7 @@ function ForgotPasswordForm({
   }
 
   return (
-    <Box component="form" onSubmit={handleReset} noValidate sx={{ mt: 1 }}>
+    <Box component="form" onSubmit={handleReset} noValidate sx={{ mt: 1 }} width="100%">
       {successMessage && <Alert severity="success" sx={{ mb: 2 }}>{successMessage}</Alert>}
       <TextField margin="normal" required fullWidth id="forgot-otp" label="6-Digit OTP" name="forgotOtp" type="tel"
         inputProps={{ maxLength: 6 }} value={otp} onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))} error={!!formError}

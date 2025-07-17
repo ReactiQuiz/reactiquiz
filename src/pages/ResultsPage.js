@@ -100,7 +100,7 @@ function ResultsPage() {
     <>
       {showAnimation && <ResultRevealOverlay onAnimationComplete={handleAnimationComplete} />}
 
-      <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth:'900px', margin: 'auto', mt: 2, visibility: showAnimation ? 'hidden' : 'visible' }}>
+      <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, margin: 'auto', mt: 2, visibility: showAnimation ? 'hidden' : 'visible' }}>
         {renderContent()}
       </Box>
 
@@ -108,9 +108,9 @@ function ResultsPage() {
         open={deleteConfirmationOpen}
         onClose={closeDeleteConfirmation}
         onConfirm={handleConfirmDelete}
-        error={deleteError}
         title="Confirm Deletion"
-        message="Are you sure you want to permanently delete this quiz result?"
+        message={`Are you sure you want to permanently delete this quiz result? This action cannot be undone.`}
+        error={deleteError}
       />
 
       {quizDataForChallenge && (

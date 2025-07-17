@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box, Card
 import SchoolIcon from '@mui/icons-material/School';
 import StyleIcon from '@mui/icons-material/Style';
 import PrintIcon from '@mui/icons-material/Print'; // <-- Import new icon
+import React from 'react'; // <-- Import React
 
 function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, accentColor }) { // <-- Add onPrintQuestions prop
   const theme = useTheme();
@@ -67,4 +68,4 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, ac
   );
 }
 
-export default TopicCard;
+export default React.memo(TopicCard);

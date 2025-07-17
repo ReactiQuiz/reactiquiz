@@ -1,14 +1,15 @@
 // src/components/friends/FriendSearch.js
 import { useState } from 'react';
 import {
-  Box, Typography, TextField, Button, Alert, CircularProgress,
+  Box, Typography, TextField, Button, CircularProgress,
   List, ListItem, ListItemText, Tooltip, useTheme
 } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import apiClient from '../../api/axiosInstance'; // Adjust path if needed
-import { useAuth } from '../../contexts/AuthContext'; // Adjust path if needed
+import apiClient from '../../api/axiosInstance';
+import { useAuth } from '../../contexts/AuthContext';
+import StatusAlert from '../shared/StatusAlert'; // Import the new component
 
 function FriendSearch({ accentColor }) {
   const theme = useTheme();
@@ -17,7 +18,7 @@ function FriendSearch({ accentColor }) {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [isSearchingUsers, setIsSearchingUsers] = useState(false);
   const [friendSearchError, setFriendSearchError] = useState('');
-  const [friendRequestStatus, setFriendRequestStatus] = useState({}); // Tracks status per user
+  const [friendRequestStatus, setFriendRequestStatus] = useState({});
 
   const effectiveAccentColor = accentColor || theme.palette.info.main;
 
@@ -33,7 +34,7 @@ function FriendSearch({ accentColor }) {
     }
     setIsSearchingUsers(true);
     setFriendSearchError('');
-    setFriendRequestStatus({}); // Reset statuses on new search
+    setFriendRequestStatus({});
     try {
       const response = await apiClient.get(`/api/users/search?username=${friendSearchTerm.trim()}`, {
         headers: { Authorization: `Bearer ${currentUser.token}` }
@@ -57,8 +58,7 @@ function FriendSearch({ accentColor }) {
     }
     setFriendRequestStatus(prev => ({ ...prev, [receiverUsername]: 'sending' }));
     try {
-      // eslint-disable-next-line
-      const response = await apiClient.post('/api/friends/request',
+      await apiClient.post('/api/friends/request',
         { receiverUsername },
         { headers: { Authorization: `Bearer ${currentUser.token}` } }
       );
@@ -94,47 +94,46 @@ function FriendSearch({ accentColor }) {
           {isSearchingUsers ? <CircularProgress size={20} color="inherit" /> : "Search"}
         </Button>
       </Box>
-      {friendSearchError && <Alert severity="info" sx={{ mb: 1 }}>{friendSearchError}</Alert>}
+      {friendSearchError && <StatusAlert severity="info" message={friendSearchError} sx={{ mb: 1 }} />}
       {searchedUsers.length > 0 && (
-        <List dense sx={{ maxHeight: 200, overflow: 'auto', border: `1px solid ${theme.palette.divider}`, borderRadius: 1, mt:1 }}>
+        <List dense sx={{ maxHeight: 200, overflow: 'auto', border: `1px solid ${theme.palette.divider}`, borderRadius: 1, mt:1, p: 0.5 }}>
           {searchedUsers.map(user => {
             let buttonText = 'Add Friend';
             let buttonDisabled = false;
-            let buttonColor = "primary"; // Default color
             const currentStatus = friendRequestStatus[user.identifier];
+            let tooltipTitle = 'Send a friend request';
+            let buttonSx = { minWidth: '130px', textTransform: 'none' };
 
             if (currentStatus === 'sending') {
-              buttonText = 'Sending...'; buttonDisabled = true;
+              buttonText = 'Sending...'; buttonDisabled = true; tooltipTitle = 'Please wait...';
             } else if (currentStatus === 'sent') {
-              buttonText = 'Request Sent'; buttonDisabled = true; buttonColor = "success";
+              buttonText = 'Request Sent'; buttonDisabled = true; tooltipTitle = 'Your request has been sent!'; buttonSx.color = theme.palette.success.main;
             } else if (currentStatus && currentStatus !== 'Login required') {
-              buttonText = currentStatus; buttonDisabled = true; buttonColor = "error"; // If status is an error message
+              buttonText = 'Add Friend'; buttonDisabled = false; tooltipTitle = currentStatus; // Show error in tooltip
             } else if (currentStatus === 'Login required') {
-              buttonText = 'Login Required'; buttonDisabled = true; buttonColor = "warning";
+              buttonText = 'Login Required'; buttonDisabled = true; tooltipTitle = 'You must be logged in.';
             }
-
 
             return (
               <ListItem
                 key={user.id}
                 secondaryAction={
-                  <Tooltip title={buttonText} placement="top">
-                    <span> {/* Span for Tooltip on disabled button */}
+                  <Tooltip title={tooltipTitle} placement="top">
+                    <span>
                       <Button
                         size="small"
                         variant="outlined"
-                        color={buttonColor}
                         onClick={() => handleSendFriendRequest(user.identifier)}
                         disabled={buttonDisabled || !currentUser}
                         startIcon={currentStatus === 'sending' ? <CircularProgress size={16} color="inherit"/> : <PersonAddAlt1Icon />}
-                        sx={{ minWidth: '130px', textTransform: 'none' }}
+                        sx={buttonSx}
                       >
                         {buttonText}
                       </Button>
                     </span>
                   </Tooltip>
                 }
-                sx={{pr: '150px'}} // Ensure space for the action button
+                sx={{pr: '150px'}}
               >
                 <ListItemText primary={user.identifier} />
               </ListItem>

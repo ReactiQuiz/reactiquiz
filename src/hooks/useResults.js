@@ -17,10 +17,8 @@ export const useResults = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Use location.state directly to determine if animation should be shown
   const [showAnimation, setShowAnimation] = useState(location.state?.isFirstResultView === true);
 
-  // Other state initializations...
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [resultToDeleteId, setResultToDeleteId] = useState(null);
   const [deleteError, setDeleteError] = useState('');
@@ -36,13 +34,17 @@ export const useResults = () => {
         const allResults = response.data || [];
         const foundResult = allResults.find(r => String(r.id) === String(id));
         if (!foundResult) throw new Error(`Result with ID ${id} not found or you do not have permission to view it.`);
+        
+        // Use the new subject-aware topic endpoint if available, otherwise fallback
         const questionsResponse = await apiClient.get(`/api/questions?topicId=${foundResult.topicId}`);
         const allTopicQuestions = parseQuestionOptionsForResults(questionsResponse.data || []);
+        
         const populatedQuestions = (foundResult.questionsActuallyAttemptedIds || []).map(qId => {
             const fullData = allTopicQuestions.find(q => q.id === qId) || { id: qId, text: `Question data (ID: ${qId}) not found.`, options: []};
             const userAnswerId = foundResult.userAnswersSnapshot ? foundResult.userAnswersSnapshot[qId] : null;
             return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: !!userAnswerId };
         });
+
         setDetailData({
             result: {...foundResult, topicName: formatDisplayTopicName(foundResult.topicId, foundResult.topicName, !!foundResult.challenge_id, foundResult)},
             detailedQuestions: populatedQuestions
@@ -76,8 +78,6 @@ export const useResults = () => {
   useEffect(() => {
     const stateData = location.state;
 
-    // --- THIS IS THE CORRECTED LOGIC ---
-    // Priority 1: Handle a fresh result passed directly in the location state.
     if (stateData && stateData.originalQuestionsForDisplay) {
         setShowAnimation(stateData.isFirstResultView === true);
         
@@ -88,11 +88,9 @@ export const useResults = () => {
         setView('detail');
         setIsLoading(false);
     } 
-    // Priority 2: Handle a result requested by ID from the URL (e.g., refresh, link).
     else if (resultId) {
         fetchResultById(resultId);
     } 
-    // Priority 3: Default to showing the historical list.
     else {
         fetchHistoricalList();
     }
@@ -105,10 +103,10 @@ export const useResults = () => {
     }
   };
 
-  const handleBackToList = () => navigate('/results');
+  const handleBackToList = () => navigate('/results', { replace: true });
   const handleNavigateHome = () => navigate('/');
   const openDeleteConfirmation = (id) => { setResultToDeleteId(id); setDeleteConfirmationOpen(true); };
-  const closeDeleteConfirmation = () => setDeleteConfirmationOpen(false);
+  const closeDeleteConfirmation = () => { setDeleteConfirmationOpen(false); setDeleteError(''); };
   const handleConfirmDelete = async () => { if (!resultToDeleteId || !currentUser?.token) return; try { await apiClient.delete(`/api/results/${resultToDeleteId}`, { headers: { Authorization: `Bearer ${currentUser.token}` } }); closeDeleteConfirmation(); handleBackToList(); } catch (err) { setDeleteError(err.response?.data?.message || "Failed to delete result."); } };
   const handleOpenChallengeSetup = (sourceResult) => { const questionIds = Array.isArray(sourceResult.originalQuestionsForDisplay) ? sourceResult.originalQuestionsForDisplay.map(q => q.id) : sourceResult.questionsActuallyAttemptedIds; if (!questionIds?.length) { alert("No questions found to base a challenge on."); return; } setQuizDataForChallenge({ topicId: sourceResult.topicId, topicName: formatDisplayTopicName(sourceResult.topicId, sourceResult.topicName, !!sourceResult.challenge_id, sourceResult), difficulty: sourceResult.difficulty, numQuestions: questionIds.length, quizClass: sourceResult.class || sourceResult.quizClass, questionIds: questionIds, subject: sourceResult.subject }); setChallengeSetupModalOpen(true); };
   const handleCloseChallengeSetupModal = () => setChallengeSetupModalOpen(false);

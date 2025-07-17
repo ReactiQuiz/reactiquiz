@@ -17,7 +17,9 @@ function AppContent() {
 
   const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
 
-  // Updated to check for the new base path
+  // Check for auth pages to implement a different layout
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  // Homepage check for other layout decisions
   const isHomePage = location.pathname === '/' || location.pathname === '/reactiquiz/';
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
@@ -32,6 +34,19 @@ function AppContent() {
     );
   }
 
+  // If it's an auth page, render only the routes within a full-height box
+  if (isAuthPage) {
+    return (
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Box sx={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
+          <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
+        </Box>
+      </ThemeProvider>
+    );
+  }
+
+  // Default layout for all other pages
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -43,8 +58,10 @@ function AppContent() {
           forceLoginButton={isHomePage && !currentUser}
         />
         <Toolbar />
-        {!isHomePage && <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />}
-        <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
+        <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          {!isHomePage && <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />}
+          <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
+        </Box>
         <Footer />
       </Box>
       {currentUser && (
@@ -60,7 +77,6 @@ function AppContent() {
 
 function App() {
   return (
-    // Set the basename for the entire application
     <Router basename="/reactiquiz">
       <AuthProvider>
         <AppContent />

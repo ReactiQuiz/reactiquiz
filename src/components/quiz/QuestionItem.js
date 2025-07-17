@@ -1,8 +1,9 @@
+// src/components/quiz/QuestionItem.js
 import {
   Box, Typography, Button, Paper, useTheme
 } from '@mui/material';
 import {
-  lighten, darken
+  lighten, darken, alpha
 } from '@mui/material/styles';
 
 const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOptionId, accentColor }) => {
@@ -10,11 +11,11 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
   return (
-    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3, width: '100%' }}>
-      <Typography variant="h6" gutterBottom component="div" sx={{ color: effectiveAccentColor, fontWeight: 500 }}>
+    <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3, width: '100%', borderRadius: 2 }}>
+      <Typography variant="h6" gutterBottom component="div" sx={{ color: theme.palette.text.secondary, fontWeight: 500 }}>
         Question {questionNumber}:
       </Typography>
-      <Typography variant="body1" sx={{ mb: 2.5, color: theme.palette.text.primary }}>
+      <Typography variant="body1" sx={{ mb: 2.5, color: theme.palette.text.primary, fontSize: '1.1rem', whiteSpace: 'pre-wrap' }}>
         {question.text}
       </Typography>
       <Box display="flex" flexDirection="column" gap={1.5}>
@@ -30,10 +31,12 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
                 justifyContent: 'flex-start',
                 textAlign: 'left',
                 py: 1.5,
-                borderColor: effectiveAccentColor,
+                px: 2,
+                borderRadius: '8px',
+                borderColor: alpha(effectiveAccentColor, 0.5),
                 color: isSelected
                   ? theme.palette.getContrastText(effectiveAccentColor)
-                  : effectiveAccentColor,
+                  : theme.palette.text.primary,
                 backgroundColor: isSelected
                   ? effectiveAccentColor
                   : 'transparent',
@@ -41,7 +44,7 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
                   borderColor: effectiveAccentColor,
                   backgroundColor: isSelected
                     ? darken(effectiveAccentColor, 0.15)
-                    : lighten(effectiveAccentColor, 0.9),
+                    : alpha(effectiveAccentColor, 0.08),
                 },
                 textTransform: 'none',
                 fontSize: '1rem',
