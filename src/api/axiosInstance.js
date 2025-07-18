@@ -1,21 +1,20 @@
 // src/api/axiosInstance.js
 import axios from 'axios';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const PROD_BACKEND_BASE_URL = 'https://reactiquiz.vercel.app'; // Your Vercel URL
-
-let effectiveBaseURL;
-
-if (isProduction) {
-  effectiveBaseURL = PROD_BACKEND_BASE_URL;
-} else {
-  // For development, point to the frontend's host.
-  // The proxy will intercept paths starting with /api.
-  effectiveBaseURL = 'http://localhost:3001';
-}
-
 const apiClient = axios.create({
-  baseURL: effectiveBaseURL,
+  // Use a relative URL. This is the key.
+  // In development, the proxy in package.json will catch this and forward to localhost:3001.
+  // In production, Vercel will route /api/... to your serverless functions.
+  baseURL: '/', 
 });
+
+// If you have a Supabase auth token, you can set it here globally
+// apiClient.interceptors.request.use(config => {
+//   const token = getSupabaseTokenFromStorage(); // Your logic to get the token
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 
 export default apiClient;
