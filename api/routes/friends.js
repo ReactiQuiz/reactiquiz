@@ -171,4 +171,4 @@ router.delete('/unfriend/:friendUserId', verifySupabaseToken, async (req, res) =
     res.status(200).json({ message: 'Successfully unfriended.' });
 });
 
-export default router;
+module.exports = router;

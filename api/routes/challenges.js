@@ -41,4 +41,4 @@ router.post('/', verifySupabaseToken, async (req, res) => {
 // ... you would continue to build out the other challenge routes (get pending, submit score, etc.)
 // following the same pattern of using the supabase client.
 
-export default router;
+module.exports = router;

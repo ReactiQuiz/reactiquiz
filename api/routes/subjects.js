@@ -22,4 +22,4 @@ router.get('/', async (req, res) => {
     res.json(data || []);
 });
 
-export default router;
+module.exports = router;

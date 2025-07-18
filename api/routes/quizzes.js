@@ -104,4 +104,4 @@ router.get('/results', verifySupabaseToken, async (req, res) => {
     res.json(data);
 });
 
-export default router;
+module.exports = router;

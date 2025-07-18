@@ -64,4 +64,4 @@ router.post('/chat', verifySupabaseToken, async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;

@@ -71,4 +71,4 @@ router.get('/search', verifySupabaseToken, async (req, res) => {
 
 // Add other user routes (like update profile) here...
 
-export default router;
+module.exports = router;

@@ -36,7 +36,9 @@ function log(debuggerInstance, status, message, details = '') {
     console.log(`${nsStr}${statusStr}${msgStr}${chalk.dim.gray(details)}`);
 }
 
-export const logInfo = (status, message, details) => log(infoDebugger, status, message, details);
-export const logError = (status, message, details) => log(errorDebugger, status, message, details);
-export const logDb = (status, message, details) => log(dbDebugger, status, message, details);
-export const logApi = (status, message, details) => log(apiDebugger, status, message, details);
+module.exports = {
+    logInfo: (status, message, details) => log(infoDebugger, status, message, details),
+    logError: (status, message, details) => log(errorDebugger, status, message, details),
+    logDb: (status, message, details) => log(dbDebugger, status, message, details),
+    logApi: (status, message, details) => log(apiDebugger, status, message, details),
+};
