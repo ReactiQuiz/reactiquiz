@@ -1,5 +1,5 @@
 {
-"name": "reactiquiz",
+  "name": "reactiquiz",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
@@ -48,13 +48,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "nodemon backend/server.js",
+    "start": "react-scripts start",
     "frontend": "cross-env HOST=0.0.0.0 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "backend": "node backend/server.js",
-    "backend:dev": "nodemon backend/server.js",
+    "backend:dev": "nodemon api/index.js",
+    "backend:dev:watch": "nodemon --watch api --exec 'node api/index.js'",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "deploy:backend": "bash deploy-backend.sh",
