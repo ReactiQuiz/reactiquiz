@@ -8,15 +8,15 @@ const cors = require('cors');
 const { logApi, logInfo, logError } = require('./_utils/logger');
 
 // Import all individual route handlers
-const userRoutes = require('./routes/users');
-const subjectRoutes = require('./routes/subjects');
-const topicRoutes = require('./routes/topics');
-const questionRoutes = require('./routes/questions');
-const resultRoutes = require('./routes/results');
-const friendRoutes = require('./routes/friends');
-const challengeRoutes = require('./routes/challenges');
-const contactRoutes = require('./routes/contact');
-const aiRoutes = require('./routes/ai');
+// const userRoutes = require('./routes/users');
+// const subjectRoutes = require('./routes/subjects');
+// const topicRoutes = require('./routes/topics');
+// const questionRoutes = require('./routes/questions');
+// const resultRoutes = require('./routes/results');
+// const friendRoutes = require('./routes/friends');
+// const challengeRoutes = require('./routes/challenges');
+// const contactRoutes = require('./routes/contact');
+// const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
