@@ -13,7 +13,6 @@ const friendRoutes = require('./routes/friends');
 const challengeRoutes = require('./routes/challenges');
 const contactRoutes = require('./routes/contact');
 const aiRoutes = require('./routes/ai');
-const subjectRoutes = require('./routes/subjects');
 const topicRoutes = require('./routes/topics');
 const questionRoutes = require('./routes/questions');
 
