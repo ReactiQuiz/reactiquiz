@@ -10,10 +10,18 @@ const cors = require('cors');
 
 // Use a try-catch block for robustness during the Vercel build
 let logApi, logInfo, logError;
+try {
+    const logger = require('./_utils/logger');
+    logApi = logger.logApi;
+    logInfo = logger.logInfo;
+    logError = logger.logError;
+} catch (e) {
+    // Fallback to console.log if logger fails
     console.log("Logger failed to initialize, falling back to console.log");
     logApi = (...args) => console.log('[API]', ...args);
     logInfo = (...args) => console.log('[INFO]', ...args);
     logError = (...args) => console.error('[ERROR]', ...args);
+}
 
 // Import all individual route handlers
 const userRoutes = require('./routes/users');
@@ -51,6 +59,12 @@ app.get('/api/health', (req, res) => {
 // --- Final 404 Catcher for API routes ---
 app.use('/api/*', (req, res) => {
     res.status(404).json({ message: `API endpoint not found at ${req.originalUrl}` });
+});
+
+// A global error handler
+app.use((err, req, res, next) => {
+    logError('FATAL', 'An unhandled server error occurred', err.stack);
+    res.status(500).json({ message: 'Internal Server Error' });
 });
 
 // Export the configured app for Vercel
