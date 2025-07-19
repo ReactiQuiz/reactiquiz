@@ -53,11 +53,5 @@ app.use('/api/*', (req, res) => {
     res.status(404).json({ message: `API endpoint not found at ${req.originalUrl}` });
 });
 
-// A global error handler
-app.use((err, req, res, next) => {
-    logError('FATAL', 'An unhandled server error occurred', err.stack);
-    res.status(500).json({ message: 'Internal Server Error' });
-});
-
 // Export the configured app for Vercel
 module.exports = app;
