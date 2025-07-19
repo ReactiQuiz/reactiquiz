@@ -37,15 +37,15 @@ app.use((req, res, next) => {
 
 // --- API Route Registration ---
 // Each resource gets its own clear, top-level endpoint.
-app.use('/api/users', userRoutes);
-app.use('/api/subjects', subjectRoutes);
-app.use('/api/topics', topicRoutes);
-app.use('/api/questions', questionRoutes);
-app.use('/api/results', resultRoutes);
-app.use('/api/friends', friendRoutes);
-app.use('/api/challenges', challengeRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/ai', aiRoutes);
+// app.use('/api/users', userRoutes);
+// app.use('/api/subjects', subjectRoutes);
+// app.use('/api/topics', topicRoutes);
+// app.use('/api/questions', questionRoutes);
+// app.use('/api/results', resultRoutes);
+// app.use('/api/friends', friendRoutes);
+// app.use('/api/challenges', challengeRoutes);
+// app.use('/api/contact', contactRoutes);
+// app.use('/api/ai', aiRoutes);
 
 // --- Health Check Endpoint ---
 // A simple route to confirm the API is running.
