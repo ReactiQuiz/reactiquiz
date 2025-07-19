@@ -6,35 +6,6 @@ import { logApi, logError } from '../_utils/logger.js';
 
 const router = Router();
 
-// Fetch all topics or topics for a specific subject
-router.get('/topics/:subject?', async (req, res) => {
-    const { subject } = req.params;
-    logApi('GET', subject ? `/api/topics/${subject}` : '/api/topics');
-    
-    let query = supabase.from('quiz_topics').select('*');
-    if (subject) {
-        // Find the subject's ID first from the subjects table
-        const { data: subjectData, error: subjectError } = await supabase
-            .from('subjects')
-            .select('id')
-            .eq('subjectKey', subject)
-            .single();
-        
-        if (subjectError || !subjectData) {
-            return res.status(404).json({ message: 'Subject not found' });
-        }
-        query = query.eq('subject_id', subjectData.id);
-    }
-    
-    const { data, error } = await query.order('name');
-    
-    if (error) {
-        logError('DB ERROR', 'Fetching topics failed', error.message);
-        return res.status(500).json({ message: 'Could not fetch topics.' });
-    }
-    res.json(data);
-});
-
 // Fetch questions for a specific topic
 router.get('/questions', async (req, res) => {
     const { topicId } = req.query;

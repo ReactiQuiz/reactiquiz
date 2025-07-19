@@ -1,6 +1,6 @@
 // api/index.js
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Corrected path to root .env
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
 const { logApi, logInfo, logError } = require('./_utils/logger');
@@ -13,6 +13,9 @@ const friendRoutes = require('./routes/friends');
 const challengeRoutes = require('./routes/challenges');
 const contactRoutes = require('./routes/contact');
 const aiRoutes = require('./routes/ai');
+const subjectRoutes = require('./routes/subjects');
+const topicRoutes = require('./routes/topics');
+const questionRoutes = require('./routes/questions');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -32,8 +35,10 @@ app.use((req, res, next) => {
 
 // --- API Routes ---
 app.use('/api/users', userRoutes);
-app.use('/api/quizzes', quizRoutes);
 app.use('/api/subjects', subjectRoutes);
+app.use('/api/topics', topicRoutes);
+app.use('/api/questions', questionRoutes);
+app.use('/api/results', quizResultRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api/challenges', challengeRoutes);
 app.use('/api/contact', contactRoutes);
