@@ -7,7 +7,7 @@ const { logApi, logInfo, logError } = require('./_utils/logger');
 
 // Import all route handlers using require
 const userRoutes = require('./routes/users');
-const quizRoutes = require('./routes/quizzes');
+const resultRoutes = require('./routes/results');
 const subjectRoutes = require('./routes/subjects');
 const friendRoutes = require('./routes/friends');
 const challengeRoutes = require('./routes/challenges');
@@ -37,7 +37,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/questions', questionRoutes);
-app.use('/api/results', quizResultRoutes);
+app.use('/api/results', resultRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api/challenges', challengeRoutes);
 app.use('/api/contact', contactRoutes);
