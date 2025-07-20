@@ -9,6 +9,48 @@ const { verifyToken } = require('../_middleware/auth');
 
 const router = Router();
 
+// This new route provides statistics for the logged-in user's account page.
+router.get('/stats', verifyToken, async (req, res) => {
+    const userId = req.user.id;
+    logApi('GET', '/api/users/stats', `User: ${userId}`);
+
+    try {
+        const statsResult = await turso.execute({
+            sql: `SELECT COUNT(*) as totalQuizzesSolved, AVG(percentage) as overallAveragePercentage FROM quiz_results WHERE user_id = ?;`,
+            args: [userId]
+        });
+
+        const activityResult = await turso.execute({
+            sql: "SELECT timestamp FROM quiz_results WHERE user_id = ? ORDER BY timestamp ASC;",
+            args: [userId]
+        });
+
+        const stats = statsResult.rows[0];
+        const activity = activityResult.rows;
+
+        const countsByDay = {};
+        if (activity) {
+            activity.forEach(r => {
+                try {
+                    const datePart = r.timestamp.substring(0, 10);
+                    countsByDay[datePart] = (countsByDay[datePart] || 0) + 1;
+                } catch (e) {}
+            });
+        }
+        const activityData = Object.entries(countsByDay).map(([date, count]) => ({ date, count }));
+
+        res.json({
+            totalQuizzesSolved: stats.totalQuizzesSolved || 0,
+            overallAveragePercentage: stats.overallAveragePercentage ? Math.round(stats.overallAveragePercentage) : 0,
+            activityData: activityData
+        });
+
+    } catch (e) {
+        logError('DB ERROR', `Fetching stats for user ${userId} failed`, e.message);
+        res.status(500).json({ message: 'Could not fetch user stats.' });
+    }
+});
+
 // Register a new user
 router.post('/register', async (req, res) => {
     const { username, email, password, address, class: userClass } = req.body;

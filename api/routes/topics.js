@@ -5,6 +5,17 @@ const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
+router.get('/', async (req, res) => {
+    logApi('GET', '/api/topics (all)');
+    try {
+        const result = await turso.execute("SELECT * FROM quiz_topics");
+        res.json(result.rows);
+    } catch (e) {
+        logError('DB ERROR', 'Fetching all topics failed', e.message);
+        res.status(500).json({ message: 'Could not fetch topics.' });
+    }
+});
+
 router.get('/:subjectKey', async (req, res) => {
     const { subjectKey } = req.params;
     logApi('GET', `/api/topics/${subjectKey}`);

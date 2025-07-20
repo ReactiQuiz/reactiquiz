@@ -1,110 +1,80 @@
 // src/components/results/HistoricalResultItem.js
-import { Paper, Box, Typography, Chip, IconButton, useTheme, alpha, Stack, Tooltip } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
-import { useNavigate } from 'react-router-dom';
+import { Paper, Box, Typography, Chip, useTheme, alpha, Stack, LinearProgress } from '@mui/material';
 import { subjectAccentColors } from '../../theme';
-import { formatDisplayTopicName } from '../../utils/quizUtils';
 
-function HistoricalResultItem({ result, onDeleteClick, showDeleteButton, isChallengeResult }) {
+function HistoricalResultItem({ result }) {
   const theme = useTheme();
-  const navigate = useNavigate();
 
-  if (!result) {
-    return null;
-  }
+  if (!result) return null;
 
-  const topicName = formatDisplayTopicName(result.topicId, result.topicName, isChallengeResult, result);
   const itemAccentColor = subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.grey[700];
 
-  const handleResultClick = () => {
-    if (result && result.id) {
-      navigate(`/results/${result.id}`);
-    }
-  };
-
-  // Helper function to get more vibrant chip styles
   const getVibrantChipStyles = (percentage) => {
-    if (percentage >= 70) {
-      return {
-        backgroundColor: theme.palette.success.main,
-        color: theme.palette.getContrastText(theme.palette.success.main),
-      };
-    }
-    if (percentage >= 50) {
-      return {
-        backgroundColor: theme.palette.warning.main,
-        color: theme.palette.getContrastText(theme.palette.warning.main),
-      };
-    }
-    return {
-      backgroundColor: theme.palette.error.main,
-      color: theme.palette.getContrastText(theme.palette.error.main),
-    };
+    if (percentage >= 70) return { backgroundColor: theme.palette.success.main };
+    if (percentage >= 40) return { backgroundColor: theme.palette.warning.main };
+    return { backgroundColor: theme.palette.error.main };
   };
 
   return (
     <Paper
-      onClick={handleResultClick}
       sx={{
-        p: 1.5,
+        p: 2,
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 2,
-        borderLeft: `4px solid ${itemAccentColor}`,
-        cursor: 'pointer',
+        borderLeft: `5px solid ${itemAccentColor}`,
         transition: 'transform 0.2s, box-shadow 0.2s',
         '&:hover': {
-          transform: 'translateY(-3px)',
-          boxShadow: theme.shadows[5],
-          backgroundColor: alpha(theme.palette.action.hover, 0.06)
+          transform: 'translateY(-4px)',
+          boxShadow: theme.shadows[6],
         },
       }}
-      elevation={2}
+      elevation={3}
     >
-      <Box sx={{ flexGrow: 1 }}>
-        <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-          {isChallengeResult && <SportsKabaddiIcon sx={{ color: itemAccentColor, fontSize: '1rem' }} />}
-          <Typography variant="subtitle1" sx={{ textTransform: 'capitalize', fontWeight: 500, color: itemAccentColor, lineHeight: 1.2, flexGrow: 1 }}>
-            {topicName}
-          </Typography>
+      <Box sx={{ flexGrow: 1, mb: 1.5 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: itemAccentColor, lineHeight: 1.3, mb: 1 }}>
+          {result.topicId.replace(/-/g, ' ')}
+        </Typography>
+        <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
+          {result.class && <Chip label={`Class ${result.class}`} size="small" variant="outlined" />}
+          {result.difficulty && <Chip label={result.difficulty} size="small" variant="outlined" sx={{ textTransform: 'capitalize' }} />}
         </Stack>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5, alignItems: 'center' }}>
-          {result.class && <Chip label={`Class ${result.class}`} size="small" variant="outlined" sx={{ fontSize: '0.7rem', height: '18px' }} />}
-          {result.difficulty && <Chip label={result.difficulty} size="small" variant="outlined" sx={{ textTransform: 'capitalize', fontSize: '0.7rem', height: '18px' }} />}
-          {/* UPDATED: Date is now a chip */}
-          <Chip label={new Date(result.timestamp).toLocaleDateString()} size="small" variant="outlined" sx={{ fontSize: '0.7rem', height: '18px' }}/>
-        </Box>
       </Box>
 
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 1.5, pt: 1, borderTop: `1px solid ${theme.palette.divider}` }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          {/* REMOVED: TimerIcon is gone */}
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            {result.score}/{result.totalQuestions}
-          </Typography>
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Stack spacing={1}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="body2" color="text.secondary">Score</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                  {result.score}/{result.totalQuestions}
+              </Typography>
+          </Box>
+          <Box>
+            <LinearProgress
+              variant="determinate"
+              value={result.percentage}
+              sx={{
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: alpha(itemAccentColor, 0.2),
+                '& .MuiLinearProgress-bar': { backgroundColor: itemAccentColor }
+              }}
+            />
+          </Box>
           <Chip
             label={`${result.percentage}%`}
+            size="small"
             sx={{
               fontWeight: 'bold',
-              fontSize: '0.9rem',
-              height: '26px',
-              ...getVibrantChipStyles(result.percentage) // UPDATED: More vibrant colors
+              color: 'white',
+              alignSelf: 'flex-end',
+              ...getVibrantChipStyles(result.percentage)
             }}
           />
-          {showDeleteButton && onDeleteClick && (
-            <Tooltip title="Delete Result">
-              <IconButton size="small" onClick={(e) => { e.stopPropagation(); onDeleteClick(result.id); }} sx={{ color: theme.palette.error.light, '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.2) } }}>
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Box>
       </Stack>
+      <Typography variant="caption" color="text.secondary" sx={{ mt: 1.5, display: 'block', textAlign: 'right' }}>
+        {new Date(result.timestamp).toLocaleDateString()}
+      </Typography>
     </Paper>
   );
 }
