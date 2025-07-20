@@ -1,5 +1,5 @@
 // src/pages/LoginPage.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, useTheme, Alert } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext'; // Use the main AuthContext
@@ -7,39 +7,50 @@ import LoginForm from '../components/auth/LoginForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function LoginPage() {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { signIn } = useAuth(); // Get the signIn function from context
+    const theme = useTheme();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { signIn } = useAuth(); // Get the signIn function from context
 
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    // State for this component
+    const [email, setEmail] = useState(''); // Supabase uses email for login
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check for success messages from registration
-  const infoMessage = location.state?.message || '';
+    // Check for success messages passed from other pages (like registration)
+    const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    setError('');
-    setIsSubmitting(true);
+    // Clear the info message from location state after displaying it once
+    useEffect(() => {
+        if (location.state?.message) {
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, [location, navigate]);
 
-    const { error } = await signIn({
-      email: identifier, // Supabase uses email to sign in
-      password: password,
-    });
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        setError('');
+        if (!email || !password) {
+            setError("Email and password are required.");
+            return;
+        }
+        setIsSubmitting(true);
 
-    if (error) {
-      setError(error.message || 'Login failed. Please check your credentials.');
-    } else {
-      // On successful login, AuthContext will update the user state
-      // and the ProtectedRoute will handle the redirect automatically.
-      // We can also manually navigate if needed.
-      navigate('/subjects');
-    }
-    setIsSubmitting(false);
-  };
+        const { error: signInError } = await signIn({
+            email: email,
+            password: password,
+        });
+
+        if (signInError) {
+            setError(signInError.message || 'Login failed. Please check your credentials.');
+        } else {
+            // On successful login, the AuthContext will handle the user state.
+            // We can navigate the user to the main content area.
+            navigate('/subjects');
+        }
+        setIsSubmitting(false);
+    };
 
   return (
     <Grid container height='100%'>
