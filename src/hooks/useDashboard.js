@@ -189,4 +189,4 @@ export const useDashboard = () => {
     activityChartRef, subjectAveragesChartRef, topicPerformanceRef,
     fetchDashboardData, handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport,
   };
-}; ```
+};
