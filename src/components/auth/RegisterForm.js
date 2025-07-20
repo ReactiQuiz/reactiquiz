@@ -17,7 +17,7 @@ function RegisterForm({
   onRegisterSubmit,
   accentColor,
 }) {
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onRegisterSubmit();
@@ -43,8 +43,9 @@ function RegisterForm({
         <TextField margin="normal" required fullWidth id="register-address" label="Address" name="registerAddress"
           autoComplete="street-address" value={address} onChange={(e) => setAddress(e.target.value)} error={!!formError}
         />
-        <TextField margin="normal" required fullWidth id="register-class" label="Class (e.g., 6-12)" name="registerClass"
-          type="number" value={userClass} onChange={(e) => setUserClass(e.target.value)} error={!!formError}
+        <TextField
+          margin="normal" required fullWidth id="register-class" label="Class (e.g., 6-12)" name="registerClass"
+          type="number" value={userClass} onChange={(e) => setUserClass(e.target.value)} error={!!formError && formError.toLowerCase().includes('class')}
         />
         {formError && <Alert severity="error" sx={{ mt: 2 }}>{formError}</Alert>}
         {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}

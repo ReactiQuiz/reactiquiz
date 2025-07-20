@@ -62,16 +62,16 @@ function RegisterPage() {
               Create Your Account
             </Typography>
             <RegisterForm
-              formError={formError}
+              formError={error}
               successMessage={successMessage}
               isSubmitting={isSubmitting}
-              identifier={registerIdentifier} setIdentifier={setRegisterIdentifier}
-              email={registerEmail} setEmail={setRegisterEmail}
-              password={registerPassword} setPassword={setRegisterPassword}
-              confirmPassword={registerConfirmPassword} setConfirmPassword={setRegisterConfirmPassword}
-              address={registerAddress} setAddress={setRegisterAddress}
-              userClass={registerClass} setUserClass={setUserClass}
-              onRegisterSubmit={() => handleRegisterSubmit(handleRegistrationSuccess)}
+              identifier={username} setIdentifier={setUsername}
+              email={email} setEmail={setEmail}
+              password={password} setPassword={setPassword}
+              confirmPassword={confirmPassword} setConfirmPassword={setConfirmPassword}
+              address={address} setAddress={setAddress}
+              userClass={userClass} setUserClass={setUserClass}
+              onRegisterSubmit={handleRegister}
               accentColor={theme.palette.primary.main}
             />
           </Box>
@@ -91,7 +91,7 @@ function RegisterPage() {
       >
         <AuthBrandingPanel variant="register" />
       </Grid>
-    </Grid>
+    </Grid >
   );
 }
 

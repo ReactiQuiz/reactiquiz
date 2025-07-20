@@ -47,85 +47,71 @@ function LoginPage() {
   };
 
   return (
-      <Grid container height='100%'>
-        {/* Left Branding Panel */}
-        <Grid
-          item
-          width={{
-            xs: "0%",
-            sx: "40%",
-            md: "50%",
-            lg: "65%",
-            xl: "60%"
+    <Grid container height='100%'>
+      {/* Left Branding Panel */}
+      <Grid
+        item
+        width={{
+          xs: "0%",
+          sx: "40%",
+          md: "50%",
+          lg: "65%",
+          xl: "60%"
+        }}
+      >
+        <AuthBrandingPanel variant="login" />
+      </Grid>
+
+      {/* Right Form Panel */}
+      <Grid
+        item
+        width={{
+          xs: "100%",
+          sx: "60%",
+          md: "50%",
+          lg: "35%",
+          xl: "40%"
+        }}
+        square
+        sx={{
+          backgroundColor: 'background.default',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+        <Box
+          sx={{
+            my: { xs: 4, sm: 8 },
+            mx: { xs: 2, sm: 4 },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
           }}
         >
-          <AuthBrandingPanel variant="login" />
-        </Grid>
+          <Box sx={{ width: '100%', maxWidth: '450px' }}>
+            <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>
+              {inForgotPasswordFlow ? "Reset Password" : "Sign In"}
+            </Typography>
 
-        {/* Right Form Panel */}
-        <Grid
-          item
-          width={{
-            xs: "100%",
-            sx: "60%",
-            md: "50%",
-            lg: "35%",
-            xl: "40%"
-          }}
-          square
-          sx={{
-            backgroundColor: 'background.default',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-          <Box
-            sx={{
-              my: { xs: 4, sm: 8 },
-              mx: { xs: 2, sm: 4 },
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '100%',
-            }}
-          >
-            <Box sx={{ width: '100%', maxWidth: '450px' }}>
-              <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>
-                {inForgotPasswordFlow ? "Reset Password" : "Sign In"}
-              </Typography>
+            {infoMessage && <Alert severity="success" sx={{ mb: 2 }}>{infoMessage}</Alert>}
 
-              {infoMessage && <Alert severity="success" sx={{ mb: 2 }}>{infoMessage}</Alert>}
-
-              {!inForgotPasswordFlow ? (
-                <Box maxWidth="100%">
-                  <LoginForm
-                    formError={formError} successMessage={successMessage} isSubmitting={isSubmitting}
-                    identifier={loginIdentifier} setIdentifier={setLoginIdentifier}
-                    password={loginPassword} setPassword={setLoginPassword}
-                    otp={loginOtp} setOtp={setLoginOtp}
-                    showOtpInput={showLoginOtpInput} setShowOtpInput={setShowLoginOtpInput}
-                    onLoginSubmit={handleLoginSubmit} onOtpSubmit={handleLoginOtpSubmit}
-                    onForgotPasswordClick={() => { setInForgotPasswordFlow(true); clearFormStates(); }}
-                    accentColor={theme.palette.primary.main}
-                  />
-                </Box>
-              ) : (
-                <ForgotPasswordForm
-                  formError={formError} successMessage={successMessage} isSubmitting={isSubmitting}
-                  identifier={forgotPasswordIdentifier} setIdentifier={setForgotPasswordIdentifier}
-                  otp={forgotPasswordOtp} setOtp={setForgotPasswordOtp}
-                  newPassword={forgotPasswordNewPassword} setNewPassword={setForgotPasswordNewPassword}
-                  confirmNewPassword={forgotPasswordConfirmNewPassword} setConfirmNewPassword={setForgotPasswordConfirmNewPassword}
-                  onRequestOtp={handleRequestResetOtp}
-                  onResetPassword={() => handleResetPasswordWithOtp(handlePasswordResetSuccess)}
-                  onBackToLogin={() => { setInForgotPasswordFlow(false); clearFormStates(); }}
-                  accentColor={theme.palette.primary.main}
-                />
-              )}
+            <Box maxWidth="100%">
+              <LoginForm
+                formError={error}
+                isSubmitting={isSubmitting}
+                identifier={identifier}
+                setIdentifier={setIdentifier}
+                password={password}
+                setPassword={setPassword}
+                onLoginSubmit={handleLogin}
+                accentColor={theme.palette.primary.main}
+              />
             </Box>
           </Box>
-        </Grid>
+        </Box>
       </Grid>
+    </Grid >
   );
 }
 
