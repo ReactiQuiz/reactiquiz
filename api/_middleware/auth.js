@@ -1,30 +1,22 @@
 // api/_middleware/auth.js
-const { supabase } = require('../_utils/supabaseClient');
+const jwt = require('jsonwebtoken');
 const { logError } = require('../_utils/logger');
 
-const verifySupabaseToken = async (req, res, next) => {
+const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Authentication token is required.' });
     }
-
     const token = authHeader.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Malformed token.' });
-    }
 
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-
-    if (error) {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded; // Adds { id, username } to the request object
+        next();
+    } catch (error) {
         logError('AUTH FAIL', 'Token verification failed', error.message);
-        return res.status(401).json({ message: 'Invalid or expired token.', details: error.message });
+        return res.status(401).json({ message: 'Invalid or expired token.' });
     }
-    if (!user) {
-        return res.status(401).json({ message: 'User not found for this token.' });
-    }
-
-    req.user = user;
-    next();
 };
 
-module.exports = { verifySupabaseToken };
+module.exports = { verifyToken };
