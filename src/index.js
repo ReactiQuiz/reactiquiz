@@ -5,6 +5,7 @@ import App from './App';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Analytics } from '@vercel/analytics/react';
 import 'katex/dist/katex.min.css'; // <-- ADD THIS LINE
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,5 +13,6 @@ root.render(
     <CssBaseline />
     <App /> {/* App already contains Router */}
     <Analytics />
+    <SpeedInsights />
   </React.StrictMode>
 );

@@ -1,90 +1,72 @@
 // api/routes/friends.js
-import { Router } from 'express';
-import { supabase } from '../_utils/supabaseClient.js';
-import { verifySupabaseToken } from '../_middleware/auth.js';
-import { logApi, logError } from '../_utils/logger.js';
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { verifyToken } = require('../_middleware/auth');
+const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
 // Send a friend request
-router.post('/request', verifySupabaseToken, async (req, res) => {
+router.post('/request', verifyToken, async (req, res) => {
     const requesterId = req.user.id;
     const { receiverUsername } = req.body;
     logApi('POST', '/api/friends/request', `From ${requesterId} to ${receiverUsername}`);
 
-    // 1. Find the receiver's user ID from their username
-    const { data: receiver, error: receiverError } = await supabase
-        .from('users')
-        .select('id')
-        .eq('username', receiverUsername)
-        .single();
+    try {
+        const receiverResult = await turso.execute({
+            sql: "SELECT id FROM users WHERE username = ?",
+            args: [receiverUsername]
+        });
+        if (receiverResult.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        const receiverId = receiverResult.rows[0].id;
 
-    if (receiverError || !receiver) {
-        return res.status(404).json({ message: 'User not found.' });
+        if (requesterId === receiverId) {
+            return res.status(400).json({ message: "You cannot send a request to yourself." });
+        }
+
+        const existingResult = await turso.execute({
+            sql: "SELECT id FROM friendships WHERE (requester_id = ? AND receiver_id = ?) OR (requester_id = ? AND receiver_id = ?)",
+            args: [requesterId, receiverId, receiverId, requesterId]
+        });
+
+        if (existingResult.rows.length > 0) {
+            return res.status(400).json({ message: 'A friendship or pending request already exists.' });
+        }
+
+        await turso.execute({
+            sql: "INSERT INTO friendships (requester_id, receiver_id, status) VALUES (?, ?, 'pending')",
+            args: [requesterId, receiverId]
+        });
+
+        res.status(201).json({ message: 'Friend request sent successfully.' });
+    } catch (e) {
+        logError('DB ERROR', 'Sending friend request failed', e.message);
+        res.status(500).json({ message: 'Server error processing request.' });
     }
-    const receiverId = receiver.id;
-    if (requesterId === receiverId) {
-        return res.status(400).json({ message: "You cannot send a request to yourself." });
-    }
-
-    // 2. Check for existing friendship
-    const { data: existing, error: existingError } = await supabase
-        .from('friendships')
-        .select('*')
-        .or(`and(requester_id.eq.${requesterId},receiver_id.eq.${receiverId}),and(requester_id.eq.${receiverId},receiver_id.eq.${requesterId})`)
-        .single();
-    
-    if (existing) {
-        return res.status(400).json({ message: 'A friendship or pending request already exists with this user.' });
-    }
-
-    // 3. Insert the new request
-    const { error: insertError } = await supabase
-        .from('friendships')
-        .insert({ requester_id: requesterId, receiver_id: receiverId, status: 'pending' });
-
-    if (insertError) {
-        logError('DB ERROR', 'Inserting friend request failed', insertError.message);
-        return res.status(500).json({ message: 'Failed to send friend request.' });
-    }
-
-    res.status(201).json({ message: 'Friend request sent successfully.' });
 });
 
-// Get pending friend requests for the current user
-router.get('/requests/pending', verifySupabaseToken, async (req, res) => {
+// Get pending friend requests
+router.get('/requests/pending', verifyToken, async (req, res) => {
     const userId = req.user.id;
     logApi('GET', '/api/friends/requests/pending', `User: ${userId}`);
-
-    // We need to join with the users table to get the requester's username
-    const { data, error } = await supabase
-        .from('friendships')
-        .select(`
-            id,
-            created_at,
-            requester:requester_id ( id, username )
-        `)
-        .eq('receiver_id', userId)
-        .eq('status', 'pending');
-
-    if (error) {
-        logError('DB ERROR', 'Fetching pending requests failed', error.message);
-        return res.status(500).json({ message: 'Could not fetch pending requests.' });
+    try {
+        const result = await turso.execute({
+            sql: `SELECT f.id as requestId, u.username FROM friendships f
+                  JOIN users u ON f.requester_id = u.id
+                  WHERE f.receiver_id = ? AND f.status = 'pending'`,
+            args: [userId]
+        });
+        res.json(result.rows);
+    } catch (e) {
+        logError('DB ERROR', 'Fetching pending requests failed', e.message);
+        res.status(500).json({ message: 'Could not fetch pending requests.' });
     }
-    
-    // Format the response to be more client-friendly
-    const formattedData = data.map(req => ({
-        requestId: req.id,
-        username: req.requester.username,
-        userId: req.requester.id,
-        created_at: req.created_at,
-    }));
-
-    res.json(formattedData || []);
 });
 
-// Respond to a friend request (accept or decline)
-router.put('/request/:requestId', verifySupabaseToken, async (req, res) => {
+// Respond to a friend request
+router.put('/request/:requestId', verifyToken, async (req, res) => {
     const userId = req.user.id;
     const { requestId } = req.params;
     const { action } = req.body; // 'accept' or 'decline'
@@ -94,81 +76,57 @@ router.put('/request/:requestId', verifySupabaseToken, async (req, res) => {
         return res.status(400).json({ message: 'Invalid action.' });
     }
     const newStatus = action === 'accept' ? 'accepted' : 'declined';
-
-    const { data, error } = await supabase
-        .from('friendships')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
-        .eq('id', requestId)
-        .eq('receiver_id', userId) // Make sure only the receiver can respond
-        .eq('status', 'pending');   // Only act on pending requests
-
-    if (error) {
-        logError('DB ERROR', `Updating friend request ${requestId} failed`, error.message);
-        return res.status(500).json({ message: 'Error processing request.' });
-    }
     
-    res.status(200).json({ message: `Friend request ${action}ed.` });
+    try {
+        const result = await turso.execute({
+            sql: "UPDATE friendships SET status = ? WHERE id = ? AND receiver_id = ? AND status = 'pending'",
+            args: [newStatus, requestId, userId]
+        });
+
+        if (result.rowsAffected === 0) {
+            return res.status(404).json({ message: 'Pending request not found or you are not the receiver.' });
+        }
+        res.status(200).json({ message: `Friend request ${action}ed.` });
+    } catch (e) {
+        logError('DB ERROR', `Updating friend request ${requestId} failed`, e.message);
+        res.status(500).json({ message: 'Error processing request.' });
+    }
 });
 
-// Get the current user's friends list
-router.get('/', verifySupabaseToken, async (req, res) => {
+// Get friends list
+router.get('/', verifyToken, async (req, res) => {
     const userId = req.user.id;
     logApi('GET', '/api/friends', `User: ${userId}`);
-    
-    // This is a complex query that requires a custom RPC function in Supabase
-    // for optimal performance. Here's how to create it.
-    // In your Supabase SQL Editor, run this ONCE:
-    /*
-        create or replace function get_friends(user_id uuid)
-        returns table (friend_id uuid, friend_username text)
-        language sql
-        as $$
-            select
-                case
-                    when f.requester_id = user_id then f.receiver_id
-                    else f.requester_id
-                end as friend_id,
-                u.username as friend_username
-            from friendships f
-            join users u on u.id = (
-                case
-                    when f.requester_id = user_id then f.receiver_id
-                    else f.requester_id
-                end
-            )
-            where (f.requester_id = user_id or f.receiver_id = user_id)
-            and f.status = 'accepted';
-        $$;
-    */
-
-    const { data, error } = await supabase.rpc('get_friends', { user_id: userId });
-
-    if (error) {
-        logError('DB ERROR', 'RPC get_friends failed', error.message);
-        return res.status(500).json({ message: 'Could not fetch friends list.' });
+    try {
+        const result = await turso.execute({
+            sql: `SELECT u.id as friendId, u.username as friendUsername FROM friendships f
+                  JOIN users u ON u.id = CASE WHEN f.requester_id = ? THEN f.receiver_id ELSE f.requester_id END
+                  WHERE (f.requester_id = ? OR f.receiver_id = ?) AND f.status = 'accepted'
+                  ORDER BY u.username COLLATE NOCASE ASC`,
+            args: [userId, userId, userId]
+        });
+        res.json(result.rows);
+    } catch (e) {
+        logError('DB ERROR', 'Fetching friends list failed', e.message);
+        res.status(500).json({ message: 'Could not fetch friends list.' });
     }
-
-    res.json(data || []);
 });
 
-
 // Unfriend a user
-router.delete('/unfriend/:friendUserId', verifySupabaseToken, async (req, res) => {
+router.delete('/unfriend/:friendUserId', verifyToken, async (req, res) => {
     const currentUserId = req.user.id;
     const { friendUserId } = req.params;
     logApi('DELETE', `/api/friends/unfriend/${friendUserId}`);
-
-    const { error } = await supabase
-        .from('friendships')
-        .delete()
-        .or(`and(requester_id.eq.${currentUserId},receiver_id.eq.${friendUserId}),and(requester_id.eq.${friendUserId},receiver_id.eq.${currentUserId})`);
-
-    if (error) {
-        logError('DB ERROR', `Unfriending user ${friendUserId} failed`, error.message);
-        return res.status(500).json({ message: 'Error unfriending user.' });
+    try {
+        await turso.execute({
+            sql: `DELETE FROM friendships WHERE (requester_id = ? AND receiver_id = ?) OR (requester_id = ? AND receiver_id = ?)`,
+            args: [currentUserId, friendUserId, friendUserId, currentUserId]
+        });
+        res.status(200).json({ message: 'Successfully unfriended.' });
+    } catch (e) {
+        logError('DB ERROR', `Unfriending failed`, e.message);
+        res.status(500).json({ message: 'Error unfriending user.' });
     }
-
-    res.status(200).json({ message: 'Successfully unfriended.' });
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
 // api/routes/contact.js
-import { Router } from 'express';
-import nodemailer from 'nodemailer';
-import { logApi, logError, logInfo } from '../_utils/logger.js';
+const { Router } = require('express');
+const nodemailer = require('nodemailer');
+const { logApi, logError, logInfo } = require('../_utils/logger');
 
 const router = Router();
 
@@ -17,13 +17,13 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
 }
 
 router.post('/', async (req, res) => {
-    const { name, email, message, recipientEmail } = req.body;
+    const { name, email, message } = req.body;
     logApi('POST', '/api/contact', `From: ${name}`);
 
     if (!transporter) {
         return res.status(503).json({ message: 'Email service is not configured on the server.' });
     }
-    if (!name || !email || !message || !recipientEmail) {
+    if (!name || !email || !message) {
         return res.status(400).json({ message: 'All fields are required.' });
     }
 
@@ -31,9 +31,9 @@ router.post('/', async (req, res) => {
         await transporter.sendMail({
             from: `"${name}" <${process.env.EMAIL_USER}>`,
             replyTo: email,
-            to: recipientEmail,
-            subject: `Contact Form Submission from ${name} via ReactiQuiz`,
-            html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
+            to: process.env.EMAIL_USER, // Sends the contact email to yourself
+            subject: `ReactiQuiz Contact Form: ${name}`,
+            html: `<p><strong>From:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><hr/><p>${message.replace(/\n/g, '<br>')}</p>`,
         });
         res.status(200).json({ message: 'Message sent successfully!' });
     } catch (error) {

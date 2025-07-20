@@ -1,9 +1,9 @@
 // api/routes/ai.js
-import { Router } from 'express';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { verifySupabaseToken } from '../_middleware/auth.js';
-import { supabase } from '../_utils/supabaseClient.js';
-import { logApi, logError } from '../_utils/logger.js';
+const { Router } = require('express');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { verifyToken } = require('../_middleware/auth');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
@@ -12,49 +12,35 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const summarizeResults = (results) => {
     if (!results || results.length === 0) return "The user has not taken any quizzes yet.";
-    const subjectStats = {};
-    results.forEach(r => {
-        const subject = r.subject || 'general';
-        if (!subjectStats[subject]) { subjectStats[subject] = { scores: [], count: 0 }; }
-        subjectStats[subject].scores.push(r.percentage);
-        subjectStats[subject].count++;
-    });
     let summary = "Here is a summary of the user's performance:\n";
-    for (const [subject, stats] of Object.entries(subjectStats)) {
-        const avgScore = Math.round(stats.scores.reduce((a, b) => a + b, 0) / stats.count);
-        summary += `- Subject: ${subject}, Quizzes Taken: ${stats.count}, Average Score: ${avgScore}%\n`;
-    }
+    results.forEach(r => {
+        summary += `- Topic: ${r.topicId}, Score: ${r.percentage}%\n`;
+    });
     return summary;
 };
 
-router.post('/chat', verifySupabaseToken, async (req, res) => {
+router.post('/chat', verifyToken, async (req, res) => {
     const user = req.user;
     const { history, message } = req.body;
-    logApi('POST', '/api/ai/chat', `User: ${user.id}`);
-
-    // Fetch user's results from Supabase
-    const { data: userResults, error: resultsError } = await supabase
-        .from('quiz_results')
-        .select('subject, percentage')
-        .eq('user_id', user.id)
-        .order('timestamp', { ascending: false })
-        .limit(20);
-
-    if (resultsError) {
-        logError('DB ERROR', 'Fetching results for AI context failed', resultsError.message);
-        // Continue without results context
-    }
-
-    const { data: profile } = await supabase.from('users').select('username').eq('id', user.id).single();
-    const userName = profile?.username || 'user';
-    const resultsSummary = summarizeResults(userResults || []);
-
-    const systemInstruction = `You are ReactiQuiz AI... The user's name is ${userName}. ${resultsSummary} ...`;
+    logApi('POST', '/api/ai/chat', `User: ${user.username}`);
 
     try {
-        const chat = model.startChat({
-            history: [{ role: "user", parts: [{ text: systemInstruction }] }, { role: "model", parts: [{ text: `Hello ${userName}! I'm Q, your personal study assistant for ReactiQuiz. How can I help you?` }] }, ...history],
+        const { rows: userResults } = await turso.execute({
+            sql: "SELECT topicId, percentage FROM quiz_results WHERE user_id = ? ORDER BY timestamp DESC LIMIT 10",
+            args: [user.id]
         });
+
+        const resultsSummary = summarizeResults(userResults);
+        const systemInstruction = `You are ReactiQuiz AI, a helpful study assistant created by Sanskar Sontakke. Your name is Q. Your purpose is to help students with academic subjects. You must ONLY answer questions related to studying, science, time management, or analyzing the user's quiz results. If asked about anything else, politely decline. The user's name is ${user.username}. ${resultsSummary}`;
+
+        const chat = model.startChat({
+            history: [
+                { role: "user", parts: [{ text: systemInstruction }] },
+                { role: "model", parts: [{ text: `Hello ${user.username}! I'm Q. How can I help you today?` }] },
+                ...history
+            ]
+        });
+
         const result = await chat.sendMessage(message);
         const response = await result.response;
         res.json({ response: response.text() });
