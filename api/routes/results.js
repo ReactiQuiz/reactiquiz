@@ -22,7 +22,18 @@ router.post('/', verifyToken, async (req, res) => {
                 JSON.stringify(userAnswersSnapshot || {})
             ]
         });
-        res.status(201).json({ message: 'Result saved successfully!', id: result.lastInsertRowid });
+
+        // --- START OF FIX ---
+        // The result.lastInsertRowid is a BigInt. We must convert it to a string for the JSON response.
+        const resultId = result.lastInsertRowid ? result.lastInsertRowid.toString() : null;
+
+        if (!resultId) {
+            throw new Error("Insert operation did not return a valid row ID.");
+        }
+        
+        res.status(201).json({ message: 'Result saved successfully!', id: resultId });
+        // --- END OF FIX ---
+
     } catch (e) {
         logError('DB ERROR', 'Saving result failed', e.message);
         res.status(500).json({ message: 'Could not save quiz result.' });
