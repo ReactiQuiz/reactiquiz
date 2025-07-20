@@ -3,9 +3,7 @@ import { useState, useEffect } from 'react';
 import { Box, Paper, useTheme, Grid, Typography, Alert } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { useAuthForms } from '../hooks/useAuthForms';
 import LoginForm from '../components/auth/LoginForm';
-import ForgotPasswordForm from '../components/auth/ForgotPasswordForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function LoginPage() {
@@ -15,20 +13,6 @@ function LoginPage() {
 
   const [inForgotPasswordFlow, setInForgotPasswordFlow] = useState(false);
   const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
-
-  const {
-    formError, successMessage, isSubmitting,
-    loginIdentifier, setLoginIdentifier,
-    loginPassword, setLoginPassword,
-    loginOtp, setLoginOtp,
-    showLoginOtpInput, setShowLoginOtpInput,
-    forgotPasswordIdentifier, setForgotPasswordIdentifier,
-    forgotPasswordOtp, setForgotPasswordOtp,
-    forgotPasswordNewPassword, setForgotPasswordNewPassword,
-    forgotPasswordConfirmNewPassword, setForgotPasswordConfirmNewPassword,
-    handleLoginSubmit, handleLoginOtpSubmit,
-    handleRequestResetOtp, handleResetPasswordWithOtp, clearFormStates,
-  } = useAuthForms();
 
   useEffect(() => {
     if (location.state?.message) {

@@ -2,24 +2,12 @@
 import { Box, Paper, useTheme, Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuthForms } from '../hooks/useAuthForms';
 import RegisterForm from '../components/auth/RegisterForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function RegisterPage() {
   const theme = useTheme();
   const navigate = useNavigate();
-
-  const {
-    formError, successMessage, isSubmitting,
-    registerIdentifier, setRegisterIdentifier,
-    registerEmail, setRegisterEmail,
-    registerPassword, setRegisterPassword,
-    registerConfirmPassword, setRegisterConfirmPassword,
-    registerAddress, setRegisterAddress,
-    registerClass, setUserClass,
-    handleRegisterSubmit,
-  } = useAuthForms();
 
   const handleRegistrationSuccess = () => {
     navigate('/login', {
