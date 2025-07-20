@@ -1,21 +1,36 @@
 // src/pages/LoginPage.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, useTheme, Alert, TextField, Button, CircularProgress, Link as MuiLink } from '@mui/material';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // <-- USE THE HOOK
+import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 import LoginIcon from '@mui/icons-material/Login';
 
 function LoginPage() {
     const theme = useTheme();
     const navigate = useNavigate();
-    const { signIn } = useAuth(); // <-- Get the signIn function from context
+    const location = useLocation();
+    const { signIn } = useAuth();
 
+    // State for the form
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // --- START OF FIX ---
+    // This state holds the message passed from the registration page
     const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
+
+    // This effect clears the message from the browser's history state
+    // so it doesn't reappear if the user navigates away and back.
+    useEffect(() => {
+        if (location.state?.message) {
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, [location, navigate]);
+    // --- END OF FIX ---
+
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -23,14 +38,14 @@ function LoginPage() {
         setError('');
         try {
             await signIn(username, password);
-            navigate('/subjects'); // Navigate after successful sign-in
+            navigate('/subjects');
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed.');
+            setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
         } finally {
             setIsSubmitting(false);
         }
     };
-    
+
     return (
         <Grid container component="main" sx={{ height: '100%' }}>
             <AuthBrandingPanel variant="login" />
@@ -39,9 +54,10 @@ function LoginPage() {
                     <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>
                         Sign In
                     </Typography>
+                    
+                    {/* This line will now work correctly */}
                     {infoMessage && <Alert severity="success" sx={{ mb: 2, width: '100%' }}>{infoMessage}</Alert>}
                     
-                    {/* The form is now directly inside the page component */}
                     <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField
                             margin="normal" required fullWidth label="Username"
