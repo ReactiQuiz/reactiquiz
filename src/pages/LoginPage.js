@@ -1,64 +1,35 @@
 // src/pages/LoginPage.js
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box, Grid, Typography, useTheme, Alert, TextField, Button, CircularProgress, Link as MuiLink } from '@mui/material';
-import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
-import apiClient from '../api/axiosInstance';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext'; // <-- USE THE HOOK
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 import LoginIcon from '@mui/icons-material/Login';
-
-// A simple helper to manage the user session in localStorage
-const loginUser = (userData, token) => {
-    localStorage.setItem('reactiquizUser', JSON.stringify(userData));
-    localStorage.setItem('reactiquizToken', token);
-    // This is useful for complex apps, but for now we'll rely on navigation
-    // window.dispatchEvent(new Event('storage'));
-};
 
 function LoginPage() {
     const theme = useTheme();
     const navigate = useNavigate();
-    const location = useLocation();
+    const { signIn } = useAuth(); // <-- Get the signIn function from context
 
-    // All state is simple and local to this component
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
-
-    // Clear the info message from location state after we've read it
-    useEffect(() => {
-        if (location.state?.message) {
-            navigate(location.pathname, { replace: true, state: {} });
-        }
-    }, [location, navigate]);
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError('');
-        if (!username || !password) {
-            setError("Username and password are required.");
-            return;
-        }
         setIsSubmitting(true);
-
+        setError('');
         try {
-            // Direct API call with the correct data structure
-            const response = await apiClient.post('/api/users/login', {
-                username: username,
-                password: password,
-            });
-
-            loginUser(response.data.user, response.data.token);
-            navigate('/subjects'); // Redirect on success
-
+            await signIn(username, password);
+            navigate('/subjects'); // Navigate after successful sign-in
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+            setError(err.response?.data?.message || 'Login failed.');
         } finally {
             setIsSubmitting(false);
         }
     };
-
+    
     return (
         <Grid container component="main" sx={{ height: '100%' }}>
             <AuthBrandingPanel variant="login" />

@@ -9,7 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext'; // <-- IMPORT and USE
+import { useAuth } from '../../contexts/AuthContext';
 
 function NavBar({
     onIconButtonClick,
@@ -19,7 +19,7 @@ function NavBar({
     forceLoginButton = false
 }) {
     const navigate = useNavigate();
-    const { currentUser, logout } = useAuth(); // <-- USE CONTEXT
+    const { currentUser, signOut } = useAuth();
     const [anchorElUser, setAnchorElUser] = useState(null);
 
     const handleOpenUserMenu = (event) => {
@@ -44,7 +44,7 @@ function NavBar({
 
     const handleLogoutClick = () => {
         handleCloseUserMenu();
-        logout(); // <-- USE logout from context
+        signOut(); // <-- Call the signOut function from context
     };
 
     return (

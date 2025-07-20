@@ -128,4 +128,25 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Get current user's profile data based on their token
+router.get('/me', verifyToken, async (req, res) => {
+    const userId = req.user.id;
+    logApi('GET', '/api/users/me', `User: ${userId}`);
+    try {
+        const result = await turso.execute({
+            sql: 'SELECT id, username, email, address, class FROM users WHERE id = ?;',
+            args: [userId]
+        });
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User profile not found.' });
+        }
+        // Map username to 'name' to match frontend expectations
+        const userProfile = { ...result.rows[0], name: result.rows[0].username };
+        res.json(userProfile);
+    } catch(e) {
+        logError('DB ERROR', 'Fetching profile for /me failed', e.message);
+        res.status(500).json({ message: 'Could not fetch user profile.' });
+    }
+});
+
 module.exports = router;

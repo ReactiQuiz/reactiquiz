@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Box, Grid, Typography, useTheme, Alert, TextField, Button, CircularProgress, Link as MuiLink } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
+import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function RegisterPage() {
     const theme = useTheme();
     const navigate = useNavigate();
+    const { signUp } = useAuth();
 
     // Simple, local state for the form
     const [username, setUsername] = useState('');
@@ -30,19 +32,11 @@ function RegisterPage() {
             return;
         }
         setIsSubmitting(true);
-
         try {
-            await apiClient.post('/api/users/register', {
-                username, email, password, address, class: userClass
-            });
-
-            setSuccessMessage("Registration successful! Redirecting to login...");
-            setTimeout(() => {
-                navigate('/login', { state: { message: "Registration successful! Please sign in." } });
-            }, 2000);
-
+            await signUp({ username, email, password, address, class: userClass });
+            navigate('/login', { state: { message: "Registration successful! Please sign in." } });
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed. Please try again.');
+            setError(err.response?.data?.message || 'Registration failed.');
         } finally {
             setIsSubmitting(false);
         }
@@ -56,7 +50,7 @@ function RegisterPage() {
                     <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>
                         Create Your Account
                     </Typography>
-                    
+
                     <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField margin="normal" required fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                         <TextField margin="normal" required fullWidth label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -64,10 +58,10 @@ function RegisterPage() {
                         <TextField margin="normal" required fullWidth label="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         <TextField margin="normal" required fullWidth label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                         <TextField margin="normal" required fullWidth label="Class (e.g., 6-12)" type="number" value={userClass} onChange={(e) => setUserClass(e.target.value)} />
-                        
+
                         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
                         {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
-                        
+
                         <Button type="submit" fullWidth variant="contained" disabled={isSubmitting} sx={{ mt: 2, mb: 1, py: 1.5, backgroundColor: theme.palette.primary.main }}>
                             {isSubmitting ? 'Creating Account...' : 'Sign Up'}
                         </Button>

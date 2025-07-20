@@ -2,19 +2,41 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  // Use a relative URL. This is the key.
-  // In development, the proxy in package.json will catch this and forward to localhost:3001.
-  // In production, Vercel will route /api/... to your serverless functions.
-  baseURL: '/', 
+  baseURL: '/',
 });
 
-// If you have a Supabase auth token, you can set it here globally
-// apiClient.interceptors.request.use(config => {
-//   const token = getSupabaseTokenFromStorage(); // Your logic to get the token
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+// 1. Request Interceptor: To add the JWT to every outgoing request
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('reactiquizToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// 2. Response Interceptor: To handle token expiration globally
+apiClient.interceptors.response.use(
+  (response) => {
+    // If the request was successful, just return the response
+    return response;
+  },
+  (error) => {
+    // If the server responds with 401 Unauthorized, it means the token is invalid or expired
+    if (error.response && error.response.status === 401) {
+      // Clear the invalid token and user data
+      localStorage.removeItem('reactiquizToken');
+      localStorage.removeItem('reactiquizUser');
+      // Redirect the user to the login page
+      // We use window.location to force a full page reload, clearing all component state.
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default apiClient;
