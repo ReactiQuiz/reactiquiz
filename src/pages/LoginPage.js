@@ -7,50 +7,50 @@ import LoginForm from '../components/auth/LoginForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function LoginPage() {
-    const theme = useTheme();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { signIn } = useAuth(); // Get the signIn function from context
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signIn } = useAuth(); // Get the signIn function from context
 
-    // State for this component
-    const [email, setEmail] = useState(''); // Supabase uses email for login
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  // State for this component
+  const [email, setEmail] = useState(''); // Supabase uses email for login
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Check for success messages passed from other pages (like registration)
-    const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
+  // Check for success messages passed from other pages (like registration)
+  const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
 
-    // Clear the info message from location state after displaying it once
-    useEffect(() => {
-        if (location.state?.message) {
-            navigate(location.pathname, { replace: true, state: {} });
-        }
-    }, [location, navigate]);
+  // Clear the info message from location state after displaying it once
+  useEffect(() => {
+    if (location.state?.message) {
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
-        setError('');
-        if (!email || !password) {
-            setError("Email and password are required.");
-            return;
-        }
-        setIsSubmitting(true);
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setError('');
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
+    setIsSubmitting(true);
 
-        const { error: signInError } = await signIn({
-            email: email,
-            password: password,
-        });
+    const { error: signInError } = await signIn({
+      email: email,
+      password: password,
+    });
 
-        if (signInError) {
-            setError(signInError.message || 'Login failed. Please check your credentials.');
-        } else {
-            // On successful login, the AuthContext will handle the user state.
-            // We can navigate the user to the main content area.
-            navigate('/subjects');
-        }
-        setIsSubmitting(false);
-    };
+    if (signInError) {
+      setError(signInError.message || 'Login failed. Please check your credentials.');
+    } else {
+      // On successful login, the AuthContext will handle the user state.
+      // We can navigate the user to the main content area.
+      navigate('/subjects');
+    }
+    setIsSubmitting(false);
+  };
 
   return (
     <Grid container height='100%'>
@@ -96,24 +96,21 @@ function LoginPage() {
           }}
         >
           <Box sx={{ width: '100%', maxWidth: '450px' }}>
-            <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>
-              {inForgotPasswordFlow ? "Reset Password" : "Sign In"}
+            <Typography component="h1" variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>
+              Sign In
             </Typography>
+            {infoMessage && <Alert severity="success" sx={{ mb: 2, width: '100%' }}>{infoMessage}</Alert>}
 
-            {infoMessage && <Alert severity="success" sx={{ mb: 2 }}>{infoMessage}</Alert>}
-
-            <Box maxWidth="100%">
-              <LoginForm
-                formError={error}
-                isSubmitting={isSubmitting}
-                identifier={identifier}
-                setIdentifier={setIdentifier}
-                password={password}
-                setPassword={setPassword}
-                onLoginSubmit={handleLogin}
-                accentColor={theme.palette.primary.main}
-              />
-            </Box>
+            <LoginForm
+              formError={error}
+              isSubmitting={isSubmitting}
+              identifier={email} // Pass email as identifier
+              setIdentifier={setEmail}
+              password={password}
+              setPassword={setPassword}
+              onLoginSubmit={handleLogin}
+              accentColor={theme.palette.primary.main}
+            />
           </Box>
         </Box>
       </Grid>
