@@ -15,6 +15,7 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
 
     const handleLogin = async (event) => {
         event.preventDefault();
