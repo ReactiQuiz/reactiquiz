@@ -25,14 +25,14 @@ try {
 
 // Import all individual route handlers
 const userRoutes = require('./routes/users');
-// const subjectRoutes = require('./routes/subjects');
-// const topicRoutes = require('./routes/topics');
-// const questionRoutes = require('./routes/questions');
-// const resultRoutes = require('./routes/results');
-// const friendRoutes = require('./routes/friends');
-// const challengeRoutes = require('./routes/challenges');
-// const contactRoutes = require('./routes/contact');
-// const aiRoutes = require('./routes/ai');
+const subjectRoutes = require('./routes/subjects');
+const topicRoutes = require('./routes/topics');
+const questionRoutes = require('./routes/questions');
+const resultRoutes = require('./routes/results');
+const friendRoutes = require('./routes/friends');
+const challengeRoutes = require('./routes/challenges');
+const contactRoutes = require('./routes/contact');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 
@@ -42,14 +42,14 @@ app.use(express.json({ limit: '5mb' }));
 
 // --- API Route Registration ---
 app.use('/api/users', userRoutes);
-// app.use('/api/subjects', subjectRoutes);
-// app.use('/api/topics', topicRoutes);
-// app.use('/api/questions', questionRoutes);
-// app.use('/api/results', resultRoutes);
-// app.use('/api/friends', friendRoutes);
-// app.use('/api/challenges', challengeRoutes);
-// app.use('/api/contact', contactRoutes);
-// app.use('/api/ai', aiRoutes);
+app.use('/api/subjects', subjectRoutes);
+app.use('/api/topics', topicRoutes);
+app.use('/api/questions', questionRoutes);
+app.use('/api/results', resultRoutes);
+app.use('/api/friends', friendRoutes);
+app.use('/api/challenges', challengeRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/ai', aiRoutes);
 
 // --- Health Check Endpoint ---
 app.get('/api/health', (req, res) => {
