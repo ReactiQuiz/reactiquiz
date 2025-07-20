@@ -1,18 +1,60 @@
 // src/pages/RegisterPage.js
-import { Box, Paper, useTheme, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../contexts/AuthContext'; // Use the main AuthContext
 import RegisterForm from '../components/auth/RegisterForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function RegisterPage() {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { signUp } = useAuth(); // Get signUp from context
 
-  const handleRegistrationSuccess = () => {
-    navigate('/login', {
-      state: { message: 'Registration successful! Please log in to continue.' }
+  // State for the form
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [userClass, setUserClass] = useState('');
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    setError('');
+    setSuccessMessage('');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+    setIsSubmitting(true);
+
+    const { data, error: signUpError } = await signUp({
+      email: email,
+      password: password,
+      options: {
+        // We store extra data in the user's profile table, not during sign up
+        data: {
+          username: username,
+          address: address,
+          class: userClass,
+        }
+      }
     });
+
+    if (signUpError) {
+      setError(signUpError.message || 'Registration failed.');
+    } else {
+      // IMPORTANT: Supabase may require email confirmation.
+      // This message handles that case.
+      setSuccessMessage("Registration successful! Please check your email for a confirmation link to activate your account.");
+      // We don't navigate immediately, user needs to confirm their email first.
+    }
+    setIsSubmitting(false);
   };
 
   return (

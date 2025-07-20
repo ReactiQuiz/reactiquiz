@@ -1,8 +1,8 @@
 // src/pages/LoginPage.js
-import { useState, useEffect } from 'react';
-import { Box, Paper, useTheme, Grid, Typography, Alert } from '@mui/material';
+import { useState } from 'react';
+import { Box, Grid, Typography, useTheme, Alert } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import { useAuth } from '../contexts/AuthContext'; // Use the main AuthContext
 import LoginForm from '../components/auth/LoginForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
@@ -10,24 +10,35 @@ function LoginPage() {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const { signIn } = useAuth(); // Get the signIn function from context
 
-  const [inForgotPasswordFlow, setInForgotPasswordFlow] = useState(false);
-  const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (location.state?.message) {
-      setInfoMessage(location.state.message);
-      navigate(location.pathname, { replace: true, state: {} });
+  // Check for success messages from registration
+  const infoMessage = location.state?.message || '';
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+
+    const { error } = await signIn({
+      email: identifier, // Supabase uses email to sign in
+      password: password,
+    });
+
+    if (error) {
+      setError(error.message || 'Login failed. Please check your credentials.');
+    } else {
+      // On successful login, AuthContext will update the user state
+      // and the ProtectedRoute will handle the redirect automatically.
+      // We can also manually navigate if needed.
+      navigate('/subjects');
     }
-  }, [location, navigate]);
-
-  const handlePasswordResetSuccess = (identifier) => {
-    setInForgotPasswordFlow(false);
-    setLoginIdentifier(identifier);
-    setForgotPasswordIdentifier('');
-    setForgotPasswordOtp('');
-    setForgotPasswordNewPassword('');
-    setForgotPasswordConfirmNewPassword('');
+    setIsSubmitting(false);
   };
 
   return (
