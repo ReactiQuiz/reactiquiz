@@ -1,6 +1,6 @@
 // api/_utils/logger.js
-import debug from 'debug';
-import chalk from 'chalk';
+const debug = require('debug');
+const chalk = require('chalk');
 
 const C_NAMESPACE = 22;
 const C_STATUS = 11;
@@ -15,11 +15,8 @@ debug.enable('reactiquiz:*');
 
 function log(debuggerInstance, status, message, details = '') {
     if (!debuggerInstance.enabled) return;
-
     const namespace = `reactiquiz:${debuggerInstance.namespace.split(':').pop()}`;
-    let statusColor = chalk.white;
-    let messageColor = chalk.white;
-
+    let statusColor = chalk.white, messageColor = chalk.white;
     switch (status.toUpperCase()) {
         case 'SUCCESS': statusColor = chalk.greenBright; break;
         case 'ERROR': case 'FAILED': case 'FATAL': statusColor = chalk.redBright; messageColor = chalk.red; break;
@@ -28,11 +25,9 @@ function log(debuggerInstance, status, message, details = '') {
         case 'DB': statusColor = chalk.cyanBright; break;
         case 'GET': case 'POST': case 'PUT': case 'DELETE': statusColor = chalk.magentaBright; messageColor = chalk.whiteBright; break;
     }
-
     const nsStr = chalk.gray(namespace.padEnd(C_NAMESPACE));
     const statusStr = statusColor(status.padEnd(C_STATUS));
     const msgStr = messageColor(message.padEnd(C_MESSAGE));
-    
     console.log(`${nsStr}${statusStr}${msgStr}${chalk.dim.gray(details)}`);
 }
 

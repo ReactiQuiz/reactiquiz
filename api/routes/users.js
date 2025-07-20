@@ -1,9 +1,8 @@
-
 // api/routes/users.js
 const { Router } = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid'); // To generate unique IDs for users
 const { turso } = require('../_utils/tursoClient');
 const { logApi, logError } = require('../_utils/logger');
 const { verifyToken } = require('../_middleware/auth');
@@ -25,12 +24,12 @@ router.post('/register', async (req, res) => {
 
         await turso.execute({
             sql: 'INSERT INTO users (id, username, email, password, address, class) VALUES (?, ?, ?, ?, ?, ?);',
-            args: [userId, username, email, hashedPassword, address, userClass]
+            args: [userId, username, email, hashedPassword, address || '', userClass || '']
         });
 
         res.status(201).json({ message: 'User registered successfully!' });
     } catch (e) {
-        if (e.message.includes('UNIQUE constraint failed')) {
+        if (e.message && e.message.includes('UNIQUE constraint failed')) {
             return res.status(409).json({ message: 'Username or email already exists.' });
         }
         logError('DB ERROR', 'User registration failed', e.message);
@@ -49,7 +48,7 @@ router.post('/login', async (req, res) => {
 
     try {
         const result = await turso.execute({
-            sql: 'SELECT id, username, password FROM users WHERE username = ?;',
+            sql: 'SELECT id, username, email, address, class, password FROM users WHERE username = ?;',
             args: [username]
         });
 
@@ -70,36 +69,20 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1d' }
         );
 
-        // Don't send the password back to the client
+        // Send back user data (without the password) and the token
         res.json({
             token,
             user: {
                 id: user.id,
-                username: user.username,
+                name: user.username, // 'name' is used in frontend, so we map username to it
+                email: user.email,
+                address: user.address,
+                class: user.class,
             }
         });
     } catch (e) {
         logError('DB ERROR', 'User login failed', e.message);
         res.status(500).json({ message: 'An error occurred during login.' });
-    }
-});
-
-// Example of a protected route to get user profile
-router.get('/profile', verifyToken, async (req, res) => {
-    const userId = req.user.id;
-    logApi('GET', '/api/users/profile', `User: ${userId}`);
-    try {
-        const result = await turso.execute({
-            sql: 'SELECT id, username, email, address, class FROM users WHERE id = ?;',
-            args: [userId]
-        });
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'User profile not found.' });
-        }
-        res.json(result.rows[0]);
-    } catch(e) {
-        logError('DB ERROR', 'Fetching profile failed', e.message);
-        res.status(500).json({ message: 'Could not fetch user profile.' });
     }
 });
 
