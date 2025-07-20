@@ -2,54 +2,56 @@
 import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, useTheme, Alert } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // Use the main AuthContext
+import apiClient from '../api/axiosInstance'; // Use axios directly
 import LoginForm from '../components/auth/LoginForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
+
+// A simple function to simulate logging in for the rest of the app
+// This should be in your AuthContext, but for simplicity, we define it here.
+const loginUser = (userData, token) => {
+  localStorage.setItem('reactiquizUser', JSON.stringify(userData));
+  localStorage.setItem('reactiquizToken', token);
+  window.dispatchEvent(new Event('storage')); // Notify other tabs
+};
+
 
 function LoginPage() {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const { signIn } = useAuth(); // Get the signIn function from context
 
-  // State for this component
-  const [email, setEmail] = useState(''); // Supabase uses email for login
+  // SIMPLE STATE: No complex hooks needed
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Check for success messages passed from other pages (like registration)
-  const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
-
-  // Clear the info message from location state after displaying it once
-  useEffect(() => {
-    if (location.state?.message) {
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-  }, [location, navigate]);
+  const infoMessage = location.state?.message || '';
 
   const handleLogin = async (event) => {
     event.preventDefault();
     setError('');
-    if (!email || !password) {
-      setError("Email and password are required.");
+    if (!username || !password) {
+      setError("Username and password are required.");
       return;
     }
     setIsSubmitting(true);
 
-    const { error: signInError } = await signIn({
-      email: email,
-      password: password,
-    });
+    try {
+      // SIMPLE LOGIC: Use axios to call your API endpoint
+      const response = await apiClient.post('/api/users/login', {
+        username: username,
+        password: password,
+      });
 
-    if (signInError) {
-      setError(signInError.message || 'Login failed. Please check your credentials.');
-    } else {
-      // On successful login, the AuthContext will handle the user state.
-      // We can navigate the user to the main content area.
+      // On success, save user and token to localStorage and redirect
+      loginUser(response.data.user, response.data.token);
       navigate('/subjects');
+
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   return (
@@ -104,8 +106,8 @@ function LoginPage() {
             <LoginForm
               formError={error}
               isSubmitting={isSubmitting}
-              identifier={email} // Pass email as identifier
-              setIdentifier={setEmail}
+              identifier={username}
+              setIdentifier={setUsername}
               password={password}
               setPassword={setPassword}
               onLoginSubmit={handleLogin}

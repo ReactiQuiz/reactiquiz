@@ -7,7 +7,7 @@ import LoginIcon from '@mui/icons-material/Login';
 function LoginForm({
   formError,
   isSubmitting,
-  identifier,
+  identifier, // This is now the username
   setIdentifier,
   password,
   setPassword,
@@ -15,11 +15,11 @@ function LoginForm({
   accentColor,
 }) {
   return (
-    <Box>
+    <Box width="100%">
       <Box component="form" onSubmit={onLoginSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
-          margin="normal" required fullWidth label="Email" // Changed to Email for Supabase
-          name="identifier" autoComplete="email" autoFocus
+          margin="normal" required fullWidth label="Username" // <-- Correct label
+          name="username" autoComplete="username" autoFocus
           value={identifier} onChange={(e) => setIdentifier(e.target.value)}
         />
         <TextField
@@ -27,17 +27,16 @@ function LoginForm({
           type="password" autoComplete="current-password"
           value={password} onChange={(e) => setPassword(e.target.value)}
         />
-        {/* We can add a "Forgot Password" link here later if needed */}
         {formError && <Alert severity="error" sx={{ my: 2 }}>{formError}</Alert>}
         <Button
           type="submit" fullWidth variant="contained" disabled={isSubmitting}
-          sx={{ py: 1.5, mt: 2, backgroundColor: accentColor, '&:hover': { backgroundColor: (theme) => theme.palette.augmentColor({ color: { main: accentColor } }).dark } }}
+          sx={{ py: 1.5, mt: 3, mb: 2, backgroundColor: accentColor }}
           startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <LoginIcon />}
         >
           {isSubmitting ? 'Signing In...' : 'Login'}
         </Button>
       </Box>
-      <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+      <Typography variant="body2" sx={{ textAlign: 'center' }}>
         Don't have an account?{' '}
         <MuiLink component={RouterLink} to="/register" variant="body2" sx={{ fontWeight: 'bold' }}>
           Sign Up

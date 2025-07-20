@@ -1,17 +1,16 @@
 // src/pages/RegisterPage.js
 import { useState } from 'react';
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useTheme, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // Use the main AuthContext
+import apiClient from '../api/axiosInstance'; // Use axios directly
 import RegisterForm from '../components/auth/RegisterForm';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 
 function RegisterPage() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { signUp } = useAuth(); // Get signUp from context
 
-  // State for the form
+  // SIMPLE STATE for the form
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,28 +32,27 @@ function RegisterPage() {
     }
     setIsSubmitting(true);
 
-    const { data, error: signUpError } = await signUp({
-      email: email,
-      password: password,
-      options: {
-        // We store extra data in the user's profile table, not during sign up
-        data: {
-          username: username,
-          address: address,
-          class: userClass,
-        }
-      }
-    });
+    try {
+      // SIMPLE LOGIC: Use axios to call your API endpoint
+      await apiClient.post('/api/users/register', {
+        username,
+        email,
+        password,
+        address,
+        class: userClass
+      });
 
-    if (signUpError) {
-      setError(signUpError.message || 'Registration failed.');
-    } else {
-      // IMPORTANT: Supabase may require email confirmation.
-      // This message handles that case.
-      setSuccessMessage("Registration successful! Please check your email for a confirmation link to activate your account.");
-      // We don't navigate immediately, user needs to confirm their email first.
+      // On success, show a message and redirect to the login page
+      setSuccessMessage("Registration successful! Please sign in to continue.");
+      setTimeout(() => {
+        navigate('/login', { state: { message: "Registration successful! Please sign in." } });
+      }, 2000);
+
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   return (
