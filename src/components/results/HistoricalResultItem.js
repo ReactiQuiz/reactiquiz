@@ -1,9 +1,11 @@
 // src/components/results/HistoricalResultItem.js
 import { Paper, Box, Typography, Chip, useTheme, alpha, Stack, LinearProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // <-- Import useNavigate
 import { subjectAccentColors } from '../../theme';
 
 function HistoricalResultItem({ result }) {
   const theme = useTheme();
+  const navigate = useNavigate(); // <-- Initialize the hook
 
   if (!result) return null;
 
@@ -14,22 +16,33 @@ function HistoricalResultItem({ result }) {
     if (percentage >= 40) return { backgroundColor: theme.palette.warning.main };
     return { backgroundColor: theme.palette.error.main };
   };
+  
+  // --- START OF FIX: Navigation Handler ---
+  const handleResultClick = () => {
+    navigate(`/results/${result.id}`);
+  };
+  // --- END OF FIX ---
 
   return (
     <Paper
+      // --- START OF FIX: Add onClick and cursor style ---
+      onClick={handleResultClick}
       sx={{
         p: 2,
         height: '100%',
+        width: '100%', // Ensure it fills the grid item
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 2,
         borderLeft: `5px solid ${itemAccentColor}`,
+        cursor: 'pointer', // Make it obvious it's clickable
         transition: 'transform 0.2s, box-shadow 0.2s',
         '&:hover': {
           transform: 'translateY(-4px)',
           boxShadow: theme.shadows[6],
         },
       }}
+      // --- END OF FIX ---
       elevation={3}
     >
       <Box sx={{ flexGrow: 1, mb: 1.5 }}>
