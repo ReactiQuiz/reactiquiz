@@ -81,7 +81,7 @@ function DashboardControls({ timeFrequency, onTimeFrequencyChange, allSubjects, 
                             disabled={!allSubjects || allSubjects.length === 0}
                         >
                             <MenuItem value="all">All Subjects</MenuItem>
-                            {allSubjects.map(subj => <MenuItem key={subj.subjectKey} value={subj.subjectKey}>{subj.name}</MenuItem>)}
+                            {(allSubjects || []).map(subj => <MenuItem key={subj.subjectKey} value={subj.subjectKey}>{subj.name}</MenuItem>)}
                         </Select>
                     </FormControl>
                 </Grid>

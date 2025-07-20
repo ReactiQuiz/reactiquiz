@@ -6,8 +6,6 @@ const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
-// This file handles routes related to quiz RESULTS.
-
 // Save a quiz result (Protected Route)
 router.post('/', verifyToken, async (req, res) => {
     const userId = req.user.id;
