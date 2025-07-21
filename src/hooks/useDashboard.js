@@ -36,6 +36,36 @@ export const useDashboard = () => {
   const subjectAveragesChartRef = useRef(null);
   const topicPerformanceRef = useRef(null);
 
+  const fetchDashboardData = useCallback(async () => {
+    if (!currentUser) {
+      setIsLoadingData(false);
+      setUserResults([]);
+      setAllSubjects([]);
+      setAllTopics([]);
+      return;
+    }
+
+    setIsLoadingData(true);
+    setError('');
+    try {
+      const [resultsRes, subjectsRes, topicsRes] = await Promise.all([
+        apiClient.get('/api/results'),
+        apiClient.get('/api/subjects'),
+        apiClient.get('/api/topics')
+      ]);
+
+      setUserResults(resultsRes.data || []);
+      setAllSubjects(subjectsRes.data || []);
+      setAllTopics(topicsRes.data || []);
+
+    } catch (err) {
+      setError(`Failed to load dashboard data: ${err.response?.data?.message || err.message}`);
+    } finally {
+      setIsLoadingData(false);
+    }
+  }, [currentUser]); // The dependency is correct.
+
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       // If there's no user, we clear the data and stop loading.
