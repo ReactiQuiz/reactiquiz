@@ -2,8 +2,8 @@
 import React, { Suspense } from 'react'; // <-- Import Suspense
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
-import ProtectedRoute from './ProtectedRoute';
+import { useAuth } from '../contexts/AuthContext';
+import ProtectedRoute from './core/ProtectedRoute';
 
 // --- START OF LAZY LOADING ---
 // Create a simple, reusable loading component for Suspense
@@ -14,19 +14,19 @@ const SuspenseFallback = () => (
 );
 
 // Lazily import all your page components
-const HomePage = React.lazy(() => import('../../pages/HomePage'));
-const AllSubjectsPage = React.lazy(() => import('../../pages/AllSubjectsPage'));
-const SubjectTopicsPage = React.lazy(() => import('../../pages/SubjectTopicsPage'));
-const DashboardPage = React.lazy(() => import('../../pages/DashboardPage'));
-const AccountPage = React.lazy(() => import('../../pages/AccountPage'));
-const LoginPage = React.lazy(() => import('../../pages/LoginPage'));
-const RegisterPage = React.lazy(() => import('../../pages/RegisterPage'));
-const ResultsPage = React.lazy(() => import('../../pages/ResultsPage'));
-const QuizPage = React.lazy(() => import('../../pages/QuizPage'));
-const FriendsPage = React.lazy(() => import('../../pages/FriendsPage'));
-const ChallengesPage = React.lazy(() => import('../../pages/ChallengesPage'));
-const AICenterPage = React.lazy(() => import('../../pages/AICenterPage'));
-const NotFoundPage = React.lazy(() => import('../../pages/NotFoundPage'));
+const HomePage = React.lazy(() => import('../pages/HomePage'));
+const AllSubjectsPage = React.lazy(() => import('../pages/AllSubjectsPage'));
+const SubjectTopicsPage = React.lazy(() => import('../pages/SubjectTopicsPage'));
+const DashboardPage = React.lazy(() => import('../pages/DashboardPage'));
+const AccountPage = React.lazy(() => import('../pages/AccountPage'));
+const LoginPage = React.lazy(() => import('../pages/LoginPage'));
+const RegisterPage = React.lazy(() => import('../pages/RegisterPage'));
+const ResultsPage = React.lazy(() => import('../pages/ResultsPage'));
+const QuizPage = React.lazy(() => import('../pages/QuizPage'));
+const FriendsPage = React.lazy(() => import('../pages/FriendsPage'));
+const ChallengesPage = React.lazy(() => import('../pages/ChallengesPage'));
+const AICenterPage = React.lazy(() => import('../pages/AICenterPage'));
+const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 // ... add any other pages you have
 // --- END OF LAZY LOADING ---
 
