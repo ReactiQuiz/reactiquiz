@@ -3,37 +3,36 @@ import { Box, Typography, Alert, TextField, InputAdornment, Grid, Skeleton } fro
 import SearchIcon from '@mui/icons-material/Search';
 import { useSubjects } from '../hooks/useSubjects';
 import SubjectOverviewCard from '../components/topics/SubjectOverviewCard';
+import SkeletonGrid from '../components/shared/SkeletonGrid';
 
 function AllSubjectsPage() {
   const { subjects, isLoading, error, searchTerm, filteredSubjects, handleExploreSubject, handleSearchTermChange } = useSubjects();
 
-  // --- START OF SKELETON LOADER LOGIC ---
-  const renderSkeletons = () => {
+  const renderContent = () => {
+    if (isLoading) {
+      return <SkeletonGrid count={8} height={220} />;
+    }
+
+    if (error) {
+      return <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>;
+    }
+
+    if (subjects.length === 0) {
+      return <Typography sx={{ textAlign: 'center', mt: 4 }}>No subjects available.</Typography>;
+    }
+
     return (
       <Grid container spacing={2}>
-        {Array.from(new Array(6)).map((_, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Skeleton variant="rectangular" height={220} sx={{ borderRadius: 2 }} />
+        {subjects.map((subject) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={subject.id}>
+            <SubjectOverviewCard subject={subject} onExploreClick={handleExploreSubject} />
           </Grid>
         ))}
       </Grid>
     );
   };
-  // --- END OF SKELETON LOADER LOGIC ---
 
-  // Main render logic update
-  if (isLoading) {
-    return (
-      <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
-        <TextField fullWidth variant="outlined" label="Search Subjects" disabled sx={{ mb: 4 }} />
-        {renderSkeletons()}
-      </Box>
-    );
-  }
-
-  if (error) { return (<Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}><Alert severity="error">{error}</Alert></Box>); }
-
-return (
+  return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, width: '100%', margin: 'auto' }}>
       <Box sx={{ mb: { xs: 2, sm: 3, md: 4 }, mt: { xs: 1, sm: 1 } }}>
         <TextField

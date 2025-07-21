@@ -4,9 +4,16 @@ import { Grid, Typography, Paper, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoricalResultItem from './HistoricalResultItem';
+import SkeletonGrid from '../shared/SkeletonGrid';
 
-function HistoricalResultsList({ results, accentColor }) {
+function HistoricalResultsList({ results, isLoading, accentColor }) {
   const navigate = useNavigate();
+
+  // 2. USE the new component for the loading state
+  if (isLoading) {
+    // Using custom height and count for this page
+    return <SkeletonGrid count={4} height={180} />;
+  }
 
   if (!results || results.length === 0) {
     return (

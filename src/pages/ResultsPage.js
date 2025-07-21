@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'; // <-- Import useParams
 import { useAuth } from '../contexts/AuthContext';
 import { useResults } from '../hooks/useResults';
 import HistoricalResultsList from '../components/results/HistoricalResultsList';
-import HistoricalResultDetailView from '../components/results/HistoricalResultDetailView'; // <-- We will create this next
+import HistoricalResultDetailView from '../components/results/HistoricalResultDetailView'
 import HistoryIcon from '@mui/icons-material/History';
 
 function ResultsPage() {
@@ -36,7 +36,7 @@ function ResultsPage() {
       return <HistoricalResultDetailView detailData={detailData} />;
     } else {
       // Otherwise, show the list view
-      return <HistoricalResultsList results={historicalList} accentColor={RESULTS_PAGE_ACCENT_COLOR} />;
+      return <HistoricalResultsList results={historicalList} isLoading={isLoading} accentColor={RESULTS_PAGE_ACCENT_COLOR} />;
     }
     // --- END OF FIX ---
   };
