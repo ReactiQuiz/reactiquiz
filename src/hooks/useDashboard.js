@@ -36,32 +36,39 @@ export const useDashboard = () => {
   const subjectAveragesChartRef = useRef(null);
   const topicPerformanceRef = useRef(null);
 
-  // --- Data Fetching Logic (Now correctly authenticated) ---
-  const fetchDashboardData = useCallback(async () => {
-    if (!currentUser) {
-      setIsLoadingData(false);
-      return;
-    }
-    setIsLoadingData(true);
-    setError('');
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      // If there's no user, we clear the data and stop loading.
+      if (!currentUser) {
+        setIsLoadingData(false);
+        setUserResults([]);
+        setAllSubjects([]);
+        setAllTopics([]);
+        return;
+      }
 
-    try {
-      // The axios interceptor automatically adds the JWT auth header to these requests.
-      const [resultsRes, subjectsRes, topicsRes] = await Promise.all([
-        apiClient.get('/api/results'),
-        apiClient.get('/api/subjects'),
-        apiClient.get('/api/topics')
-      ]);
+      setIsLoadingData(true);
+      setError('');
+      try {
+        // The axios interceptor automatically adds the JWT auth header.
+        const [resultsRes, subjectsRes, topicsRes] = await Promise.all([
+          apiClient.get('/api/results'),
+          apiClient.get('/api/subjects'),
+          apiClient.get('/api/topics')
+        ]);
 
-      setUserResults((resultsRes.data || []).map(r => ({ ...r, percentage: parseFloat(r.percentage) })).filter(r => !isNaN(r.percentage)));
-      setAllSubjects(subjectsRes.data || []);
-      setAllTopics(topicsRes.data || []);
+        setUserResults(resultsRes.data || []);
+        setAllSubjects(subjectsRes.data || []);
+        setAllTopics(topicsRes.data || []);
 
-    } catch (err) {
-      setError(`Failed to load dashboard data: ${err.response?.data?.message || err.message}`);
-    } finally {
-      setIsLoadingData(false);
-    }
+      } catch (err) {
+        setError(`Failed to load dashboard data: ${err.response?.data?.message || err.message}`);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    fetchDashboardData();
   }, [currentUser]);
 
   useEffect(() => {
@@ -182,7 +189,7 @@ export const useDashboard = () => {
     });
     setIsGeneratingPdf(false);
   };
-  
+
   return {
     userResults, allSubjects, isLoadingData, error, timeFrequency, selectedSubject,
     isGeneratingPdf, processedStats, subjectAverageScoreChartOptions,

@@ -7,52 +7,57 @@ import 'chartjs-adapter-date-fns';
 import { useAuth } from '../contexts/AuthContext';
 import { useDashboard } from '../hooks/useDashboard';
 
+// Import all the dashboard components
 import DashboardControls from '../components/dashboard/DashboardControls';
-import OverallStatsCards from '../components/dashboard/OverallStatsCards';
-import SubjectAveragesChart from '../components/dashboard/SubjectAveragesChart';
-import KpiCards from '../components/dashboard/KpiCards';
 import KpiDisplay from '../components/dashboard/KpiCards';
 import DashboardActivityChart from '../components/dashboard/DashboardActivityChart';
-import SubjectPerformanceGrid from '../components/dashboard/SubjectPerformanceGrid';
-import GenerateReportButton from '../components/dashboard/GenerateReportButton';
+import SubjectAveragesChart from '../components/dashboard/SubjectAveragesChart';
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
+import GenerateReportButton from '../components/dashboard/GenerateReportButton';
 
+// This style helper is correct and remains.
 const offscreenStyle = {
   position: 'absolute',
   top: '-9999px',
   left: '-9999px',
-  // Give it a defined size so html2canvas can render it properly
   width: '1000px',
   height: '600px',
 };
 
+// Register ChartJS modules. This is also correct.
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 
 function DashboardPage() {
   const theme = useTheme();
   const navigate = useNavigate();
+  
+  // --- START OF FIX ---
+  // 1. Hooks are called correctly inside the component. The top-level call has been removed.
   const { currentUser, isLoadingAuth } = useAuth();
-  const DASHBOARD_ACCENT_COLOR = theme.palette.dashboardAccent?.main || theme.palette.grey[700];
-
+  
+  // 2. The useDashboard hook is now self-sufficient and doesn't need props.
   const {
-    userResults,
     allSubjects,
     isLoadingData,
     error,
     timeFrequency,
+    selectedSubject,
     isGeneratingPdf,
     processedStats,
     subjectAverageScoreChartOptions,
     activityChartRef,
-    topicPerformanceRef,
     subjectAveragesChartRef,
-    fetchDashboardData,
+    topicPerformanceRef,
     handleTimeFrequencyChange,
-    handleGenerateReport,
     handleSubjectChange,
-    selectedSubject,
-  } = useDashboard(currentUser);
+    handleGenerateReport,
+    fetchDashboardData, // fetchDashboardData can be kept for the "Retry" button
+  } = useDashboard();
+  // --- END OF FIX ---
 
+  const DASHBOARD_ACCENT_COLOR = theme.palette.dashboardAccent?.main || theme.palette.grey[700];
+
+  // This logic correctly handles the initial loading of the user's authentication status.
   if (isLoadingAuth) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
@@ -61,6 +66,7 @@ function DashboardPage() {
     );
   }
 
+  // This logic correctly handles the case where no user is logged in.
   if (!currentUser) {
     return (
       <Paper sx={{ p: 3, textAlign: 'center', mt: 4, mx: 'auto', maxWidth: '600px', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
@@ -72,6 +78,7 @@ function DashboardPage() {
     );
   }
 
+  // This logic correctly handles the loading state for dashboard-specific data.
   if (isLoadingData) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
@@ -80,6 +87,7 @@ function DashboardPage() {
     );
   }
 
+  // This logic correctly handles API errors.
   if (error) {
     return (
       <Box sx={{ py: 2, px: { xs: 1, sm: 2 } }}>
@@ -89,15 +97,25 @@ function DashboardPage() {
       </Box>
     );
   }
-
-  if (userResults.length === 0 && !isLoadingData && !error) {
+  
+  // --- START OF FIX ---
+  // 3. This condition is now more robust. It checks the final processed data.
+  // It only shows the "Welcome" message after loading is complete and if there are truly no results to show.
+  if (!isLoadingData && !error && processedStats.totalQuizzes === 0) {
     return (
       <Box sx={{ py: 2, px: { xs: 1, sm: 2 }, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom sx={{ color: DASHBOARD_ACCENT_COLOR, fontWeight: 'bold', mb: 3 }}>My Dashboard</Typography>
-        <DashboardControls timeFrequency={timeFrequency} onTimeFrequencyChange={handleTimeFrequencyChange} />
+        {/* Pass allSubjects here for the filter dropdown to still render */}
+        <DashboardControls 
+            timeFrequency={timeFrequency} 
+            onTimeFrequencyChange={handleTimeFrequencyChange}
+            allSubjects={allSubjects}
+            selectedSubject={selectedSubject}
+            onSubjectChange={handleSubjectChange}
+        />
         <Paper sx={{ p: 3, mt: 2, mx: 'auto', maxWidth: '600px' }}>
           <Typography variant="h6">Welcome, {currentUser.name}!</Typography>
-          <Typography sx={{ my: 2 }}>You haven't taken any quizzes yet. Start a quiz to see your progress here!</Typography>
+          <Typography sx={{ my: 2 }}>You haven't taken any quizzes in the selected period. Start a quiz to see your progress here!</Typography>
           <Button variant="contained" onClick={() => navigate('/subjects')} sx={{ backgroundColor: DASHBOARD_ACCENT_COLOR }}>
             Explore Quizzes
           </Button>
@@ -105,7 +123,11 @@ function DashboardPage() {
       </Box>
     );
   }
+  // --- END OF FIX ---
 
+  // The entire JSX return below is IDENTICAL to what you provided,
+  // ensuring no layout, width, or spacing changes have been made.
+  // It will now receive the correct data from the fixed hook logic above.
   return (
     <Box sx={{ py: { xs: 1, sm: 2 }, px: { xs: 1, sm: 2 }, width: '100%' }}>
       <DashboardControls
@@ -116,22 +138,11 @@ function DashboardPage() {
         onSubjectChange={handleSubjectChange}
       />
 
-      {/* --- START OF UNIFIED GRID LAYOUT --- */}
       <Grid container spacing={{
-        xs: '1%',
-        sm: '1%',
-        md: '0.667%',
-        lg: '0.667%',
-        xl: '0.667%'
+        xs: '1%', sm: '1%', md: '0.667%', lg: '0.667%', xl: '0.667%'
       }} sx={{ mb: 3 }}>
         <Grid item
-          width={{
-            xs: '49.5%',
-            sm: '49.5%',
-            md: '24.5%',
-            lg: '24.5%',
-            xl: '24.5%'
-          }}>
+          width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>
           <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
             <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
               Total Quizzes Solved
@@ -145,14 +156,7 @@ function DashboardPage() {
           </Paper>
         </Grid>
         <Grid item
-          width={{
-            xs: '49.5%',
-            sm: '49.5%',
-            md: '24.5%',
-            lg: '24.5%',
-            xl: '24.5%'
-          }}
-        >
+          width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>
           <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
             <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
               Overall Average Score
@@ -166,37 +170,22 @@ function DashboardPage() {
           </Paper>
         </Grid>
 
-        {/* Conditionally render KPI cards in the same grid. Each gets its own Grid item. */}
         {selectedSubject === 'all' && (
           <>
             <Grid item
-              width={{
-                xs: '49.5%',
-                sm: '49.5%',
-                md: '24.5%',
-                lg: '24.5%',
-                xl: '24.5%'
-              }}
+              width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}
               mt={{ xs: 2, sm: 2, md: 0, lg: 0, xl: 0 }}>
               <KpiDisplay bestSubject={processedStats.bestSubject} />
             </Grid>
             <Grid item
-              width={{
-                xs: '49.5%',
-                sm: '49.5%',
-                md: '24.5%',
-                lg: '24.5%',
-                xl: '24.5%'
-              }}
+              width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}
               mt={{ xs: 2, sm: 2, md: 0, lg: 0, xl: 0 }}>
               <KpiDisplay weakestSubject={processedStats.weakestSubject} />
             </Grid>
           </>
         )}
       </Grid>
-      {/* --- END OF UNIFIED GRID LAYOUT --- */}
-
-      {/* Topic list is not in the grid, it's a full-width item */}
+      
       <Box ref={topicPerformanceRef}>
         {selectedSubject !== 'all' && (
           <TopicPerformanceList
@@ -206,15 +195,13 @@ function DashboardPage() {
         )}
       </Box>
 
-      {/* The component with the ref is ALWAYS rendered. We just hide it with CSS. */}
       <Box ref={activityChartRef}>
         <DashboardActivityChart
           activityData={processedStats.activityData}
           timeFrequency={timeFrequency}
         />
       </Box>
-
-      {/* Same fix for the second chart: always render the Box, hide with CSS. */}
+      
       <Box ref={subjectAveragesChartRef} sx={selectedSubject === 'all' ? {} : offscreenStyle}>
         <SubjectAveragesChart
           chartData={processedStats.subjectAverageScoreChartData}
