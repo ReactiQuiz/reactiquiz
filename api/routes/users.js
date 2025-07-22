@@ -9,6 +9,67 @@ const { verifyToken } = require('../_middleware/auth');
 
 const router = Router();
 
+router.put('/update-details', verifyToken, async (req, res) => {
+    const userId = req.user.id;
+    const { address, class: userClass } = req.body;
+    logApi('PUT', '/api/users/update-details', `User: ${userId}`);
+
+    if (!address || !userClass) {
+        return res.status(400).json({ message: 'Address and Class are required.' });
+    }
+
+    try {
+        await turso.execute({
+            sql: "UPDATE users SET address = ?, class = ? WHERE id = ?;",
+            args: [address, userClass, userId]
+        });
+        res.status(200).json({ message: 'Profile updated successfully!' });
+    } catch (e) {
+        logError('DB ERROR', `Updating details for user ${userId} failed`, e.message);
+        res.status(500).json({ message: 'Could not update profile.' });
+    }
+});
+
+// Endpoint for the "Change Password" modal
+router.post('/change-password', verifyToken, async (req, res) => {
+    const userId = req.user.id;
+    const { oldPassword, newPassword } = req.body;
+    logApi('POST', '/api/users/change-password', `User: ${userId}`);
+
+    if (!oldPassword || !newPassword || newPassword.length < 6) {
+        return res.status(400).json({ message: 'Old password and a new password (min 6 chars) are required.' });
+    }
+
+    try {
+        const result = await turso.execute({
+            sql: "SELECT password FROM users WHERE id = ?",
+            args: [userId]
+        });
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const user = result.rows[0];
+        const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Incorrect old password.' });
+        }
+
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        await turso.execute({
+            sql: "UPDATE users SET password = ? WHERE id = ?",
+            args: [hashedNewPassword, userId]
+        });
+
+        res.status(200).json({ message: 'Password changed successfully.' });
+    } catch (e) {
+        logError('DB ERROR', `Changing password for user ${userId} failed`, e.message);
+        res.status(500).json({ message: 'Could not change password.' });
+    }
+});
+
 // This new route provides statistics for the logged-in user's account page.
 router.get('/stats', verifyToken, async (req, res) => {
     const userId = req.user.id;
@@ -34,7 +95,7 @@ router.get('/stats', verifyToken, async (req, res) => {
                 try {
                     const datePart = r.timestamp.substring(0, 10);
                     countsByDay[datePart] = (countsByDay[datePart] || 0) + 1;
-                } catch (e) {}
+                } catch (e) { }
             });
         }
         const activityData = Object.entries(countsByDay).map(([date, count]) => ({ date, count }));
@@ -143,7 +204,7 @@ router.get('/me', verifyToken, async (req, res) => {
         // Map username to 'name' to match frontend expectations
         const userProfile = { ...result.rows[0], name: result.rows[0].username };
         res.json(userProfile);
-    } catch(e) {
+    } catch (e) {
         logError('DB ERROR', 'Fetching profile for /me failed', e.message);
         res.status(500).json({ message: 'Could not fetch user profile.' });
     }

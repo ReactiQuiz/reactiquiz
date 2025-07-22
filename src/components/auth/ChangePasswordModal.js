@@ -22,7 +22,7 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
-  const effectiveAccentColor = theme.palette.accountAccent?.main || theme.palette.success.main; 
+  const effectiveAccentColor = theme.palette.accountAccent?.main || theme.palette.success.main;
 
   const handleClose = () => {
     setOldPassword('');
@@ -46,33 +46,30 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
       return;
     }
     if (newPassword.length < 6) {
-        setError('New password must be at least 6 characters long.');
-        return;
+      setError('New password must be at least 6 characters long.');
+      return;
     }
     if (newPassword !== confirmNewPassword) {
       setError('New passwords do not match.');
       return;
     }
     if (!currentUser || !currentUser.token) {
-        setError('User not authenticated. Please log in again.');
-        return;
+      setError('User not authenticated. Please log in again.');
+      return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await apiClient.post('/api/users/change-password', {
+      // The axios interceptor automatically adds the auth token
+      await apiClient.post('/api/users/change-password', {
         oldPassword,
         newPassword
-      }, {
-        headers: { Authorization: `Bearer ${currentUser.token}` }
       });
-      setSuccessMessage(response.data.message || 'Password changed successfully!');
-      setTimeout(() => {
-        handleClose();
-      }, 2000); 
-    } catch (err) { // <<< ADDED CURLY BRACES HERE
-      setError(err.response?.data?.message || 'Failed to change password. Please try again.');
-    } finally { // <<< AND HERE
+      setSuccessMessage('Password changed successfully!');
+      setTimeout(handleClose, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to change password.');
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -80,8 +77,8 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
   return (
     <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { minWidth: { xs: '90%', sm: '450px' } } }}>
       <DialogTitle sx={{ backgroundColor: effectiveAccentColor, color: theme.palette.getContrastText(effectiveAccentColor), pb: 1.5, pt: 2, textAlign: 'center' }}>
-        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <VpnKeyIcon sx={{mr: 1}}/>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <VpnKeyIcon sx={{ mr: 1 }} />
           Change Your Password
         </Box>
       </DialogTitle>
@@ -117,7 +114,7 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             error={!!error && (newPassword.length === 0 || error.toLowerCase().includes("new password") || newPassword.length < 6)}
-             InputProps={{
+            InputProps={{
               endAdornment: (
                 <IconButton onClick={() => setShowNewPassword(!showNewPassword)} edge="end">
                   {showNewPassword ? <VisibilityOff /> : <Visibility />}
