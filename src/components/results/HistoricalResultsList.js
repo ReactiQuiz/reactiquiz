@@ -9,9 +9,7 @@ import SkeletonGrid from '../shared/SkeletonGrid';
 function HistoricalResultsList({ results, isLoading, accentColor }) {
   const navigate = useNavigate();
 
-  // 2. USE the new component for the loading state
   if (isLoading) {
-    // Using custom height and count for this page
     return <SkeletonGrid count={4} height={180} />;
   }
 
@@ -33,7 +31,7 @@ function HistoricalResultsList({ results, isLoading, accentColor }) {
   }
 
   return (
-    <Grid container spacing={
+    <Grid container width="100%" spacing={
       {
         xs:"0%",
         sx:"1%",

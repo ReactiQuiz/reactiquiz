@@ -21,13 +21,13 @@ function ResultsPage() {
     if (isLoading) {
       return (
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-            <CircularProgress sx={{ color: RESULTS_PAGE_ACCENT_COLOR }} />
+          <CircularProgress sx={{ color: RESULTS_PAGE_ACCENT_COLOR }} />
         </Box>
       );
     }
 
     if (error) {
-      return <Alert severity="error" sx={{mt: 2}}>{error}</Alert>;
+      return <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>;
     }
 
     if (resultId && detailData) {
@@ -38,7 +38,7 @@ function ResultsPage() {
   };
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto', mt: 2 }}>
+    <Box sx={{ width: '100%', margin: 'auto', mt: 2 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 3, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
         <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em' }} />
         {currentUser?.name || 'My'} Quiz History
