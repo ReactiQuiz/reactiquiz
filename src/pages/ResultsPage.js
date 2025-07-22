@@ -30,15 +30,11 @@ function ResultsPage() {
       return <Alert severity="error" sx={{mt: 2}}>{error}</Alert>;
     }
 
-    // --- START OF FIX: Conditional Rendering ---
     if (resultId && detailData) {
-      // If there's an ID in the URL, show the detail view
       return <HistoricalResultDetailView detailData={detailData} />;
     } else {
-      // Otherwise, show the list view
       return <HistoricalResultsList results={historicalList} isLoading={isLoading} accentColor={RESULTS_PAGE_ACCENT_COLOR} />;
     }
-    // --- END OF FIX ---
   };
 
   return (
