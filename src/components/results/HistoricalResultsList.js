@@ -1,17 +1,26 @@
 // src/components/results/HistoricalResultsList.js
 import React from 'react';
-import { Grid, Typography, Paper, Button } from '@mui/material';
+import { Grid, Typography, Paper, Button, Skeleton } from '@mui/material'; // <-- Import Skeleton
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoricalResultItem from './HistoricalResultItem';
-import SkeletonGrid from '../shared/SkeletonGrid';
 
 function HistoricalResultsList({ results, isLoading, accentColor }) {
   const navigate = useNavigate();
 
+  // --- START OF SKELETON INTEGRATION ---
   if (isLoading) {
-    return <SkeletonGrid count={4} height={180} />;
+    return (
+      <Grid container spacing={{ xs:"0%", sx:"1%", md:"1%", lg:"1%", xl:"1%" }}>
+        {Array.from(new Array(4)).map((_, index) => (
+          <Grid item key={index} width={{ xs: "100%", sm: "49.5%", md: "32.66%", lg: "24.25%", xl: "19.2%" }}>
+            <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2, width: '100%' }} />
+          </Grid>
+        ))}
+      </Grid>
+    );
   }
+  // --- END OF SKELETON INTEGRATION ---
 
   if (!results || results.length === 0) {
     return (
@@ -31,25 +40,9 @@ function HistoricalResultsList({ results, isLoading, accentColor }) {
   }
 
   return (
-    <Grid container width="100%" spacing={
-      {
-        xs:"0%",
-        sx:"1%",
-        md:"1%",
-        lg:"1%",
-        xl:"1%"
-      }
-    }>
+    <Grid container width="100%" spacing={{ xs:"0%", sx:"1%", md:"1%", lg:"1%", xl:"1%" }}>
       {results.map((result) => (
-        <Grid item key={result.id} width={
-          {
-            xs: "100%",
-            sm: "49.5%",
-            md: "32.66%",
-            lg: "24.25%",
-            xl: "19.2%"
-          }
-        }>
+        <Grid item key={result.id} width={{ xs: "100%", sm: "49.5%", md: "32.66%", lg: "24.25%", xl: "19.2%" }}>
           <HistoricalResultItem result={result} />
         </Grid>
       ))}

@@ -1,5 +1,5 @@
 // src/pages/SubjectTopicsPage.js
-import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert, Breadcrumbs, Link as MuiLink, Grid, InputAdornment } from '@mui/material';
+import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, CircularProgress, Alert, Breadcrumbs, Link as MuiLink, Grid, InputAdornment, Skeleton } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -13,49 +13,34 @@ import QuestionsPdfModal from '../components/quiz/QuestionsPdfModal';
 function SubjectTopicsPage() {
   const theme = useTheme();
 
-  // Get all state and logic from the custom hook
   const {
-    subjectKey,
-    currentSubject,
-    topics,
-    isLoading,
-    error,
-    modalOpen,
-    selectedTopicForQuiz,
-    pdfModalOpen,
-    selectedTopicForPdf,
-    searchTerm,
-    setSearchTerm,
-    selectedClass,
-    setSelectedClass,
-    selectedGenre,
-    setSelectedGenre,
-    availableClasses,
-    availableGenres,
-    filteredTopics,
-    handleOpenQuizModal,
-    handleCloseQuizModal,
-    handleStartQuizWithSettings,
-    handleStudyFlashcards,
-    handleOpenPdfModal,
-    handleClosePdfModal
+    subjectKey, currentSubject, topics, isLoading, error,
+    modalOpen, selectedTopicForQuiz, pdfModalOpen, selectedTopicForPdf,
+    searchTerm, setSearchTerm, selectedClass, setSelectedClass,
+    selectedGenre, setSelectedGenre, availableClasses, availableGenres,
+    filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
+    handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal
   } = useSubjectTopics();
 
   const accentColor = currentSubject?.accentColor || theme.palette.primary.main;
   const subjectDisplayName = currentSubject?.name || (subjectKey ? subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1) : '');
 
-  // --- Render Logic ---
+  const TopicSkeletonGrid = () => (
+    <Grid container justifyContent="center">
+      {Array.from(new Array(8)).map((_, index) => (
+        <Grid item key={index} sx={{
+          display: 'flex',
+          width: { xs: '100%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' },
+          mb: { xs: '0.5%', sm: '0.5%', md: '0.5%', lg: '0.5%', xl: '0.5%' }
+        }}>
+          <Skeleton variant="rectangular" height={250} sx={{ borderRadius: 2, width: '100%', m: '0 1%' }} />
+          <Grid sx={{ width: { xs: '0%', sm: '1%', md: '2%', lg: '2%', xl: '2%' } }}></Grid>
+        </Grid>
+      ))}
+    </Grid>
+  );
 
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
-        <CircularProgress />
-        <Typography sx={{ ml: 2 }}>Loading topics for {subjectKey}...</Typography>
-      </Box>
-    );
-  }
-
-  if (error || !currentSubject) {
+  if (error || !currentSubject && !isLoading) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
         <Alert severity="error">{error || `Subject "${subjectKey}" could not be found.`}</Alert>
@@ -71,6 +56,7 @@ function SubjectTopicsPage() {
         </MuiLink>
         <Typography color={accentColor} sx={{ fontWeight: 'medium' }}>{subjectDisplayName}</Typography>
       </Breadcrumbs>
+
       <Grid container sx={{ mb: { xs: 2, sm: 3, md: 4 }, mt: { xs: 1, sm: 1 } }} alignItems="flex-end">
         <Grid item sx={{
           width: {
@@ -163,56 +149,37 @@ function SubjectTopicsPage() {
         )}
       </Grid>
 
-      {
-        !isLoading && topics.length > 0 && filteredTopics.length === 0 && (searchTerm || selectedClass || selectedGenre) && (
-          <Alert severity="info" sx={{ my: 2 }}>No topics found for {subjectDisplayName} matching your current filters.</Alert>
-        )
-      }
-      {
-        !isLoading && topics.length === 0 && !error && (
-          <Alert severity="info" sx={{ my: 2 }}>No topics are currently available for {subjectDisplayName}.</Alert>
-        )
-      }
+      {isLoading ? (
+        <TopicSkeletonGrid />
+      ) : (
+        <>
+          {!isLoading && topics.length > 0 && filteredTopics.length === 0 && (searchTerm || selectedClass || selectedGenre) && (
+            <Alert severity="info" sx={{ my: 2 }}>No topics found for {subjectDisplayName} matching your current filters.</Alert>
+          )}
+          {!isLoading && topics.length === 0 && !error && (
+            <Alert severity="info" sx={{ my: 2 }}>No topics are currently available for {subjectDisplayName}.</Alert>
+          )}
 
-      <Grid container justifyContent="center">
-        {filteredTopics.map((topic) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={topic.id} sx={{
-            display: 'flex',
-            width: {
-              xs: '100%',
-              sm: '49.5%',
-              md: '24.5%',
-              lg: '24.5%',
-              xl: '24.5%'
-            },
-            mb: {
-              xs: '0.5%',
-              sm: '0.5%',
-              md: '0.5%',
-              lg: '0.5%',
-              xl: '0.5%',
-            }
-          }}>
-            <TopicCard
-              topic={topic}
-              onStartQuiz={() => handleOpenQuizModal(topic)}
-              onStudyFlashcards={() => handleStudyFlashcards(topic)}
-              onPrintQuestions={() => handleOpenPdfModal(topic)}
-              accentColor={accentColor}
-            />
-            <Grid sx={{
-              width: {
-                xs: '0%',
-                sm: '1%',
-                md: '2%',
-                lg: '2%',
-                xl: '2%',
-              }
-            }}>
-            </Grid>
+          <Grid container justifyContent="center">
+            {filteredTopics.map((topic) => (
+              <Grid item key={topic.id} sx={{
+                display: 'flex',
+                width: { xs: '100%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' },
+                mb: { xs: '0.5%', sm: '0.5%', md: '0.5%', lg: '0.5%', xl: '0.5%' }
+              }}>
+                <TopicCard
+                  topic={topic}
+                  onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStudyFlashcards={() => handleStudyFlashcards(topic)}
+                  onPrintQuestions={() => handleOpenPdfModal(topic)}
+                  accentColor={accentColor}
+                />
+                <Grid sx={{ width: { xs: '0%', sm: '1%', md: '2%', lg: '2%', xl: '2%' } }}></Grid>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </>
+      )}
 
       {selectedTopicForQuiz && (
         <QuizSettingsModal
@@ -223,7 +190,7 @@ function SubjectTopicsPage() {
           accentColor={accentColor}
         />
       )}
-      
+
       {selectedTopicForPdf && (
         <QuestionsPdfModal
           open={pdfModalOpen}
