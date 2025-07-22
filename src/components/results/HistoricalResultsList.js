@@ -40,7 +40,7 @@ function HistoricalResultsList({ results, isLoading, accentColor }) {
   return (
     <Grid container width="100%" spacing={{ xs:"0%", sx:"1%", md:"1%", lg:"1%", xl:"1%" }}>
       {results.map((result) => (
-        <Grid item key={result.id} width={{ xs: "100%", sm: "49.5%", md: "32.66%", lg: "24.25%", xl: "19.2%" }}>
+        <Grid item key={result.id} mb="2%" width={{ xs: "100%", sm: "49.5%", md: "32.66%", lg: "24.25%", xl: "19.2%" }}>
           <HistoricalResultItem result={result} />
         </Grid>
       ))}
