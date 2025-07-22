@@ -1,6 +1,6 @@
 // src/components/results/HistoricalResultsList.js
 import React from 'react';
-import { Grid, Typography, Paper, Button, Skeleton } from '@mui/material'; // <-- Import Skeleton
+import { Grid, Typography, Paper, Button, Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoricalResultItem from './HistoricalResultItem';
@@ -8,7 +8,6 @@ import HistoricalResultItem from './HistoricalResultItem';
 function HistoricalResultsList({ results, isLoading, accentColor }) {
   const navigate = useNavigate();
 
-  // --- START OF SKELETON INTEGRATION ---
   if (isLoading) {
     return (
       <Grid container spacing={{ xs:"0%", sx:"1%", md:"1%", lg:"1%", xl:"1%" }}>
@@ -20,7 +19,6 @@ function HistoricalResultsList({ results, isLoading, accentColor }) {
       </Grid>
     );
   }
-  // --- END OF SKELETON INTEGRATION ---
 
   if (!results || results.length === 0) {
     return (

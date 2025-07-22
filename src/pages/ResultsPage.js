@@ -33,7 +33,7 @@ function ResultsPage() {
   };
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto', mt: 2 }}>
+    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, width: "100%", margin: 'auto', mt: 2 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 3, textAlign: 'center', color: RESULTS_PAGE_ACCENT_COLOR, fontWeight: 'bold' }}>
         <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: '1.3em' }} />
         {currentUser?.name || 'My'} Quiz History
