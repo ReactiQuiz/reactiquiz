@@ -1,0 +1,689 @@
+[
+    {
+        "id": "natural-resources-air-water-and-land-6th",
+        "name": "Natural Resources – Air, Water and Land",
+        "description": "Understanding the importance of air, water, and land as essential natural resources for life.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "the-living-world-6th",
+        "name": "The Living World",
+        "description": "Exploring the characteristics of living organisms, their needs, and their environments.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "diversity-in-living-things-and-their-classification-6th",
+        "name": "Diversity in Living Things and their classification",
+        "description": "Learning about the vast variety of life forms and the systems used to group and classify them.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "nutrition-and-diet-6th",
+        "name": "Nutrition and Diet",
+        "description": "Understanding the components of food, the concept of a balanced diet, and its importance for health.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "our-skeletal-system-and-the-skin-6th",
+        "name": "Our Skeletal System and the Skin",
+        "description": "Learning about the structure, functions, and care of the human skeletal system and skin.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "the-living-world-adaptations-and-classification-7th",
+        "name": "The Living World : Adaptations and classification",
+        "description": "Diversity of life, adaptations, and taxonomy.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "plants-structure-and-function-7th",
+        "name": "Plants : Structure and Function",
+        "description": "Parts of plants and their roles.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "nutrition-in-living-organisms-7th",
+        "name": "Nutrition in Living Organisms",
+        "description": "How living things get food.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "food-safety-7th",
+        "name": "Food Safety",
+        "description": "Practices for safe handling and consumption of food.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "cell-structure-and-micro-organisms-7th",
+        "name": "Cell Structure and Micro-organisms",
+        "description": "Basic unit of life and tiny living things.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "the-muscular-system-and-digestive-system-in-human-beings-7th",
+        "name": "The Muscular System and Digestive System in Human Beings",
+        "description": "How muscles work and how food is digested.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "living-world-and-classification-of-microbes-8th",
+        "name": "Living World and classification of Microbes",
+        "description": "Exploring the diversity of living organisms and classifying microbes.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "health-and-diseases-8th",
+        "name": "Health and Diseases",
+        "description": "Concepts of health and common diseases.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "pollution-8th",
+        "name": "Pollution",
+        "description": "Types and effects of pollution.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "disaster-management-8th",
+        "name": "Disaster Management",
+        "description": "Strategies for managing disasters.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "cell-and-cell-organelles-8th",
+        "name": "Cell and Cell Organelles",
+        "description": "Structure and functions of cells and their organelles.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "human-body-and-organ-system-8th",
+        "name": "Human Body and Organ System",
+        "description": "Overview of the human body and its organ systems.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "ecosystems-8th",
+        "name": "Ecosystems",
+        "description": "Structure and function of ecosystems.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "classification-of-plants-9th",
+        "name": "classification of Plants",
+        "description": "Understanding the different categories of the plant kingdom.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "energy-flow-in-an-ecosystem-9th",
+        "name": "Energy Flow in an Ecosystem",
+        "description": "Tracing the movement of energy through different trophic levels.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "useful-and-harmful-microbes-9th",
+        "name": "Useful and Harmful Microbes",
+        "description": "Exploring the roles of microorganisms, beneficial and detrimental.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "environmental-management-9th",
+        "name": "Environmental Management",
+        "description": "Principles and practices for managing the environment.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "life-processes-in-living-organisms-9th",
+        "name": "Life Processes in Living Organisms",
+        "description": "Study of essential biological functions like nutrition, respiration, etc.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "heredity-and-variation-9th",
+        "name": "Heredity and Variation",
+        "description": "Understanding genetics, inheritance, and differences within species.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "introduction-to-biotechnology-9th",
+        "name": "Introduction to Biotechnology",
+        "description": "Basic concepts and applications of biotechnology.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "substances-in-the-surroundings-their-states-and-properties-6th",
+        "name": "Substances in the Surroundings – Their States and Properties",
+        "description": "identifying different materials, their states (solid, liquid, gas), and characteristics.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "substances-in-daily-use-6th",
+        "name": "Substances in Daily Use",
+        "description": "Learning about common substances used in everyday life, their properties and uses.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "composition-of-matter-8th",
+        "name": "Composition of Matter",
+        "description": "Understanding the components of matter.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "metals-and-nonmetals-8th",
+        "name": "Metals and Nonmetals",
+        "description": "Properties and differences between metals and nonmetals.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "introduction-to-acid-and-base-8th",
+        "name": "Introduction to Acid and Base",
+        "description": "Basic concepts of Acids and bases.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "chemical-change-and-chemical-bond-8th",
+        "name": "Chemical Change and Chemical Bond",
+        "description": "Types of chemical changes and chemical bonding.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "man-made-materials-8th",
+        "name": "Man made Materials",
+        "description": "Properties and uses of synthetic materials.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "inside-the-atom-8th",
+        "name": "inside the Atom",
+        "description": "Structure and components of an atom.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "measurement-of-matter-9th",
+        "name": "Measurement of Matter",
+        "description": "Concepts related to measuring mass, volume, and density.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "Acids-bases-and-salts-9th",
+        "name": "Acids, Bases and Salts",
+        "description": "Properties and reactions of Acids, bases, and salts.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "carbon-an-important-element-9th",
+        "name": "Carbon : An important element",
+        "description": "Introduction to the element carbon and its forms.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "substances-in-common-use-9th",
+        "name": "Substances in Common Use",
+        "description": "Study of everyday chemical substances and their properties.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "algebra",
+        "name": "Algebra Basics",
+        "description": "Equations, inequalities, functions, and polynomials.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "geometry",
+        "name": "Geometry",
+        "description": "Shapes, angles, area, volume, and coordinate geometry.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "calculus-intro",
+        "name": "Introduction to Calculus",
+        "description": "Limits, derivatives, basic integration, and applications.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "probability-stats",
+        "name": "Probability & Statistics",
+        "description": "Basic probability, data analysis, and statistical measures.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "trigonometry",
+        "name": "Trigonometry",
+        "description": "Trigonometric functions, identities, and applications.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "linear-algebra",
+        "name": "Linear Algebra Basics",
+        "description": "Vectors, matrices, and systems of linear equations.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "number-theory",
+        "name": "Number Theory Basics",
+        "description": "Divisibility, prime numbers, and modular arithmetic.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "discrete-math",
+        "name": "Discrete Mathematics",
+        "description": "Set theory, logic, combinatorics, and graph theory basics.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "logic-reasoning",
+        "name": "Logic and Reasoning",
+        "description": "Propositional logic, predicates, and logical fallacies.",
+        "genre": "General",
+        "subject": "mathematics"
+    },
+    {
+        "id": "disaster-management-6th",
+        "name": "Disaster Management",
+        "description": "Understanding natural disasters, their scientific causes (e.g., earth movements, weather phenomena), and safety measures.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "motion-and-types-of-motion-6th",
+        "name": "Motion and Types of Motion",
+        "description": "Understanding movement, different kinds of motion, speed, and distance.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "force-and-types-of-force-6th",
+        "name": "Force and Types of Force",
+        "description": "Exploring pushes and pulls, and various types of forces like gravitational or frictional.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "work-and-energy-6th",
+        "name": "Work and Energy",
+        "description": "Defining work in scientific terms and learning about different forms of energy.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "simple-machines-6th",
+        "name": "Simple Machines",
+        "description": "Learning about basic mechanical devices that make work easier, like levers and pulleys.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "sound-6th",
+        "name": "Sound",
+        "description": "Investigating how sound is produced, its propagation, and properties.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "light-and-the-formation-of-shadows-6th",
+        "name": "Light and the Formation of Shadows",
+        "description": "Understanding the nature of light, how shadows are formed, and sources of light.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "fun-with-magnets-6th",
+        "name": "Fun with Magnets",
+        "description": "Discovering the properties of magnets, magnetic fields, and their applications.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "the-universe-6th",
+        "name": "The Universe",
+        "description": "Exploring celestial bodies like stars, planets, and galaxies within the vast cosmos.",
+        "class": "6th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "measurement-of-physical-quantities-7th",
+        "name": "Measurement of Physical Quantities",
+        "description": "Measuring different physical properties.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "motion-force-and-work-7th",
+        "name": "Motion, Force and Work",
+        "description": "Concepts of motion, forces, and work.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "static-electricity-7th",
+        "name": "Static Electricity",
+        "description": "Understanding stationary electric charges.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "heat-7th",
+        "name": "Heat",
+        "description": "Concepts related to heat energy and transfer.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "effects-of-light-7th",
+        "name": "Effects of Light",
+        "description": "Studying how light interacts with things.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "sound-production-of-sound-7th",
+        "name": "Sound : Production of Sound",
+        "description": "How sound is made and its properties.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "properties-of-a-magnetic-field-7th",
+        "name": "Properties of a Magnetic Field",
+        "description": "Characteristics of magnetic fields.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "in-the-world-of-stars-7th",
+        "name": "In the World of Stars",
+        "description": "Introduction to stars and the universe.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "force-and-pressure-8th",
+        "name": "Force and Pressure",
+        "description": "Concepts of force and pressure.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "current-electricity-and-magnetism-8th",
+        "name": "Current Electricity and Magnetism",
+        "description": "Principles of current electricity and magnetism.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "measurement-and-effects-of-heat-8th",
+        "name": "Measurement and Effects of Heat",
+        "description": "Measuring heat and its effects.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "sound-8th",
+        "name": "Sound",
+        "description": "Properties and behavior of sound.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "reflection-of-light-8th",
+        "name": "Reflection of Light",
+        "description": "Principles of light reflection.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "life-cycle-of-stars-8th",
+        "name": "Life Cycle of Stars",
+        "description": "Stages in the life of a star.",
+        "class": "8th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "laws-of-motion-9th",
+        "name": "Laws of Motion",
+        "description": "Understanding concepts of motion, displacement, distance, speed, velocity, acceleration, and Newton's laws of motion with related equations.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "work-and-energy-9th",
+        "name": "Work and Energy",
+        "description": "Exploring concepts of work, energy (kinetic and potential), power, the law of conservation of energy, and free fall.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "current-electricity-9th",
+        "name": "Current Electricity",
+        "description": "Learning about potential difference, conductors, insulators, electrical resistance, Ohm's law, and series/parallel connections of resistors.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "measurement-of-matter-9th",
+        "name": "Measurement of Matter",
+        "description": "Understanding laws of chemical combination, atoms (shape, mass, valency), molecular mass, and the concept of the mole and Avogadro's number.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "acids-bases-and-salts-9th",
+        "name": "Acids, Bases and Salts",
+        "description": "Exploring Arrhenius theory, concentration, pH, neutralization, properties of acids, bases, salts, water of crystallisation, and electrolysis.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "classification-of-plants-9th",
+        "name": "Classification of Plants",
+        "description": "Studying the kingdom Plantae, basis for classification, and the characteristics of Thallophyta, Bryophyta, Pteridophyta, Gymnosperms, and Angiosperms.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "energy-flow-in-an-ecosystem-9th",
+        "name": "Energy Flow in an Ecosystem",
+        "description": "Understanding food chains, food webs, trophic levels, the energy pyramid, and bio-geo-chemical cycles (carbon, oxygen, nitrogen).",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "useful-and-harmful-microbes-9th",
+        "name": "Useful and Harmful Microbes",
+        "description": "Learning about useful microbes like Lactobacilli, Rhizobium, yeast, and harmful microbes like Clostridium and others causing diseases.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "environmental-management-9th",
+        "name": "Environmental Management",
+        "description": "Studying weather, climate, meteorology, solid waste management principles, and disaster management including first aid.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "general"
+    },
+    {
+        "id": "information-communication-technology-9th",
+        "name": "Information Communication Technology (ICT): The new direction of progress",
+        "description": "Exploring components of a computer, hardware, software, and using applications like Word and Excel for documentation and data analysis.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "general"
+    },
+    {
+        "id": "reflection-of-light-9th",
+        "name": "Reflection of Light",
+        "description": "Understanding mirrors (plane and spherical), image formation, terms related to spherical mirrors, magnification, and sign conventions.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "study-of-sound-9th",
+        "name": "Study of Sound",
+        "description": "Exploring sound waves, velocity of sound, reflection, echoes, reverberation, SONAR, and the structure and function of the human ear.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "carbon-an-important-element-9th",
+        "name": "Carbon : An important element",
+        "description": "Studying carbon's occurrence, properties, allotropes (diamond, graphite, fullerene), hydrocarbons, carbon dioxide, methane, and biogas.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "substances-in-common-use-9th",
+        "name": "Substances in Common Use",
+        "description": "Learning about important salts (NaCl, NaHCO3, Na2CO3), bleaching powder, crystalline salts, radioactive substances, food colours, dyes, and Teflon.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "life-processes-in-living-organisms-9th",
+        "name": "Life Processes in Living Organisms",
+        "description": "Understanding transportation in plants (root pressure, transpiration), excretion (plants and humans), and co-ordination (plants and human nervous/endocrine systems).",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "heredity-and-variation-9th",
+        "name": "Heredity and Variation",
+        "description": "Exploring inheritance, chromosomes, DNA, RNA, Mendel's laws of heredity, and genetic disorders (chromosomal and monogenic).",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "introduction-to-biotechnology-9th",
+        "name": "Introduction to Biotechnology",
+        "description": "Learning about tissues (animal and plant), tissue culture, agricultural biotechnology (GM crops, agritourism), animal husbandry, poultry farming, and sericulture.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "observing-space-telescopes-9th",
+        "name": "Observing Space : Telescopes",
+        "description": "Understanding different forms of light, types of telescopes (optical, radio, X-ray), telescopes in space (Hubble, Chandra), and ISRO's contributions.",
+        "class": "9th",
+        "genre": "State Board",
+        "subject": "physics"
+    }
+]
