@@ -1,8 +1,6 @@
 // src/hooks/useResults.js
 import { useMemo } from 'react';
-// --- START OF FIX: Import useQueryClient ---
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-// --- END OF FIX ---
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
@@ -26,9 +24,7 @@ const fetchQuestionsForTopic = async (topicId) => {
 
 export const useResults = (resultId) => {
   const { currentUser } = useAuth();
-  // --- START OF FIX: Instantiate the query client ---
   const queryClient = useQueryClient();
-  // --- END OF FIX ---
 
   // --- Fetch data for the LIST view ---
   const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
@@ -54,7 +50,6 @@ export const useResults = (resultId) => {
   const { data: singleResultData, isLoading: isLoadingSingleResult } = useQuery({
       queryKey: ['singleResult', resultId],
       queryFn: async () => {
-        // Now 'queryClient' is correctly defined and can be used here
         const results = await queryClient.getQueryData(['userResults', currentUser?.id]) || await fetchAllResults();
         return results.find(r => String(r.id) === String(resultId));
       },
@@ -69,7 +64,9 @@ export const useResults = (resultId) => {
     enabled: !!topicIdForDetail,
   });
 
-  const detailData = useMemo(() of => {
+  // --- START OF FIX: Removed the stray 'of' token ---
+  const detailData = useMemo(() => {
+  // --- END OF FIX ---
     if (!resultId || !singleResultData || !detailQuestions || detailQuestions.length === 0) return null;
 
     const topicInfo = allTopics.find(t => t.id === singleResultData.topicId);
