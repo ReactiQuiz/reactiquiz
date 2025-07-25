@@ -24,11 +24,23 @@ router.post('/chat', verifyToken, async (req, res) => {
     const { history, message } = req.body;
     logApi('POST', '/api/ai/chat', `User: ${user.username}`);
 
+    let tx; // Declare transaction variable outside the try block
     try {
-        const { rows: userResults } = await turso.execute({
-            sql: "SELECT topicId, percentage FROM quiz_results WHERE user_id = ? ORDER BY timestamp DESC LIMIT 10",
-            args: [user.id]
-        });
+        // --- START OF FIX: USE TRANSACTION ---
+        let userResults;
+        tx = await turso.transaction("read");
+        try {
+            const result = await tx.execute({
+                sql: "SELECT topicId, percentage FROM quiz_results WHERE user_id = ? ORDER BY timestamp DESC LIMIT 10",
+                args: [user.id]
+            });
+            userResults = result.rows;
+            await tx.commit();
+        } catch (dbError) {
+            await tx.rollback();
+            throw dbError; // Propagate the error to the outer catch block
+        }
+        // --- END OF FIX ---
 
         const resultsSummary = summarizeResults(userResults);
         const systemInstruction = `You are ReactiQuiz AI, a helpful study assistant created by Sanskar Sontakke. Your name is Q. Your purpose is to help students with academic subjects. You must ONLY answer questions related to studying, science, time management, or analyzing the user's quiz results. If asked about anything else, politely decline. The user's name is ${user.username}. ${resultsSummary}`;
@@ -44,8 +56,10 @@ router.post('/chat', verifyToken, async (req, res) => {
         const result = await chat.sendMessage(message);
         const response = await result.response;
         res.json({ response: response.text() });
+
     } catch (error) {
-        logError('GEMINI ERROR', 'Gemini API call failed', error.message);
+        // This outer catch block now handles both DB and Gemini errors
+        logError('AI CHAT ERROR', 'Chat call failed', error.message);
         res.status(500).json({ error: 'An error occurred with the AI service.' });
     }
 });
