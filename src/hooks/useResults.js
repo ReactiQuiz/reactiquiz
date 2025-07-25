@@ -1,6 +1,8 @@
 // src/hooks/useResults.js
 import { useMemo } from 'react';
-import { useQueries, useQuery } from '@tanstack/react-query';
+// --- START OF FIX: Import useQueryClient ---
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+// --- END OF FIX ---
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
@@ -24,21 +26,23 @@ const fetchQuestionsForTopic = async (topicId) => {
 
 export const useResults = (resultId) => {
   const { currentUser } = useAuth();
+  // --- START OF FIX: Instantiate the query client ---
+  const queryClient = useQueryClient();
+  // --- END OF FIX ---
 
   // --- Fetch data for the LIST view ---
   const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
     queryKey: ['userResults', currentUser?.id],
     queryFn: fetchAllResults,
-    enabled: !!currentUser && !resultId, // Only fetch list if no resultId is provided
+    enabled: !!currentUser && !resultId,
   });
   
   const { data: allTopics = [] } = useQuery({
     queryKey: ['topics'],
     queryFn: fetchAllTopics,
-    staleTime: Infinity, // Topics rarely change, cache them forever
+    staleTime: Infinity,
   });
 
-  // Enrich the list with topic names
   const historicalList = useMemo(() => {
     return allResults.map(res => {
       const topicInfo = allTopics.find(t => t.id === res.topicId);
@@ -50,6 +54,7 @@ export const useResults = (resultId) => {
   const { data: singleResultData, isLoading: isLoadingSingleResult } = useQuery({
       queryKey: ['singleResult', resultId],
       queryFn: async () => {
+        // Now 'queryClient' is correctly defined and can be used here
         const results = await queryClient.getQueryData(['userResults', currentUser?.id]) || await fetchAllResults();
         return results.find(r => String(r.id) === String(resultId));
       },
@@ -64,9 +69,8 @@ export const useResults = (resultId) => {
     enabled: !!topicIdForDetail,
   });
 
-  // Combine data for the detail view
-  const detailData = useMemo(() => {
-    if (!resultId || !singleResultData || detailQuestions.length === 0) return null;
+  const detailData = useMemo(() of => {
+    if (!resultId || !singleResultData || !detailQuestions || detailQuestions.length === 0) return null;
 
     const topicInfo = allTopics.find(t => t.id === singleResultData.topicId);
     const enrichedResult = { ...singleResultData, topicName: topicInfo ? topicInfo.name : singleResultData.topicId.replace(/-/g, ' ') };
