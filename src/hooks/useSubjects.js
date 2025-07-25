@@ -1,47 +1,32 @@
 // src/hooks/useSubjects.js
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
+import { useQuery } from '@tanstack/react-query'; // <-- Import useQuery
 
-/**
- * A custom hook to manage fetching and filtering of subjects.
- * @returns {object} An object containing subjects data, state, and handlers.
- */
+// This is the function that fetches the data.
+// We keep it outside the hook so it can be reused.
+const fetchSubjects = async () => {
+  const { data } = await apiClient.get('/api/subjects');
+  if (!Array.isArray(data)) {
+    throw new Error('Invalid data format received for subjects.');
+  }
+  return data;
+};
+
 export const useSubjects = () => {
   const navigate = useNavigate();
-
-  // --- State Management ---
-  const [subjects, setSubjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // --- Data Fetching ---
-  const fetchSubjects = useCallback(async () => {
-    setIsLoading(true);
-    setError('');
-    try {
-      const response = await apiClient.get('/api/subjects');
-      if (Array.isArray(response.data)) {
-        setSubjects(response.data);
-      } else {
-        setError('Invalid data format received for subjects.');
-        setSubjects([]);
-      }
-    } catch (err) {
-      console.error('Error fetching subjects:', err);
-      setError(`Failed to load subjects: ${err.response?.data?.message || err.message}`);
-      setSubjects([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  // --- START OF REFACTOR ---
+  // useQuery manages isLoading, error, and the data itself.
+  // 'subjects' is the unique "query key". TanStack Query uses this to cache the data.
+  const { data: subjects = [], isLoading, isError, error } = useQuery({
+    queryKey: ['subjects'],
+    queryFn: fetchSubjects
+  });
+  // --- END OF REFACTOR ---
 
-  useEffect(() => {
-    fetchSubjects();
-  }, [fetchSubjects]);
-
-  // --- Event Handlers ---
   const handleExploreSubject = (subjectKey) => {
     if (subjectKey) {
       navigate(`/subjects/${subjectKey.toLowerCase()}`);
@@ -52,7 +37,6 @@ export const useSubjects = () => {
     setSearchTerm(event.target.value);
   };
 
-  // --- Memoized Filtering Logic ---
   const filteredSubjects = useMemo(() => {
     if (!searchTerm) {
       return subjects;
@@ -63,11 +47,10 @@ export const useSubjects = () => {
     );
   }, [subjects, searchTerm]);
 
-  // --- Return all state and handlers needed by the component ---
   return {
-    subjects,
+    subjects, // The raw data from the query
     isLoading,
-    error,
+    error: isError ? error.message : null, // Pass a clean error message
     searchTerm,
     filteredSubjects,
     handleExploreSubject,

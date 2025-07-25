@@ -14,6 +14,7 @@
     "@mui/icons-material": "~5.15.20",
     "@mui/material": "~5.15.20",
     "@mui/styled-engine-sc": "~5.14.12",
+    "@tanstack/react-query": "^5.83.0",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "~15.0.0",

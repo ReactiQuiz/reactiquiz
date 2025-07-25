@@ -1,66 +1,47 @@
 // src/hooks/useFlashcards.js
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { parseQuestionOptions, shuffleArray } from '../utils/quizUtils';
 
-/**
- * A custom hook to manage all state and logic for the FlashcardPage.
- * @returns {object} An object containing all the state, derived data, and handlers needed by the FlashcardPage component.
- */
+// Fetcher function that accepts the topicId
+const fetchQuestionsForTopic = async (topicId) => {
+  if (!topicId) return [];
+  const { data } = await apiClient.get(`/api/questions?topicId=${topicId}`);
+  return parseQuestionOptions(data || []);
+};
+
 export const useFlashcards = () => {
   const { topicId } = useParams();
 
-  // --- State Management ---
-  const [allQuestions, setAllQuestions] = useState([]); // Source of truth for all fetched questions
-  const [flashcards, setFlashcards] = useState([]); // The shuffled list for display
+  // --- UI State ---
+  const [flashcards, setFlashcards] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
 
-  // --- Data Fetching Logic ---
-  const fetchQuestionsForFlashcards = useCallback(async () => {
-    if (!topicId) {
-      setError("Topic ID is missing.");
-      setIsLoading(false);
-      return;
-    }
-    
-    setIsLoading(true);
-    setError('');
-    try {
-      const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
-      if (Array.isArray(response.data) && response.data.length > 0) {
-        const questionsWithParsedOptions = parseQuestionOptions(response.data);
-        setAllQuestions(questionsWithParsedOptions); // Store the source questions
+  // --- Data Fetching with useQuery ---
+  const { 
+    data: allQuestions = [], 
+    isLoading, 
+    isError, 
+    error 
+  } = useQuery({
+    queryKey: ['questions', topicId], // The query key is dynamic!
+    queryFn: () => fetchQuestionsForTopic(topicId),
+    enabled: !!topicId, // Only run query if topicId exists
+  });
 
-        // Format and shuffle the initial set of flashcards
-        const formattedForFlashcards = questionsWithParsedOptions.map(q => ({
-          id: q.id,
-          frontText: q.text,
-          options: q.options,
-          correctOptionId: q.correctOptionId,
-          explanation: q.explanation,
-        }));
-        setFlashcards(shuffleArray([...formattedForFlashcards]));
-        setCurrentCardIndex(0);
-      } else {
-        setError('No questions found for this topic to create flashcards.');
-        setAllQuestions([]);
-        setFlashcards([]);
-      }
-    } catch (err) {
-      setError(`Failed to load questions: ${err.response?.data?.message || err.message}`);
-      setAllQuestions([]);
-      setFlashcards([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [topicId]);
-
+  // Effect to format and shuffle cards when data is fetched
   useEffect(() => {
-    fetchQuestionsForFlashcards();
-  }, [fetchQuestionsForFlashcards]);
+    if (allQuestions.length > 0) {
+      const formattedForFlashcards = allQuestions.map(q => ({
+        id: q.id, frontText: q.text, options: q.options,
+        correctOptionId: q.correctOptionId, explanation: q.explanation,
+      }));
+      setFlashcards(shuffleArray([...formattedForFlashcards]));
+      setCurrentCardIndex(0);
+    }
+  }, [allQuestions]);
 
   // --- Event Handlers ---
   const handleNextCard = () => {
@@ -68,43 +49,24 @@ export const useFlashcards = () => {
       setCurrentCardIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
     }
   };
-
   const handlePreviousCard = () => {
     if (flashcards.length > 0) {
       setCurrentCardIndex((prevIndex) => (prevIndex - 1 + flashcards.length) % flashcards.length);
     }
   };
-
   const handleShuffleCards = () => {
     if (allQuestions.length > 0) {
-      const formattedForFlashcards = allQuestions.map(q => ({
-        id: q.id,
-        frontText: q.text,
-        options: q.options,
-        correctOptionId: q.correctOptionId,
-        explanation: q.explanation,
-      }));
-      setFlashcards(shuffleArray([...formattedForFlashcards]));
-      setCurrentCardIndex(0);
+        handleShuffleCards(); // Re-use the effect logic
     }
   };
 
-  // --- Memoized Derived State ---
   const currentCardData = useMemo(() => {
     return flashcards.length > 0 ? flashcards[currentCardIndex] : null;
   }, [flashcards, currentCardIndex]);
 
-  // --- Return all state and handlers ---
   return {
-    topicId,
-    allQuestions,
-    flashcards,
-    currentCardIndex,
-    isLoading,
-    error,
-    currentCardData,
-    handleNextCard,
-    handlePreviousCard,
-    handleShuffleCards,
+    topicId, allQuestions, flashcards, currentCardIndex, isLoading,
+    error: isError ? error.message : null,
+    currentCardData, handleNextCard, handlePreviousCard, handleShuffleCards,
   };
 };

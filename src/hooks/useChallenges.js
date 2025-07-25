@@ -1,91 +1,57 @@
 // src/hooks/useChallenges.js
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query'; // <-- Import useQuery
 import apiClient from '../api/axiosInstance';
+import { useAuth } from '../contexts/AuthContext';
 
-/**
- * A custom hook to manage all state and logic for the Challenges page.
- * @param {object | null} currentUser - The currently authenticated user object.
- * @returns {object} An object containing all the state, derived data, and handlers needed by the ChallengesPage component.
- */
-export const useChallenges = (currentUser) => {
+// --- Fetcher Functions ---
+const fetchRecentResults = async () => {
+  const { data } = await apiClient.get('/api/results?limit=5&excludeChallenges=true');
+  return data || [];
+};
+
+const fetchPendingChallenges = async () => {
+  const { data } = await apiClient.get('/api/challenges/pending');
+  return data || [];
+};
+
+export const useChallenges = () => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
-  // --- State for Data Fetching ---
-  const [recentResults, setRecentResults] = useState([]);
-  const [isLoadingRecentResults, setIsLoadingRecentResults] = useState(false);
-  const [recentResultsError, setRecentResultsError] = useState('');
-
-  const [pendingReceivedChallenges, setPendingReceivedChallenges] = useState([]);
-  const [isLoadingPending, setIsLoadingPending] = useState(false);
-  const [pendingError, setPendingError] = useState('');
-
-  // --- State for UI Modals/Interaction ---
+  // --- UI State for Modal ---
   const [challengeSetupModalOpen, setChallengeSetupModalOpen] = useState(false);
   const [quizDataForChallenge, setQuizDataForChallenge] = useState(null);
 
-  // --- Data Fetching Callbacks ---
-  const fetchRecentResults = useCallback(async () => {
-    if (!currentUser?.id || !currentUser?.token) {
-      setRecentResults([]);
-      return;
-    }
-    setIsLoadingRecentResults(true);
-    setRecentResultsError('');
-    try {
-      // Fetch recent results (non-challenges) to initiate new challenges
-      const response = await apiClient.get(`/api/results?userId=${currentUser.id}&limit=5&excludeChallenges=true`, {
-        headers: { Authorization: `Bearer ${currentUser.token}` }
-      });
-      setRecentResults(response.data || []);
-    } catch (err) {
-      setRecentResultsError(err.response?.data?.message || "Failed to load recent quiz attempts.");
-    } finally {
-      setIsLoadingRecentResults(false);
-    }
-  }, [currentUser]);
+  // --- Data Fetching with useQuery ---
+  const { 
+    data: recentResults = [], 
+    isLoading: isLoadingRecentResults, 
+    error: recentResultsError 
+  } = useQuery({
+    queryKey: ['recentResultsForChallenge', currentUser?.id],
+    queryFn: fetchRecentResults,
+    enabled: !!currentUser
+  });
 
-  const fetchPendingChallengeData = useCallback(async () => {
-    if (!currentUser?.token) {
-      setPendingReceivedChallenges([]);
-      return;
-    }
-    setIsLoadingPending(true);
-    setPendingError('');
-    try {
-      const pendingRes = await apiClient.get('/api/challenges/pending', {
-        headers: { Authorization: `Bearer ${currentUser.token}` }
-      });
-      setPendingReceivedChallenges(pendingRes.data || []);
-    } catch (err) {
-      console.error("Error fetching pending challenges:", err.response || err);
-      setPendingError(err.response?.data?.message || "Failed to load pending challenges.");
-    } finally {
-      setIsLoadingPending(false);
-    }
-  }, [currentUser]);
-
-  // --- Main useEffect to trigger data fetching ---
-  useEffect(() => {
-    if (currentUser) {
-      fetchRecentResults();
-      fetchPendingChallengeData();
-    } else {
-      // Clear data if user logs out
-      setRecentResults([]);
-      setPendingReceivedChallenges([]);
-      setRecentResultsError('');
-      setPendingError('');
-    }
-  }, [currentUser, fetchPendingChallengeData, fetchRecentResults]);
-
-  // --- Event Handlers ---
+  const { 
+    data: pendingReceivedChallenges = [], 
+    isLoading: isLoadingPending, 
+    error: pendingError 
+  } = useQuery({
+    queryKey: ['pendingChallenges', currentUser?.id],
+    queryFn: fetchPendingChallenges,
+    enabled: !!currentUser
+  });
+  
+  // --- Event Handlers (remain the same for now) ---
   const handleOpenChallengeSetupFromRecent = (result) => {
     if (!currentUser) {
       navigate('/login', { state: { from: '/challenges', message: "Please login to challenge a friend." } });
       return;
     }
-    if (!result.questionsActuallyAttemptedIds || result.questionsActuallyAttemptedIds.length === 0) {
+    if (!result.questionsActuallyAttemptedIds || JSON.parse(result.questionsActuallyAttemptedIds).length === 0) {
       alert("Cannot initiate challenge: This result has no question data.");
       return;
     }
@@ -93,49 +59,44 @@ export const useChallenges = (currentUser) => {
       topicId: result.topicId,
       topicName: result.topicName,
       difficulty: result.difficulty,
-      numQuestions: result.questionsActuallyAttemptedIds.length,
+      numQuestions: JSON.parse(result.questionsActuallyAttemptedIds).length,
       quizClass: result.class,
-      questionIds: result.questionsActuallyAttemptedIds,
+      questionIds: JSON.parse(result.questionsActuallyAttemptedIds),
       subject: result.subject
     });
     setChallengeSetupModalOpen(true);
   };
   
   const handleCloseChallengeSetupModal = () => {
-      setChallengeSetupModalOpen(false);
-      setQuizDataForChallenge(null);
-  }
+    setChallengeSetupModalOpen(false);
+    setQuizDataForChallenge(null);
+  };
 
   const handleStartChallenge = (challenge) => {
-    navigate(`/quiz/challenge-${challenge.id}`, {
+    navigate(`/quiz/${challenge.topic_id}`, {
       state: {
         quizType: 'challenge',
         challengeId: challenge.id,
         topicId: challenge.topic_id,
-        topicName: challenge.topic_name || `Challenge #${challenge.id}`,
+        topicName: challenge.topic_name,
         difficulty: challenge.difficulty,
         numQuestions: challenge.num_questions,
-        quizClass: challenge.quiz_class,
-        questionIds: challenge.question_ids_json ? JSON.parse(challenge.question_ids_json) : null,
-        subject: challenge.subject || challenge.topic_id.split('-')[0] || 'challenge',
-        timeLimit: challenge.time_limit || null,
+        questionIds: JSON.parse(challenge.question_ids_json),
+        subject: challenge.topic_id.split('-')[0] || 'challenge',
         currentChallengeDetails: challenge
       }
     });
   };
 
-  // --- Return all state and handlers ---
   return {
-    // Data and states
     recentResults,
     isLoadingRecentResults,
-    recentResultsError,
+    recentResultsError: recentResultsError ? recentResultsError.message : null,
     pendingReceivedChallenges,
     isLoadingPending,
-    pendingError,
+    pendingError: pendingError ? pendingError.message : null,
     challengeSetupModalOpen,
     quizDataForChallenge,
-    // Handlers
     handleOpenChallengeSetupFromRecent,
     handleCloseChallengeSetupModal,
     handleStartChallenge

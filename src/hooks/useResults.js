@@ -1,85 +1,92 @@
 // src/hooks/useResults.js
-import { useState, useEffect, useCallback } from 'react';
+import { useMemo } from 'react';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
+import { parseQuestionOptions } from '../utils/quizUtils';
+
+// --- Fetcher Functions ---
+const fetchAllResults = async () => {
+  const { data } = await apiClient.get('/api/results');
+  return data || [];
+};
+
+const fetchAllTopics = async () => {
+  const { data } = await apiClient.get('/api/topics');
+  return data || [];
+};
+
+const fetchQuestionsForTopic = async (topicId) => {
+  if (!topicId) return [];
+  const { data } = await apiClient.get(`/api/questions?topicId=${topicId}`);
+  return parseQuestionOptions(data || []);
+};
 
 export const useResults = (resultId) => {
-    const { currentUser } = useAuth();
-    const [historicalList, setHistoricalList] = useState([]);
-    const [detailData, setDetailData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
+  const { currentUser } = useAuth();
 
-    const fetchData = useCallback(async () => {
-        if (!currentUser) {
-            setIsLoading(false);
-            return;
-        }
-        setIsLoading(true);
-        setError('');
-        
-        try {
-            const token = localStorage.getItem('reactiquizToken');
-            const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+  // --- Fetch data for the LIST view ---
+  const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
+    queryKey: ['userResults', currentUser?.id],
+    queryFn: fetchAllResults,
+    enabled: !!currentUser && !resultId, // Only fetch list if no resultId is provided
+  });
+  
+  const { data: allTopics = [] } = useQuery({
+    queryKey: ['topics'],
+    queryFn: fetchAllTopics,
+    staleTime: Infinity, // Topics rarely change, cache them forever
+  });
 
-            // --- START OF FIX: Fetch all topics data once for enrichment ---
-            const { data: allTopics } = await apiClient.get('/api/topics');
-            // --- END OF FIX ---
+  // Enrich the list with topic names
+  const historicalList = useMemo(() => {
+    return allResults.map(res => {
+      const topicInfo = allTopics.find(t => t.id === res.topicId);
+      return { ...res, topicName: topicInfo ? topicInfo.name : res.topicId.replace(/-/g, ' ') };
+    });
+  }, [allResults, allTopics]);
 
-            if (resultId) {
-                // --- Fetch data for a SINGLE detailed view ---
-                const { data: allResults } = await apiClient.get('/api/results', authHeader);
-                const result = allResults.find(r => String(r.id) === String(resultId));
+  // --- Fetch data for the DETAIL view ---
+  const { data: singleResultData, isLoading: isLoadingSingleResult } = useQuery({
+      queryKey: ['singleResult', resultId],
+      queryFn: async () => {
+        const results = await queryClient.getQueryData(['userResults', currentUser?.id]) || await fetchAllResults();
+        return results.find(r => String(r.id) === String(resultId));
+      },
+      enabled: !!currentUser && !!resultId,
+  });
 
-                if (!result) throw new Error("Result not found or you don't have permission to view it.");
+  const topicIdForDetail = singleResultData?.topicId;
 
-                // --- START OF FIX: Enrich the single result with its topicName ---
-                const topicInfo = allTopics.find(t => t.id === result.topicId);
-                const enrichedResult = {
-                    ...result,
-                    topicName: topicInfo ? topicInfo.name : result.topicId.replace(/-/g, ' ') // Add the name
-                };
-                // --- END OF FIX ---
+  const { data: detailQuestions = [], isLoading: isLoadingDetailQuestions } = useQuery({
+    queryKey: ['questions', topicIdForDetail],
+    queryFn: () => fetchQuestionsForTopic(topicIdForDetail),
+    enabled: !!topicIdForDetail,
+  });
 
-                const { data: questions } = await apiClient.get(`/api/questions?topicId=${result.topicId}`);
-                
-                const attemptedIds = result.questionsActuallyAttemptedIds ? JSON.parse(result.questionsActuallyAttemptedIds) : [];
-                const userAnswers = result.userAnswersSnapshot ? JSON.parse(result.userAnswersSnapshot) : {};
+  // Combine data for the detail view
+  const detailData = useMemo(() => {
+    if (!resultId || !singleResultData || detailQuestions.length === 0) return null;
 
-                const detailedQuestions = attemptedIds.map(qId => {
-                    const fullData = questions.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: []};
-                    const userAnswerId = userAnswers[qId];
-                    return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
-                });
+    const topicInfo = allTopics.find(t => t.id === singleResultData.topicId);
+    const enrichedResult = { ...singleResultData, topicName: topicInfo ? topicInfo.name : singleResultData.topicId.replace(/-/g, ' ') };
+    
+    const attemptedIds = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
+    const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
 
-                setDetailData({ result: enrichedResult, detailedQuestions });
+    const detailedQuestions = attemptedIds.map(qId => {
+      const fullData = detailQuestions.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
+      const userAnswerId = userAnswers[qId];
+      return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
+    });
 
-            } else {
-                // --- Fetch data for the LIST view ---
-                const { data } = await apiClient.get('/api/results', authHeader);
-                
-                // --- START OF FIX: Enrich the entire list with topicNames ---
-                const enrichedList = (data || []).map(res => {
-                    const topicInfo = allTopics.find(t => t.id === res.topicId);
-                    return {
-                        ...res,
-                        topicName: topicInfo ? topicInfo.name : res.topicId.replace(/-/g, ' ')
-                    };
-                });
-                setHistoricalList(enrichedList);
-                // --- END OF FIX ---
-            }
-        } catch (err) {
-            setError(err.response?.data?.message || 'Failed to fetch data.');
-            console.error("Error fetching results:", err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [currentUser, resultId]);
+    return { result: enrichedResult, detailedQuestions };
+  }, [resultId, singleResultData, detailQuestions, allTopics]);
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    return { historicalList, detailData, isLoading, error };
+  return {
+    historicalList,
+    detailData,
+    isLoading: resultId ? (isLoadingSingleResult || isLoadingDetailQuestions) : isLoadingList,
+    error: resultId ? null : (listError ? listError.message : null),
+  };
 };

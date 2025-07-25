@@ -3,14 +3,13 @@ import { Box, Typography, useTheme, Card, CardContent, CardActions, Button, Grid
 import DescriptionIcon from '@mui/icons-material/Description';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
-import { useHomibhabha } from '../hooks/useHomibhabha'; // <-- Import the new hook
+import { useHomibhabha } from '../hooks/useHomibhabha';
 import PYQPapersModal from '../components/quiz/homibhabha/PYQPapersModal';
 import PracticeTestModal from '../components/quiz/homibhabha/PracticeTestModal';
 
 function HomibhabhaPage() {
   const theme = useTheme();
 
-  // Use the custom hook to get all state and logic
   const {
     pyqModalOpen,
     practiceTestModalOpen,
@@ -20,7 +19,7 @@ function HomibhabhaPage() {
     handleStartPyqTest,
     handleOpenPracticeTestModal,
     handleClosePracticeTestModal,
-    handleStartPracticeTest,
+    handleStartPracticeTest, // This will now use the new logic from the hook
   } = useHomibhabha();
 
   const cardStyle = {

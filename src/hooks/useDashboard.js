@@ -1,11 +1,13 @@
 // src/hooks/useDashboard.js
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { subDays, format, startOfDay, parseISO, isValid, eachDayOfInterval, min } from 'date-fns';
 import { alpha } from '@mui/material/styles';
 import apiClient from '../api/axiosInstance';
 import { generateDashboardPdfReport } from '../utils/reportGenerator';
-import { useAuth } from '../contexts/AuthContext'; // Import useAuth to get the current user
+import { useAuth } from '../contexts/AuthContext';
+// --- TANSTACK QUERY ---
+import { useQueries } from '@tanstack/react-query';
 
 const timeFrequencyOptions = [
   { value: 7, label: 'Last 7 Days' },
@@ -15,98 +17,52 @@ const timeFrequencyOptions = [
   { value: 'all', label: 'All Time' },
 ];
 
+// --- Fetcher Functions ---
+const fetchUserResults = async () => {
+  const { data } = await apiClient.get('/api/results');
+  return data || [];
+};
+const fetchAllSubjects = async () => {
+  const { data } = await apiClient.get('/api/subjects');
+  return data || [];
+};
+const fetchAllTopics = async () => {
+  const { data } = await apiClient.get('/api/topics');
+  return data || [];
+};
+
 export const useDashboard = () => {
   const theme = useTheme();
-  const { currentUser } = useAuth(); // Get the logged-in user from the context
+  const { currentUser } = useAuth();
 
-  // --- State for Data Fetching ---
-  const [userResults, setUserResults] = useState([]);
-  const [allSubjects, setAllSubjects] = useState([]);
-  const [allTopics, setAllTopics] = useState([]);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [error, setError] = useState('');
-
-  // --- State for UI Controls ---
+  // --- UI State and Refs ---
   const [timeFrequency, setTimeFrequency] = useState(30);
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-
-  // --- Refs for PDF Generation ---
   const activityChartRef = useRef(null);
   const subjectAveragesChartRef = useRef(null);
   const topicPerformanceRef = useRef(null);
 
-  const fetchDashboardData = useCallback(async () => {
-    if (!currentUser) {
-      setIsLoadingData(false);
-      setUserResults([]);
-      setAllSubjects([]);
-      setAllTopics([]);
-      return;
-    }
+  // --- Data Fetching with useQueries ---
+  const results = useQueries({
+    queries: [
+      { queryKey: ['userResults', currentUser?.id], queryFn: fetchUserResults, enabled: !!currentUser },
+      { queryKey: ['subjects'], queryFn: fetchAllSubjects },
+      { queryKey: ['topics'], queryFn: fetchAllTopics },
+    ]
+  });
 
-    setIsLoadingData(true);
-    setError('');
-    try {
-      const [resultsRes, subjectsRes, topicsRes] = await Promise.all([
-        apiClient.get('/api/results'),
-        apiClient.get('/api/subjects'),
-        apiClient.get('/api/topics')
-      ]);
+  const isLoadingData = results.some(query => query.isLoading);
+  const isError = results.some(query => query.isError);
+  const error = results.find(query => query.error)?.error;
 
-      setUserResults(resultsRes.data || []);
-      setAllSubjects(subjectsRes.data || []);
-      setAllTopics(topicsRes.data || []);
+  const userResults = results[0].data ?? [];
+  const allSubjects = results[1].data ?? [];
+  const allTopics = results[2].data ?? [];
 
-    } catch (err) {
-      setError(`Failed to load dashboard data: ${err.response?.data?.message || err.message}`);
-    } finally {
-      setIsLoadingData(false);
-    }
-  }, [currentUser]); // The dependency is correct.
-
-
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      // If there's no user, we clear the data and stop loading.
-      if (!currentUser) {
-        setIsLoadingData(false);
-        setUserResults([]);
-        setAllSubjects([]);
-        setAllTopics([]);
-        return;
-      }
-
-      setIsLoadingData(true);
-      setError('');
-      try {
-        // The axios interceptor automatically adds the JWT auth header.
-        const [resultsRes, subjectsRes, topicsRes] = await Promise.all([
-          apiClient.get('/api/results'),
-          apiClient.get('/api/subjects'),
-          apiClient.get('/api/topics')
-        ]);
-
-        setUserResults(resultsRes.data || []);
-        setAllSubjects(subjectsRes.data || []);
-        setAllTopics(topicsRes.data || []);
-
-      } catch (err) {
-        setError(`Failed to load dashboard data: ${err.response?.data?.message || err.message}`);
-      } finally {
-        setIsLoadingData(false);
-      }
-    };
-
-    fetchDashboardData();
-  }, [currentUser]);
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, [fetchDashboardData]);
-
-  // --- Memoized Data Processing ---
+  // --- Memoized Data Processing (this logic remains the same) ---
   const processedStats = useMemo(() => {
+    // ... [ The entire, large useMemo block from your original file goes here. It is unchanged. ]
     if (userResults.length === 0 || allSubjects.length === 0) {
       return { filteredResults: [], totalQuizzes: 0, overallAverageScore: 0, subjectStats: {}, activityData: { labels: [], datasets: [] }, subjectAverageScoreChartData: { labels: [], datasets: [] }, bestSubject: null, weakestSubject: null, topicPerformance: [] };
     }
@@ -150,7 +106,7 @@ export const useDashboard = () => {
 
     let topicPerformance = [];
     if (selectedSubject !== 'all' && allTopics.length > 0) {
-      const topicsForSelectedSubject = allTopics.filter(t => t.subject_id === selectedSubject);
+      const topicsForSelectedSubject = allTopics.filter(t => t.subject_id === allSubjects.find(s => s.subjectKey === selectedSubject)?.id);
       topicPerformance = topicsForSelectedSubject.map(topic => {
         const topicResults = filteredResults.filter(r => r.topicId === topic.id);
         if (topicResults.length > 0) {
@@ -188,9 +144,12 @@ export const useDashboard = () => {
     };
 
     return { filteredResults, totalQuizzes, overallAverageScore, subjectStats, activityData, subjectAverageScoreChartData, bestSubject, weakestSubject, topicPerformance };
+
   }, [userResults, allSubjects, allTopics, timeFrequency, selectedSubject, theme]);
 
+  // --- Chart Options and Handlers (these are unchanged) ---
   const subjectAverageScoreChartOptions = useMemo(() => ({
+    // ... [ Unchanged chart options block ]
     indexAxis: 'y', responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: false }, title: { display: false }, tooltip: { callbacks: { label: (c) => `Average: ${c.parsed.x}%` } } },
     scales: {
@@ -202,6 +161,7 @@ export const useDashboard = () => {
   const handleTimeFrequencyChange = (event) => setTimeFrequency(event.target.value);
   const handleSubjectChange = (event) => setSelectedSubject(event.target.value);
   const handleGenerateReport = async () => {
+    // ... [ Unchanged report generation logic ]
     setIsGeneratingPdf(true);
     const timeFreqOption = timeFrequencyOptions.find(opt => opt.value === timeFrequency);
 
@@ -213,17 +173,20 @@ export const useDashboard = () => {
       },
       activityChartElement: activityChartRef.current,
       subjectAveragesChartElement: subjectAveragesChartRef.current,
-      topicPerformanceElement: topicPerformanceRef.current, // <-- PASS THE NEW REF'S CURRENT VALUE
-      isSubjectSelected: selectedSubject !== 'all', // <-- Pass a flag
+      topicPerformanceElement: topicPerformanceRef.current,
+      isSubjectSelected: selectedSubject !== 'all',
       timeFrequencyLabel: timeFreqOption ? timeFreqOption.label : String(timeFrequency),
     });
     setIsGeneratingPdf(false);
   };
 
   return {
-    userResults, allSubjects, isLoadingData, error, timeFrequency, selectedSubject,
-    isGeneratingPdf, processedStats, subjectAverageScoreChartOptions,
-    activityChartRef, subjectAveragesChartRef, topicPerformanceRef,
-    fetchDashboardData, handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport,
+    allSubjects,
+    isLoadingData,
+    error: isError ? error.message : null,
+    timeFrequency, selectedSubject, isGeneratingPdf, processedStats,
+    subjectAverageScoreChartOptions, activityChartRef,
+    subjectAveragesChartRef, topicPerformanceRef, handleTimeFrequencyChange,
+    handleSubjectChange, handleGenerateReport,
   };
 };

@@ -45,15 +45,6 @@
     "subjectKey": "gk"
   },
   {
-    "id": "homibhabha",
-    "name": "Homi Bhabha Balvaidnyanik Spardha",
-    "description": "Specialized resources and practice tests for the Homi Bhabha exam.",
-    "accentColor": "#f48fb1",
-    "iconName": "SchoolIcon",
-    "displayOrder": 6,
-    "subjectKey": "homibhabha"
-  },
-  {
     "id": "general",
     "name": "General",
     "description": "General topics for study.",

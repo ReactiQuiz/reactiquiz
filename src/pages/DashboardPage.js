@@ -133,7 +133,7 @@ function DashboardPage() {
       />
 
       <Grid container spacing={{
-        xs: '1%', sm: '1%', md: '0.667%', lg: '0.667%', xl: '0.667%'
+        xs: '1%', sm: '1%', md: '1%', lg: '1%', xl: '1%'
       }} sx={{ mb: 3 }}>
         <Grid item
           width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>

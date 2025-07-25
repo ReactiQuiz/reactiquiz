@@ -3,40 +3,31 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
-/**
- * A custom hook to manage all state and logic for the HomibhabhaPage.
- * It handles modal visibility and the logic for starting different test types.
- */
 export const useHomibhabha = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  // --- State for Modals ---
   const [pyqModalOpen, setPyqModalOpen] = useState(false);
   const [practiceTestModalOpen, setPracticeTestModalOpen] = useState(false);
-  
-  // --- UI-related Data ---
-  // We can also define the accent color here so the page doesn't have to.
   const homiBhabhaAccentColor = theme.palette.secondary.main;
 
-  // --- Modal Handlers ---
   const handleOpenPyqModal = () => setPyqModalOpen(true);
   const handleClosePyqModal = () => setPyqModalOpen(false);
-
   const handleOpenPracticeTestModal = () => setPracticeTestModalOpen(true);
   const handleClosePracticeTestModal = () => setPracticeTestModalOpen(false);
 
-  // --- Test Start Handlers (Navigation Logic) ---
   const handleStartPyqTest = (settings) => {
-    console.log("Starting PYQ Test with settings:", settings);
+    // This logic remains the same
     navigate(`/quiz/pyq-${settings.class}-${settings.year}`, {
       state: {
+        quizType: 'homibhabha-pyq', // Specific type for PYQs
+        topicId: `pyq-${settings.class}-${settings.year}`,
         difficulty: 'mixed', 
         numQuestions: 100, 
         topicName: `Homi Bhabha PYQ ${settings.class}th - ${settings.year}`,
         accentColor: homiBhabhaAccentColor,
         quizClass: settings.class,
-        subject: "homibhabha-pyq",
+        subject: "homibhabha",
         isPYQ: true,
         year: settings.year
       }
@@ -44,28 +35,32 @@ export const useHomibhabha = () => {
     handleClosePyqModal();
   };
 
+  // --- START OF FIX ---
   const handleStartPracticeTest = (settings) => {
-    console.log("Starting Homi Bhabha Practice Test with settings:", settings);
+    // Navigate to a generic practice test URL, the state object contains all the logic
     navigate(`/quiz/homibhabha-practice-${settings.class}`, { 
       state: {
-        quizType: 'homibhabha-practice',
+        quizType: 'homibhabha-practice', // A new, specific type for our composite quiz
+        topicId: `homibhabha-practice-${settings.class}`, // A virtual topicId for the quiz
         quizClass: settings.class,
         difficulty: settings.difficulty,
         topicName: `Homi Bhabha Practice Test - Std ${settings.class}th (${settings.difficulty})`,
         accentColor: homiBhabhaAccentColor,
         subject: "homibhabha",
-        timeLimit: 90 * 60,
+        timeLimit: 90 * 60, // 90 minutes in seconds
+        // This object tells the useQuiz hook exactly how to build the test
         questionComposition: {
-          physics: 30,
-          chemistry: 30,
-          biology: 30,
-          gk: 10
+          physics: { total: 30, class_7: 5, class_8: 5 },
+          chemistry: { total: 30, class_7: 5, class_8: 5 },
+          biology: { total: 30, class_7: 5, class_8: 5 },
+          gk: { total: 10 } // GK has no class requirements
         },
         totalQuestions: 100
       }
     });
     handleClosePracticeTestModal();
   };
+  // --- END OF FIX ---
 
   return {
     pyqModalOpen,
