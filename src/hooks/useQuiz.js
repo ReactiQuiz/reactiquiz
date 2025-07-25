@@ -6,12 +6,11 @@ import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions, shuffleArray } from '../utils/quizUtils';
 
-// --- Standard Topic Fetcher (Unchanged) ---
+// Standard Topic Fetcher (Unchanged)
 const fetchTopicQuestions = async (topicId, difficultyLabel, numQuestionsReq) => {
     if (!topicId) return [];
     const { data } = await apiClient.get(`/api/questions?topicId=${topicId}`);
     let questions = parseQuestionOptions(data || []);
-
     if (difficultyLabel !== 'mixed') {
         let minScore = 0, maxScore = Infinity;
         if (difficultyLabel === 'easy') { minScore = 10; maxScore = 13; }
@@ -20,78 +19,69 @@ const fetchTopicQuestions = async (topicId, difficultyLabel, numQuestionsReq) =>
         const difficultyFiltered = questions.filter(q => q.difficulty >= minScore && q.difficulty <= maxScore);
         if (difficultyFiltered.length > 0) questions = difficultyFiltered;
     }
-    
     if (questions.length === 0) {
-        // Let the hook handle the error message for better UI feedback
         throw new Error(`No questions found for topic "${topicId}" with the selected filters.`);
     }
     return shuffleArray(questions).slice(0, numQuestionsReq);
 };
 
-// --- START OF NEW COMPOSITE QUIZ FETCHER ---
-const fetchCompositeQuizQuestions = async (composition, mainClass) => {
-    // 1. Fetch all topics to filter by subject and class
+// --- START OF NEW HIERARCHICAL COMPOSITE QUIZ FETCHER ---
+const fetchCompositeQuizQuestions = async (composition) => {
     const { data: allTopics } = await apiClient.get('/api/topics');
 
-    const fetchPromises = Object.entries(composition).map(async ([subjectKey, rules]) => {
-        let subjectQuestions = [];
+    const allSubjectQuestionArrays = await Promise.all(
+        Object.entries(composition).map(async ([subjectKey, rules]) => {
+            let subjectQuestions = [];
+            const gatheredQuestionIds = new Set();
+            const priorityOrder = ['9th', '8th', '7th'];
 
-        // Fetch questions for 7th grade topics if needed
-        if (rules.class_7 > 0) {
-            const topicIds = allTopics.filter(t => t.subject === subjectKey && t.class === '7th').map(t => t.id);
-            if (topicIds.length > 0) {
+            for (const grade of priorityOrder) {
+                if (subjectQuestions.length >= rules.total) break;
+
+                const needed = rules.total - subjectQuestions.length;
+                const topicIds = allTopics
+                    .filter(t => t.subject === subjectKey && t.class === grade)
+                    .map(t => t.id);
+
+                if (topicIds.length === 0) continue;
+
                 const responses = await Promise.all(topicIds.map(id => apiClient.get(`/api/questions?topicId=${id}`)));
-                const questions = responses.flatMap(res => res.data);
-                subjectQuestions.push(...shuffleArray(questions).slice(0, rules.class_7));
-            }
-        }
-        
-        // Fetch questions for 8th grade topics if needed
-        if (rules.class_8 > 0) {
-            const topicIds = allTopics.filter(t => t.subject === subjectKey && t.class === '8th').map(t => t.id);
-            if (topicIds.length > 0) {
-                const responses = await Promise.all(topicIds.map(id => apiClient.get(`/api/questions?topicId=${id}`)));
-                const questions = responses.flatMap(res => res.data);
-                subjectQuestions.push(...shuffleArray(questions).slice(0, rules.class_8));
-            }
-        }
+                let newQuestions = responses.flatMap(res => res.data);
+                
+                newQuestions = newQuestions.filter(q => !gatheredQuestionIds.has(q.id));
 
-        // Calculate remaining questions needed for the main class (e.g., 9th)
-        const remainingNeeded = rules.total - subjectQuestions.length;
-        if (remainingNeeded > 0) {
-            const mainClassSuffix = mainClass.endsWith('th') ? mainClass : `${mainClass}th`;
-            const topicIds = allTopics.filter(t => t.subject === subjectKey && t.class === mainClassSuffix).map(t => t.id);
-             if (topicIds.length > 0) {
-                const responses = await Promise.all(topicIds.map(id => apiClient.get(`/api/questions?topicId=${id}`)));
-                const questions = responses.flatMap(res => res.data);
-                subjectQuestions.push(...shuffleArray(questions).slice(0, remainingNeeded));
+                if (newQuestions.length > 0) {
+                    const questionsToAdd = shuffleArray(newQuestions).slice(0, needed);
+                    subjectQuestions.push(...questionsToAdd);
+                    questionsToAdd.forEach(q => gatheredQuestionIds.add(q.id));
+                }
             }
-        }
-
-        // Graceful Fallback: If we still don't have enough, grab any from the subject
-        if (subjectQuestions.length < rules.total) {
-            const fallbackNeeded = rules.total - subjectQuestions.length;
-            const allSubjectTopicIds = allTopics.filter(t => t.subject === subjectKey).map(t => t.id);
-            if (allSubjectTopicIds.length > 0) {
-                const responses = await Promise.all(allSubjectTopicIds.map(id => apiClient.get(`/api/questions?topicId=${id}`)));
-                const fallbackQuestions = responses.flatMap(res => res.data).filter(q => !subjectQuestions.some(sq => sq.id === q.id)); // Exclude already picked
-                subjectQuestions.push(...shuffleArray(fallbackQuestions).slice(0, fallbackNeeded));
+            // This part handles GK which has no specific class priority
+            if (subjectKey === 'gk' && subjectQuestions.length < rules.total) {
+                const needed = rules.total - subjectQuestions.length;
+                const topicIds = allTopics.filter(t => t.subject === 'gk').map(t => t.id);
+                 if (topicIds.length > 0) {
+                    const responses = await Promise.all(topicIds.map(id => apiClient.get(`/api/questions?topicId=${id}`)));
+                    let newQuestions = responses.flatMap(res => res.data);
+                    newQuestions = newQuestions.filter(q => !gatheredQuestionIds.has(q.id));
+                    const questionsToAdd = shuffleArray(newQuestions).slice(0, needed);
+                    subjectQuestions.push(...questionsToAdd);
+                }
             }
-        }
-
-        return subjectQuestions;
-    });
-
-    const allSubjectQuestionArrays = await Promise.all(fetchPromises);
+            return subjectQuestions;
+        })
+    );
+    
     const finalQuestionList = allSubjectQuestionArrays.flat();
+    const totalRequired = Object.values(composition).reduce((acc, rule) => acc + rule.total, 0);
 
-    if (finalQuestionList.length === 0) {
-        throw new Error("Could not assemble the practice test. No questions found for the required subjects.");
+    if (finalQuestionList.length < totalRequired) {
+        throw new Error(`Could not assemble the practice test. Only found ${finalQuestionList.length} of ${totalRequired} required questions.`);
     }
 
     return parseQuestionOptions(shuffleArray(finalQuestionList));
 };
-// --- END OF NEW COMPOSITE QUIZ FETCHER ---
+// --- END OF NEW FETCHER ---
 
 const saveQuizResult = async (resultPayload) => {
     const { data } = await apiClient.post('/api/results', resultPayload);
@@ -105,7 +95,7 @@ export const useQuiz = () => {
     const location = useLocation();
     const queryClient = useQueryClient();
     const quizSettings = location.state || {};
-    const { quizType, questionComposition, quizClass, difficulty, numQuestions } = quizSettings;
+    const { quizType, questionComposition, difficulty, numQuestions } = quizSettings;
 
     const [questions, setQuestions] = useState([]);
     const [userAnswers, setUserAnswers] = useState({});
@@ -117,16 +107,12 @@ export const useQuiz = () => {
         isLoading, isError, error 
     } = useQuery({
         queryKey: ['quizQuestions', topicIdFromParams, quizSettings],
-        // --- START OF FIX: CONDITIONAL FETCHER ---
         queryFn: () => {
             if (quizType === 'homibhabha-practice' && questionComposition) {
-                return fetchCompositeQuizQuestions(questionComposition, quizClass);
+                return fetchCompositeQuizQuestions(questionComposition);
             }
-            // Add other special quiz types here in the future (e.g., 'homibhabha-pyq')
-            // Default to standard topic fetcher
             return fetchTopicQuestions(topicIdFromParams, difficulty, numQuestions);
         },
-        // --- END OF FIX ---
         enabled: !!topicIdFromParams,
     });
 
@@ -136,10 +122,8 @@ export const useQuiz = () => {
             queryClient.invalidateQueries({ queryKey: ['userResults'] });
             queryClient.invalidateQueries({ queryKey: ['userStats'] });
             queryClient.invalidateQueries({ queryKey: ['recentResultsForChallenge'] });
-            
             const realResultId = data.id;
             if (!realResultId) throw new Error("API did not return a valid result ID.");
-            
             navigate(`/results/${realResultId}`);
         },
     });

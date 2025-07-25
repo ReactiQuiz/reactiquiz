@@ -17,10 +17,9 @@ export const useHomibhabha = () => {
   const handleClosePracticeTestModal = () => setPracticeTestModalOpen(false);
 
   const handleStartPyqTest = (settings) => {
-    // This logic remains the same
     navigate(`/quiz/pyq-${settings.class}-${settings.year}`, {
       state: {
-        quizType: 'homibhabha-pyq', // Specific type for PYQs
+        quizType: 'homibhabha-pyq',
         topicId: `pyq-${settings.class}-${settings.year}`,
         difficulty: 'mixed', 
         numQuestions: 100, 
@@ -28,39 +27,36 @@ export const useHomibhabha = () => {
         accentColor: homiBhabhaAccentColor,
         quizClass: settings.class,
         subject: "homibhabha",
-        isPYQ: true,
-        year: settings.year
       }
     });
     handleClosePyqModal();
   };
 
-  // --- START OF FIX ---
   const handleStartPracticeTest = (settings) => {
-    // Navigate to a generic practice test URL, the state object contains all the logic
     navigate(`/quiz/homibhabha-practice-${settings.class}`, { 
       state: {
-        quizType: 'homibhabha-practice', // A new, specific type for our composite quiz
-        topicId: `homibhabha-practice-${settings.class}`, // A virtual topicId for the quiz
+        quizType: 'homibhabha-practice',
+        topicId: `homibhabha-practice-${settings.class}`,
         quizClass: settings.class,
         difficulty: settings.difficulty,
         topicName: `Homi Bhabha Practice Test - Std ${settings.class}th (${settings.difficulty})`,
         accentColor: homiBhabhaAccentColor,
         subject: "homibhabha",
-        timeLimit: 90 * 60, // 90 minutes in seconds
-        // This object tells the useQuiz hook exactly how to build the test
+        timeLimit: 90 * 60,
+        // --- START OF FIX: Simplified composition object ---
+        // The new fetcher will handle the class priority internally based on these totals.
         questionComposition: {
-          physics: { total: 30, class_7: 5, class_8: 5 },
-          chemistry: { total: 30, class_7: 5, class_8: 5 },
-          biology: { total: 30, class_7: 5, class_8: 5 },
-          gk: { total: 10 } // GK has no class requirements
+          physics: { total: 30 },
+          chemistry: { total: 30 },
+          biology: { total: 30 },
+          gk: { total: 10 }
         },
+        // --- END OF FIX ---
         totalQuestions: 100
       }
     });
     handleClosePracticeTestModal();
   };
-  // --- END OF FIX ---
 
   return {
     pyqModalOpen,
