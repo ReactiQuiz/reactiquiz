@@ -33,6 +33,8 @@ const friendRoutes = require('./routes/friends');
 const challengeRoutes = require('./routes/challenges');
 const contactRoutes = require('./routes/contact');
 const aiRoutes = require('./routes/ai');
+const homiBhabhaRoutes = require('./routes/homibhabha');
+const quizSessionRoutes = require('./routes/quizSessions');
 
 const app = express();
 
@@ -50,6 +52,8 @@ app.use('/api/friends', friendRoutes);
 app.use('/api/challenges', challengeRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/homibhabha', homiBhabhaRoutes); 
+app.use('/api/quiz-sessions', quizSessionRoutes);
 
 // --- Health Check Endpoint ---
 app.get('/api/health', (req, res) => {

@@ -21,8 +21,8 @@ export const useHomibhabha = () => {
       state: {
         quizType: 'homibhabha-pyq',
         topicId: `pyq-${settings.class}-${settings.year}`,
-        difficulty: 'mixed', 
-        numQuestions: 100, 
+        difficulty: 'mixed',
+        numQuestions: 100,
         topicName: `Homi Bhabha PYQ ${settings.class}th - ${settings.year}`,
         accentColor: homiBhabhaAccentColor,
         quizClass: settings.class,
@@ -32,9 +32,9 @@ export const useHomibhabha = () => {
     handleClosePyqModal();
   };
 
-  const handleStartPracticeTest = (settings) => {
-    navigate(`/quiz/homibhabha-practice-${settings.class}`, { 
-      state: {
+  const handleStartPracticeTest = async (settings) => {
+    try {
+      const quizParams = {
         quizType: 'homibhabha-practice',
         topicId: `homibhabha-practice-${settings.class}`,
         quizClass: settings.class,
@@ -43,18 +43,20 @@ export const useHomibhabha = () => {
         accentColor: homiBhabhaAccentColor,
         subject: "homibhabha",
         timeLimit: 90 * 60,
-        // --- START OF FIX: Simplified composition object ---
-        // The new fetcher will handle the class priority internally based on these totals.
         questionComposition: {
           physics: { total: 30 },
           chemistry: { total: 30 },
           biology: { total: 30 },
           gk: { total: 10 }
         },
-        // --- END OF FIX ---
         totalQuestions: 100
-      }
-    });
+      };
+      const response = await apiClient.post('/api/quiz-sessions', { quizParams });
+      navigate(`/quiz/${response.data.sessionId}`);
+    } catch (error) {
+      console.error("Failed to create practice test session", error);
+      alert("Could not start the practice test. Please try again.");
+    }
     handleClosePracticeTestModal();
   };
 

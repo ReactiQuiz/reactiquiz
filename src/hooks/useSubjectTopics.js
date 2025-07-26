@@ -52,7 +52,7 @@ export const useSubjectTopics = () => {
       if (!Array.isArray(subjectsResponse.data)) throw new Error('Invalid subjects data format.');
       const foundSubject = subjectsResponse.data.find(s => s.subjectKey.toLowerCase() === subjectKey.toLowerCase());
       if (!foundSubject) throw new Error(`Subject '${subjectKey}' not found.`);
-      
+
       if (!Array.isArray(topicsResponse.data)) throw new Error(`Invalid topic data received for ${foundSubject.name}.`);
 
       setCurrentSubject(foundSubject);
@@ -87,7 +87,7 @@ export const useSubjectTopics = () => {
     return topics.filter(topic => {
       const classMatch = !selectedClass || topic.class === selectedClass;
       const genreMatch = !selectedGenre || topic.genre === selectedGenre;
-      const searchMatch = !searchTerm || 
+      const searchMatch = !searchTerm ||
         topic.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (topic.description && topic.description.toLowerCase().includes(searchTerm.toLowerCase()));
       return classMatch && genreMatch && searchMatch;
@@ -98,32 +98,38 @@ export const useSubjectTopics = () => {
   // --- Event Handlers ---
   const handleOpenQuizModal = (topic) => { setSelectedTopicForQuiz(topic); setModalOpen(true); };
   const handleCloseQuizModal = () => { setModalOpen(false); setSelectedTopicForQuiz(null); };
-  
-  const handleStartQuizWithSettings = (settings) => {
+
+  const handleStartQuizWithSettings = async (settings) => {
     if (selectedTopicForQuiz && currentSubject) {
-      navigate(`/quiz/${selectedTopicForQuiz.id}`, { 
-        state: { 
-          difficulty: settings.difficulty, 
-          numQuestions: settings.numQuestions, 
-          topicName: selectedTopicForQuiz.name, 
-          accentColor: currentSubject.accentColor, 
-          subject: currentSubject.subjectKey, 
-          quizClass: selectedTopicForQuiz.class 
-        } 
-      });
+      try {
+        const quizParams = {
+          topicId: selectedTopicForQuiz.id,
+          difficulty: settings.difficulty,
+          numQuestions: settings.numQuestions,
+          topicName: selectedTopicForQuiz.name,
+          accentColor: currentSubject.accentColor,
+          subject: currentSubject.subjectKey,
+          quizClass: selectedTopicForQuiz.class
+        };
+        const response = await apiClient.post('/api/quiz-sessions', { quizParams });
+        navigate(`/quiz/${response.data.sessionId}`);
+      } catch (error) {
+        console.error("Failed to create quiz session", error);
+        alert("Could not start the quiz. Please try again.");
+      }
     }
     handleCloseQuizModal();
-  };
+  };  
 
   const handleStudyFlashcards = (topic) => {
     if (currentSubject) {
-      navigate(`/flashcards/${topic.id}`, { 
-        state: { 
-          topicName: topic.name, 
-          accentColor: currentSubject.accentColor, 
-          subject: currentSubject.subjectKey, 
-          quizClass: topic.class 
-        } 
+      navigate(`/flashcards/${topic.id}`, {
+        state: {
+          topicName: topic.name,
+          accentColor: currentSubject.accentColor,
+          subject: currentSubject.subjectKey,
+          quizClass: topic.class
+        }
       });
     }
   };
@@ -132,7 +138,7 @@ export const useSubjectTopics = () => {
     setSelectedTopicForPdf(topic);
     setPdfModalOpen(true);
   };
-  
+
   const handleClosePdfModal = () => {
     setSelectedTopicForPdf(null);
     setPdfModalOpen(false);
