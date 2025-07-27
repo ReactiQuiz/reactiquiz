@@ -40,6 +40,8 @@ function QuizPage() {
     );
   }
 
+  // --- START OF FIX: Display the specific error from the hook ---
+  // The 'error' from useQuiz now contains the backend message.
   if (error) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
@@ -50,7 +52,11 @@ function QuizPage() {
       </Box>
     );
   }
+  // --- END OF FIX ---
 
+  // --- START OF FIX: More robust check for no questions ---
+  // This screen should now only show if the API succeeds but returns an empty array,
+  // which is a rare edge case but good to handle.
   if (!isLoading && questions.length === 0) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
@@ -62,6 +68,7 @@ function QuizPage() {
       </Box>
     );
   }
+  // --- END OF FIX ---
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '900px', margin: 'auto' }}>
