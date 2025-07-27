@@ -1,20 +1,20 @@
 // src/hooks/useQuiz.js
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
-import { parseQuestionOptions, shuffleArray } from '../utils/quizUtils';
+import { parseQuestionOptions } from '../utils/quizUtils';
 
-// --- Fetcher for a secure quiz session ---
+// Fetcher for a secure quiz session
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
     const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
-    // The backend now returns { questions, context }
+    // Backend now returns the exact questions and context needed
     return data;
 };
 
-// --- Mutation function for saving result (unchanged) ---
+// Mutation function for saving result
 const saveQuizResult = async (resultPayload) => {
     const { data } = await apiClient.post('/api/results', resultPayload);
     return data;
@@ -22,18 +22,16 @@ const saveQuizResult = async (resultPayload) => {
 
 export const useQuiz = () => {
     const { currentUser } = useAuth();
-    const { quizId: sessionId } = useParams(); // The URL param is now the session ID
+    const { quizId: sessionId } = useParams();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    // --- Local UI State ---
     const [questions, setQuestions] = useState([]);
     const [userAnswers, setUserAnswers] = useState({});
     const [elapsedTime, setElapsedTime] = useState(0);
     const [timerActive, setTimerActive] = useState(false);
-    const [quizContext, setQuizContext] = useState({}); // Will be populated from the fetched context
+    const [quizContext, setQuizContext] = useState({});
 
-    // --- Data Fetching with useQuery based on session ID ---
     const { 
         data: sessionData, 
         isLoading, 
@@ -43,10 +41,9 @@ export const useQuiz = () => {
         queryKey: ['quiz', sessionId],
         queryFn: () => fetchQuizBySessionId(sessionId),
         enabled: !!sessionId,
-        retry: false, // Don't retry if a session is invalid/expired
+        retry: false,
     });
 
-    // --- Mutation for saving result ---
     const saveResultMutation = useMutation({
         mutationFn: saveQuizResult,
         onSuccess: (data) => {
@@ -54,40 +51,28 @@ export const useQuiz = () => {
             queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
             
             const realResultId = data.id;
-            if (!realResultId) throw new Error("API did not return a valid result ID after saving.");
+            if (!realResultId) throw new Error("API did not return a valid result ID.");
             
             navigate(`/results/${realResultId}`);
         },
     });
 
-    // Effect to process fetched questions and context
+    // --- START OF FIX: Simplified useEffect ---
+    // No more client-side filtering needed!
     useEffect(() => {
         if (sessionData) {
             const { questions: fetchedQuestions, context } = sessionData;
             
-            // Apply client-side filtering/shuffling for standard quizzes
-            let finalQuestions = fetchedQuestions;
-            if (context.quizType !== 'homibhabha-practice') {
-                 if (context.difficulty !== 'mixed') {
-                    let minScore = 0, maxScore = Infinity;
-                    if (context.difficulty === 'easy') { minScore = 10; maxScore = 13; }
-                    else if (context.difficulty === 'medium') { minScore = 14; maxScore = 17; }
-                    else if (context.difficulty === 'hard') { minScore = 18; maxScore = 20; }
-                    const difficultyFiltered = finalQuestions.filter(q => q.difficulty >= minScore && q.difficulty <= maxScore);
-                    if (difficultyFiltered.length > 0) finalQuestions = difficultyFiltered;
-                }
-                finalQuestions = shuffleArray(finalQuestions).slice(0, context.numQuestions);
-            }
-
-            setQuestions(parseQuestionOptions(finalQuestions));
+            setQuestions(parseQuestionOptions(fetchedQuestions));
             setQuizContext(context);
             setUserAnswers({});
             setElapsedTime(0);
-            if (finalQuestions.length > 0) {
+            if (fetchedQuestions.length > 0) {
                 setTimerActive(true);
             }
         }
     }, [sessionData]);
+    // --- END OF FIX ---
 
     // Timer logic (unchanged)
     useEffect(() => {
@@ -98,7 +83,7 @@ export const useQuiz = () => {
         return () => clearInterval(interval);
     }, [timerActive, questions.length]);
 
-    // Submit logic (now uses quizContext)
+    // Submit logic (unchanged)
     const submitAndNavigate = (abandon = false) => {
         setTimerActive(false);
         if (abandon) {

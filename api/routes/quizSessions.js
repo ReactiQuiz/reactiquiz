@@ -4,23 +4,33 @@ const crypto = require('crypto');
 const { turso } = require('../_utils/tursoClient');
 const { verifyToken } = require('../_middleware/auth');
 const { logApi, logError } = require('../_utils/logger');
-const { assembleHomiBhabhaPracticeTest } = require('../_utils/quizAssembler'); // We will create this
+const { assembleHomiBhabhaPracticeTest } = require('../_utils/quizAssembler');
+const { shuffleArray } = require('../_utils/arrayUtils'); // We need this utility
 
 const router = Router();
 const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
 
-// POST /api/quiz-sessions
-// Creates a new, secure quiz session and returns its ID.
+// Helper to get the difficulty score range
+const getDifficultyRange = (difficulty) => {
+    switch (difficulty) {
+        case 'easy': return { min: 10, max: 13 };
+        case 'medium': return { min: 14, max: 17 };
+        case 'hard': return { min: 18, max: 20 };
+        default: return { min: 0, max: 100 }; // 'mixed'
+    }
+};
+
+// POST /api/quiz-sessions (This route is already correct and remains unchanged)
 router.post('/', verifyToken, async (req, res) => {
     const userId = req.user.id;
-    const { quizParams } = req.body; // e.g., { topicId, difficulty, numQuestions, quizType, ... }
+    const { quizParams } = req.body;
     logApi('POST', '/api/quiz-sessions', `User: ${userId}`);
 
     if (!quizParams || !quizParams.topicId) {
         return res.status(400).json({ message: 'Invalid quiz parameters provided.' });
     }
 
-    const sessionId = crypto.randomBytes(8).toString('hex'); // Generate a random 16-char ID
+    const sessionId = crypto.randomBytes(8).toString('hex');
     const tx = await turso.transaction("write");
     try {
         await tx.execute({
@@ -36,14 +46,13 @@ router.post('/', verifyToken, async (req, res) => {
     }
 });
 
-// GET /api/quiz-sessions/:sessionId
-// Fetches the questions for a specific session, if valid.
+// GET /api/quiz-sessions/:sessionId (This is where the fix is)
 router.get('/:sessionId', verifyToken, async (req, res) => {
     const { sessionId } = req.params;
     const userId = req.user.id;
     logApi('GET', `/api/quiz-sessions/${sessionId}`, `User: ${userId}`);
 
-    const tx = await turso.transaction("write"); // "write" because we will delete the session
+    const tx = await turso.transaction("write");
     try {
         const sessionResult = await tx.execute({
             sql: "SELECT * FROM quiz_sessions WHERE id = ? AND user_id = ?;",
@@ -67,23 +76,36 @@ router.get('/:sessionId', verifyToken, async (req, res) => {
         const quizParams = JSON.parse(session.quiz_params_json);
         let questions = [];
 
-        // --- Question Assembly Logic ---
+        // --- START OF FIX: Centralized Question Assembly Logic ---
         if (quizParams.quizType === 'homibhabha-practice') {
             questions = await assembleHomiBhabhaPracticeTest(tx, quizParams);
         } else {
-            // Standard topic quiz logic
+            // This is the new, robust logic for standard topic quizzes
+            const difficultyRange = getDifficultyRange(quizParams.difficulty);
+            
             const { rows } = await tx.execute({
-                sql: "SELECT * FROM questions WHERE topicId = ?;",
-                args: [quizParams.topicId]
+                sql: `
+                    SELECT * FROM questions 
+                    WHERE topicId = ? 
+                    AND difficulty BETWEEN ? AND ?;
+                `,
+                args: [quizParams.topicId, difficultyRange.min, difficultyRange.max]
             });
-            questions = rows; // Filtering and shuffling will be done on the client for simplicity here
+
+            if (rows.length < quizParams.numQuestions) {
+                // Not enough questions for the specific difficulty, so we throw a clear error
+                await tx.rollback(); // Don't delete the session yet, let user retry
+                return res.status(404).json({ message: `Could not find ${quizParams.numQuestions} questions for the selected difficulty. Found only ${rows.length}. Try 'Mixed' difficulty.` });
+            }
+
+            questions = shuffleArray(rows).slice(0, quizParams.numQuestions);
         }
+        // --- END OF FIX ---
 
         // Clean up the used session
         await tx.execute({ sql: "DELETE FROM quiz_sessions WHERE id = ?", args: [sessionId] });
         await tx.commit();
         
-        // Return both the questions and the original parameters (context)
         res.json({ questions, context: quizParams });
 
     } catch (e) {
@@ -92,6 +114,5 @@ router.get('/:sessionId', verifyToken, async (req, res) => {
         res.status(500).json({ message: 'Could not retrieve quiz data.' });
     }
 });
-
 
 module.exports = router;
