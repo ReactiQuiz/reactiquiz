@@ -7,9 +7,9 @@ import ProtectedRoute from './core/ProtectedRoute';
 
 // A simple, reusable loading component for lazy-loaded pages
 const SuspenseFallback = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
-        <CircularProgress />
-    </Box>
+  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
+    <CircularProgress />
+  </Box>
 );
 
 // Lazily import all your page components for better performance
@@ -25,9 +25,10 @@ const QuizPage = React.lazy(() => import('../pages/QuizPage'));
 const FriendsPage = React.lazy(() => import('../pages/FriendsPage'));
 const ChallengesPage = React.lazy(() => import('../pages/ChallengesPage'));
 const AICenterPage = React.lazy(() => import('../pages/AICenterPage'));
-const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage')); // Import Homibhabha
-const AboutPage = React.lazy(() => import('../pages/AboutPage'));       // Import About
+const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
+const AboutPage = React.lazy(() => import('../pages/AboutPage'));
 const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
+const QuizLoadingPage = React.lazy(() => import('../../pages/QuizLoadingPage'));
 
 function AppRoutes({ onOpenChangePasswordModal }) {
   const { currentUser, isLoadingAuth } = useAuth();
@@ -57,11 +58,14 @@ function AppRoutes({ onOpenChangePasswordModal }) {
         <Route path="/account" element={<ProtectedRoute><AccountPage onOpenChangePasswordModal={onOpenChangePasswordModal} /></ProtectedRoute>} />
         <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
         <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+        {/* The Quiz Loading route */}
+        <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
+        {/* The actual quiz page route */}
         <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
         <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
         <Route path="/challenges" element={<ProtectedRoute><ChallengesPage /></ProtectedRoute>} />
         <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
-        
+
         {/* --- END OF ROUTING FIXES --- */}
 
         {/* Fallback Route for any other path */}
