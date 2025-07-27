@@ -21,7 +21,9 @@ const saveQuizResult = async (resultPayload) => {
 
 export const useQuiz = () => {
     const { currentUser } = useAuth();
-    const { quizId: sessionId } = useParams();
+    // --- START OF FIX: Directly use quizId from useParams ---
+    const { quizId } = useParams();
+    // --- END OF FIX ---
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -37,9 +39,11 @@ export const useQuiz = () => {
         isError, 
         error 
     } = useQuery({
-        queryKey: ['quiz', sessionId],
-        queryFn: () => fetchQuizBySessionId(sessionId),
-        enabled: !!sessionId,
+        // --- START OF FIX: Use the 'quizId' variable in the queryKey and queryFn ---
+        queryKey: ['quiz', quizId],
+        queryFn: () => fetchQuizBySessionId(quizId),
+        enabled: !!quizId, // This condition now works correctly
+        // --- END OF FIX ---
         retry: false,
     });
 
@@ -54,13 +58,9 @@ export const useQuiz = () => {
         },
     });
 
-    // --- START OF FIX: More robust useEffect ---
     useEffect(() => {
-        // Only proceed if loading is finished, there's no error, and we have valid data.
         if (!isLoading && !isError && sessionData) {
             const { questions: fetchedQuestions, context } = sessionData;
-            
-            // Explicitly check if questions array exists and is not empty
             if (fetchedQuestions && fetchedQuestions.length > 0) {
                 setQuestions(parseQuestionOptions(fetchedQuestions));
                 setQuizContext(context);
@@ -68,14 +68,11 @@ export const useQuiz = () => {
                 setElapsedTime(0);
                 setTimerActive(true);
             } else {
-                // Handle the edge case where the API might succeed but return no questions
                 setQuestions([]);
             }
         }
     }, [sessionData, isLoading, isError]);
-    // --- END OF FIX ---
-
-    // Timer logic
+    
     useEffect(() => {
         let interval;
         if (timerActive && questions.length > 0) {
@@ -84,7 +81,6 @@ export const useQuiz = () => {
         return () => clearInterval(interval);
     }, [timerActive, questions.length]);
 
-    // Submit logic
     const submitAndNavigate = (abandon = false) => {
         setTimerActive(false);
         if (abandon) {
