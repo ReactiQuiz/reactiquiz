@@ -10,7 +10,6 @@ import { parseQuestionOptions } from '../utils/quizUtils';
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
     const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
-    // Backend now returns the exact questions and context needed
     return data;
 };
 
@@ -49,32 +48,34 @@ export const useQuiz = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
             queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
-            
             const realResultId = data.id;
             if (!realResultId) throw new Error("API did not return a valid result ID.");
-            
             navigate(`/results/${realResultId}`);
         },
     });
 
-    // --- START OF FIX: Simplified useEffect ---
-    // No more client-side filtering needed!
+    // --- START OF FIX: More robust useEffect ---
     useEffect(() => {
-        if (sessionData) {
+        // Only proceed if loading is finished, there's no error, and we have valid data.
+        if (!isLoading && !isError && sessionData) {
             const { questions: fetchedQuestions, context } = sessionData;
             
-            setQuestions(parseQuestionOptions(fetchedQuestions));
-            setQuizContext(context);
-            setUserAnswers({});
-            setElapsedTime(0);
-            if (fetchedQuestions.length > 0) {
+            // Explicitly check if questions array exists and is not empty
+            if (fetchedQuestions && fetchedQuestions.length > 0) {
+                setQuestions(parseQuestionOptions(fetchedQuestions));
+                setQuizContext(context);
+                setUserAnswers({});
+                setElapsedTime(0);
                 setTimerActive(true);
+            } else {
+                // Handle the edge case where the API might succeed but return no questions
+                setQuestions([]);
             }
         }
-    }, [sessionData]);
+    }, [sessionData, isLoading, isError]);
     // --- END OF FIX ---
 
-    // Timer logic (unchanged)
+    // Timer logic
     useEffect(() => {
         let interval;
         if (timerActive && questions.length > 0) {
@@ -83,14 +84,13 @@ export const useQuiz = () => {
         return () => clearInterval(interval);
     }, [timerActive, questions.length]);
 
-    // Submit logic (unchanged)
+    // Submit logic
     const submitAndNavigate = (abandon = false) => {
         setTimerActive(false);
         if (abandon) {
             navigate(quizContext.subject ? `/subjects/${quizContext.subject}` : '/subjects');
             return;
         }
-        
         if (!currentUser || !quizContext.topicId) return;
 
         const correctAnswers = questions.reduce((acc, q) => (userAnswers[q.id] === q.correctOptionId ? acc + 1 : acc), 0);

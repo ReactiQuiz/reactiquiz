@@ -57,7 +57,7 @@ function AppRoutes({ onOpenChangePasswordModal }) {
         <Route path="/account" element={<ProtectedRoute><AccountPage onOpenChangePasswordModal={onOpenChangePasswordModal} /></ProtectedRoute>} />
         <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
         <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-        <Route path="/quiz/:topicId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+        <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
         <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
         <Route path="/challenges" element={<ProtectedRoute><ChallengesPage /></ProtectedRoute>} />
         <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
