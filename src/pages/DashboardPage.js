@@ -30,16 +30,16 @@ const DashboardSkeleton = () => (
 
         {/* Skeleton for top cards, mirroring your exact grid structure */}
         <Grid container spacing={{ xs: '1%', sm: '1%', md: '0.667%', lg: '0.667%', xl: '0.667%' }} sx={{ mb: 3 }}>
-            <Grid item width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>
+            <Grid item width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }}>
                 <Skeleton variant="rectangular" height={130} sx={{ borderRadius: 2 }} />
             </Grid>
-            <Grid item width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>
+            <Grid item width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }}>
                 <Skeleton variant="rectangular" height={130} sx={{ borderRadius: 2 }} />
             </Grid>
-            <Grid item width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }} mt={{ xs: 2, sm: 2, md: 0 }}>
+            <Grid item width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }} mt={{ xs: 2, sm: 2, md: 0 }}>
                 <Skeleton variant="rectangular" height={130} sx={{ borderRadius: 2 }} />
             </Grid>
-            <Grid item width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }} mt={{ xs: 2, sm: 2, md: 0 }}>
+            <Grid item width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }} mt={{ xs: 2, sm: 2, md: 0 }}>
                 <Skeleton variant="rectangular" height={130} sx={{ borderRadius: 2 }} />
             </Grid>
         </Grid>
@@ -136,7 +136,7 @@ function DashboardPage() {
         xs: '1%', sm: '1%', md: '1%', lg: '1%', xl: '1%'
       }} sx={{ mb: 3 }}>
         <Grid item
-          width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>
+          width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }}>
           <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
             <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>Total Quizzes Solved</Typography>
             <Typography variant="h3" sx={{ color: DASHBOARD_ACCENT_COLOR, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>{processedStats.totalQuizzes}</Typography>
@@ -144,7 +144,7 @@ function DashboardPage() {
           </Paper>
         </Grid>
         <Grid item
-          width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}>
+          width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }}>
           <Paper sx={{ p: { xs: 2, sm: 2.5 }, textAlign: 'center', height: '100%', borderTop: `4px solid ${DASHBOARD_ACCENT_COLOR}` }}>
             <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>Overall Average Score</Typography>
             <Typography variant="h3" sx={{ color: DASHBOARD_ACCENT_COLOR, fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>{processedStats.overallAverageScore}%</Typography>
@@ -155,12 +155,12 @@ function DashboardPage() {
         {selectedSubject === 'all' && (
           <>
             <Grid item
-              width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}
+              width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }}
               mt={{ xs: 2, sm: 2, md: 0, lg: 0, xl: 0 }}>
               <KpiDisplay bestSubject={processedStats.bestSubject} />
             </Grid>
             <Grid item
-              width={{ xs: '49.5%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' }}
+              width={{ xs: '50%', sm: '50%', md: '25%', lg: '25%', xl: '25%' }}
               mt={{ xs: 2, sm: 2, md: 0, lg: 0, xl: 0 }}>
               <KpiDisplay weakestSubject={processedStats.weakestSubject} />
             </Grid>
