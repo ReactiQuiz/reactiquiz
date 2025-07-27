@@ -28,7 +28,7 @@ const AICenterPage = React.lazy(() => import('../pages/AICenterPage'));
 const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
 const AboutPage = React.lazy(() => import('../pages/AboutPage'));
 const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
-const QuizLoadingPage = React.lazy(() => import('../../pages/QuizLoadingPage'));
+const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 
 function AppRoutes({ onOpenChangePasswordModal }) {
   const { currentUser, isLoadingAuth } = useAuth();
