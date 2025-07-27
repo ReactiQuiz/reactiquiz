@@ -19,7 +19,8 @@ function SubjectTopicsPage() {
     searchTerm, setSearchTerm, selectedClass, setSelectedClass,
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,
     filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
-    handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal
+    handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal,
+    createSessionMutation
   } = useSubjectTopics();
 
   const accentColor = currentSubject?.accentColor || theme.palette.primary.main;
@@ -188,6 +189,7 @@ function SubjectTopicsPage() {
           onSubmit={handleStartQuizWithSettings}
           topicName={selectedTopicForQuiz.name}
           accentColor={accentColor}
+          isSubmitting={createSessionMutation.isPending} 
         />
       )}
 

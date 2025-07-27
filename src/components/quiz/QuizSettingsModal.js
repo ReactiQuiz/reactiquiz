@@ -2,25 +2,25 @@
 import { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl,
-  InputLabel, Select, MenuItem, TextField, useTheme, Typography, CircularProgress
+  InputLabel, Select, MenuItem, TextField, useTheme, CircularProgress
 } from '@mui/material';
 import { darken } from '@mui/material/styles';
 
+// --- START OF FIX: Accept isSubmitting as a prop ---
 function QuizSettingsModal({ 
     open, 
     onClose, 
     onSubmit, 
     topicName, 
-    accentColor
+    accentColor,
+    isSubmitting // <-- New prop
 }) {
+// --- END OF FIX ---
   const theme = useTheme();
   const [difficulty, setDifficulty] = useState('medium');
   const [numQuestions, setNumQuestions] = useState(10);
   const [numQuestionsError, setNumQuestionsError] = useState('');
-  // --- START OF FIX: Add submitting state ---
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  // --- END OF FIX ---
-
+  
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
   useEffect(() => {
@@ -28,11 +28,11 @@ function QuizSettingsModal({
       setDifficulty('medium');
       setNumQuestions(10);
       setNumQuestionsError('');
-      setIsSubmitting(false); // Reset submitting state when modal opens
     }
   }, [open]);
 
   const handleNumQuestionsChange = (event) => {
+    // ... this function is unchanged
     const value = event.target.value;
     const maxQs = 50;
     if (value === '' || (/^\d+$/.test(value) && Number(value) >= 1 && Number(value) <= maxQs)) {
@@ -48,37 +48,24 @@ function QuizSettingsModal({
     }
   };
 
-  // --- START OF FIX: Make handleSubmit async and manage submitting state ---
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
+    // ... this function is now synchronous and simpler
     const maxQs = 50;
     const finalNumQuestions = numQuestions === '' ? 10 : Number(numQuestions);
     if (finalNumQuestions < 1 || finalNumQuestions > maxQs || isNaN(finalNumQuestions)) {
       setNumQuestionsError(`Please enter a valid number between 1 and ${maxQs}.`);
       return;
     }
-    
-    setIsSubmitting(true);
-    try {
-      // The onSubmit prop is now async (from useSubjectTopics hook)
-      await onSubmit({ difficulty, numQuestions: finalNumQuestions });
-      // The parent will handle navigation, we don't need to do anything else on success
-    } catch (error) {
-      // If the parent's onSubmit throws an error (e.g., API call fails),
-      // we can re-enable the button.
-      console.error("Error during quiz submission setup:", error);
-      setIsSubmitting(false);
-    }
-    // Note: We don't call onClose() or setIsSubmitting(false) on success,
-    // because the component will unmount due to navigation.
+    onSubmit({ difficulty, numQuestions: finalNumQuestions });
   };
-  // --- END OF FIX ---
-
+  
   return (
     <Dialog open={open} onClose={onClose} PaperProps={{ sx: { minWidth: '300px', maxWidth: '500px' } }}>
       <DialogTitle sx={{ backgroundColor: effectiveAccentColor, color: theme.palette.getContrastText(effectiveAccentColor), pb: 1.5, pt: 2 }}>
         Quiz Settings: {topicName}
       </DialogTitle>
       <DialogContent sx={{ pt: '20px !important', display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+        {/* ... Dialog content is unchanged ... */}
         <FormControl fullWidth>
           <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
           <Select
@@ -110,7 +97,7 @@ function QuizSettingsModal({
         <Button
           onClick={handleSubmit}
           variant="contained"
-          // --- START OF FIX: Use submitting state ---
+          // --- START OF FIX: Use the isSubmitting prop ---
           disabled={isSubmitting || !!numQuestionsError || numQuestions === ''}
           startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : null}
           // --- END OF FIX ---

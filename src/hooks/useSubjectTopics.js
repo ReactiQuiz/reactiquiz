@@ -1,78 +1,95 @@
 // src/hooks/useSubjectTopics.js
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-/**
- * A custom hook to manage all state and logic for the SubjectTopicsPage.
- * It handles fetching data for a specific subject and its topics,
- * and manages all filtering and modal interactions.
- */
+// This is the fetcher function that will be used by our pre-fetch logic.
+// It retrieves the quiz data for a given session ID.
+const fetchQuizBySessionId = async (sessionId) => {
+    if (!sessionId) return null;
+    const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
+    return data;
+};
+
 export const useSubjectTopics = () => {
   const { subjectKey } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  // --- State for Data Fetching ---
+  // Local state for UI controls (filters, modals, etc.)
   const [currentSubject, setCurrentSubject] = useState(null);
   const [topics, setTopics] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  // --- State for Filtering ---
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('');
-
-  // --- State for Modals ---
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [selectedTopicForPdf, setSelectedTopicForPdf] = useState(null);
+  
+  // useQuery to fetch the list of topics for the current subject page.
+  const { isLoading, error } = useQuery({
+      queryKey: ['topicsForSubject', subjectKey],
+      queryFn: async () => {
+        // Fetch subjects and topics in parallel for efficiency
+        const [subjectsResponse, topicsResponse] = await Promise.all([
+            apiClient.get('/api/subjects'),
+            apiClient.get(`/api/topics/${subjectKey}`)
+        ]);
+        const foundSubject = subjectsResponse.data.find(s => s.subjectKey.toLowerCase() === subjectKey.toLowerCase());
+        if (!foundSubject) throw new Error(`Subject '${subjectKey}' not found.`);
+        
+        // Set local state needed by the component
+        setCurrentSubject(foundSubject);
+        setTopics(topicsResponse.data);
+        return topicsResponse.data; // Return data for TanStack Query to cache
+      },
+      enabled: !!subjectKey // Only run this query if a subjectKey is present in the URL
+  });
 
-  // --- Data Fetching Logic ---
-  const fetchSubjectData = useCallback(async () => {
-    if (!subjectKey) {
-      setError('Subject key is missing from URL.');
-      setIsLoading(false);
-      return;
+  // useMutation to handle the entire "Start Quiz" process atomically.
+  const createSessionMutation = useMutation({
+    mutationFn: (quizParams) => apiClient.post('/api/quiz-sessions', { quizParams }),
+    onSuccess: async (response) => {
+      const { sessionId } = response.data;
+      
+      // PRE-FETCH STEP: Fetch the quiz data immediately and seed the cache.
+      // The user won't see a loading screen on the quiz page.
+      await queryClient.prefetchQuery({
+          queryKey: ['quiz', sessionId],
+          queryFn: () => fetchQuizBySessionId(sessionId),
+      });
+
+      // After data is in the cache, navigate to the quiz page.
+      navigate(`/quiz/${sessionId}`);
+    },
+    onError: (err) => {
+        console.error("Failed to create or pre-fetch quiz session", err);
+        alert(err.response?.data?.message || "Could not start the quiz. Please try again.");
     }
+  });
 
-    setIsLoading(true);
-    setError('');
-    setSearchTerm('');
-    setSelectedClass('');
-    setSelectedGenre('');
-
-    try {
-      const [subjectsResponse, topicsResponse] = await Promise.all([
-        apiClient.get('/api/subjects'),
-        apiClient.get(`/api/topics/${subjectKey}`)
-      ]);
-
-      if (!Array.isArray(subjectsResponse.data)) throw new Error('Invalid subjects data format.');
-      const foundSubject = subjectsResponse.data.find(s => s.subjectKey.toLowerCase() === subjectKey.toLowerCase());
-      if (!foundSubject) throw new Error(`Subject '${subjectKey}' not found.`);
-
-      if (!Array.isArray(topicsResponse.data)) throw new Error(`Invalid topic data received for ${foundSubject.name}.`);
-
-      setCurrentSubject(foundSubject);
-      setTopics(topicsResponse.data);
-    } catch (err) {
-      console.error(`Error fetching data for subject ${subjectKey}:`, err);
-      setError(`Failed to load data: ${err.message}`);
-      setCurrentSubject(null);
-      setTopics([]);
-    } finally {
-      setIsLoading(false);
+  // Handler called by the QuizSettingsModal
+  const handleStartQuizWithSettings = (settings) => {
+    if (selectedTopicForQuiz && currentSubject) {
+      const quizParams = { 
+        topicId: selectedTopicForQuiz.id,
+        difficulty: settings.difficulty, 
+        numQuestions: settings.numQuestions, 
+        topicName: selectedTopicForQuiz.name, 
+        accentColor: currentSubject.accentColor, 
+        subject: currentSubject.subjectKey, 
+        quizClass: selectedTopicForQuiz.class 
+      };
+      // This single call triggers the entire mutation flow (create, pre-fetch, navigate)
+      createSessionMutation.mutate(quizParams);
     }
-  }, [subjectKey]);
+    // Close the modal immediately; the mutation's pending state will handle UI feedback.
+    handleCloseQuizModal();
+  };
 
-  useEffect(() => {
-    fetchSubjectData();
-  }, [fetchSubjectData]);
-
-
-  // --- Memoized Derived State for Filtering ---
+  // Memoized filtering logic (unchanged)
   const availableClasses = useMemo(() => {
     const allClasses = topics.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort((a, b) => parseInt(a) - parseInt(b) || a.localeCompare(b));
@@ -87,69 +104,39 @@ export const useSubjectTopics = () => {
     return topics.filter(topic => {
       const classMatch = !selectedClass || topic.class === selectedClass;
       const genreMatch = !selectedGenre || topic.genre === selectedGenre;
-      const searchMatch = !searchTerm ||
+      const searchMatch = !searchTerm || 
         topic.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (topic.description && topic.description.toLowerCase().includes(searchTerm.toLowerCase()));
       return classMatch && genreMatch && searchMatch;
     });
   }, [topics, selectedClass, selectedGenre, searchTerm]);
 
-
-  // --- Event Handlers ---
+  // Other UI handlers (unchanged)
   const handleOpenQuizModal = (topic) => { setSelectedTopicForQuiz(topic); setModalOpen(true); };
   const handleCloseQuizModal = () => { setModalOpen(false); setSelectedTopicForQuiz(null); };
-
-  const handleStartQuizWithSettings = async (settings) => {
-    if (selectedTopicForQuiz && currentSubject) {
-      try {
-        const quizParams = {
-          topicId: selectedTopicForQuiz.id,
-          difficulty: settings.difficulty,
-          numQuestions: settings.numQuestions,
-          topicName: selectedTopicForQuiz.name,
-          accentColor: currentSubject.accentColor,
-          subject: currentSubject.subjectKey,
-          quizClass: selectedTopicForQuiz.class
-        };
-        const response = await apiClient.post('/api/quiz-sessions', { quizParams });
-        navigate(`/quiz/${response.data.sessionId}`);
-      } catch (error) {
-        console.error("Failed to create quiz session", error);
-        alert("Could not start the quiz. Please try again.");
-      }
-    }
-    handleCloseQuizModal();
-  };  
-
+  
   const handleStudyFlashcards = (topic) => {
     if (currentSubject) {
-      navigate(`/flashcards/${topic.id}`, {
-        state: {
-          topicName: topic.name,
-          accentColor: currentSubject.accentColor,
-          subject: currentSubject.subjectKey,
-          quizClass: topic.class
-        }
+      navigate(`/flashcards/${topic.id}`, { 
+        state: { 
+          topicName: topic.name, 
+          accentColor: currentSubject.accentColor, 
+          subject: currentSubject.subjectKey, 
+          quizClass: topic.class 
+        } 
       });
     }
   };
 
-  const handleOpenPdfModal = (topic) => {
-    setSelectedTopicForPdf(topic);
-    setPdfModalOpen(true);
-  };
-
-  const handleClosePdfModal = () => {
-    setSelectedTopicForPdf(null);
-    setPdfModalOpen(false);
-  };
-
+  const handleOpenPdfModal = (topic) => { setSelectedTopicForPdf(topic); setPdfModalOpen(true); };
+  const handleClosePdfModal = () => { setSelectedTopicForPdf(null); setPdfModalOpen(false); };
+  
   return {
     subjectKey,
     currentSubject,
     topics,
     isLoading,
-    error,
+    error: error ? error.message : null,
     modalOpen,
     selectedTopicForQuiz,
     pdfModalOpen,
@@ -169,5 +156,7 @@ export const useSubjectTopics = () => {
     handleStudyFlashcards,
     handleOpenPdfModal,
     handleClosePdfModal,
+    // Pass the mutation object so the page can access its loading state
+    createSessionMutation, 
   };
 };
