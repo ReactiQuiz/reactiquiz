@@ -14,12 +14,12 @@ function SettingsPage() {
   const theme = useTheme();
   // For now, we only have one panel, so it's always selected.
   // In the future, you would use useState here to manage the active panel.
-  const activePanelId = 'theme'; 
+  const activePanelId = 'theme';
 
   return (
     <Box sx={{ width: '100%', p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto' }}>
       <Typography variant="h4" sx={{ mb: 3, fontWeight: 700 }}>
-        Project Settings
+        Settings
       </Typography>
       <Grid container spacing={{ xs: 2, md: 4 }}>
         {/* === Left Column (Sidebar Navigation) === */}
