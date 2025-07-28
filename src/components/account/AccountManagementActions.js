@@ -11,6 +11,11 @@ function AccountManagementActions({ onOpenChangePasswordModal }) {
   const theme = useTheme();
   const navigate = useNavigate();
 
+  // --- START OF FIX: Add fallbacks for all theme colors ---
+  const friendsColor = theme.palette.friendsAccent?.main || theme.palette.info.main;
+  const challengesColor = theme.palette.challengesAccent?.main || theme.palette.secondary.main;
+  // --- END OF FIX ---
+
   return (
     <Paper
       elevation={3}
@@ -30,12 +35,36 @@ function AccountManagementActions({ onOpenChangePasswordModal }) {
           </Button>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Button fullWidth variant="contained" startIcon={<GroupIcon />} onClick={() => navigate('/friends')} sx={{ backgroundColor: theme.palette.friendsAccent?.main, color: theme.palette.getContrastText(theme.palette.friendsAccent?.main), '&:hover': { backgroundColor: darken(theme.palette.friendsAccent?.main, 0.2) } }}>
+          <Button 
+            fullWidth 
+            variant="contained" 
+            startIcon={<GroupIcon />} 
+            onClick={() => navigate('/friends')} 
+            // --- START OF FIX: Use the safe color variables ---
+            sx={{ 
+                backgroundColor: friendsColor, 
+                color: theme.palette.getContrastText(friendsColor), 
+                '&:hover': { backgroundColor: darken(friendsColor, 0.2) } 
+            }}
+            // --- END OF FIX ---
+          >
             Manage Friends
           </Button>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Button fullWidth variant="contained" startIcon={<SportsKabaddiIcon />} onClick={() => navigate('/challenges')} sx={{ backgroundColor: theme.palette.challengesAccent?.main, color: theme.palette.getContrastText(theme.palette.challengesAccent?.main), '&:hover': { backgroundColor: darken(theme.palette.challengesAccent?.main, 0.2) } }}>
+          <Button 
+            fullWidth 
+            variant="contained" 
+            startIcon={<SportsKabaddiIcon />} 
+            onClick={() => navigate('/challenges')} 
+            // --- START OF FIX: Use the safe color variables ---
+            sx={{ 
+                backgroundColor: challengesColor, 
+                color: theme.palette.getContrastText(challengesColor), 
+                '&:hover': { backgroundColor: darken(challengesColor, 0.2) } 
+            }}
+            // --- END OF FIX ---
+          >
             My Challenges
           </Button>
         </Grid>
