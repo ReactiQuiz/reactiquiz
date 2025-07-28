@@ -51,8 +51,6 @@ export const darkTheme = createTheme({
     mathematicsAccent: { main: subjectAccentColors.mathematics, light: lighten(subjectAccentColors.mathematics, 0.2), dark: darken(subjectAccentColors.mathematics, 0.1), contrastText: '#ffffff' },
     biologyAccent: { main: subjectAccentColors.biology, light: lighten(subjectAccentColors.biology, 0.2), dark: darken(subjectAccentColors.biology, 0.1), contrastText: '#ffffff' },
     gkAccent: { main: subjectAccentColors.gk, light: lighten(subjectAccentColors.gk, 0.2), dark: darken(subjectAccentColors.gk, 0.1), contrastText: '#000000' },
-    challengesAccent: { main: '#9575CD', light: lighten('#9575CD', 0.2), dark: darken('#9575CD', 0.15), contrastText: '#ffffff' },
-    friendsAccent: { main: '#64B5F6', light: lighten('#64B5F6', 0.2), dark: darken('#64B5F6', 0.15), contrastText: '#000000' },
     accountAccent: { main: '#81C784', light: lighten('#81C784', 0.2), dark: darken('#81C784', 0.15), contrastText: '#000000' },
     aboutAccent: { main: '#FFA000', light: lighten('#FFA000', 0.2), dark: darken('#FFA000', 0.15), contrastText: '#000000' },
     resultsAccent: { main: '#4DB6AC', light: lighten('#4DB6AC', 0.2), dark: darken('#4DB6AC', 0.15), contrastText: '#000000' },
@@ -110,8 +108,6 @@ export const lightTheme = createTheme({
     mathematicsAccent: { main: subjectAccentColors.mathematics, light: lighten(subjectAccentColors.mathematics, 0.2), dark: darken(subjectAccentColors.mathematics, 0.1), contrastText: '#ffffff' },
     biologyAccent: { main: subjectAccentColors.biology, light: lighten(subjectAccentColors.biology, 0.2), dark: darken(subjectAccentColors.biology, 0.1), contrastText: '#ffffff' },
     gkAccent: { main: subjectAccentColors.gk, light: lighten(subjectAccentColors.gk, 0.2), dark: darken(subjectAccentColors.gk, 0.1), contrastText: '#000000' },
-    challengesAccent: { main: '#8E24AA', light: lighten('#8E24AA', 0.2), dark: darken('#8E24AA', 0.15), contrastText: '#ffffff' }, // Deeper purple for light mode
-    friendsAccent: { main: '#1976D2', light: lighten('#1976D2', 0.2), dark: darken('#1976D2', 0.15), contrastText: '#ffffff' }, // Deeper blue
     accountAccent: { main: '#388E3C', light: lighten('#388E3C', 0.2), dark: darken('#388E3C', 0.15), contrastText: '#ffffff' }, // Deeper green
     aboutAccent: { main: '#F57C00', light: lighten('#F57C00', 0.2), dark: darken('#F57C00', 0.15), contrastText: '#ffffff' }, // Deeper orange
     resultsAccent: { main: '#00796B', light: lighten('#00796B', 0.2), dark: darken('#00796B', 0.15), contrastText: '#ffffff' }, // Deeper teal

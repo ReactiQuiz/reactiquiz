@@ -22,8 +22,6 @@ const LoginPage = React.lazy(() => import('../pages/LoginPage'));
 const RegisterPage = React.lazy(() => import('../pages/RegisterPage'));
 const ResultsPage = React.lazy(() => import('../pages/ResultsPage'));
 const QuizPage = React.lazy(() => import('../pages/QuizPage'));
-const FriendsPage = React.lazy(() => import('../pages/FriendsPage'));
-const ChallengesPage = React.lazy(() => import('../pages/ChallengesPage'));
 const AICenterPage = React.lazy(() => import('../pages/AICenterPage'));
 const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
 const AboutPage = React.lazy(() => import('../pages/AboutPage'));
@@ -58,8 +56,6 @@ function AppRoutes({ onOpenChangePasswordModal }) {
         <Route path="/account" element={<ProtectedRoute><AccountPage onOpenChangePasswordModal={onOpenChangePasswordModal} /></ProtectedRoute>} />
         <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
         <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-        <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
-        <Route path="/challenges" element={<ProtectedRoute><ChallengesPage /></ProtectedRoute>} />
         <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
         <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
         <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
