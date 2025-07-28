@@ -1,52 +1,25 @@
 // src/App.js
 import { useState } from 'react';
-import { BrowserRouter as Router, useLocation } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, Box, Toolbar, CircularProgress } from '@mui/material';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider, CssBaseline, Box, Toolbar } from '@mui/material';
 import { darkTheme } from './theme';
 import AppDrawer from './components/core/AppDrawer';
 import Footer from './components/core/Footer';
 import NavBar from './components/core/Navbar';
-import AppRoutes from './components/AppRoutes';
+import AppRoutes from './components/AppRoutes'; // Corrected import path
 import ChangePasswordModal from './components/auth/ChangePasswordModal';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-function AppContent() {
+// This is the main layout component. It's now much simpler.
+function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const location = useLocation();
-  const { currentUser, isLoadingAuth } = useAuth();
-
   const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
-
-  // Check for auth pages to implement a different layout
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-  // Homepage check for other layout decisions
-  const isHomePage = location.pathname === '/' || location.pathname === '/reactiquiz/';
+  const { currentUser } = useAuth();
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
   const handleOpenChangePasswordModal = () => setChangePasswordModalOpen(true);
   const handleCloseChangePasswordModal = () => setChangePasswordModalOpen(false);
 
-  if (isLoadingAuth) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  // If it's an auth page, render only the routes within a full-height box
-  if (isAuthPage) {
-    return (
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Box sx={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column' }}>
-          <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
-        </Box>
-      </ThemeProvider>
-    );
-  }
-
-  // Default layout for all other pages
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -54,32 +27,33 @@ function AppContent() {
         <NavBar
           onIconButtonClick={handleDrawerToggle}
           onOpenChangePasswordModal={handleOpenChangePasswordModal}
-          showMenuIcon={!isHomePage}
-          forceLoginButton={isHomePage && !currentUser}
         />
-        <Toolbar />
+        <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />
         <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-          {!isHomePage && <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />}
+          {/* A Toolbar spacer is often needed to push content below the fixed AppBar */}
+          <Toolbar /> 
+          {/* AppRoutes will now handle all the complex rendering logic */}
           <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
         </Box>
         <Footer />
       </Box>
+      {/* The password modal is tied to the layout as it can be opened from the navbar */}
       {currentUser && (
         <ChangePasswordModal
           open={changePasswordModalOpen}
           onClose={handleCloseChangePasswordModal}
-          currentUser={currentUser}
         />
       )}
     </ThemeProvider>
   );
 }
 
+// The main App function now just sets up the providers and the main layout.
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <AppLayout />
       </AuthProvider>
     </Router>
   );
