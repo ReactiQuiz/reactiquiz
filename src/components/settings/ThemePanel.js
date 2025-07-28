@@ -1,62 +1,40 @@
-// src/pages/SettingsPage.js
+// src/components/settings/ThemePanel.js
 import React from 'react';
-import { Box, Grid, List, ListItem, ListItemButton, ListItemText, Typography, useTheme } from '@mui/material';
-import PaletteIcon from '@mui/icons-material/Palette'; // Icon for Appearance
-import ThemePanel from '../components/settings/ThemePanel';
+import {
+  Paper, Typography, Box, Divider, Switch, useTheme
+} from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4'; // Dark mode icon
+import Brightness7Icon from '@mui/icons-material/Brightness7'; // Light mode icon
+import { useThemeContext } from '../../contexts/ThemeContext';
 
-// In the future, you can add more settings panels and corresponding sidebar items
-const settingsPanels = [
-  { id: 'theme', label: 'Appearance', icon: <PaletteIcon />, component: <ThemePanel /> },
-  // { id: 'account', label: 'Account', icon: <AccountCircleIcon />, component: <AccountPanel /> },
-];
-
-function SettingsPage() {
+function ThemePanel() {
   const theme = useTheme();
-  // For now, we only have one panel, so it's always selected.
-  // In the future, you would use useState here to manage the active panel.
-  const activePanelId = 'theme'; 
+  const { themeMode, toggleTheme } = useThemeContext();
+  const isDark = themeMode === 'dark';
 
   return (
-    <Box sx={{ width: '100%', p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto' }}>
-      <Typography variant="h4" sx={{ mb: 3, fontWeight: 700 }}>
-        Project Settings
-      </Typography>
-      <Grid container spacing={{ xs: 2, md: 4 }}>
-        {/* === Left Column (Sidebar Navigation) === */}
-        <Grid item xs={12} md={4} lg={3}>
-          <Typography variant="h6" sx={{ px: 2, pb: 1, fontWeight: 600 }}>
-            General
-          </Typography>
-          <List>
-            {settingsPanels.map((panel) => (
-              <ListItem key={panel.id} disablePadding>
-                <ListItemButton
-                  selected={activePanelId === panel.id}
-                  sx={{
-                    borderRadius: 2,
-                    '&.Mui-selected': {
-                      backgroundColor: theme.palette.action.selected,
-                      '&:hover': {
-                        backgroundColor: theme.palette.action.hover,
-                      }
-                    }
-                  }}
-                >
-                  {panel.icon && <Box sx={{ mr: 1.5, display: 'flex', alignItems: 'center' }}>{panel.icon}</Box>}
-                  <ListItemText primary={panel.label} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-
-        {/* === Right Column (Content Area) === */}
-        <Grid item xs={12} md={8} lg={9}>
-          {settingsPanels.find(panel => panel.id === activePanelId)?.component}
-        </Grid>
-      </Grid>
-    </Box>
+    <Paper sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 2 }}>
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>Theme</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Customize the appearance of ReactiQuiz.
+        </Typography>
+      </Box>
+      <Divider />
+      <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography>Appearance</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Brightness7Icon sx={{ color: isDark ? 'text.secondary' : 'primary.main' }} />
+          <Switch
+            checked={isDark}
+            onChange={toggleTheme}
+            color="primary"
+          />
+          <Brightness4Icon sx={{ color: isDark ? 'primary.main' : 'text.secondary' }} />
+        </Box>
+      </Box>
+    </Paper>
   );
 }
 
-export default SettingsPage;
+export default ThemePanel;
