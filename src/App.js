@@ -1,8 +1,8 @@
 // src/App.js
 import { useState } from 'react';
-import { BrowserRouter } from 'react-router-dom'; // Use BrowserRouter
-import { ThemeProvider, CssBaseline, Box, Toolbar } from '@mui/material';
-import { darkTheme } from './theme';
+import { BrowserRouter } from 'react-router-dom';
+import { CssBaseline, Box, Toolbar } from '@mui/material';
+import { AppThemeProvider } from './contexts/ThemeContext'; // <-- Import the new provider
 import AppDrawer from './components/core/AppDrawer';
 import Footer from './components/core/Footer';
 import NavBar from './components/core/Navbar';
@@ -20,36 +20,36 @@ function AppLayout() {
   const handleCloseChangePasswordModal = () => setChangePasswordModalOpen(false);
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    // The AppThemeProvider now handles providing the correct theme
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <NavBar
-          onIconButtonClick={handleDrawerToggle}
-          onOpenChangePasswordModal={handleOpenChangePasswordModal}
-        />
-        <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />
-        <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-          <Toolbar /> 
-          <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
-        </Box>
-        <Footer />
+      <NavBar
+        onIconButtonClick={handleDrawerToggle}
+        onOpenChangePasswordModal={handleOpenChangePasswordModal}
+      />
+      <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />
+      <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Toolbar /> 
+        <AppRoutes onOpenChangePasswordModal={handleOpenChangePasswordModal} />
       </Box>
+      <Footer />
       {currentUser && (
         <ChangePasswordModal
           open={changePasswordModalOpen}
           onClose={handleCloseChangePasswordModal}
         />
       )}
-    </ThemeProvider>
+    </Box>
   );
 }
 
 function App() {
   return (
-    // Use BrowserRouter directly
     <BrowserRouter>
       <AuthProvider>
-        <AppLayout />
+        <AppThemeProvider> {/* <-- Wrap the layout with the new provider */}
+          <AppLayout />
+        </AppThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   );

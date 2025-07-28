@@ -27,6 +27,7 @@ const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
 const AboutPage = React.lazy(() => import('../pages/AboutPage'));
 const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
+const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 
 function AppRoutes({ onOpenChangePasswordModal }) {
   const { currentUser, isLoadingAuth } = useAuth();
@@ -60,6 +61,8 @@ function AppRoutes({ onOpenChangePasswordModal }) {
         <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
         <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
 
+        {/* Settings Route */}
+        <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} /> 
         {/* Fallback Route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

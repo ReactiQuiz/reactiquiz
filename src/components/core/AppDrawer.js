@@ -16,6 +16,7 @@ import PollIcon from '@mui/icons-material/Poll';         // For Results
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InfoIcon from '@mui/icons-material/Info';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const drawerWidth = 250;
 
@@ -30,6 +31,7 @@ function AppDrawer({ open, onClose }) {
     { type: 'divider' },
     { text: 'AI Center', icon: <SmartToyIcon sx={{ color: theme.palette.aiCenterAccent?.main || theme.palette.info.main }} />, path: '/ai-center', color: theme.palette.aiCenterAccent?.main || theme.palette.info.main },
     { text: 'My Account', icon: <AccountCircleIcon sx={{ color: theme.palette.accountAccent?.main || theme.palette.success.main }} />, path: '/account', color: theme.palette.accountAccent?.main || theme.palette.success.main },
+    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
     { text: 'About Us', icon: <InfoIcon sx={{ color: theme.palette.aboutAccent?.main || theme.palette.warning.main }} />, path: '/about', color: theme.palette.aboutAccent?.main || theme.palette.warning.main },
   ];
 
