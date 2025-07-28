@@ -1,4 +1,4 @@
-// src/components/ChangeDetailsModal.js
+// src/components/auth/ChangeDetailsModal.js
 import { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField,
@@ -10,13 +10,13 @@ import apiClient from '../../api/axiosInstance';
 
 const CLASS_OPTIONS = ['6', '7', '8', '9', '10', '11', '12'];
 
-function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
+// --- START OF FIX: Change prop from 'setCurrentUser' to 'onUpdateSuccess' ---
+function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
+// --- END OF FIX ---
   const theme = useTheme();
   const ACCENT_COLOR = theme.palette.accountAccent?.main || theme.palette.primary.main;
 
   const [formData, setFormData] = useState({
-    identifier: '', // Will be display-only
-    email: '',      // Will be display-only
     address: '',
     class: ''
   });
@@ -27,10 +27,8 @@ function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
   useEffect(() => {
     if (currentUser && open) {
       setFormData({
-        identifier: currentUser.name || '',
-        email: currentUser.email || '',
         address: currentUser.address || '',
-        class: String(currentUser.class || '') // Ensure class is a string for Select
+        class: String(currentUser.class || '')
       });
       setError('');
       setSuccessMessage('');
@@ -40,31 +38,32 @@ function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
-    setSuccessMessage('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
     setSuccessMessage('');
-    // ... (validation is correct)
+
+    if (!formData.address.trim() || !formData.class) {
+        setError("Address and Class are required.");
+        return;
+    }
 
     setIsSubmitting(true);
     try {
-      // --- THIS IS THE FIX ---
-      // The axios interceptor automatically adds the auth token
       await apiClient.put('/api/users/update-details', {
         address: formData.address.trim(),
         class: formData.class,
       });
-      // --- END OF FIX ---
-
       setSuccessMessage('Details updated successfully!');
-      // Update the user in the frontend state
-      if (setCurrentUser) {
-        setCurrentUser(prev => ({ ...prev, address: formData.address, class: formData.class }));
+      
+      // --- START OF FIX: Call the new prop on success ---
+      if (onUpdateSuccess) {
+        onUpdateSuccess({ address: formData.address, class: formData.class });
       }
+      // --- END OF FIX ---
+      
       setTimeout(onClose, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to update details.');
@@ -73,17 +72,8 @@ function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
     }
   };
 
-  const handleClose = () => {
-    setError('');
-    setSuccessMessage('');
-    // Reset formData to current user's details when closing without submitting
-    // or rely on useEffect to reset on next open.
-    // For now, just closing.
-    onClose();
-  };
-
   return (
-    <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { minWidth: { xs: '90%', sm: '450px' } } }}>
+    <Dialog open={open} onClose={onClose} PaperProps={{ sx: { minWidth: { xs: '90%', sm: '450px' } } }}>
       <DialogTitle sx={{ backgroundColor: ACCENT_COLOR, color: theme.palette.getContrastText(ACCENT_COLOR), pb: 1.5, pt: 2, textAlign: 'center' }}>
         <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <EditNoteIcon sx={{mr: 1}}/>
@@ -92,28 +82,23 @@ function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
       </DialogTitle>
       <DialogContent sx={{ pt: '20px !important' }}>
         <Typography variant="body2" color="text.secondary" sx={{mb:1}}>
-            Update your address and class. Username and email cannot be changed here.
+            Update your address and class. Username and email cannot be changed.
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth
-            id="identifier-display"
-            label="Username/Identifier"
-            name="identifier"
-            value={formData.identifier}
-            disabled // Make this field read-only
-            InputLabelProps={{ shrink: true }} // Ensures label doesn't overlap pre-filled value
+            label="Username"
+            value={currentUser?.name || ''}
+            disabled
+            InputLabelProps={{ shrink: true }}
           />
           <TextField
             margin="normal"
             fullWidth
-            id="email-display"
             label="Email Address"
-            name="email"
-            type="email"
-            value={formData.email}
-            disabled // Make this field read-only
+            value={currentUser?.email || ''}
+            disabled
             InputLabelProps={{ shrink: true }}
           />
           <TextField
@@ -129,7 +114,7 @@ function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
             value={formData.address}
             onChange={handleInputChange}
             error={!!error && error.toLowerCase().includes("address")}
-            InputLabelProps={{ shrink: !!formData.address }}
+            InputLabelProps={{ shrink: true }}
           />
           <FormControl fullWidth margin="normal" required error={!!error && error.toLowerCase().includes("class")}>
             <InputLabel id="class-select-label">Class</InputLabel>
@@ -148,24 +133,18 @@ function ChangeDetailsModal({ open, onClose, currentUser, setCurrentUser }) {
                 </MenuItem>
               ))}
             </Select>
-             {!!error && error.toLowerCase().includes("class") && <Typography color="error" variant="caption">{error}</Typography>}
           </FormControl>
-
-          {error && (!error.toLowerCase().includes("class") && !error.toLowerCase().includes("address")) && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+          {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
           {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
         </Box>
       </DialogContent>
       <DialogActions sx={{ p: '16px 24px', justifyContent: 'space-between' }}>
-        <Button onClick={handleClose} sx={{ color: theme.palette.text.secondary }}>Cancel</Button>
+        <Button onClick={onClose} sx={{ color: 'text.secondary' }}>Cancel</Button>
         <Button
           onClick={handleSubmit}
           variant="contained"
           disabled={isSubmitting}
-          sx={{
-            backgroundColor: ACCENT_COLOR,
-            color: theme.palette.getContrastText(ACCENT_COLOR),
-            '&:hover': { backgroundColor: darken(ACCENT_COLOR, 0.15) }
-          }}
+          sx={{ backgroundColor: ACCENT_COLOR, '&:hover': { backgroundColor: darken(ACCENT_COLOR, 0.15) } }}
           startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : null}
         >
           {isSubmitting ? 'Saving...' : 'Save Changes'}

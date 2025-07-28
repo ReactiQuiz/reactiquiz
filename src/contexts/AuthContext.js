@@ -12,38 +12,31 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
-  // This effect runs on initial app load to restore the session
   useEffect(() => {
     const token = localStorage.getItem('reactiquizToken');
     if (token) {
-      // We have a token, now verify it with the backend
       apiClient.get('/api/users/me')
         .then(response => {
           setCurrentUser(response.data);
         })
         .catch(() => {
-          // Token is invalid, clear it
           localStorage.removeItem('reactiquizToken');
-          localStorage.removeItem('reactiquizUser');
           setCurrentUser(null);
         })
         .finally(() => {
           setIsLoadingAuth(false);
         });
     } else {
-      setIsLoadingAuth(false); // No token, no session
+      setIsLoadingAuth(false);
     }
   }, []);
 
   const signIn = async (username, password) => {
     const response = await apiClient.post('/api/users/login', { username, password });
     const { token, user } = response.data;
-    
     localStorage.setItem('reactiquizToken', token);
-    localStorage.setItem('reactiquizUser', JSON.stringify(user));
     setCurrentUser(user);
-    
-    return response; // Return the full response for the page to use
+    return response;
   };
   
   const signUp = async (userData) => {
@@ -52,11 +45,21 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = useCallback(() => {
     localStorage.removeItem('reactiquizToken');
-    localStorage.removeItem('reactiquizUser');
     setCurrentUser(null);
-    // The axios interceptor will handle redirecting if needed, or we can do it here
     window.location.href = '/login';
   }, []);
+
+  // --- START OF FIX: Create a controlled update function ---
+  const updateCurrentUserDetails = useCallback((newDetails) => {
+    setCurrentUser(prevUser => {
+      if (!prevUser) return null;
+      const updatedUser = { ...prevUser, ...newDetails };
+      // Also update the user data in localStorage to persist across reloads
+      localStorage.setItem('reactiquizUser', JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  }, []);
+  // --- END OF FIX ---
 
   const value = {
     currentUser,
@@ -64,6 +67,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signUp,
     signOut,
+    updateCurrentUserDetails, // <-- Expose the new function
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

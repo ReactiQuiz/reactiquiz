@@ -11,7 +11,9 @@ import UserActivityChart from '../components/account/UserActivityChart';
 
 function AccountPage({ onOpenChangePasswordModal }) {
   const theme = useTheme();
-  const { currentUser, signOut, setCurrentUser } = useAuth(); // Get signOut and setCurrentUser
+  // --- START OF FIX: Use the correct function from the context ---
+  const { currentUser, signOut, updateCurrentUserDetails } = useAuth();
+  // --- END OF FIX ---
   const ACCENT_COLOR = theme.palette.accountAccent?.main || theme.palette.primary.main;
 
   const {
@@ -23,16 +25,13 @@ function AccountPage({ onOpenChangePasswordModal }) {
     handleCloseChangeDetailsModal,
   } = useAccount();
 
-  // --- START OF FIX: This robust check prevents the blank page error ---
   if (!currentUser) {
-    // This is a fallback. ProtectedRoute should handle it, but this makes the component resilient.
     return (
       <Box sx={{ p: 3, textAlign: 'center', height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <CircularProgress />
       </Box>
     );
   }
-  // --- END OF FIX ---
 
   return (
     <>
@@ -40,10 +39,9 @@ function AccountPage({ onOpenChangePasswordModal }) {
         width: '100%',
         p: { xs: 1, sm: 2, md: 3 },
         margin: '0 auto',
-        maxWidth: '1200px', // Set a max width for the content area
+        maxWidth: '1200px',
       }}>
         <Grid container spacing={{ xs: 2, md: 3 }}>
-          {/* === Left Column (Profile Info Card) === */}
           <Grid item xs={12} md={4} lg={3}>
             <UserProfileCard
               currentUser={currentUser}
@@ -55,8 +53,6 @@ function AccountPage({ onOpenChangePasswordModal }) {
               accentColor={ACCENT_COLOR}
             />
           </Grid>
-
-          {/* === Right Column (Account Management & Quiz Activity) === */}
           <Grid item xs={12} md={8} lg={9}>
             <Stack spacing={{ xs: 2, md: 3 }} width={'100%'}>
               <AccountManagementActions
@@ -89,7 +85,9 @@ function AccountPage({ onOpenChangePasswordModal }) {
         open={changeDetailsModalOpen}
         onClose={handleCloseChangeDetailsModal}
         currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
+        // --- START OF FIX: Pass the correct prop to the modal ---
+        onUpdateSuccess={updateCurrentUserDetails}
+        // --- END OF FIX ---
       />
     </>
   );
