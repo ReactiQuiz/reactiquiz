@@ -1,40 +1,29 @@
 // src/pages/FlashcardPage.js
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Typography, Button, CircularProgress, Alert, Stack } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-
-import { useFlashcards } from '../hooks/useFlashcards'; // <-- Import the new hook
+import { useFlashcards } from '../hooks/useFlashcards';
 import FlashcardViewer from '../components/flashcards/FlashcardViewer';
-import { subjectAccentColors as themeSubjectAccentColors } from '../theme';
+// --- START OF FIX: Import the new hook ---
+import { useSubjectColors } from '../contexts/SubjectColorsContext';
+// --- END OF FIX ---
 
 function FlashcardPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const theme = useTheme();
-
-  // Get all state and logic from the custom hook
+  
   const {
-    topicId,
-    allQuestions,
-    flashcards,
-    currentCardIndex,
-    isLoading,
-    error,
-    currentCardData,
-    handleNextCard,
-    handlePreviousCard,
-    handleShuffleCards,
+    topicId, flashcards, currentCardIndex, isLoading, error,
+    handleNextCard, handlePreviousCard, handleShuffleCards,
   } = useFlashcards();
 
-  // Get presentation-related data from location state
+  // --- START OF FIX: Get color dynamically from context ---
+  const { getColor } = useSubjectColors();
   const pageState = location.state || {};
   const topicNameFromState = pageState.topicName || topicId.replace(/-/g, ' ');
   const subject = pageState.subject || 'default';
-  const accentColor = pageState.accentColor || themeSubjectAccentColors[subject.toLowerCase()] || theme.palette.primary.main;
-
-
-  // --- Render Logic ---
+  const accentColor = getColor(subject);
+  // --- END OF FIX ---
 
   if (isLoading) {
     return (
@@ -45,7 +34,7 @@ function FlashcardPage() {
     );
   }
 
-  if (error && allQuestions.length === 0) {
+  if (error) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
         <Alert severity="error">{error}</Alert>
@@ -56,7 +45,7 @@ function FlashcardPage() {
     );
   }
 
-  if (!isLoading && allQuestions.length === 0 && !error) {
+  if (flashcards.length === 0) {
     return (
       <Box sx={{ p: 3, maxWidth: '900px', margin: 'auto', textAlign: 'center' }}>
         <Typography variant="h5">No Flashcards Available</Typography>
@@ -78,28 +67,21 @@ function FlashcardPage() {
         Flashcards: {topicNameFromState}
       </Typography>
 
-      {error && flashcards.length > 0 &&
-        <Alert severity="warning" sx={{ mb: 2, width: '100%' }}>{error}</Alert>
-      }
+      <FlashcardViewer
+        currentCard={flashcards[currentCardIndex]}
+        onNextCard={handleNextCard}
+        onPreviousCard={handlePreviousCard}
+        accentColor={accentColor}
+        totalCards={flashcards.length}
+        currentIndex={currentCardIndex}
+      />
 
-      {currentCardData && (
-        <FlashcardViewer
-          currentCard={currentCardData}
-          onNextCard={handleNextCard}
-          onPreviousCard={handlePreviousCard}
-          accentColor={accentColor}
-          totalCards={flashcards.length}
-          currentIndex={currentCardIndex}
-        />
-      )}
-
-      {allQuestions.length > 1 && (
+      {flashcards.length > 1 && (
         <Button
           variant="text"
           onClick={handleShuffleCards}
           startIcon={<ShuffleIcon />}
           sx={{ color: accentColor, mt: 0.5, mb: 1.5 }}
-          disabled={isLoading}
         >
           Shuffle Cards
         </Button>
@@ -109,13 +91,9 @@ function FlashcardPage() {
         <Button
           variant="outlined"
           onClick={() => navigate(subject ? `/subjects/${subject.toLowerCase()}` : '/subjects')}
-          sx={{
-            borderColor: accentColor,
-            color: accentColor,
-            width: { xs: '100%', sm: 'auto' }
-          }}
+          sx={{ borderColor: accentColor, color: accentColor, width: { xs: '100%', sm: 'auto' } }}
         >
-          Back to {subject && subject !== 'default' ? subject.charAt(0).toUpperCase() + subject.slice(1) : 'Subject'} Topics
+          Back to Topics
         </Button>
       </Stack>
     </Box>

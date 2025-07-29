@@ -48,5 +48,15 @@
     "subjectKey": "gk",
     "accentColorDark": "#FFEB3B",
     "accentColorLight": "#FBC02D"
+  },
+  {
+    "id": "general",
+    "name": "General",
+    "description": "General topics for study.",
+    "iconName": "SchoolIcon",
+    "displayOrder": 7,
+    "subjectKey": "general",
+    "accentColorDark": "#FFFFFF",
+    "accentColorLight": "#000000"
   }
 ]
