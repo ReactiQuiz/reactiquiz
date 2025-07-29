@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, Box, Toolbar } from '@mui/material';
-import { AppThemeProvider } from './contexts/ThemeContext'; // <-- Import the new provider
+import { AppThemeProvider } from './contexts/ThemeContext';
+import { SubjectColorsProvider } from './contexts/SubjectColorsContext';
 import AppDrawer from './components/core/AppDrawer';
 import Footer from './components/core/Footer';
 import NavBar from './components/core/Navbar';
@@ -20,7 +21,6 @@ function AppLayout() {
   const handleCloseChangePasswordModal = () => setChangePasswordModalOpen(false);
 
   return (
-    // The AppThemeProvider now handles providing the correct theme
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <CssBaseline />
       <NavBar
@@ -47,8 +47,10 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppThemeProvider> {/* <-- Wrap the layout with the new provider */}
-          <AppLayout />
+        <AppThemeProvider>
+          <SubjectColorsProvider>
+            <AppLayout />
+          </SubjectColorsProvider>
         </AppThemeProvider>
       </AuthProvider>
     </BrowserRouter>

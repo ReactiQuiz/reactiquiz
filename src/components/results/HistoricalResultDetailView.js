@@ -1,20 +1,20 @@
 // src/components/results/HistoricalResultDetailView.js
 import React from 'react';
 import { Box, Button, Paper, Alert } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import QuizResultSummary from './QuizResultSummary';
 import QuestionBreakdown from './QuestionBreakdown';
+import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 
-function HistoricalResultDetailView({ detailData }) {
-    const navigate = useNavigate();
+function HistoricalResultDetailView({ detailData, navigate }) {
+    const { getColor } = useSubjectColors();
     
-    // Check if data is still loading or missing
     if (!detailData || !detailData.result) {
         return <Alert severity="warning">Result data is not available.</Alert>;
     }
 
     const { result, detailedQuestions } = detailData;
+    const accentColor = getColor(result.subject);
 
     return (
         <Paper elevation={0} sx={{backgroundColor: 'transparent'}}>
@@ -27,12 +27,14 @@ function HistoricalResultDetailView({ detailData }) {
             </Button>
             
             <QuizResultSummary
-                quizResult={result} // Pass the full result object
+                quizResult={result}
                 quizTitle="Quiz Details"
+                accentColor={accentColor}
             />
             
             <QuestionBreakdown
-                detailedQuestions={detailedQuestions} // Pass the processed questions
+                detailedQuestions={detailedQuestions}
+                accentColor={accentColor}
             />
         </Paper>
     );

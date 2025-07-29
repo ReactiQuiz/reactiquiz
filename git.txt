@@ -1,0 +1,19 @@
+# Step 1: Make sure your `develop` branch has all the latest changes committed
+git checkout develop
+git add .
+git commit -m "feat: Implement dynamic theme system and remove General subject"
+
+# Step 2: Push your final changes to the remote `develop` branch
+git push origin develop
+
+# Step 3: Switch to your production branch (`master`)
+git checkout master
+
+# Step 4: Make sure your local `master` is up-to-date with the remote version
+git pull origin master
+
+# Step 5: Merge all the changes from `develop` into `master`
+git merge develop
+
+# Step 6: Push the merged `master` branch to the remote. This will trigger the Vercel production deployment.
+git push origin master

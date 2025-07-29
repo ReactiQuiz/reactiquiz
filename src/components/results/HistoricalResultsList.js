@@ -5,31 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoricalResultItem from './HistoricalResultItem';
 
-function HistoricalResultsList({ results, isLoading, accentColor }) {
+function HistoricalResultsList({ results }) {
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return (
-      <Grid container spacing={{ xs:"0%", sx:"1%", md:"1%", lg:"1%", xl:"1%" }}>
-        {Array.from(new Array(4)).map((_, index) => (
-          <Grid item key={index} width={{ xs: "100%", sm: "49.5%", md: "32.66%", lg: "24.25%", xl: "19.2%" }}>
-            <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2, width: '100%' }} />
-          </Grid>
-        ))}
-      </Grid>
-    );
+  // isLoading state is now handled by the parent ResultsPage
+  if (!results) {
+    return null; // Should be handled by parent's isLoading check
   }
-
-  if (!results || results.length === 0) {
+  
+  if (results.length === 0) {
     return (
-      <Paper elevation={2} sx={{ p: 3, textAlign: 'center', mt: 4, borderTop: `5px solid ${accentColor}` }}>
+      <Paper elevation={2} sx={{ p: 3, textAlign: 'center', mt: 4 }}>
         <Typography variant="h6" gutterBottom>No Saved Results Found</Typography>
         <Typography sx={{ mb: 2 }}>You haven't completed any quizzes yet.</Typography>
         <Button
           variant="contained"
           startIcon={<HomeIcon />}
           onClick={() => navigate('/subjects')}
-          sx={{ backgroundColor: accentColor }}
         >
           Explore Quizzes
         </Button>
@@ -38,7 +30,7 @@ function HistoricalResultsList({ results, isLoading, accentColor }) {
   }
 
   return (
-    <Grid container width="100%" spacing={{ xs:"0%", sm:"1%", md:"1%", lg:"1%", xl:"1%" }}>
+   <Grid container width="100%" spacing={{ xs:"0%", sm:"1%", md:"1%", lg:"1%", xl:"1%" }}>
       {results.map((result) => (
         <Grid item key={result.id} mb="1%" width={{ xs: "100%", sm: "50%", md: "33.333333%", lg: "25%", xl: "20%" }}>
           <HistoricalResultItem result={result} />

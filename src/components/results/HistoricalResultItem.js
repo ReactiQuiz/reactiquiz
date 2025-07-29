@@ -1,15 +1,16 @@
 // src/components/results/HistoricalResultItem.js
 import { Paper, Box, Typography, Chip, useTheme, alpha, Stack, LinearProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // <-- Import useNavigate
-import { subjectAccentColors } from '../../theme';
+import { useNavigate } from 'react-router-dom';
+import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 
 function HistoricalResultItem({ result }) {
   const theme = useTheme();
-  const navigate = useNavigate(); // <-- Initialize the hook
+  const navigate = useNavigate();
+  const { getColor } = useSubjectColors();
 
   if (!result) return null;
 
-  const itemAccentColor = subjectAccentColors[result.subject?.toLowerCase()] || theme.palette.grey[700];
+  const itemAccentColor = getColor(result.subject);
 
   const getVibrantChipStyles = (percentage) => {
     if (percentage >= 70) return { backgroundColor: theme.palette.success.main };
@@ -17,37 +18,33 @@ function HistoricalResultItem({ result }) {
     return { backgroundColor: theme.palette.error.main };
   };
   
-  // --- START OF FIX: Navigation Handler ---
   const handleResultClick = () => {
     navigate(`/results/${result.id}`);
   };
-  // --- END OF FIX ---
 
   return (
     <Paper
-      // --- START OF FIX: Add onClick and cursor style ---
       onClick={handleResultClick}
       sx={{
         p: 2,
         height: '100%',
-        width: '100%', // Ensure it fills the grid item
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 2,
         borderLeft: `5px solid ${itemAccentColor}`,
-        cursor: 'pointer', // Make it obvious it's clickable
+        cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
         '&:hover': {
           transform: 'translateY(-4px)',
           boxShadow: theme.shadows[6],
         },
       }}
-      // --- END OF FIX ---
       elevation={3}
     >
       <Box sx={{ flexGrow: 1, mb: 1.5 }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: itemAccentColor, lineHeight: 1.3, mb: 1 }}>
-          {result.topicId.replace(/-/g, ' ')}
+        <Typography variant="h6" sx={{ fontWeight: 600, color: itemAccentColor, lineHeight: 1.3, mb: 1, textTransform: 'capitalize' }}>
+          {result.topicName || result.topicId.replace(/-/g, ' ')}
         </Typography>
         <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
           {result.class && <Chip label={`Class ${result.class}`} size="small" variant="outlined" />}

@@ -9,12 +9,11 @@ const TOPICS_JSON_PATH = path.join(__dirname, 'topics.json');
 const QUESTIONS_JSON_PATH = path.join(__dirname, 'questions.json');
 
 async function processInChunks(statements, message) {
-  const chunkSize = 100;
+  const chunkSize = 500;
   if (statements.length === 0) {
     console.log(`✅ No ${message} to migrate.`);
     return;
   }
-
   for (let i = 0; i < statements.length; i += chunkSize) {
     const chunk = statements.slice(i, i + chunkSize);
     console.log(`   -> Migrating ${message}: ${i + 1} - ${i + chunk.length} of ${statements.length}...`);
@@ -41,21 +40,19 @@ async function migrate() {
   try {
     console.log("--- Starting Static Data Migration from JSON to Turso ---");
 
-    // 1. Migrate Subjects
     const subjectsRaw = fs.readFileSync(SUBJECTS_JSON_PATH, 'utf-8');
     const subjects = JSON.parse(subjectsRaw);
     const subjectKeyToIdMap = new Map();
     subjects.forEach(s => subjectKeyToIdMap.set(s.subjectKey, s.id));
 
     const subjectStatements = subjects.map(s => ({
-        sql: 'INSERT OR REPLACE INTO subjects (id, name, description, accentColor, iconName, displayOrder, subjectKey) VALUES (?, ?, ?, ?, ?, ?, ?);',
+        sql: 'INSERT OR REPLACE INTO subjects (id, name, description, iconName, displayOrder, subjectKey, accentColorDark, accentColorLight) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
         args: [
-            s.id, s.name, s.description ?? '', s.accentColor ?? '#cccccc', s.iconName ?? 'DefaultIcon', s.displayOrder, s.subjectKey
+            s.id, s.name, s.description ?? '', s.iconName ?? 'DefaultIcon', s.displayOrder, s.subjectKey, s.accentColorDark, s.accentColorLight
         ]
     }));
     await processInChunks(subjectStatements, "subjects");
 
-    // 2. Migrate Topics
     const topicsRaw = fs.readFileSync(TOPICS_JSON_PATH, 'utf-8');
     const topics = JSON.parse(topicsRaw);
     const topicStatements = topics.map(t => {
@@ -66,28 +63,16 @@ async function migrate() {
         }
         return {
             sql: 'INSERT OR REPLACE INTO quiz_topics (id, name, description, class, genre, subject_id) VALUES (?, ?, ?, ?, ?, ?);',
-            // --- START OF FIX: Provide default values for optional fields ---
-            args: [
-                t.id, 
-                t.name, 
-                t.description ?? '', 
-                t.class ?? '', 
-                t.genre ?? '', 
-                subjectId
-            ]
-            // --- END OF FIX ---
+            args: [ t.id, t.name, t.description ?? '', t.class ?? '', t.genre ?? '', subjectId ]
         };
     }).filter(Boolean);
     await processInChunks(topicStatements, "topics");
 
-    // 3. Migrate Questions
     const questionsRaw = fs.readFileSync(QUESTIONS_JSON_PATH, 'utf-8');
     const questions = JSON.parse(questionsRaw);
     const questionStatements = questions.map(q => ({
         sql: 'INSERT OR REPLACE INTO questions (id, topicId, text, options, correctOptionId, explanation, difficulty) VALUES (?, ?, ?, ?, ?, ?, ?);',
-        args: [
-            q.id, q.topicId, q.text, JSON.stringify(q.options), q.correctOptionId, q.explanation ?? '', q.difficulty
-        ]
+        args: [ q.id, q.topicId, q.text, JSON.stringify(q.options), q.correctOptionId, q.explanation ?? '', q.difficulty ]
     }));
     await processInChunks(questionStatements, "questions");
 

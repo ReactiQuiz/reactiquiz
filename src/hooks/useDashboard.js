@@ -6,7 +6,7 @@ import { alpha } from '@mui/material/styles';
 import apiClient from '../api/axiosInstance';
 import { generateDashboardPdfReport } from '../utils/reportGenerator';
 import { useAuth } from '../contexts/AuthContext';
-// --- TANSTACK QUERY ---
+import { useSubjectColors } from '../contexts/SubjectColorsContext';
 import { useQueries } from '@tanstack/react-query';
 
 const timeFrequencyOptions = [
@@ -34,6 +34,7 @@ const fetchAllTopics = async () => {
 export const useDashboard = () => {
   const theme = useTheme();
   const { currentUser } = useAuth();
+  const { getColor } = useSubjectColors();
 
   // --- UI State and Refs ---
   const [timeFrequency, setTimeFrequency] = useState(30);
@@ -90,8 +91,9 @@ export const useDashboard = () => {
         const percentages = results.map(r => r.percentage);
         subjectStats[keyLower] = {
           count: results.length,
-          average: Math.round(percentages.reduce((a, b) => a + b, 0) / percentages.length),
-          name: subj.name, color: subj.accentColor || theme.palette.grey[500]
+          average: Math.round(results.map(r => r.percentage).reduce((a, b) => a + b, 0) / results.length),
+          name: subj.name,
+          color: getColor(subj.subjectKey)
         };
       }
     });
