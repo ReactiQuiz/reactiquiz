@@ -1,71 +1,46 @@
 // src/components/topics/TopicCard.js
-import { Card, CardContent, Typography, Button, useTheme, alpha, Chip, Box, CardActions, Stack } from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School';
+import { Card, CardContent, Typography, CardActions, Button, Box, Stack, Chip, Divider, IconButton, Tooltip, useTheme } from '@mui/material';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import StyleIcon from '@mui/icons-material/Style';
-import PrintIcon from '@mui/icons-material/Print'; // <-- Import new icon
-import React from 'react'; // <-- Import React
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
-function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, accentColor }) { // <-- Add onPrintQuestions prop
+function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, accentColor }) {
   const theme = useTheme();
-  const { name, description, class: topicClass, genre: topicGenre } = topic;
-
-  const effectiveAccentColor = accentColor || theme.palette.primary.main;
-
-  const cardStyle = {
-    border: `1px solid ${alpha(effectiveAccentColor, 0.5)}`,
-    borderRadius: theme.shape.borderRadius * 2,
-    boxShadow: theme.shadows[2],
-    transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-    '&:hover': {
-      transform: 'translateY(-4px)',
-      boxShadow: theme.shadows[6],
-    },
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%'
-  };
 
   return (
-    <Card sx={cardStyle}>
-      <CardContent sx={{ p: 2, flexGrow: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1, flexWrap: 'wrap', gap: 0.5 }}>
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: effectiveAccentColor, flexGrow: 1, fontSize: '1.1rem' }}>
-            {name}
-          </Typography>
-          <Box sx={{display: 'flex', gap: 0.5, alignItems: 'center', flexWrap: 'wrap'}}>
-            {topicClass && <Chip label={`Class ${topicClass}`} size="small" sx={{ backgroundColor: alpha(theme.palette.info.dark, 0.3), color: theme.palette.info.light, fontSize: '0.7rem' }} />}
-            {topicGenre && <Chip label={topicGenre} size="small" sx={{ backgroundColor: alpha(theme.palette.success.dark, 0.2), color: theme.palette.success.light, fontSize: '0.7rem' }} />}
-          </Box>
-        </Box>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5, minHeight: '3.2em', fontSize: '0.85rem' }}>
-          {description}
+    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', borderTop: `4px solid ${accentColor}` }}>
+      <CardContent sx={{ flexGrow: 1, pb: 1 }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: accentColor, mb: 1 }}>
+          {topic.name}
+        </Typography>
+        <Stack direction="row" spacing={1} sx={{ mb: 1.5 }}>
+          {topic.class && <Chip label={`Class ${topic.class}`} size="small" />}
+          {topic.genre && <Chip label={topic.genre} size="small" variant="outlined" />}
+        </Stack>
+        <Typography variant="body2" color="text.secondary">
+          {topic.description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ p: 1.5, pt:0, alignSelf: 'stretch' }}>
-        <Stack direction="column" spacing={1} sx={{width: '100%'}}>
-            <Stack direction="row" spacing={1}>
-                {onStartQuiz && (
-                    <Button variant="outlined" onClick={onStartQuiz} fullWidth startIcon={<SchoolIcon />}
-                        sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, fontWeight: 'medium', py: 0.8, fontSize: '0.875rem', '&:hover': { backgroundColor: alpha(effectiveAccentColor, 0.1), borderColor: effectiveAccentColor } }}
-                    > Start Quiz </Button>
-                )}
-                {onStudyFlashcards && (
-                    <Button variant="outlined" onClick={onStudyFlashcards} fullWidth startIcon={<StyleIcon />}
-                        sx={{ borderColor: alpha(effectiveAccentColor, 0.7), color: alpha(effectiveAccentColor, 0.9), fontWeight: 'medium', py: 0.8, fontSize: '0.875rem', '&:hover': { backgroundColor: alpha(effectiveAccentColor, 0.05), borderColor: effectiveAccentColor } }}
-                    > Flashcards </Button>
-                )}
-            </Stack>
-            {/* New Button for Printing */}
-            {onPrintQuestions && (
-                <Button variant="outlined" onClick={onPrintQuestions} fullWidth startIcon={<PrintIcon />}
-                    sx={{ borderColor: alpha(theme.palette.grey[500], 0.5), color: theme.palette.text.secondary, fontWeight: 'medium', py: 0.8, fontSize: '0.875rem', '&:hover': { backgroundColor: alpha(theme.palette.grey[500], 0.1), borderColor: theme.palette.grey[500] } }}
-                > Print Questions </Button>
-            )}
-        </Stack>
+      <Divider />
+      <CardActions sx={{ justifyContent: 'space-around', p: 1 }}>
+        <Tooltip title="Start Quiz">
+          <IconButton color="primary" onClick={onStartQuiz} sx={{ color: accentColor }}>
+            <PlayCircleOutlineIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Study Flashcards">
+          <IconButton onClick={onStudyFlashcards} sx={{ color: accentColor }}>
+            <StyleIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Print Questions">
+          <IconButton onClick={onPrintQuestions} sx={{ color: accentColor }}>
+            <PictureAsPdfIcon />
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   );
 }
 
-export default React.memo(TopicCard);
+export default TopicCard;
