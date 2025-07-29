@@ -11,7 +11,7 @@ import { useSubjectColors } from '../contexts/SubjectColorsContext';
 function FlashcardPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const {
     topicId, flashcards, currentCardIndex, isLoading, error,
     handleNextCard, handlePreviousCard, handleShuffleCards,
@@ -62,7 +62,7 @@ function FlashcardPage() {
   }
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '700px', margin: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Typography variant="h4" gutterBottom sx={{ color: accentColor, fontWeight: 'bold', textAlign: 'center', mb: 2 }}>
         Flashcards: {topicNameFromState}
       </Typography>
