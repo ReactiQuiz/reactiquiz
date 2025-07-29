@@ -76,7 +76,7 @@ function SubjectTopicsPage() {
             {filteredTopics.map((topic) => (
               <Grid item key={topic.id} sx={{
                 display: 'flex',
-                width: { xs: '100%', sm: '49.5%', md: '24.5%', lg: '24.5%', xl: '24.5%' },
+                width: { xs: '100%', sm: '50%', md: '25%', lg: '25%', xl: '25%' },
                 mb: { xs: '0.5%', sm: '0.5%', md: '0.5%', lg: '0.5%', xl: '0.5%' }
               }}>
                 <TopicCard
