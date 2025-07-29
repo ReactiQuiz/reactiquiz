@@ -7,7 +7,7 @@ const QuantumDark = {
   surface: '#121212',
   primaryText: '#FAFAFA',
   secondaryText: '#B0B0B0',
-  border: 'rgba(255, 255, 255, 0.15)',
+  border: 'rgba(255, 255, 255, 0.30)',
   accentBlue: '#0070F3',
   accentGreen: '#50E3C2',
   accentPink: '#f48fb1',
