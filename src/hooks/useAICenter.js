@@ -1,5 +1,5 @@
 // src/hooks/useAICenter.js
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api/axiosInstance';
 
 export const useAICenter = () => {
@@ -8,7 +8,6 @@ export const useAICenter = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Add an initial greeting from the AI
     useEffect(() => {
         setMessages([
             {
@@ -31,7 +30,6 @@ export const useAICenter = () => {
         setError(null);
 
         try {
-            // We only need to send the history *before* the user's latest message
             const historyForApi = messages;
             const response = await apiClient.post('/api/ai/chat', {
                 history: historyForApi,
@@ -42,9 +40,22 @@ export const useAICenter = () => {
             setMessages(prev => [...prev, modelMessage]);
 
         } catch (err) {
-            const errorMessage = err.response?.data?.error || 'Sorry, something went wrong. Please try again.';
-            setError(errorMessage);
-            setMessages(prev => [...prev, { role: 'model', parts: [{ text: errorMessage }], isError: true }]);
+            // --- START OF FIX: Custom Error Message Handling ---
+            // Get the error message sent from our backend.
+            const backendError = err.response?.data?.error || 'Sorry, something went wrong. Please try again.';
+            
+            // Check if the backend error indicates an overload.
+            if (backendError.toLowerCase().includes('overloaded')) {
+                // If it is, set the error state to the specific message you requested.
+                const userFriendlyError = "The model is over-loaded. Please contact the admin or try again.";
+                setError(userFriendlyError);
+                setMessages(prev => [...prev, { role: 'model', parts: [{ text: userFriendlyError }], isError: true }]);
+            } else {
+                // For all other errors, use the message from the backend directly.
+                setError(backendError);
+                setMessages(prev => [...prev, { role: 'model', parts: [{ text: backendError }], isError: true }]);
+            }
+            // --- END OF FIX ---
         } finally {
             setIsLoading(false);
         }

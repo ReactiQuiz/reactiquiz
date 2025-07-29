@@ -24,9 +24,8 @@ router.post('/chat', verifyToken, async (req, res) => {
     const { history, message } = req.body;
     logApi('POST', '/api/ai/chat', `User: ${user.username}`);
 
-    let tx; // Declare transaction variable outside the try block
+    let tx;
     try {
-        // --- START OF FIX: USE TRANSACTION ---
         let userResults;
         tx = await turso.transaction("read");
         try {
@@ -38,9 +37,8 @@ router.post('/chat', verifyToken, async (req, res) => {
             await tx.commit();
         } catch (dbError) {
             await tx.rollback();
-            throw dbError; // Propagate the error to the outer catch block
+            throw dbError;
         }
-        // --- END OF FIX ---
 
         const resultsSummary = summarizeResults(userResults);
         const systemInstruction = `You are ReactiQuiz AI, a helpful study assistant created by Sanskar Sontakke. Your name is Q. Your purpose is to help students with academic subjects. You must ONLY answer questions related to studying, science, time management, or analyzing the user's quiz results. If asked about anything else, politely decline. The user's name is ${user.username}. ${resultsSummary}`;
@@ -58,8 +56,17 @@ router.post('/chat', verifyToken, async (req, res) => {
         res.json({ response: response.text() });
 
     } catch (error) {
-        // This outer catch block now handles both DB and Gemini errors
-        logError('AI CHAT ERROR', 'Chat call failed', error.message);
+        logError('GEMINI ERROR', 'Gemini API call failed', error.message);
+        
+        // --- START OF FIX: Specific Error Handling ---
+        // Check if the error message from the Google API indicates an overload.
+        if (error.message && (error.message.includes('503') || error.message.toLowerCase().includes('overloaded'))) {
+            // Send a specific status and error message to the frontend.
+            return res.status(503).json({ error: 'The AI model is currently overloaded.' });
+        }
+        // --- END OF FIX ---
+
+        // For all other types of errors, send a generic message.
         res.status(500).json({ error: 'An error occurred with the AI service.' });
     }
 });
