@@ -9,16 +9,11 @@ import { useDashboard } from '../hooks/useDashboard';
 
 // Import all the dashboard components
 import DashboardControls from '../components/dashboard/DashboardControls';
-import KpiDisplay from '../components/dashboard/KpiCards';
+import KpiCards from '../components/dashboard/KpiCards';
+import DifficultyPerformanceCard from '../components/dashboard/DifficultyPerformanceCard';
 import DashboardActivityChart from '../components/dashboard/DashboardActivityChart';
-import SubjectAveragesChart from '../components/dashboard/SubjectAveragesChart';
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
-
-const offscreenStyle = {
-  position: 'absolute', top: '-9999px', left: '-9999px',
-  width: '1000px', height: '600px',
-};
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 

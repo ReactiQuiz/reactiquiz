@@ -9,6 +9,14 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { useSubjectColors } from '../contexts/SubjectColorsContext';
 
+const timeFrequencyOptions = [
+  { value: 7, label: 'Last 7 Days' },
+  { value: 30, label: 'Last 30 Days' },
+  { value: 90, label: 'Last 90 Days' },
+  { value: 365, label: 'Last Year' },
+  { value: 'all', label: 'All Time' },
+];
+
 // --- Fetcher functions defined outside the hook ---
 const fetchUserResults = async () => {
     const { data } = await apiClient.get('/api/results');
