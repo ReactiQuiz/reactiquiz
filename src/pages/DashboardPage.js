@@ -92,24 +92,25 @@ function DashboardPage() {
             averageScore={processedStats.overallAverageScore}
             subjectBreakdowns={processedStats.subjectBreakdowns}
             isFiltered={selectedSubject !== 'all'}
-            expanded={kpiExpanded}
-            onToggle={() => setKpiExpanded(!kpiExpanded)}
           />
         </Grid>
 
         <Grid item xs={12} md={8}>
           {selectedSubject === 'all' ? (
-            <Grid container spacing={2}>
-              {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
-                <Grid item xs={12} sm={6} key={key}>
-                  <SubjectDifficultyCard
-                    subjectKey={key}
-                    title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
-                    data={value}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Stack spacing={2}>
+              <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
+              <Grid container spacing={2}>
+                {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
+                  <Grid item xs={12} sm={6} key={key}>
+                    <SubjectDifficultyCard
+                      subjectKey={key}
+                      title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
+                      data={value}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
           ) : (
             <SubjectDifficultyCard
               subjectKey={selectedSubject}

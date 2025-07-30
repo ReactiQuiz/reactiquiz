@@ -77,15 +77,22 @@ export const useDashboard = () => {
 
     // --- Complex Data Processing Layer ---
     const processedStats = useMemo(() => {
-        const defaultState = {
+const defaultState = {
             totalQuizzes: 0, overallAverageScore: 0, subjectBreakdowns: {},
-            subjectDifficultyPerformance: {}, activityData: { labels: [], datasets: [] }, topicPerformance: []
+            subjectDifficultyPerformance: {},
+            overallDifficultyPerformance: { 
+                easy: { correct: 0, total: 0 },
+                medium: { correct: 0, total: 0 },
+                hard: { correct: 0, total: 0 },
+            },
+            activityData: { labels: [], datasets: [] }, topicPerformance: []
         };
         if (filteredResults.length === 0 || allSubjects.length === 0) return defaultState;
 
         const questionMap = new Map(relevantQuestions.map(q => [q.id, q]));
         const subjectBreakdowns = {};
         const subjectDifficultyPerformance = {};
+const overallDifficultyStats = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
 
         allSubjects.forEach(subject => {
             const resultsForSubj = filteredResults.filter(r => r.subject === subject.subjectKey);
