@@ -88,6 +88,14 @@
         "subject": "biology"
     },
     {
+        "id": "disaster-management-7th",
+        "name": "Disaster Management",
+        "description": "Strategies for managing disasters.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
         "id": "living-world-and-classification-of-microbes-8th",
         "name": "Living World and classification of Microbes",
         "description": "Exploring the diversity of living organisms and classifying microbes.",
@@ -117,7 +125,7 @@
         "description": "Strategies for managing disasters.",
         "class": "8th",
         "genre": "State Board",
-        "subject": "biology"
+        "subject": "physics"
     },
     {
         "id": "cell-and-cell-organelles-8th",
@@ -493,6 +501,20 @@
         "class": "7th",
         "genre": "State Board",
         "subject": "physics"
+    },{
+        "id": "properties-of-natural-resources-7th",
+        "name": "Properties of Natural Resources",
+        "description": "Learn about natural resources.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "physics"
+    },{
+        "id": "adaptations-and-classification-7th",
+        "name": "Adaptation and Classification",
+        "description": "See how animals have evolved.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
     },
     {
         "id": "force-and-pressure-8th",
