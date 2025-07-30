@@ -6,14 +6,12 @@ import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
 
-// Fetcher for a secure quiz session
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
     const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
     return data;
 };
 
-// Mutation function for saving result
 const saveQuizResult = async (resultPayload) => {
     const { data } = await apiClient.post('/api/results', resultPayload);
     return data;
@@ -21,9 +19,7 @@ const saveQuizResult = async (resultPayload) => {
 
 export const useQuiz = () => {
     const { currentUser } = useAuth();
-    // --- START OF FIX: Directly use quizId from useParams ---
     const { quizId } = useParams();
-    // --- END OF FIX ---
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -33,25 +29,21 @@ export const useQuiz = () => {
     const [timerActive, setTimerActive] = useState(false);
     const [quizContext, setQuizContext] = useState({});
 
-    const { 
-        data: sessionData, 
-        isLoading, 
-        isError, 
-        error 
-    } = useQuery({
-        // --- START OF FIX: Use the 'quizId' variable in the queryKey and queryFn ---
+    const { data: sessionData, isLoading, isError, error } = useQuery({
         queryKey: ['quiz', quizId],
         queryFn: () => fetchQuizBySessionId(quizId),
-        enabled: !!quizId, // This condition now works correctly
-        // --- END OF FIX ---
+        enabled: !!quizId,
         retry: false,
     });
 
     const saveResultMutation = useMutation({
         mutationFn: saveQuizResult,
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
+            // --- START OF FIX: Invalidate ALL user-specific data queries ---
             queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
+            queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
+            // --- END OF FIX ---
+            
             const realResultId = data.id;
             if (!realResultId) throw new Error("API did not return a valid result ID.");
             navigate(`/results/${realResultId}`);

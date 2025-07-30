@@ -280,14 +280,6 @@
         "subject": "chemistry"
     },
     {
-        "id": "Acids-bases-and-salts-9th",
-        "name": "Acids, Bases and Salts",
-        "description": "Properties and reactions of Acids, bases, and salts.",
-        "class": "9th",
-        "genre": "State Board",
-        "subject": "chemistry"
-    },
-    {
         "id": "carbon-an-important-element-9th",
         "name": "Carbon : An important element",
         "description": "Introduction to the element carbon and its forms.",
@@ -302,69 +294,6 @@
         "class": "9th",
         "genre": "State Board",
         "subject": "chemistry"
-    },
-    {
-        "id": "algebra",
-        "name": "Algebra Basics",
-        "description": "Equations, inequalities, functions, and polynomials.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "geometry",
-        "name": "Geometry",
-        "description": "Shapes, angles, area, volume, and coordinate geometry.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "calculus-intro",
-        "name": "Introduction to Calculus",
-        "description": "Limits, derivatives, basic integration, and applications.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "probability-stats",
-        "name": "Probability & Statistics",
-        "description": "Basic probability, data analysis, and statistical measures.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "trigonometry",
-        "name": "Trigonometry",
-        "description": "Trigonometric functions, identities, and applications.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "linear-algebra",
-        "name": "Linear Algebra Basics",
-        "description": "Vectors, matrices, and systems of linear equations.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "number-theory",
-        "name": "Number Theory Basics",
-        "description": "Divisibility, prime numbers, and modular arithmetic.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "discrete-math",
-        "name": "Discrete Mathematics",
-        "description": "Set theory, logic, combinatorics, and graph theory basics.",
-        "genre": "General",
-        "subject": "mathematics"
-    },
-    {
-        "id": "logic-reasoning",
-        "name": "Logic and Reasoning",
-        "description": "Propositional logic, predicates, and logical fallacies.",
-        "genre": "General",
-        "subject": "mathematics"
     },
     {
         "id": "disaster-management-6th",
@@ -533,14 +462,16 @@
         "class": "7th",
         "genre": "State Board",
         "subject": "chemistry"
-    },{
+    },
+    {
         "id": "changes-physical-and-chemical-7th",
         "name": "Changes : Physical and Chemical",
         "description": "See what changes occur in our surrounding.",
         "class": "7th",
         "genre": "State Board",
         "subject": "chemistry"
-    },{
+    },
+    {
         "id": "muscular-and-digestive-system-in-human-beings-7th",
         "name": "Muscular and Digestive System in Human Beings ",
         "description": "Learn how we move and eat.",
