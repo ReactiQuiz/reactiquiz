@@ -1,5 +1,5 @@
 // src/pages/DashboardPage.js
-import { Box, Typography, Paper, Alert, Grid, Skeleton } from '@mui/material';
+import { Box, Typography, Paper, Alert, Grid, Skeleton, Stack } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend } from 'chart.js';
@@ -12,7 +12,6 @@ import SubjectDifficultyCard from '../components/dashboard/SubjectDifficultyCard
 import DashboardActivityChart from '../components/dashboard/DashboardActivityChart';
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
-import { Typography, Paper, Alert, Grid, Skeleton, Stack } from '@mui/material';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 
