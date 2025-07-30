@@ -44,32 +44,32 @@ function DashboardPage() {
         processedStats, activityChartRef, topicPerformanceRef,
         handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport, isGeneratingPdf
     } = useDashboard();
-    
+
     if (isLoadingAuth || isLoadingData) {
         return <DashboardSkeleton />;
     }
-    
+
     if (error) {
-        return ( <Box sx={{ p: 2 }}><Alert severity="error">{error}</Alert></Box> );
+        return (<Box sx={{ p: 2 }}><Alert severity="error">{error}</Alert></Box>);
     }
 
     if (!isLoadingData && (!processedStats || processedStats.totalQuizzes === 0)) {
         return (
-          <Box sx={{ py: 2, px: { xs: 1, sm: 2 }, textAlign: 'center' }}>
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>My Dashboard</Typography>
-            <DashboardControls
-                timeFrequency={timeFrequency}
-                onTimeFrequencyChange={handleTimeFrequencyChange}
-                allSubjects={allSubjects}
-                selectedSubject={selectedSubject}
-                onSubjectChange={handleSubjectChange}
-            />
-            <Paper sx={{ p: 3, mt: 2, mx: 'auto', maxWidth: '600px' }}>
-              <Typography variant="h6">Welcome, {currentUser.name}!</Typography>
-              <Typography sx={{ my: 2 }}>You haven't taken any quizzes in the selected period. Start a quiz to see your progress here!</Typography>
-              <GenerateReportButton onGenerate={handleGenerateReport} isLoading={isGeneratingPdf} />
-            </Paper>
-          </Box>
+            <Box sx={{ py: 2, px: { xs: 1, sm: 2 }, textAlign: 'center' }}>
+                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>My Dashboard</Typography>
+                <DashboardControls
+                    timeFrequency={timeFrequency}
+                    onTimeFrequencyChange={handleTimeFrequencyChange}
+                    allSubjects={allSubjects}
+                    selectedSubject={selectedSubject}
+                    onSubjectChange={handleSubjectChange}
+                />
+                <Paper sx={{ p: 3, mt: 2, mx: 'auto', maxWidth: '600px' }}>
+                    <Typography variant="h6">Welcome, {currentUser.name}!</Typography>
+                    <Typography sx={{ my: 2 }}>You haven't taken any quizzes in the selected period. Start a quiz to see your progress here!</Typography>
+                    <GenerateReportButton onGenerate={handleGenerateReport} isLoading={isGeneratingPdf} />
+                </Paper>
+            </Box>
         );
     }
 
@@ -92,10 +92,10 @@ function DashboardPage() {
                         isFiltered={selectedSubject !== 'all'}
                     />
                 </Grid>
-                
+
                 <Grid item xs={12} md={8}>
                     {selectedSubject === 'all' ? (
-                        <Stack spacing={2} sx={{height: '100%'}}>
+                        <Stack spacing={2} sx={{ height: '100%' }}>
                             <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
                             <Grid container spacing={2}>
                                 {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
@@ -110,14 +110,16 @@ function DashboardPage() {
                             </Grid>
                         </Stack>
                     ) : (
-                        <SubjectDifficultyCard
-                            subjectKey={selectedSubject}
-                            title={`Difficulty Performance in ${allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}`}
-                            data={processedStats.subjectDifficultyPerformance[selectedSubject]}
-                        />
+                        <Stack spacing={2} sx={{ height: '100%' }}>
+                            <SubjectDifficultyCard
+                                subjectKey={selectedSubject}
+                                title={`Difficulty Performance in ${allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}`}
+                                data={processedStats.subjectDifficultyPerformance[selectedSubject]}
+                            />
+                        </Stack>
                     )}
                 </Grid>
-                
+
                 <Grid item xs={12}>
                     <Box ref={activityChartRef}>
                         <DashboardActivityChart
@@ -138,7 +140,7 @@ function DashboardPage() {
                     </Grid>
                 )}
             </Grid>
-            
+
             <GenerateReportButton onGenerate={handleGenerateReport} isLoading={isGeneratingPdf} />
         </Box>
     );
