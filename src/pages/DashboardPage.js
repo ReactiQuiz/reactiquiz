@@ -12,6 +12,7 @@ import SubjectDifficultyCard from '../components/dashboard/SubjectDifficultyCard
 import DashboardActivityChart from '../components/dashboard/DashboardActivityChart';
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
+import OverallDifficultyCard from '../components/dashboard/OverallDifficultyCard';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 
