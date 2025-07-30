@@ -17,7 +17,7 @@ const timeFrequencyOptions = [
     { value: 'all', label: 'All Time' },
 ];
 
-// --- Fetcher functions ---
+// --- Fetcher functions defined outside the hook ---
 const fetchUserResults = async () => {
     const { data } = await apiClient.get('/api/results');
     return data || [];
@@ -77,10 +77,10 @@ export const useDashboard = () => {
 
     // --- Complex Data Processing Layer ---
     const processedStats = useMemo(() => {
-const defaultState = {
+        const defaultState = {
             totalQuizzes: 0, overallAverageScore: 0, subjectBreakdowns: {},
             subjectDifficultyPerformance: {},
-            overallDifficultyPerformance: { 
+            overallDifficultyPerformance: {
                 easy: { correct: 0, total: 0 },
                 medium: { correct: 0, total: 0 },
                 hard: { correct: 0, total: 0 },
@@ -92,7 +92,7 @@ const defaultState = {
         const questionMap = new Map(relevantQuestions.map(q => [q.id, q]));
         const subjectBreakdowns = {};
         const subjectDifficultyPerformance = {};
-const overallDifficultyStats = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
+        const overallDifficultyStats = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
 
         allSubjects.forEach(subject => {
             const resultsForSubj = filteredResults.filter(r => r.subject === subject.subjectKey);
@@ -130,6 +130,24 @@ const overallDifficultyStats = { easy: { correct: 0, total: 0 }, medium: { corre
             }
         });
 
+        for (const result of filteredResults) {
+            const userAnswers = JSON.parse(result.userAnswersSnapshot || '{}');
+            const attemptedIds = JSON.parse(result.questionsActuallyAttemptedIds || '[]');
+            for (const qId of attemptedIds) {
+                const question = questionMap.get(qId);
+                if (!question) continue;
+                const d = question.difficulty;
+                let key = '';
+                if (d >= 18) key = 'hard';
+                else if (d >= 14) key = 'medium';
+                else if (d >= 10) key = 'easy';
+                if (key) {
+                    overallDifficultyStats[key].total++;
+                    if (userAnswers[qId] === question.correctOptionId) overallDifficultyStats[key].correct++;
+                }
+            }
+        }
+
         const today = startOfDay(new Date());
         const startDate = timeFrequency === 'all' ? (filteredResults.length > 0 ? startOfDay(min(filteredResults.map(r => parseISO(r.timestamp)))) : today) : startOfDay(subDays(today, timeFrequency));
         const activityCounts = {};
@@ -162,27 +180,44 @@ const overallDifficultyStats = { easy: { correct: 0, total: 0 }, medium: { corre
             overallAverageScore: filteredResults.length > 0 ? Math.round(filteredResults.reduce((acc, r) => acc + r.percentage, 0) / filteredResults.length) : 0,
             subjectBreakdowns,
             subjectDifficultyPerformance,
+            overallDifficultyPerformance: {
+                easy: { correct: overallDifficultyStats.easy.correct },
+                medium: { correct: overallDifficultyStats.medium.correct },
+                hard: { correct: overallDifficultyStats.hard.correct },
+            },
             activityData,
             topicPerformance
         };
     }, [filteredResults, allSubjects, allTopics, relevantQuestions, theme, timeFrequency, selectedSubject]);
 
-    // Handlers
     const handleTimeFrequencyChange = (event) => setTimeFrequency(event.target.value);
     const handleSubjectChange = (event) => setSelectedSubject(event.target.value);
-   const handleGenerateReport = async () => {
+    const handleGenerateReport = async () => {
         setIsGeneratingPdf(true);
         const timeFreqOption = timeFrequencyOptions.find(opt => opt.value === timeFrequency);
         await generateDashboardPdfReport({
-          currentUser,
-          overallStats: { totalQuizzes: processedStats.totalQuizzes, overallAverageScore: processedStats.overallAverageScore },
-          activityChartElement: activityChartRef.current,
-          topicPerformanceElement: topicPerformanceRef.current,
-          isSubjectSelected: selectedSubject !== 'all',
-          timeFrequencyLabel: timeFreqOption ? timeFreqOption.label : String(timeFrequency),
+            currentUser,
+            overallStats: { totalQuizzes: processedStats.totalQuizzes, overallAverageScore: processedStats.overallAverageScore },
+            activityChartElement: activityChartRef.current,
+            topicPerformanceElement: topicPerformanceRef.current,
+            isSubjectSelected: selectedSubject !== 'all',
+            timeFrequencyLabel: timeFreqOption ? timeFreqOption.label : String(timeFrequency),
         });
         setIsGeneratingPdf(false);
     };
 
-    return { allSubjects, isLoadingData, error: null, timeFrequency, selectedSubject, isGeneratingPdf, processedStats, activityChartRef, topicPerformanceRef, handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport };
+    return {
+        allSubjects,
+        isLoadingData,
+        error: null,
+        timeFrequency,
+        selectedSubject,
+        isGeneratingPdf,
+        processedStats,
+        activityChartRef,
+        topicPerformanceRef,
+        handleTimeFrequencyChange,
+        handleSubjectChange,
+        handleGenerateReport,
+    };
 };
