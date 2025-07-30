@@ -1,9 +1,8 @@
 // src/components/dashboard/KpiCards.js
 import React from 'react';
-import { Paper, Typography, Box, Collapse, List, ListItem, ListItemText, Divider, IconButton, useTheme } from '@mui/material';
+import { Paper, Typography, Box, Collapse, List, ListItem, ListItemText, Divider, IconButton, useTheme, Grid } from '@mui/material';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Paper, Typography, Box, Collapse, List, ListItem, ListItemText, Divider, IconButton, useTheme, Grid } from '@mui/material';
 
 const KpiCard = ({ title, value, caption, breakdownData, onToggle, expanded }) => {
     const theme = useTheme();
