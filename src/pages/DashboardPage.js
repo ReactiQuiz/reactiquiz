@@ -12,6 +12,7 @@ import SubjectDifficultyCard from '../components/dashboard/SubjectDifficultyCard
 import DashboardActivityChart from '../components/dashboard/DashboardActivityChart';
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
+import { Box, Typography, Paper, Alert, Grid, Skeleton, Stack } from '@mui/material';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend);
 

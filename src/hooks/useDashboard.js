@@ -163,21 +163,16 @@ export const useDashboard = () => {
     // Handlers
     const handleTimeFrequencyChange = (event) => setTimeFrequency(event.target.value);
     const handleSubjectChange = (event) => setSelectedSubject(event.target.value);
-    const handleGenerateReport = async () => {
+   const handleGenerateReport = async () => {
         setIsGeneratingPdf(true);
         const timeFreqOption = timeFrequencyOptions.find(opt => opt.value === timeFrequency);
-
         await generateDashboardPdfReport({
-            currentUser: currentUser,
-            overallStats: {
-                totalQuizzes: processedStats.totalQuizzes,
-                overallAverageScore: processedStats.overallAverageScore,
-            },
-            activityChartElement: activityChartRef.current,
-            subjectAveragesChartElement: subjectAveragesChartRef.current,
-            topicPerformanceElement: topicPerformanceRef.current,
-            isSubjectSelected: selectedSubject !== 'all',
-            timeFrequencyLabel: timeFreqOption ? timeFreqOption.label : String(timeFrequency),
+          currentUser,
+          overallStats: { totalQuizzes: processedStats.totalQuizzes, overallAverageScore: processedStats.overallAverageScore },
+          activityChartElement: activityChartRef.current,
+          topicPerformanceElement: topicPerformanceRef.current,
+          isSubjectSelected: selectedSubject !== 'all',
+          timeFrequencyLabel: timeFreqOption ? timeFreqOption.label : String(timeFrequency),
         });
         setIsGeneratingPdf(false);
     };
