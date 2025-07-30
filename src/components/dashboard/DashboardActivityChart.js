@@ -1,5 +1,5 @@
 // src/components/dashboard/DashboardActivityChart.js
-import React, { forwardRef } from 'react'; // <-- 1. Import forwardRef
+import React from 'react';
 import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
@@ -9,8 +9,8 @@ import { alpha } from '@mui/material/styles';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
 
-// 2. Wrap the component definition in forwardRef
-const DashboardActivityChart = forwardRef(({ activityData, timeFrequency }, ref) => {
+// --- START OF FIX: Reverted to a standard functional component ---
+function DashboardActivityChart({ activityData, timeFrequency }) {
   const theme = useTheme();
 
   const chartOptions = {
@@ -32,11 +32,11 @@ const DashboardActivityChart = forwardRef(({ activityData, timeFrequency }, ref)
       x: {
         type: 'time',
         time: {
-          unit: timeFrequency === 7 ? 'day' : (timeFrequency === 30 ? 'day' : (timeFrequency === 90 ? 'week' : 'month')),
+          unit: timeFrequency === 7 ? 'day' : (timeFrequency === 30 ? 'week' : 'month'),
           tooltipFormat: 'PPP',
-           displayFormats: { day: 'MMM d', week: 'MMM d, yy', month: 'MMM yyyy' }
+           displayFormats: { day: 'MMM d', week: 'MMM d', month: 'MMM yyyy' }
         },
-        ticks: { color: theme.palette.text.secondary, maxRotation: 0, autoSkipPadding: 10 },
+        ticks: { color: theme.palette.text.secondary, maxRotation: 0, autoSkipPadding: 20 },
         grid: { color: alpha(theme.palette.text.secondary, 0.1) }
       },
       y: {
@@ -50,8 +50,8 @@ const DashboardActivityChart = forwardRef(({ activityData, timeFrequency }, ref)
   };
 
   return (
-    // 3. Attach the forwarded ref to the root Paper element
-    <Paper ref={ref} elevation={3} sx={{ p: {xs: 1, sm: 2}, mt: 3, backgroundColor: theme.palette.background.paper }}>
+    // The ref is no longer passed to this Paper element
+    <Paper elevation={3} sx={{ p: {xs: 1, sm: 2}, mt: 2, border: `1px solid ${theme.palette.divider}` }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
         <Typography variant="h6" sx={{color: theme.palette.text.primary, ml: {xs:1, sm:0}}}>Activity Overview</Typography>
       </Box>
@@ -59,11 +59,16 @@ const DashboardActivityChart = forwardRef(({ activityData, timeFrequency }, ref)
         {activityData && activityData.labels && activityData.labels.length > 0 ? (
           <Line options={chartOptions} data={activityData} />
         ) : (
-          <Typography sx={{textAlign: 'center', color: theme.palette.text.secondary, pt: 5}}>No quiz activity for the selected period.</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%'}}>
+            <Typography sx={{textAlign: 'center', color: theme.palette.text.secondary}}>
+              No quiz activity for the selected period.
+            </Typography>
+          </Box>
         )}
       </Box>
     </Paper>
   );
-});
+}
+// --- END OF FIX ---
 
 export default DashboardActivityChart;
