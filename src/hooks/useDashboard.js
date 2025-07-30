@@ -181,9 +181,9 @@ export const useDashboard = () => {
             subjectBreakdowns,
             subjectDifficultyPerformance,
             overallDifficultyPerformance: {
-                easy: { correct: overallDifficultyStats.easy.correct },
-                medium: { correct: overallDifficultyStats.medium.correct },
-                hard: { correct: overallDifficultyStats.hard.correct },
+                easy: { correct: overallDifficultyStats.easy.correct, total: overallDifficultyStats.easy.total },
+                medium: { correct: overallDifficultyStats.medium.correct, total: overallDifficultyStats.medium.total },
+                hard: { correct: overallDifficultyStats.hard.correct, total: overallDifficultyStats.hard.total },
             },
             activityData,
             topicPerformance

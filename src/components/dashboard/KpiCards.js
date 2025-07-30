@@ -1,6 +1,6 @@
 // src/components/dashboard/KpiCards.js
 import React from 'react';
-import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Grid } from '@mui/material';
+import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack } from '@mui/material'; // <-- Import Stack
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 
 const KpiCard = ({ title, value, caption, breakdownData }) => {
@@ -51,24 +51,22 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered })
     }, {});
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <KpiCard
-                    title="Total Quizzes Solved"
-                    value={totalQuizzes}
-                    caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
-                    breakdownData={quizzesBreakdown}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <KpiCard
-                    title="Overall Average Score"
-                    value={`${averageScore}%`}
-                    caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
-                    breakdownData={scoresBreakdown}
-                />
-            </Grid>
-        </Grid>
+        // --- START OF FIX: Use Stack for consistent vertical spacing ---
+        <Stack spacing={2}>
+            <KpiCard
+                title="Total Quizzes Solved"
+                value={totalQuizzes}
+                caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
+                breakdownData={quizzesBreakdown}
+            />
+            <KpiCard
+                title="Overall Average Score"
+                value={`${averageScore}%`}
+                caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
+                breakdownData={scoresBreakdown}
+            />
+        </Stack>
+        // --- END OF FIX ---
     );
 }
 
