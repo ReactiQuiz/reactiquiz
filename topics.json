@@ -501,14 +501,54 @@
         "class": "7th",
         "genre": "State Board",
         "subject": "physics"
-    },{
+    },
+    {
         "id": "properties-of-natural-resources-7th",
         "name": "Properties of Natural Resources",
-        "description": "Learn about natural resources.",
+        "description": "Learn about properties of natural resources.",
         "class": "7th",
         "genre": "State Board",
         "subject": "physics"
+    },
+    {
+        "id": "natural-resources-7th",
+        "name": "Natural Resources",
+        "description": "Learn about natural resources.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "materials-we-use-7th",
+        "name": "Materials We Use",
+        "description": "Learn about everyday materials.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "elements-compounds-and-mixtures-7th",
+        "name": "Elements Compounds and Mixtures",
+        "description": "Know what is everything is composed of.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "chemistry"
     },{
+        "id": "changes-physical-and-chemical-7th",
+        "name": "Changes : Physical and Chemical",
+        "description": "See what changes occur in our surrounding.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },{
+        "id": "muscular-and-digestive-system-in-human-beings-7th",
+        "name": "Muscular and Digestive System in Human Beings ",
+        "description": "Learn how we move and eat.",
+        "class": "7th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
         "id": "adaptations-and-classification-7th",
         "name": "Adaptation and Classification",
         "description": "See how animals have evolved.",
