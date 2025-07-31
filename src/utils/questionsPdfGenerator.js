@@ -2,16 +2,15 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
-import { createRoot } from 'react-dom/client'; // Import createRoot for React 18+
+import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from '@mui/material/styles';
-import { darkTheme } from '../theme'; // Import your theme
+import { darkTheme } from '../theme';
 import React from 'react';
 import apiClient from '../api/axiosInstance';
 import { shuffleArray, parseQuestionOptions } from './quizUtils';
 import { format } from 'date-fns';
 import MarkdownRenderer from '../components/shared/MarkdownRenderer';
 
-// A simple text sanitizer, now only used for the plain-text answer key table.
 const sanitizeKatexForPdfText = (text) => {
   if (!text) return '';
   return text
@@ -23,8 +22,6 @@ const sanitizeKatexForPdfText = (text) => {
     .replace(/\\\\/g, '\\');
 };
 
-
-// A dedicated React component for rendering the printable content
 const PrintableContent = ({ questions, topic, settings }) => (
     <ThemeProvider theme={darkTheme}>
         <div style={{ padding: '20px', backgroundColor: '#fff', color: '#000', width: '210mm' }}>
@@ -44,7 +41,9 @@ const PrintableContent = ({ questions, topic, settings }) => (
                     </p>
                     <ul style={{ listStyleType: 'none', paddingLeft: '20px', fontSize: '12px' }}>
                         {q.options.map(opt => (
-                            <li key={opt.id} style={{ marginBottom: '5px' }}>
+                            // --- START OF FIX: Added vertical margin to each list item ---
+                            <li key={opt.id} style={{ marginBottom: '8px' }}> 
+                            // --- END OF FIX ---
                                 <MarkdownRenderer text={`(${opt.id}) ${opt.text}`} />
                             </li>
                         ))}
@@ -56,7 +55,6 @@ const PrintableContent = ({ questions, topic, settings }) => (
 );
 
 async function fetchQuestionsForPdf(topicId, difficulty, numQuestions) {
-  // ... (This function remains unchanged)
   try {
     const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
     let allQuestions = parseQuestionOptions(response.data);
@@ -82,7 +80,6 @@ export const generateQuestionsPdf = async (topic, settings) => {
     return;
   }
 
-  // 1. Create a temporary, off-screen container
   const container = document.createElement('div');
   container.style.position = 'absolute';
   container.style.left = '-9999px';
@@ -91,36 +88,27 @@ export const generateQuestionsPdf = async (topic, settings) => {
   const root = createRoot(container);
 
   try {
-    // 2. Render the React component into the hidden container
     await new Promise(resolve => {
         root.render(<PrintableContent questions={questions} topic={topic} settings={settings} />);
-        setTimeout(resolve, 500); // Give it a moment to render KaTeX
+        setTimeout(resolve, 500);
     });
 
-    // 3. Use html2canvas to capture the rendered content
     const canvas = await html2canvas(container, {
-        scale: 2, // Higher scale for better quality
+        scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
     });
 
-    // 4. Create the PDF and add the captured image
-    const doc = new jsPDF({
-        orientation: 'p',
-        unit: 'mm',
-        format: 'a4',
-    });
-
+    const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
     const imgData = canvas.toDataURL('image/png');
-    const imgWidth = 210; // A4 width in mm
-    const pageHeight = 295; // A4 height in mm
+    const imgWidth = 210;
+    const pageHeight = 295;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
     let heightLeft = imgHeight;
     let position = 0;
 
     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
-
     while (heightLeft > 0) {
         position = heightLeft - imgHeight;
         doc.addPage();
@@ -128,12 +116,10 @@ export const generateQuestionsPdf = async (topic, settings) => {
         heightLeft -= pageHeight;
     }
 
-    // 5. Add the answer key table on a new page if needed
     if (settings.includeAnswers) {
         doc.addPage();
         doc.setFontSize(16); doc.setFont(undefined, 'bold');
         doc.text("Answer Key", 15, 20);
-
         const answerKey = questions.map((q, index) => {
             const correctAnswer = q.options.find(opt => opt.id === q.correctOptionId);
             const answerText = correctAnswer ? `(${correctAnswer.id}) ${correctAnswer.text}` : 'Answer not found.';
@@ -143,7 +129,6 @@ export const generateQuestionsPdf = async (topic, settings) => {
                 exp: settings.includeExplanations ? sanitizeKatexForPdfText(q.explanation) : ''
             };
         });
-
         autoTable(doc, {
             startY: 28,
             head: [['Question', 'Correct Answer', 'Explanation']],
@@ -155,14 +140,12 @@ export const generateQuestionsPdf = async (topic, settings) => {
         });
     }
 
-    // 6. Save the final PDF
     doc.save(`ReactiQuiz_${topic.name.replace(/\s/g, '_')}.pdf`);
 
   } catch (error) {
     alert(`Failed to generate PDF: ${error.message}`);
     console.error("PDF Generation Error:", error);
   } finally {
-    // 7. ALWAYS clean up the temporary container
     root.unmount();
     document.body.removeChild(container);
   }
