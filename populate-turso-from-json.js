@@ -28,44 +28,36 @@ async function processSmallDataset(statements, message) {
   }
 }
 
-// --- START OF HIGH-SPEED BATCH PROCESSOR ---
 // This function is optimized for inserting thousands of records quickly.
 async function processLargeDatasetWithTransactionalBatch(statements, message) {
-  const chunkSize = 1000; // A larger chunk size is efficient for batching
+  const chunkSize = 10000;
   if (statements.length === 0) {
     console.log(`✅ No ${message} to migrate.`);
     return;
   }
-
   console.log(`\n-> Migrating ${message}...`);
   for (let i = 0; i < statements.length; i += chunkSize) {
     const chunk = statements.slice(i, i + chunkSize);
     console.log(`   -> Processing chunk: ${i + 1} - ${i + chunk.length} of ${statements.length}...`);
-    
     const tx = await turso.transaction("write");
     try {
-      // Execute the entire chunk in a single batch call within the transaction
       await tx.batch(chunk);
       await tx.commit();
     } catch (err) {
       await tx.rollback();
       console.error(`❌ Error processing chunk for ${message} starting at index ${i}.`);
-      console.error(`   -> Error: ${err.message}`);
-      // Since batch errors don't specify the exact item, pre-validation is key.
-      // This error likely means a FOREIGN KEY constraint was still violated.
-      throw new Error(`Failed during ${message} migration. Please re-check your JSON data for integrity.`);
+      throw new Error(`Failed during ${message} migration. Please re-check your JSON data for integrity. Error: ${err.message}`);
     }
   }
   console.log(`✅ Migrated ${statements.length} ${message}.`);
 }
-// --- END OF HIGH-SPEED BATCH PROCESSOR ---
 
 async function migrate() {
   try {
     console.log("--- Starting Static Data Migration from JSON to Turso ---");
 
-    // 1. Pre-Validation (Crucial for fast batching)
-    console.log("\n-> Reading and validating all JSON files before migration...");
+    // --- 1. Load all data and perform validations ---
+    console.log("\n-> Reading and validating JSON files...");
     const topicsRaw = fs.readFileSync(TOPICS_JSON_PATH, 'utf-8');
     const topics = JSON.parse(topicsRaw);
     const validTopicIds = new Set(topics.map(t => t.id));
@@ -79,9 +71,28 @@ async function migrate() {
       invalidQuestions.forEach(q => console.log(`  - Question ID: "${q.id}", Invalid topicId: "${q.topicId}"`));
       process.exit(1);
     }
-    console.log("✅ All data is valid. Proceeding with migration.");
+    console.log("✅ All question topicId's are valid.");
 
-    // 2. Migrate Subjects (small dataset, simple transaction is fine)
+    // --- START OF NEW FEATURE: Check for topics with zero questions ---
+    console.log("\n-> Checking for topics with zero questions...");
+    const topicQuestionCounts = new Map();
+    for (const question of questions) {
+        topicQuestionCounts.set(question.topicId, (topicQuestionCounts.get(question.topicId) || 0) + 1);
+    }
+
+    const topicsWithZeroQuestions = topics.filter(topic => !topicQuestionCounts.has(topic.id));
+
+    if (topicsWithZeroQuestions.length > 0) {
+        console.warn("\n⚠️  The following topics have 0 questions associated with them:");
+        topicsWithZeroQuestions.forEach(topic => {
+            console.warn(`  - Topic Name: "${topic.name}", ID: "${topic.id}"`);
+        });
+    } else {
+        console.log("✅ All topics have at least one question associated with them.");
+    }
+    // --- END OF NEW FEATURE ---
+
+    // --- 2. Migrate Subjects ---
     const subjectsRaw = fs.readFileSync(SUBJECTS_JSON_PATH, 'utf-8');
     const subjects = JSON.parse(subjectsRaw);
     const subjectKeyToIdMap = new Map(subjects.map(s => [s.subjectKey, s.id]));
@@ -91,14 +102,14 @@ async function migrate() {
     }));
     await processSmallDataset(subjectStatements, "subjects");
 
-    // 3. Migrate Topics (small dataset, simple transaction is fine)
+    // --- 3. Migrate Topics ---
     const topicStatements = topics.map(t => ({
         sql: 'INSERT OR REPLACE INTO quiz_topics (id, name, description, class, genre, subject_id) VALUES (?, ?, ?, ?, ?, ?);',
         args: [ t.id, t.name, t.description ?? '', t.class ?? '', t.genre ?? '', subjectKeyToIdMap.get(t.subject) ]
     }));
     await processSmallDataset(topicStatements, "topics");
 
-    // 4. Migrate Questions (large dataset, use the high-speed transactional batch method)
+    // --- 4. Migrate Questions ---
     const questionStatements = questions.map(q => ({
         sql: 'INSERT OR REPLACE INTO questions (id, topicId, text, options, correctOptionId, explanation, difficulty) VALUES (?, ?, ?, ?, ?, ?, ?);',
         args: [ q.id, q.topicId, q.text, JSON.stringify(q.options), q.correctOptionId, q.explanation ?? '', q.difficulty ]

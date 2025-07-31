@@ -40,14 +40,6 @@
         "subject": "biology"
     },
     {
-        "id": "the-living-world-adaptations-and-classification-7th",
-        "name": "The Living World : Adaptations and classification",
-        "description": "Diversity of life, adaptations, and taxonomy.",
-        "class": "7th",
-        "genre": "State Board",
-        "subject": "biology"
-    },
-    {
         "id": "plants-structure-and-function-7th",
         "name": "Plants : Structure and Function",
         "description": "Parts of plants and their roles.",
@@ -75,14 +67,6 @@
         "id": "cell-structure-and-micro-organisms-7th",
         "name": "Cell Structure and Micro-organisms",
         "description": "Basic unit of life and tiny living things.",
-        "class": "7th",
-        "genre": "State Board",
-        "subject": "biology"
-    },
-    {
-        "id": "the-muscular-system-and-digestive-system-in-human-beings-7th",
-        "name": "The Muscular System and Digestive System in Human Beings",
-        "description": "How muscles work and how food is digested.",
         "class": "7th",
         "genre": "State Board",
         "subject": "biology"
