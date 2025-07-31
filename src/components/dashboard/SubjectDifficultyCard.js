@@ -36,19 +36,21 @@ function SubjectDifficultyCard({ subjectKey, title, data }) {
     const accentColor = getColor(subjectKey);
 
     if (!data) return null;
-    
+
     const { easy, medium, hard } = data;
 
     return (
-        <Paper elevation={3} sx={{ height: '100%', borderTop: `4px solid ${accentColor}` }}>
-            <Typography variant="h6" sx={{ mb: 1, fontWeight: 'medium', color: accentColor }}>
-                {title}
-            </Typography>
-            <List dense>
-                <DifficultyBar label="Easy" value={easy.average} count={easy.count} color={theme.palette.success.main} />
-                <DifficultyBar label="Medium" value={medium.average} count={medium.count} color={theme.palette.warning.main} />
-                <DifficultyBar label="Hard" value={hard.average} count={hard.count} color={theme.palette.error.main} />
-            </List>
+        <Paper elevation={3} sx={{ mt: { xs: 2, sm: 2.5 }, height: '100%', borderTop: `4px solid ${accentColor}` }}>
+            <Box sx={{ ml: { xs: 2, sm: 2.5 }}}>
+                <Typography variant="h6" sx={{ mb: 1, fontWeight: 'medium', color: accentColor }}>
+                    {title}
+                </Typography>
+                <List dense>
+                    <DifficultyBar label="Easy" value={easy.average} count={easy.count} color={theme.palette.success.main} />
+                    <DifficultyBar label="Medium" value={medium.average} count={medium.count} color={theme.palette.warning.main} />
+                    <DifficultyBar label="Hard" value={hard.average} count={hard.count} color={theme.palette.error.main} />
+                </List>
+            </Box>
         </Paper>
     );
 }
