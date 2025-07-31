@@ -1,36 +1,62 @@
 // src/utils/questionsPdfGenerator.js
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+import { createRoot } from 'react-dom/client'; // Import createRoot for React 18+
+import { ThemeProvider } from '@mui/material/styles';
+import { darkTheme } from '../theme'; // Import your theme
+import React from 'react';
 import apiClient from '../api/axiosInstance';
 import { shuffleArray, parseQuestionOptions } from './quizUtils';
 import { format } from 'date-fns';
+import MarkdownRenderer from '../components/shared/MarkdownRenderer';
 
-// --- START OF FIX: KaTeX Sanitizer Function ---
-/**
- * A helper function to convert common KaTeX/LaTeX syntax into plain text for PDF rendering.
- * @param {string} text - The input string which may contain KaTeX.
- * @returns {string} The sanitized, plain-text string.
- */
-const sanitizeKatexForPdf = (text) => {
+// A simple text sanitizer, now only used for the plain-text answer key table.
+const sanitizeKatexForPdfText = (text) => {
   if (!text) return '';
   return text
-    // Remove block math delimiters ($$)
-    .replace(/\$\$(.*?)\$\$/g, '$1')
-    // Remove inline math delimiters ($)
-    .replace(/\$(.*?)\$/g, '$1')
-    // Convert fractions like \frac{a}{b} to a/b
+    .replace(/\$\$(.*?)\$\$/g, '$1').replace(/\$(.*?)\$/g, '$1')
     .replace(/\\frac{(.*?)}{(.*?)}/g, '($1)/($2)')
-    // Convert square roots like \sqrt{x} to sqrt(x)
     .replace(/\\sqrt{(.*?)}/g, 'sqrt($1)')
-    // Remove LaTeX spacing commands like '\,' or '\ '
-    .replace(/\\,/g, ' ')
-    .replace(/\\ /g, ' ')
-    // Replace escaped backslashes for JSON (\\) with a single one for display
+    .replace(/\\times/g, 'x').replace(/\\Delta/g, 'Δ')
+    .replace(/\\,/g, ' ').replace(/\\ /g, ' ')
     .replace(/\\\\/g, '\\');
 };
-// --- END OF FIX ---
+
+
+// A dedicated React component for rendering the printable content
+const PrintableContent = ({ questions, topic, settings }) => (
+    <ThemeProvider theme={darkTheme}>
+        <div style={{ padding: '20px', backgroundColor: '#fff', color: '#000', width: '210mm' }}>
+            <h1 style={{ textAlign: 'center', fontSize: '24px' }}>ReactiQuiz</h1>
+            <p style={{ fontSize: '14px' }}><strong>Topic:</strong> {topic.name}</p>
+            <p style={{ fontSize: '14px' }}>
+                <strong>Difficulty:</strong> {settings.difficulty.charAt(0).toUpperCase() + settings.difficulty.slice(1)} | 
+                <strong> Questions:</strong> {questions.length} | 
+                <strong> Class:</strong> {topic.class || 'N/A'}
+            </p>
+            <p style={{ fontSize: '10px', color: '#888' }}>Generated on: {format(new Date(), 'MMM d, yyyy HH:mm')}</p>
+            <hr />
+            {questions.map((q, index) => (
+                <div key={q.id} style={{ marginBottom: '15px' }}>
+                    <p style={{ fontWeight: 'bold', fontSize: '12px' }}>
+                        <MarkdownRenderer text={`Q${index + 1}. ${q.text}`} />
+                    </p>
+                    <ul style={{ listStyleType: 'none', paddingLeft: '20px', fontSize: '12px' }}>
+                        {q.options.map(opt => (
+                            <li key={opt.id} style={{ marginBottom: '5px' }}>
+                                <MarkdownRenderer text={`(${opt.id}) ${opt.text}`} />
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    </ThemeProvider>
+);
 
 async function fetchQuestionsForPdf(topicId, difficulty, numQuestions) {
+  // ... (This function remains unchanged)
   try {
     const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
     let allQuestions = parseQuestionOptions(response.data);
@@ -50,112 +76,94 @@ async function fetchQuestionsForPdf(topicId, difficulty, numQuestions) {
 }
 
 export const generateQuestionsPdf = async (topic, settings) => {
+  const questions = await fetchQuestionsForPdf(topic.id, settings.difficulty, settings.numQuestions);
+  if (questions.length === 0) {
+    alert("No questions found matching the selected criteria.");
+    return;
+  }
+
+  // 1. Create a temporary, off-screen container
+  const container = document.createElement('div');
+  container.style.position = 'absolute';
+  container.style.left = '-9999px';
+  document.body.appendChild(container);
+
+  const root = createRoot(container);
+
   try {
-    const questions = await fetchQuestionsForPdf(topic.id, settings.difficulty, settings.numQuestions);
-    if (questions.length === 0) {
-      alert("No questions found matching the selected criteria.");
-      return;
-    }
-
-    const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-    const margin = 15;
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const contentWidth = pageWidth - 2 * margin;
-    let y = margin;
-    let answerKey = [];
-
-    // --- PDF Header (Unchanged) ---
-    doc.setFontSize(20); doc.setFont(undefined, 'bold');
-    doc.text("ReactiQuiz", pageWidth / 2, y, { align: 'center' });
-    y += 10;
-    doc.setFontSize(14); doc.setFont(undefined, 'normal');
-    doc.text(`Topic: ${topic.name}`, margin, y);
-    y += 7;
-    doc.text(`Difficulty: ${settings.difficulty.charAt(0).toUpperCase() + settings.difficulty.slice(1)} | Questions: ${questions.length}`, margin, y);
-    y += 7;
-    doc.setFontSize(10); doc.setTextColor(150);
-    doc.text(`Generated on: ${format(new Date(), 'MMM d, yyyy HH:mm')}`, margin, y);
-    y += 10;
-    doc.setDrawColor(200);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 10;
-
-    // --- Questions Section ---
-    questions.forEach((q, index) => {
-      // --- START OF FIX: Sanitize all text before rendering ---
-      const questionText = sanitizeKatexForPdf(`Q${index + 1}. ${q.text}`);
-      const questionTextLines = doc.splitTextToSize(questionText, contentWidth);
-      
-      const optionsHeight = q.options.reduce((total, opt) => {
-          const sanitizedOpt = sanitizeKatexForPdf(`   (${opt.id}) ${opt.text}`);
-          return total + (doc.splitTextToSize(sanitizedOpt, contentWidth - 5).length * 7);
-      }, 5);
-
-      const questionBlockHeight = (questionTextLines.length * settings.fontSize * 0.35) + optionsHeight;
-
-      if (y + questionBlockHeight > pageHeight - margin) {
-        doc.addPage();
-        y = margin;
-      }
-
-      doc.setFontSize(settings.fontSize); doc.setTextColor(0); doc.setFont(undefined, 'bold');
-      doc.text(questionTextLines, margin, y);
-      y += (questionTextLines.length * settings.fontSize * 0.35) + 2;
-
-      doc.setFont(undefined, 'normal');
-      q.options.forEach(opt => {
-        const optionText = sanitizeKatexForPdf(`   (${opt.id}) ${opt.text}`);
-        const optionLines = doc.splitTextToSize(optionText, contentWidth - 5);
-        doc.text(optionLines, margin + 5, y);
-        y += (optionLines.length * 7);
-      });
-
-      const correctAnswer = q.options.find(opt => opt.id === q.correctOptionId);
-      if (settings.includeAnswers && !settings.answersAtEnd) {
-        doc.setFontSize(settings.fontSize - 2); doc.setTextColor(0, 100, 0);
-        const answerText = sanitizeKatexForPdf(`Answer: (${correctAnswer.id}) ${correctAnswer.text}`);
-        doc.text(answerText, margin + 5, y);
-        y += 5;
-        if (settings.includeExplanations && q.explanation) {
-            doc.setTextColor(100);
-            const explanationText = sanitizeKatexForPdf(`Explanation: ${q.explanation}`);
-            const explanationLines = doc.splitTextToSize(explanationText, contentWidth - 5);
-            doc.text(explanationLines, margin + 5, y);
-            y += (explanationLines.length * (settings.fontSize - 2) * 0.35) + 3;
-        }
-      }
-      
-      if (correctAnswer) {
-        const answerTextForKey = sanitizeKatexForPdf(`(${correctAnswer.id}) ${correctAnswer.text}`);
-        answerKey.push({ q: `Q${index + 1}`, ans: answerTextForKey });
-      } else {
-        answerKey.push({ q: `Q${index + 1}`, ans: `Answer not found.` });
-      }
-      // --- END OF FIX ---
-      y += 5;
+    // 2. Render the React component into the hidden container
+    await new Promise(resolve => {
+        root.render(<PrintableContent questions={questions} topic={topic} settings={settings} />);
+        setTimeout(resolve, 500); // Give it a moment to render KaTeX
     });
 
-    // --- Answer Key Section (Unchanged logic, but uses sanitized data) ---
-    if (settings.includeAnswers && settings.answersAtEnd) {
-        if (y + 20 > pageHeight - margin) { doc.addPage(); y = margin; }
-        else { y += 10; }
-        
-        doc.setFontSize(16); doc.setFont(undefined, 'bold'); doc.setTextColor(0);
-        doc.text("Answer Key", margin, y);
-        
+    // 3. Use html2canvas to capture the rendered content
+    const canvas = await html2canvas(container, {
+        scale: 2, // Higher scale for better quality
+        useCORS: true,
+        backgroundColor: '#ffffff',
+    });
+
+    // 4. Create the PDF and add the captured image
+    const doc = new jsPDF({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4',
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = 210; // A4 width in mm
+    const pageHeight = 295; // A4 height in mm
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+    }
+
+    // 5. Add the answer key table on a new page if needed
+    if (settings.includeAnswers) {
+        doc.addPage();
+        doc.setFontSize(16); doc.setFont(undefined, 'bold');
+        doc.text("Answer Key", 15, 20);
+
+        const answerKey = questions.map((q, index) => {
+            const correctAnswer = q.options.find(opt => opt.id === q.correctOptionId);
+            const answerText = correctAnswer ? `(${correctAnswer.id}) ${correctAnswer.text}` : 'Answer not found.';
+            return {
+                q: `Q${index + 1}`,
+                ans: sanitizeKatexForPdfText(answerText),
+                exp: settings.includeExplanations ? sanitizeKatexForPdfText(q.explanation) : ''
+            };
+        });
+
         autoTable(doc, {
-            startY: y + 8,
-            head: [['Question', 'Correct Answer']],
-            body: answerKey.map(item => [item.q, item.ans]), // 'ans' is already sanitized
+            startY: 28,
+            head: [['Question', 'Correct Answer', 'Explanation']],
+            body: answerKey.map(item => [item.q, item.ans, item.exp]),
             theme: 'grid',
             headStyles: { fillColor: [41, 128, 185], textColor: 255 },
-            styles: { fontSize: settings.fontSize - 2 }
+            styles: { fontSize: settings.fontSize - 2 },
+            columnStyles: { 2: { cellWidth: 'auto' } }
         });
     }
 
+    // 6. Save the final PDF
     doc.save(`ReactiQuiz_${topic.name.replace(/\s/g, '_')}.pdf`);
+
   } catch (error) {
-    alert(error.message);
+    alert(`Failed to generate PDF: ${error.message}`);
+    console.error("PDF Generation Error:", error);
+  } finally {
+    // 7. ALWAYS clean up the temporary container
+    root.unmount();
+    document.body.removeChild(container);
   }
 };
