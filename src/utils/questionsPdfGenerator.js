@@ -41,9 +41,7 @@ const PrintableContent = ({ questions, topic, settings }) => (
                     </p>
                     <ul style={{ listStyleType: 'none', paddingLeft: '20px', fontSize: '12px' }}>
                         {q.options.map(opt => (
-                            // --- START OF FIX: Added vertical margin to each list item ---
                             <li key={opt.id} style={{ marginBottom: '8px' }}> 
-                            // --- END OF FIX ---
                                 <MarkdownRenderer text={`(${opt.id}) ${opt.text}`} />
                             </li>
                         ))}
