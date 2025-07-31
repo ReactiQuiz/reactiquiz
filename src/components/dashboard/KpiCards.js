@@ -1,10 +1,11 @@
 // src/components/dashboard/KpiCards.js
 import React from 'react';
-import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack } from '@mui/material';
+import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid } from '@mui/material';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
+import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
-// This is the individual card component (for Total Quizzes or Average Score)
-const KpiCard = ({ title, value, caption, breakdownData }) => {
+// This is the individual card component for the "Overall Average Score"
+const AverageScoreCard = ({ value, caption, breakdownData }) => {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
 
@@ -15,7 +16,7 @@ const KpiCard = ({ title, value, caption, breakdownData }) => {
         >
             <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
-                    {title}
+                    Overall Average Score
                 </Typography>
                 <Typography variant="h3" sx={{ color: 'text.primary', fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>
                     {value}
@@ -40,31 +41,52 @@ const KpiCard = ({ title, value, caption, breakdownData }) => {
     );
 };
 
-// This component now correctly uses a Stack to arrange the cards vertically.
+// This is the main component that orchestrates the layout
 function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered }) {
-    const quizzesBreakdown = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
-        acc[key] = { name: value.name, value: `${value.count} quiz(zes)` };
+    const theme = useTheme();
+
+    const quizzesBreakdownForChart = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
+        acc[key] = { name: value.name, count: value.count };
         return acc;
     }, {});
     
-    const scoresBreakdown = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
+    const scoresBreakdownForList = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
         acc[key] = { name: value.name, value: `${value.average}% average` };
         return acc;
     }, {});
 
     return (
         <Stack spacing={2}>
-            <KpiCard
-                title="Total Quizzes Solved"
-                value={totalQuizzes}
-                caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
-                breakdownData={quizzesBreakdown}
-            />
-            <KpiCard
-                title="Overall Average Score"
+            {/* --- START OF FIX: New Top Card with Internal Grid Layout --- */}
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid ${theme.palette.divider}` }}>
+                <Grid container spacing={2} alignItems="center">
+                    {/* Left side of the top card */}
+                    <Grid item xs={12} sm={6}>
+                        <Box sx={{ textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <Typography variant="h6" color="text.secondary" sx={{ fontSize: '1rem' }}>
+                                Total Quizzes Solved
+                            </Typography>
+                            <Typography variant="h3" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+                                {totalQuizzes}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                                {isFiltered ? '(in selected filter)' : '(in selected period)'}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    {/* Right side of the top card */}
+                    <Grid item xs={12} sm={6}>
+                        <KpiBreakdownPieChart breakdownData={quizzesBreakdownForChart} />
+                    </Grid>
+                </Grid>
+            </Paper>
+            {/* --- END OF FIX --- */}
+            
+            {/* Bottom Card for Average Score */}
+            <AverageScoreCard
                 value={`${averageScore}%`}
                 caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
-                breakdownData={scoresBreakdown}
+                breakdownData={scoresBreakdownForList}
             />
         </Stack>
     );
