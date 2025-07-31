@@ -37,7 +37,7 @@ function OverallDifficultyCard({ data }) {
     if (!data) return null;
 
     return (
-        <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', border: `1px solid ${theme.palette.divider}` }}>
+        <Paper elevation={3} sx={{ ml: { xs: 2, sm: 2.5 }, height: '100%', border: `1px solid ${theme.palette.divider}` }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'medium' }}>
                 Correct Answers by Difficulty
             </Typography>
