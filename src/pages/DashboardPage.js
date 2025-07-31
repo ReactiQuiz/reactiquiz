@@ -95,7 +95,7 @@ function DashboardPage() {
 
                 <Grid item xs={12} md={8}>
                     {selectedSubject === 'all' ? (
-                        <Stack sx={{ height: '100%' }}>
+                        <Stack sx={{ height: '100%', mt: { xs: 2, sm: 2.5 } }}>
                             <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
                             <Grid container spacing={2}>
                                 {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
@@ -110,11 +110,13 @@ function DashboardPage() {
                             </Grid>
                         </Stack>
                     ) : (
-                        <SubjectDifficultyCard
-                            subjectKey={selectedSubject}
-                            title={`Difficulty Performance in ${allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}`}
-                            data={processedStats.subjectDifficultyPerformance[selectedSubject]}
-                        />
+                        <Stack sx={{ mt: { xs: 2, sm: 2.5 } }}>
+                            <SubjectDifficultyCard
+                                subjectKey={selectedSubject}
+                                title={`Difficulty Performance in ${allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}`}
+                                data={processedStats.subjectDifficultyPerformance[selectedSubject]}
+                            />
+                        </Stack>
                     )}
                 </Grid>
 
