@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, Box, Toolbar } from '@mui/material';
 import { AppThemeProvider } from './contexts/ThemeContext';
 import { SubjectColorsProvider } from './contexts/SubjectColorsContext';
+import { TopicsProvider } from './contexts/TopicsContext'; 
 import AppDrawer from './components/core/AppDrawer';
 import Footer from './components/core/Footer';
 import NavBar from './components/core/Navbar';
@@ -49,7 +50,9 @@ function App() {
       <AuthProvider>
         <AppThemeProvider>
           <SubjectColorsProvider>
-            <AppLayout />
+            <TopicsProvider> 
+              <AppLayout />
+            </TopicsProvider>
           </SubjectColorsProvider>
         </AppThemeProvider>
       </AuthProvider>

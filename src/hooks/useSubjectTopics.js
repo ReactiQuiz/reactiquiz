@@ -2,14 +2,38 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useSubjects } from './useSubjects'; // We will use this to get subject details
+import { useTopics } from '../contexts/TopicsContext'; // <-- Import the new hook
+
+const fetchQuizBySessionId = async (sessionId) => {
+    if (!sessionId) return null;
+    const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
+    return data;
+};
 
 export const useSubjectTopics = () => {
   const { subjectKey } = useParams();
   const navigate = useNavigate();
 
-  const [currentSubject, setCurrentSubject] = useState(null);
-  const [topics, setTopics] = useState([]);
+  // --- START OF REFACTOR: Get data from global contexts ---
+  const { subjects, isLoading: isLoadingSubjects } = useSubjects();
+  const { topics: allTopics, isLoading: isLoadingTopics } = useTopics();
+
+  // The overall loading state is a combination of both
+  const isLoading = isLoadingSubjects || isLoadingTopics;
+
+  // Derive current subject and topics for this page from the global state
+  const currentSubject = useMemo(() => {
+    return subjects.find(s => s.subjectKey.toLowerCase() === subjectKey.toLowerCase());
+  }, [subjects, subjectKey]);
+
+  const topicsForSubject = useMemo(() => {
+    if (!currentSubject) return [];
+    return allTopics.filter(topic => topic.subject_id === currentSubject.id);
+  }, [allTopics, currentSubject]);
+  // --- END OF REFACTOR ---
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -18,23 +42,6 @@ export const useSubjectTopics = () => {
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [selectedTopicForPdf, setSelectedTopicForPdf] = useState(null);
   
-  const { isLoading, error } = useQuery({
-      queryKey: ['topicsForSubject', subjectKey],
-      queryFn: async () => {
-        const [subjectsResponse, topicsResponse] = await Promise.all([
-            apiClient.get('/api/subjects'),
-            apiClient.get(`/api/topics/${subjectKey}`)
-        ]);
-        const foundSubject = subjectsResponse.data.find(s => s.subjectKey.toLowerCase() === subjectKey.toLowerCase());
-        if (!foundSubject) throw new Error(`Subject '${subjectKey}' not found.`);
-        setCurrentSubject(foundSubject);
-        setTopics(topicsResponse.data);
-        return topicsResponse.data;
-      },
-      enabled: !!subjectKey
-  });
-
-  // --- START OF FIX: This mutation now saves to localStorage and navigates to the loading page ---
   const createSessionMutation = useMutation({
     mutationFn: (quizParams) => apiClient.post('/api/quiz-sessions', { quizParams }),
     onSuccess: (response) => {
@@ -55,7 +62,6 @@ export const useSubjectTopics = () => {
         difficulty: settings.difficulty, 
         numQuestions: settings.numQuestions, 
         topicName: selectedTopicForQuiz.name, 
-        accentColor: currentSubject.accentColor, 
         subject: currentSubject.subjectKey, 
         quizClass: selectedTopicForQuiz.class 
       };
@@ -63,19 +69,19 @@ export const useSubjectTopics = () => {
     }
     handleCloseQuizModal();
   };
-  // --- END OF FIX ---
 
-  // ... [The rest of the hook is unchanged] ...
   const availableClasses = useMemo(() => {
-    const allClasses = topics.map(topic => topic.class).filter(Boolean);
+    const allClasses = topicsForSubject.map(topic => topic.class).filter(Boolean);
     return [...new Set(allClasses)].sort((a, b) => parseInt(a) - parseInt(b) || a.localeCompare(b));
-  }, [topics]);
+  }, [topicsForSubject]);
+
   const availableGenres = useMemo(() => {
-    const allGenres = topics.map(topic => topic.genre).filter(Boolean);
+    const allGenres = topicsForSubject.map(topic => topic.genre).filter(Boolean);
     return [...new Set(allGenres)].sort();
-  }, [topics]);
+  }, [topicsForSubject]);
+
   const filteredTopics = useMemo(() => {
-    return topics.filter(topic => {
+    return topicsForSubject.filter(topic => {
       const classMatch = !selectedClass || topic.class === selectedClass;
       const genreMatch = !selectedGenre || topic.genre === selectedGenre;
       const searchMatch = !searchTerm || 
@@ -83,20 +89,36 @@ export const useSubjectTopics = () => {
         (topic.description && topic.description.toLowerCase().includes(searchTerm.toLowerCase()));
       return classMatch && genreMatch && searchMatch;
     });
-  }, [topics, selectedClass, selectedGenre, searchTerm]);
+  }, [topicsForSubject, selectedClass, selectedGenre, searchTerm]);
+
   const handleOpenQuizModal = (topic) => { setSelectedTopicForQuiz(topic); setModalOpen(true); };
   const handleCloseQuizModal = () => { setModalOpen(false); setSelectedTopicForQuiz(null); };
+  
   const handleStudyFlashcards = (topic) => {
     if (currentSubject) {
-      navigate(`/flashcards/${topic.id}`, { state: { topicName: topic.name, accentColor: currentSubject.accentColor, subject: currentSubject.subjectKey, quizClass: topic.class } });
+      navigate(`/flashcards/${topic.id}`, { 
+        state: { 
+          topicName: topic.name, 
+          subject: currentSubject.subjectKey, 
+          quizClass: topic.class 
+        } 
+      });
     }
   };
+
   const handleOpenPdfModal = (topic) => { setSelectedTopicForPdf(topic); setPdfModalOpen(true); };
   const handleClosePdfModal = () => { setSelectedTopicForPdf(null); setPdfModalOpen(false); };
   
   return {
-    subjectKey, currentSubject, topics, isLoading, error: error ? error.message : null,
-    modalOpen, selectedTopicForQuiz, pdfModalOpen, selectedTopicForPdf,
+    subjectKey,
+    currentSubject,
+    topics: topicsForSubject, // Pass the already filtered topics
+    isLoading,
+    error: null, // Error handling can be enhanced in the contexts if needed
+    modalOpen,
+    selectedTopicForQuiz,
+    pdfModalOpen,
+    selectedTopicForPdf,
     searchTerm, setSearchTerm, selectedClass, setSelectedClass,
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,
     filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
