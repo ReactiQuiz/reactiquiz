@@ -1,11 +1,11 @@
 // src/components/dashboard/KpiCards.js
 import React from 'react';
-import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress } from '@mui/material';
+import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, alpha } from '@mui/material';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
-// This is the individual card component for the "Overall Average Score"
-const AverageScoreCard = ({ value, caption, breakdownData }) => {
+// A dedicated component for the "Overall Average Score" card for better code organization.
+const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats }) => {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
 
@@ -20,7 +20,29 @@ const AverageScoreCard = ({ value, caption, breakdownData }) => {
                 </Typography>
                 <Typography variant="caption" color="text.secondary">{caption}</Typography>
             </Box>
-            <List dense sx={{ pt: 2, textAlign: 'left' }}>
+
+            <Box sx={{ my: 2 }}>
+                <LinearProgress
+                    variant="determinate"
+                    value={parseFloat(value)}
+                    sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        backgroundColor: alpha(theme.palette.primary.main, 0.2),
+                        '& .MuiLinearProgress-bar': { backgroundColor: theme.palette.primary.main }
+                    }}
+                />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
+                    <Typography variant="caption" color="text.secondary">
+                        {overallQuestionStats.correct} Correct
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                        {overallQuestionStats.total} Questions
+                    </Typography>
+                </Box>
+            </Box>
+
+            <List dense sx={{ pt: 1, textAlign: 'left' }}>
                 <Divider sx={{ mb: 1 }} />
                 {Object.entries(breakdownData).length > 0 ? Object.entries(breakdownData).map(([subjectKey, data]) => (
                     <ListItem key={subjectKey} dense disableGutters>
@@ -36,8 +58,8 @@ const AverageScoreCard = ({ value, caption, breakdownData }) => {
     );
 };
 
-// This is the main component that orchestrates the layout
-function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered }) {
+// This is the main component that orchestrates the layout for the left column of the dashboard.
+function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, overallQuestionStats }) {
     const { getColor } = useSubjectColors();
 
     const quizzesBreakdownForChart = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
@@ -63,8 +85,8 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered })
                 </Typography>
                 <Grid container spacing={1} alignItems="center">
                     {/* Column 1: Textual Breakdown */}
-                    <Grid item xs={12} sm={4}>
-                        <List dense sx={{ textAlign: 'left' }}>
+                    <Grid item xs={12} md={4}>
+                        <List dense sx={{ textAlign: 'left', p: 0 }}>
                             {Object.entries(quizzesBreakdownForChart).map(([key, data]) => (
                                 <ListItem key={key} dense disableGutters>
                                     <ListItemText
@@ -77,7 +99,7 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered })
                         </List>
                     </Grid>
                     {/* Column 2: The Big Number */}
-                    <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
                         <Typography variant="h2" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                             {totalQuizzes}
                         </Typography>
@@ -86,7 +108,7 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered })
                         </Typography>
                     </Grid>
                     {/* Column 3: The Pie Chart */}
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} md={4}>
                         <KpiBreakdownPieChart breakdownData={quizzesBreakdownForChart} />
                     </Grid>
                 </Grid>
@@ -97,6 +119,7 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered })
                 value={`${averageScore}%`}
                 caption={isFiltered ? '(in selected filter)' : '(in selected period)'}
                 breakdownData={scoresBreakdownForList}
+                overallQuestionStats={overallQuestionStats}
             />
         </Stack>
     );
