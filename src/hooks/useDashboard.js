@@ -96,6 +96,8 @@ export const useDashboard = () => {
 
         allSubjects.forEach(subject => {
             const resultsForSubj = filteredResults.filter(r => r.subject === subject.subjectKey);
+            const totalQuestionsForSubj = resultsForSubj.reduce((acc, r) => acc + JSON.parse(r.questionsActuallyAttemptedIds || '[]').length, 0);
+
             if (resultsForSubj.length > 0) {
                 subjectBreakdowns[subject.subjectKey] = {
                     name: subject.name,
