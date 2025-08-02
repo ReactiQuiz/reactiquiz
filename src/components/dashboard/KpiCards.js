@@ -1,16 +1,24 @@
 // src/components/dashboard/KpiCards.js
 import React from 'react';
-import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, alpha } from '@mui/material';
+import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, Chip, alpha } from '@mui/material';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
-// A dedicated component for the "Overall Average Score" card for better code organization.
+// This is the individual card component for the "Overall Average Score"
 const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats }) => {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
 
+    // Helper function to style the percentage chip based on value
+    const getVibrantChipStyles = (percentage) => {
+        if (percentage >= 70) return { backgroundColor: theme.palette.success.main };
+        if (percentage >= 40) return { backgroundColor: theme.palette.warning.main };
+        return { backgroundColor: theme.palette.error.main };
+    };
+
     return (
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid ${theme.palette.divider}`, height: '100%' }}>
+            {/* Top section with the main average score */}
             <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
                     Overall Average Score
@@ -21,6 +29,7 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 <Typography variant="caption" color="text.secondary">{caption}</Typography>
             </Box>
 
+            {/* Overall Progress Bar */}
             <Box sx={{ my: 2 }}>
                 <LinearProgress
                     variant="determinate"
@@ -42,14 +51,24 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 </Box>
             </Box>
 
+            {/* List of per-subject averages with chips */}
             <List dense sx={{ pt: 1, textAlign: 'left' }}>
                 <Divider sx={{ mb: 1 }} />
                 {Object.entries(breakdownData).length > 0 ? Object.entries(breakdownData).map(([subjectKey, data]) => (
-                    <ListItem key={subjectKey} dense disableGutters>
+                    <ListItem key={subjectKey} dense disableGutters sx={{ display: 'flex', alignItems: 'center' }}>
                         <ListItemText
                             primary={data.name}
                             primaryTypographyProps={{ sx: { color: getColor(subjectKey), fontWeight: 500 } }}
-                            secondary={`${data.value} (${data.totalQuestions} Qs)`}
+                            secondary={`(${data.totalQuestions} Qs)`}
+                        />
+                        <Chip
+                            label={`${data.average}%`}
+                            size="small"
+                            sx={{
+                                fontWeight: 'bold',
+                                color: '#fff',
+                                ...getVibrantChipStyles(data.average)
+                            }}
                         />
                     </ListItem>
                 )) : <Typography variant="caption" color="text.secondary">No subject data.</Typography>}
@@ -58,7 +77,7 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
     );
 };
 
-// This is the main component that orchestrates the layout for the left column of the dashboard.
+// This is the main component that orchestrates the layout for the left column.
 function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, overallQuestionStats }) {
     const { getColor } = useSubjectColors();
 
@@ -67,10 +86,11 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, o
         return acc;
     }, {});
     
+    // Pass the raw average number for chip styling
     const scoresBreakdownForList = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
         acc[key] = { 
             name: value.name, 
-            value: `${value.average}% average`,
+            average: value.average,
             totalQuestions: value.totalQuestions 
         };
         return acc;
@@ -84,7 +104,6 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, o
                     Total Quizzes Solved
                 </Typography>
                 <Grid container spacing={1} alignItems="center">
-                    {/* Column 1: Textual Breakdown */}
                     <Grid item xs={12} md={4}>
                         <List dense sx={{ textAlign: 'left', p: 0 }}>
                             {Object.entries(quizzesBreakdownForChart).map(([key, data]) => (
@@ -98,7 +117,6 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, o
                             ))}
                         </List>
                     </Grid>
-                    {/* Column 2: The Big Number */}
                     <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
                         <Typography variant="h2" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                             {totalQuizzes}
@@ -107,7 +125,6 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, o
                             {isFiltered ? '(in selected filter)' : '(in selected period)'}
                         </Typography>
                     </Grid>
-                    {/* Column 3: The Pie Chart */}
                     <Grid item xs={12} md={4}>
                         <KpiBreakdownPieChart breakdownData={quizzesBreakdownForChart} />
                     </Grid>
