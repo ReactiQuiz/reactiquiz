@@ -111,7 +111,7 @@ function DashboardPage() {
                             </Grid>
                         </Stack>
                     ) : (
-                        <Stack sx={{ p: { xs: 2, sm: 2.5 } }}>
+                        <Stack>
                             <SubjectDifficultyCard
                                 subjectKey={selectedSubject}
                                 title={`Difficulty Performance in ${allSubjects.find(s => s.subjectKey === selectedSubject)?.name || ''}`}
