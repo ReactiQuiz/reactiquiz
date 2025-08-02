@@ -12,7 +12,7 @@ import CreatorProfile from '../components/about/CreatorProfile';
 import ContactFormSection from '../components/about/ContactFormSection';
 
 // Constants for creator profile - these will be passed as props
-const YOUR_PROFILE_IMAGE_URL = `${process.env.PUBLIC_URL}/profile-placeholder.png`;
+const YOUR_PROFILE_IMAGE_URL = `../../public/profile-placeholder.png`;
 const YOUR_NAME = "Sanskar Sontakke";
 const YOUR_TITLE = "Owner, Developer, Creator";
 const YOUR_BIO = "I am a passionate developer with a keen interest in creating educational tools. ReactiQuiz started as a project to combine my love for learning and coding, aiming to provide a useful resource for students. I believe in making education accessible and engaging through technology.";
