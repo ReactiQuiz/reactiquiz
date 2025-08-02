@@ -1,20 +1,13 @@
 // src/components/dashboard/KpiCards.js
 import React from 'react';
-import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, Chip, alpha } from '@mui/material';
+import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, alpha } from '@mui/material';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
-// This is the individual card component for the "Overall Average Score"
+// A dedicated component for the "Overall Average Score" card for better code organization.
 const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats }) => {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
-
-    // Helper function to style the percentage chip based on value
-    const getVibrantChipStyles = (percentage) => {
-        if (percentage >= 70) return { backgroundColor: theme.palette.success.main };
-        if (percentage >= 40) return { backgroundColor: theme.palette.warning.main };
-        return { backgroundColor: theme.palette.error.main };
-    };
 
     return (
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid ${theme.palette.divider}`, height: '100%' }}>
@@ -51,28 +44,38 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 </Box>
             </Box>
 
-            {/* List of per-subject averages with chips */}
+            {/* --- START OF FINAL FIX: List of per-subject averages with progress bars --- */}
             <List dense sx={{ pt: 1, textAlign: 'left' }}>
-                <Divider sx={{ mb: 1 }} />
+                <Divider sx={{ mb: 1.5 }} />
                 {Object.entries(breakdownData).length > 0 ? Object.entries(breakdownData).map(([subjectKey, data]) => (
-                    <ListItem key={subjectKey} dense disableGutters sx={{ display: 'flex', alignItems: 'center' }}>
-                        <ListItemText
-                            primary={data.name}
-                            primaryTypographyProps={{ sx: { color: getColor(subjectKey), fontWeight: 500 } }}
-                            secondary={`(${data.totalQuestions} Qs)`}
-                        />
-                        <Chip
-                            label={`${data.average}%`}
-                            size="small"
+                    <ListItem key={subjectKey} dense disableGutters sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Typography variant="body1" sx={{ color: getColor(subjectKey), fontWeight: 500 }}>
+                                {data.name}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                                {data.average}%
+                            </Typography>
+                        </Box>
+                        <LinearProgress
+                            variant="determinate"
+                            value={data.average}
                             sx={{
-                                fontWeight: 'bold',
-                                color: '#fff',
-                                ...getVibrantChipStyles(data.average)
+                                height: 6,
+                                borderRadius: 3,
+                                width: '100%',
+                                mt: 0.5,
+                                backgroundColor: alpha(getColor(subjectKey), 0.2),
+                                '& .MuiLinearProgress-bar': { backgroundColor: getColor(subjectKey) }
                             }}
                         />
+                        <Typography variant="caption" color="text.secondary" sx={{ alignSelf: 'flex-end' }}>
+                            {data.totalQuestions} Qs
+                        </Typography>
                     </ListItem>
                 )) : <Typography variant="caption" color="text.secondary">No subject data.</Typography>}
             </List>
+            {/* --- END OF FINAL FIX --- */}
         </Paper>
     );
 };
@@ -86,7 +89,6 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, o
         return acc;
     }, {});
     
-    // Pass the raw average number for chip styling
     const scoresBreakdownForList = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
         acc[key] = { 
             name: value.name, 
