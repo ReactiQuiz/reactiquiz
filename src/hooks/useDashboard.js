@@ -115,7 +115,8 @@ export const useDashboard = () => {
                     name: subject.name,
                     count: resultsForSubj.length,
                     average: Math.round(resultsForSubj.reduce((acc, r) => acc + r.percentage, 0) / resultsForSubj.length),
-                    totalQuestions: totalQuestionsForSubj
+                    totalQuestions: totalQuestionsForSubj,
+                    totalCorrect: totalCorrectForSubj 
                 };
 
                 const diffStats = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
