@@ -6,9 +6,9 @@ import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';
 
 const SuspenseFallback = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
-        <CircularProgress />
-    </Box>
+  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
+    <CircularProgress />
+  </Box>
 );
 
 const HomePage = React.lazy(() => import('../pages/HomePage'));
@@ -42,12 +42,12 @@ function AppRoutes({ onOpenChangePasswordModal }) {
         <Route path="/" element={currentUser ? <Navigate to="/dashboard" replace /> : <HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/homibhabha" element={<HomibhabhaPage />} />
         <Route path="/about" element={<AboutPage />} />
 
         {/* Protected Routes */}
         <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
         <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
+        <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/account" element={<ProtectedRoute><AccountPage onOpenChangePasswordModal={onOpenChangePasswordModal} /></ProtectedRoute>} />
         <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
@@ -56,7 +56,7 @@ function AppRoutes({ onOpenChangePasswordModal }) {
         <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
         <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-        
+
         {/* --- START OF FIX: Added the missing route for flashcards --- */}
         <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
         {/* --- END OF FIX --- */}
