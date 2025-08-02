@@ -4,14 +4,12 @@ import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
-// A dedicated component for the "Overall Average Score" card for better code organization.
 const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats }) => {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
 
     return (
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid ${theme.palette.divider}`, height: '100%' }}>
-            {/* Top section with the main average score */}
             <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
                     Overall Average Score
@@ -22,7 +20,6 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 <Typography variant="caption" color="text.secondary">{caption}</Typography>
             </Box>
 
-            {/* Overall Progress Bar */}
             <Box sx={{ my: 2 }}>
                 <LinearProgress
                     variant="determinate"
@@ -44,7 +41,6 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 </Box>
             </Box>
 
-            {/* --- START OF FINAL FIX: List of per-subject averages with progress bars --- */}
             <List dense sx={{ pt: 1, textAlign: 'left' }}>
                 <Divider sx={{ mb: 1.5 }} />
                 {Object.entries(breakdownData).length > 0 ? Object.entries(breakdownData).map(([subjectKey, data]) => (
@@ -69,18 +65,18 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                                 '& .MuiLinearProgress-bar': { backgroundColor: getColor(subjectKey) }
                             }}
                         />
+                        {/* --- START OF FIX: Display correct/total questions --- */}
                         <Typography variant="caption" color="text.secondary" sx={{ alignSelf: 'flex-end' }}>
-                            {data.totalQuestions} Qs
+                            {`${data.totalCorrect} / ${data.totalQuestions} Correct`}
                         </Typography>
+                        {/* --- END OF FIX --- */}
                     </ListItem>
                 )) : <Typography variant="caption" color="text.secondary">No subject data.</Typography>}
             </List>
-            {/* --- END OF FINAL FIX --- */}
         </Paper>
     );
 };
 
-// This is the main component that orchestrates the layout for the left column.
 function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, overallQuestionStats }) {
     const { getColor } = useSubjectColors();
 
@@ -89,11 +85,13 @@ function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, o
         return acc;
     }, {});
     
+    // Pass all necessary data points through to the card component
     const scoresBreakdownForList = Object.entries(subjectBreakdowns).reduce((acc, [key, value]) => {
         acc[key] = { 
             name: value.name, 
             average: value.average,
-            totalQuestions: value.totalQuestions 
+            totalQuestions: value.totalQuestions,
+            totalCorrect: value.totalCorrect // <-- Pass the new data point
         };
         return acc;
     }, {});
