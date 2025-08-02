@@ -1,6 +1,6 @@
 // src/pages/LoginPage.js
 import { useState, useEffect } from 'react';
-import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Link as MuiLink } from '@mui/material';
+import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Paper, Link as MuiLink } from '@mui/material';
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
