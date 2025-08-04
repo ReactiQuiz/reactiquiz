@@ -1,6 +1,6 @@
 // src/components/results/HistoricalResultsList.js
 import React from 'react';
-import { Grid, Typography, Paper, Button, Skeleton } from '@mui/material';
+import { Box, Typography, Paper, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoricalResultItem from './HistoricalResultItem';
@@ -8,9 +8,8 @@ import HistoricalResultItem from './HistoricalResultItem';
 function HistoricalResultsList({ results }) {
   const navigate = useNavigate();
 
-  // isLoading state is now handled by the parent ResultsPage
   if (!results) {
-    return null; // Should be handled by parent's isLoading check
+    return null;
   }
   
   if (results.length === 0) {
@@ -30,13 +29,19 @@ function HistoricalResultsList({ results }) {
   }
 
   return (
-   <Grid container width="100%" spacing={{ xs:"0%", sm:"1%", md:"1%", lg:"1%", xl:"1%" }}>
+    // --- START OF FIX: Replaced MUI Grid with a robust CSS Grid Box ---
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+        gap: 2,
+      }}
+    >
       {results.map((result) => (
-        <Grid item key={result.id} mb="1%" width={{ xs: "100%", sm: "50%", md: "33.333333%", lg: "25%", xl: "20%" }}>
-          <HistoricalResultItem result={result} />
-        </Grid>
+        <HistoricalResultItem key={result.id} result={result} />
       ))}
-    </Grid>
+    </Box>
+    // --- END OF FIX ---
   );
 }
 

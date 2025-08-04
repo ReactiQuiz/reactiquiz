@@ -13,15 +13,13 @@ function ResultsPage() {
     const { resultId } = useParams();
     const { currentUser } = useAuth();
     const navigate = useNavigate();
-    const { getColor } = useSubjectColors(); // Use the hook to get the color function
+    const { getColor } = useSubjectColors();
     
-    // The useResults hook now handles all data fetching
     const { historicalList, detailData, isLoading, error } = useResults(resultId);
 
-    // Determine the accent color. For detail view, use the specific result's subject. For list view, use a default.
     const accentColor = resultId && detailData?.result?.subject
         ? getColor(detailData.result.subject)
-        : getColor('default'); // Fallback to a default color for the list view title
+        : '#4DB6AC'; // A consistent, pleasant color for the results page title
 
     if (isLoading) {
         return (
@@ -40,7 +38,7 @@ function ResultsPage() {
     }
 
     return (
-        <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, margin: 'auto' }}>
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto' }}>
             <Typography
                 variant="h4"
                 gutterBottom
@@ -55,7 +53,9 @@ function ResultsPage() {
                 }}
             >
                 <PollIcon sx={{ fontSize: '1.2em', mr: 1 }} />
-                {currentUser?.name || 'Your'} Quiz History
+                {/* --- START OF FIX: Use currentUser.name for the title --- */}
+                {currentUser?.name}'s Quiz History
+                {/* --- END OF FIX --- */}
             </Typography>
 
             {resultId ? (
