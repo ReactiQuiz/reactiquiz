@@ -6,12 +6,12 @@ import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
 
+// Fetcher and save functions (unchanged)
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
     const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
     return data;
 };
-
 const saveQuizResult = async (resultPayload) => {
     const { data } = await apiClient.post('/api/results', resultPayload);
     return data;
@@ -36,19 +36,24 @@ export const useQuiz = () => {
         retry: false,
     });
 
+    // --- START OF FIX: Updated mutation logic ---
     const saveResultMutation = useMutation({
         mutationFn: saveQuizResult,
-        onSuccess: (data) => {
-            // --- START OF FIX: Invalidate ALL user-specific data queries ---
-            queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
-            queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
-            // --- END OF FIX ---
+        onSuccess: async (data) => {
+            // 1. Wait for the query invalidation to complete.
+            // This ensures that the next time the results list is needed, it WILL refetch.
+            await queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
+            await queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
             
-            const realResultId = data.id;
-            if (!realResultId) throw new Error("API did not return a valid result ID.");
-            navigate(`/results/${realResultId}`);
+            // 2. Navigate to the main results list page.
+            navigate('/results');
         },
+        onError: (err) => {
+            console.error("Failed to save result:", err);
+            // Error handling can be enhanced here if needed
+        }
     });
+    // --- END OF FIX ---
 
     useEffect(() => {
         if (!isLoading && !isError && sessionData) {
@@ -97,6 +102,8 @@ export const useQuiz = () => {
     const handleOptionSelect = (questionId, selectedOptionId) => {
         setUserAnswers(prev => ({ ...prev, [questionId]: selectedOptionId }));
     };
+
+
 
     const handleAbandonQuiz = () => {
         if (window.confirm("Are you sure? Your progress will be lost.")) {
