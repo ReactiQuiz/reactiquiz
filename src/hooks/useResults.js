@@ -21,17 +21,14 @@ export const useResults = (resultId) => {
     const { currentUser } = useAuth();
     const { topics: allTopics } = useTopics();
 
-    // --- START OF THE DEFINITIVE FIX ---
-
-    // 1. Fetch the entire list of results. This query is now ALWAYS enabled for a logged-in user,
-    // ensuring the data is always available in the cache for the detail page to use.
+    // 1. Fetch the entire list of results. This is the source of truth.
     const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
         queryKey: ['userResults', currentUser?.id],
         queryFn: fetchAllResults,
-        enabled: !!currentUser, // <-- This is the key change. It no longer checks for `!resultId`.
+        enabled: !!currentUser,
     });
 
-    // 2. Memoize the enriched list (this logic is unchanged but now more reliable).
+    // 2. Memoize the enriched list (adding topic names).
     const historicalList = useMemo(() => {
         if (isLoadingList || allTopics.length === 0) return [];
         return allResults.map(res => {
@@ -40,7 +37,7 @@ export const useResults = (resultId) => {
         });
     }, [allResults, allTopics, isLoadingList]);
 
-    // 3. Find the specific result for the detail page from the now-reliable list.
+    // 3. Find the specific result for the detail page from the reliable list.
     const singleResultData = useMemo(() => {
         if (!resultId || historicalList.length === 0) return null;
         return historicalList.find(r => String(r.id) === String(resultId));
@@ -55,29 +52,49 @@ export const useResults = (resultId) => {
         enabled: !!topicIdForDetail,
     });
     
-    // 5. Assemble the final detailData object.
+    // 5. Assemble the final detailData object with robust parsing.
     const detailData = useMemo(() => {
-        if (!singleResultData || detailQuestions.length === 0) return null;
+        if (!singleResultData || !detailQuestions) return null;
         
-        const attemptedIds = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
-        const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
+        try {
+            const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
+            
+            // --- START OF THE DEFINITIVE FIX ---
+            // This logic robustly handles both formats: an array of strings OR an array of objects.
+            let attemptedIds = [];
+            const rawAttempted = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
+            
+            if (rawAttempted.length > 0) {
+                if (typeof rawAttempted[0] === 'object' && rawAttempted[0] !== null && 'id' in rawAttempted[0]) {
+                    // It's an array of question objects, so we map to get the IDs.
+                    attemptedIds = rawAttempted.map(q => q.id);
+                } else {
+                    // It's already an array of strings (the expected format).
+                    attemptedIds = rawAttempted;
+                }
+            }
+            // --- END OF THE DEFINITIVE FIX ---
 
-        const detailedQuestions = attemptedIds.map(qId => {
-            const fullData = detailQuestions.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
-            const userAnswerId = userAnswers[qId];
-            return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
-        });
+            // If we have questions for a standard quiz, use those. Otherwise, use the embedded questions.
+            const questionsSource = detailQuestions.length > 0 ? detailQuestions : rawAttempted;
 
-        return { result: singleResultData, detailedQuestions };
+            const detailedQuestions = attemptedIds.map(qId => {
+                const fullData = questionsSource.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
+                const userAnswerId = userAnswers[qId];
+                return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
+            });
+
+            return { result: singleResultData, detailedQuestions };
+
+        } catch (e) {
+            console.error("Failed to parse result data:", e, singleResultData);
+            return null; // Return null if any parsing fails, preventing a crash.
+        }
     }, [singleResultData, detailQuestions]);
-
-    // --- END OF THE DEFINITIVE FIX ---
 
     return {
         historicalList,
         detailData,
-        // The page is loading if it's the detail page and either the list or questions are loading,
-        // or if it's the list page and the list is loading.
         isLoading: resultId ? (isLoadingList || isLoadingDetailQuestions) : isLoadingList,
         error: listError ? listError.message : null,
     };
