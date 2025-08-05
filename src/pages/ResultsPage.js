@@ -1,6 +1,6 @@
 // src/pages/ResultsPage.js
 import React from 'react';
-import { Box, Typography, CircularProgress, Alert } from '@mui/material';
+import { Box, Typography, CircularProgress, Alert, useTheme  } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useResults } from '../hooks/useResults';
