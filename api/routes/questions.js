@@ -5,18 +5,44 @@ const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
-// --- START OF FIX: USE TRANSACTION ---
 router.get('/', async (req, res) => {
-    const { topicId } = req.query;
-    if (!topicId) return res.status(400).json({ message: 'A topicId query parameter is required.' });
-    logApi('GET', '/api/questions', `Topic: ${topicId}`);
+    const { topicId, ids } = req.query; // Now accepts 'ids' as well
+
+    if (!topicId && !ids) {
+        return res.status(400).json({ message: 'A topicId or a list of ids is required.' });
+    }
     
     const tx = await turso.transaction("read");
     try {
-        const result = await tx.execute({
-            sql: "SELECT * FROM questions WHERE topicId = ?",
-            args: [topicId]
-        });
+        let result;
+        
+        // --- START OF THE DEFINITIVE FIX ---
+        // Prioritize fetching by specific IDs if they are provided.
+        if (ids) {
+            const idArray = ids.split(',');
+            if (idArray.length === 0) {
+                return res.json([]); // Return empty if no IDs are provided
+            }
+            logApi('GET', '/api/questions', `Fetching ${idArray.length} specific questions`);
+
+            // Create the correct number of placeholders for the SQL query
+            const placeholders = idArray.map(() => '?').join(',');
+            
+            result = await tx.execute({
+                sql: `SELECT * FROM questions WHERE id IN (${placeholders})`,
+                args: idArray
+            });
+
+        } else if (topicId) {
+            // Fallback to the original logic if only a topicId is provided
+            logApi('GET', '/api/questions', `Topic: ${topicId}`);
+            result = await tx.execute({
+                sql: "SELECT * FROM questions WHERE topicId = ?",
+                args: [topicId]
+            });
+        }
+        // --- END OF THE DEFINITIVE FIX ---
+
         await tx.commit();
         const parsedRows = result.rows.map(row => ({
             ...row,
@@ -25,10 +51,9 @@ router.get('/', async (req, res) => {
         res.json(parsedRows);
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', `Fetching questions for ${topicId} failed`, e.message);
+        logError('DB ERROR', `Fetching questions failed`, e.message);
         res.status(500).json({ message: 'Could not fetch questions.' });
     }
 });
-// --- END OF FIX ---
 
 module.exports = router;

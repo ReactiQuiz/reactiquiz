@@ -7,16 +7,17 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, accentColor }) {
   const theme = useTheme();
 
-  // The accentColor is now received directly as a prop.
-  // No need to call a hook here.
-
   return (
     <Card sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        height: '100%', 
-        width: '100%', // Ensure card fills its Grid item parent
-        borderTop: `4px solid ${accentColor}` 
+        display: 'flex', flexDirection: 'column', height: '100%', width: '100%', 
+        borderTop: `4px solid ${accentColor}`,
+        // --- START OF FIX: Added hover effect ---
+        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: theme.shadows[6],
+        },
+        // --- END OF FIX ---
     }}>
       <CardContent sx={{ flexGrow: 1, pb: 1 }}>
         <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: accentColor, mb: 1 }}>
@@ -32,21 +33,9 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, ac
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'space-around', p: 1 }}>
-        <Tooltip title="Start Quiz">
-          <IconButton color="primary" onClick={onStartQuiz} sx={{ color: accentColor }}>
-            <PlayCircleOutlineIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Study Flashcards">
-          <IconButton onClick={onStudyFlashcards} sx={{ color: accentColor }}>
-            <StyleIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Print Questions">
-          <IconButton onClick={onPrintQuestions} sx={{ color: accentColor }}>
-            <PictureAsPdfIcon />
-          </IconButton>
-        </Tooltip>
+        <Tooltip title="Start Quiz"><IconButton onClick={onStartQuiz} sx={{ color: accentColor }}><PlayCircleOutlineIcon /></IconButton></Tooltip>
+        <Tooltip title="Study Flashcards"><IconButton onClick={onStudyFlashcards} sx={{ color: accentColor }}><StyleIcon /></IconButton></Tooltip>
+        <Tooltip title="Print Questions"><IconButton onClick={onPrintQuestions} sx={{ color: accentColor }}><PictureAsPdfIcon /></IconButton></Tooltip>
       </CardActions>
     </Card>
   );

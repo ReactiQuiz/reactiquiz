@@ -26,47 +26,32 @@ function HistoricalResultItem({ result }) {
     <Paper
       onClick={handleResultClick}
       sx={{
-        p: 2,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 2,
-        borderLeft: `5px solid ${itemAccentColor}`,
-        cursor: 'pointer',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        p: 2, height: '100%', display: 'flex', flexDirection: 'column', borderRadius: 2,
+        borderLeft: `5px solid ${itemAccentColor}`, cursor: 'pointer',
+        // --- START OF FIX: Added hover effect ---
+        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
         '&:hover': {
           transform: 'translateY(-4px)',
           boxShadow: theme.shadows[6],
         },
+        // --- END OF FIX ---
       }}
       elevation={3}
     >
       <Box sx={{ flexGrow: 1, mb: 1.5 }}>
-        {/* --- START OF FIX: Improved title styling to prevent ugly wrapping --- */}
         <Typography 
           variant="h6" 
-          sx={{ 
-            fontWeight: 600, 
-            color: itemAccentColor, 
-            lineHeight: 1.3, 
-            mb: 1, 
-            textTransform: 'capitalize',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}
+          sx={{ fontWeight: 600, color: itemAccentColor, lineHeight: 1.3, mb: 1, textTransform: 'capitalize', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
           title={result.topicName || result.topicId.replace(/-/g, ' ')}
         >
           {result.topicName || result.topicId.replace(/-/g, ' ')}
         </Typography>
-        {/* --- END OF FIX --- */}
         <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
           {result.class && <Chip label={`Class ${result.class}`} size="small" variant="outlined" />}
           {result.difficulty && <Chip label={result.difficulty} size="small" variant="outlined" sx={{ textTransform: 'capitalize' }} />}
         </Stack>
       </Box>
 
-      {/* --- START OF FIX: Improved score and percentage layout --- */}
       <Stack spacing={1}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography variant="body2" color="text.secondary">Score</Typography>
@@ -78,27 +63,15 @@ function HistoricalResultItem({ result }) {
             <LinearProgress
               variant="determinate"
               value={result.percentage}
-              sx={{
-                height: 8,
-                borderRadius: 4,
-                flexGrow: 1, // Allow progress bar to take available space
-                backgroundColor: alpha(itemAccentColor, 0.2),
-                '& .MuiLinearProgress-bar': { backgroundColor: itemAccentColor }
-              }}
+              sx={{ height: 8, borderRadius: 4, flexGrow: 1, backgroundColor: alpha(itemAccentColor, 0.2), '& .MuiLinearProgress-bar': { backgroundColor: itemAccentColor } }}
             />
             <Chip
               label={`${result.percentage}%`}
               size="small"
-              sx={{
-                fontWeight: 'bold',
-                color: 'white',
-                minWidth: '50px', // Ensure chip has a consistent width
-                ...getVibrantChipStyles(result.percentage)
-              }}
+              sx={{ fontWeight: 'bold', color: 'white', minWidth: '50px', ...getVibrantChipStyles(result.percentage) }}
             />
           </Box>
       </Stack>
-      {/* --- END OF FIX --- */}
       <Typography variant="caption" color="text.secondary" sx={{ mt: 1.5, display: 'block', textAlign: 'right' }}>
         {new Date(result.timestamp).toLocaleDateString()}
       </Typography>
