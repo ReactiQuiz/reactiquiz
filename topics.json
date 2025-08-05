@@ -662,5 +662,13 @@
         "class": "9th",
         "genre": "State Board",
         "subject": "physics"
+    },
+    {
+        "id": "basic-mathematics-11th",
+        "name": "Basic Mathematics",
+        "description": "Learn the basics for Mathematics",
+        "class": "9th",
+        "genre": "DC Pandey",
+        "subject": "mathematics"
     }
 ]
