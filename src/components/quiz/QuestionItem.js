@@ -7,22 +7,26 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
   const theme = useTheme();
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
+  // --- START OF THE DEFINITIVE FIX ---
+  // Pre-process the text to replace LaTeX newlines with standard newlines.
+  const processedText = question.text ? question.text.replace(/\\newline/g, '\n') : '';
+  // --- END OF THE DEFINITIVE FIX ---
+
   return (
     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3, width: '100%', borderRadius: 2 }}>
       <Typography variant="h6" gutterBottom component="div" sx={{ color: theme.palette.text.secondary, fontWeight: 500 }}>
         Question {questionNumber}:
       </Typography>
 
-      {/* --- START OF FIX: Added white-space property --- */}
       <Box sx={{ 
           mb: 2.5, 
           color: theme.palette.text.primary, 
           fontSize: '1.1rem',
-          whiteSpace: 'pre-wrap' // This tells CSS to respect newline characters
+          whiteSpace: 'pre-wrap'
       }}>
-        <MarkdownRenderer text={question.text} />
+        {/* Render the processed text */}
+        <MarkdownRenderer text={processedText} />
       </Box>
-      {/* --- END OF FIX --- */}
 
       <Box display="flex" flexDirection="column" gap={1.5}>
         {question.options.map((option) => {
