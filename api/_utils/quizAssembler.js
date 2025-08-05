@@ -20,8 +20,6 @@ const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, difficultyR
 
         const needed = totalNeeded - subjectQuestions.length;
         
-        // --- START OF THE DEFINITIVE FIX ---
-        // This query now correctly JOINS the subjects table to filter by the subjectKey.
         const { rows } = await tx.execute({
             sql: `
                 SELECT q.* FROM questions q
@@ -33,7 +31,6 @@ const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, difficultyR
             `,
             args: [subjectKey, grade, difficultyRange.min, difficultyRange.max]
         });
-        // --- END OF THE DEFINITIVE FIX ---
 
         const newQuestions = rows.filter(q => !gatheredQuestionIds.has(q.id));
         const questionsToAdd = shuffleArray(newQuestions).slice(0, needed);
@@ -55,11 +52,20 @@ const assembleHomiBhabhaPracticeTest = async (tx, params) => {
     ]);
     
     const finalQuestionList = [...physicsQs, ...chemistryQs, ...biologyQs, ...gkQs];
+    
+    // --- START OF THE DEFINITIVE FIX ---
+    // The error-throwing block has been removed.
+    // We now simply log a warning to the server if the count is low, but proceed with the quiz.
     const totalRequired = Object.values(questionComposition).reduce((acc, rule) => acc + rule.total, 0);
-
     if (finalQuestionList.length < totalRequired) {
-        throw new Error(`Could not assemble the practice test. Only found ${finalQuestionList.length} of ${totalRequired} required questions.`);
+        console.warn(`[Quiz Assembly Warning]: Could only find ${finalQuestionList.length} of ${totalRequired} required questions for Homi Bhabha test. Proceeding with the available questions.`);
     }
+    
+    // If for some reason NO questions are found at all, we should still fail gracefully.
+    if (finalQuestionList.length === 0) {
+        throw new Error(`Could not assemble the practice test. No questions were found for any of the required subjects.`);
+    }
+    // --- END OF THE DEFINITIVE FIX ---
     
     return shuffleArray(finalQuestionList);
 };
