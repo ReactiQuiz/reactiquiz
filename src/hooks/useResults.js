@@ -11,11 +11,16 @@ const fetchAllResults = async () => {
     return data || [];
 };
 
-const fetchQuestionsForTopic = async (topicId) => {
-    if (!topicId) return [];
-    const { data } = await apiClient.get(`/api/questions?topicId=${topicId}`);
+// --- START OF THE DEFINITIVE FIX: New Fetcher Function ---
+// This new function fetches a specific set of questions by their IDs.
+const fetchQuestionsByIds = async (ids) => {
+    if (!ids || ids.length === 0) return [];
+    // The API expects a comma-separated string
+    const idString = ids.join(',');
+    const { data } = await apiClient.get(`/api/questions?ids=${idString}`);
     return parseQuestionOptions(data || []);
 };
+// --- END OF THE DEFINITIVE FIX ---
 
 export const useResults = (resultId) => {
     const { currentUser } = useAuth();
@@ -40,63 +45,69 @@ export const useResults = (resultId) => {
         return historicalList.find(r => String(r.id) === String(resultId));
     }, [resultId, historicalList]);
 
-    const topicIdForDetail = singleResultData?.topicId;
+    // --- START OF THE DEFINITIVE FIX: Robust Data Fetching for Details ---
 
-    // --- START OF THE DEFINITIVE FIX ---
+    // 1. Memoize the parsing of attempted question IDs from the result object.
+    const attemptedIds = useMemo(() => {
+        if (!singleResultData?.questionsActuallyAttemptedIds) return [];
+        try {
+            const rawAttempted = JSON.parse(singleResultData.questionsActuallyAttemptedIds);
+            if (rawAttempted.length > 0 && typeof rawAttempted[0] === 'object') {
+                return rawAttempted.map(q => q.id); // It's an array of objects
+            }
+            return rawAttempted; // It's an array of strings
+        } catch {
+            return [];
+        }
+    }, [singleResultData]);
 
-    // 1. Determine if the question data is already archived in the result object.
+    // 2. Determine if the question data is already archived (for Homi Bhabha quizzes).
     const isDataArchived = useMemo(() => {
         if (!singleResultData?.questionsActuallyAttemptedIds) return false;
         try {
             const rawData = JSON.parse(singleResultData.questionsActuallyAttemptedIds);
-            // If the first item is an object with a 'text' property, we assume it's archived full question data.
-            return Array.isArray(rawData) && rawData.length > 0 && typeof rawData[0] === 'object' && 'text' in rawData[0];
-        } catch {
-            return false;
-        }
+            return Array.isArray(rawData) && rawData.length > 0 && typeof rawData[0] === 'object';
+        } catch { return false; }
     }, [singleResultData]);
 
-    // 2. Only fetch questions from the API if the data is NOT archived.
+    // 3. Fetch the specific questions using our new fetcher, but only if the data isn't archived.
     const { data: detailQuestionsFromApi = [], isLoading: isLoadingDetailQuestions } = useQuery({
-        queryKey: ['questions', topicIdForDetail],
-        queryFn: () => fetchQuestionsForTopic(topicIdForDetail),
-        enabled: !!topicIdForDetail && !isDataArchived, // <-- Key change here
+        queryKey: ['questions', resultId], // A unique key for this specific result's questions
+        queryFn: () => fetchQuestionsByIds(attemptedIds),
+        enabled: !!resultId && attemptedIds.length > 0 && !isDataArchived,
     });
 
-    // 3. Assemble the final detailed data, prioritizing the archived data.
+    // 4. Assemble the final detailed data, prioritizing the correct source.
     const detailData = useMemo(() => {
         if (!singleResultData) return null;
-
         try {
             const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
-            const rawAttempted = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
-
-            // Determine the source of truth for the question data
+            
             let questionsSource = [];
             if (isDataArchived) {
-                questionsSource = parseQuestionOptions(rawAttempted); // Use the archived data
+                // For Homi Bhabha, the questions are stored directly in the result.
+                questionsSource = parseQuestionOptions(JSON.parse(singleResultData.questionsActuallyAttemptedIds));
             } else {
-                if (isLoadingDetailQuestions) return null; // Wait for API fetch to finish
-                questionsSource = detailQuestionsFromApi; // Use the data from the API
+                // For standard quizzes, use the data we just fetched from the API.
+                if (isLoadingDetailQuestions) return null; // Wait for the fetch to complete
+                questionsSource = detailQuestionsFromApi;
             }
 
-            if (questionsSource.length === 0) return { result: singleResultData, detailedQuestions: [] }; // Handle case where questions might be empty
-
-            const attemptedIds = questionsSource.map(q => q.id);
-
             const detailedQuestions = attemptedIds.map(qId => {
-                const fullData = questionsSource.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
+                const fullData = questionsSource.find(q => q.id === qId);
+                // If a question is somehow missing (e.g., deleted from DB), show a clear message.
+                if (!fullData) return { id: qId, text: `Question data for ID ${qId} could not be found.`, options: [], userAnswerId: userAnswers[qId] };
+                
                 const userAnswerId = userAnswers[qId];
                 return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
             });
 
             return { result: singleResultData, detailedQuestions };
-
         } catch (e) {
-            console.error("Failed to parse result data:", e, singleResultData);
+            console.error("Failed to parse result data:", e);
             return null;
         }
-    }, [singleResultData, detailQuestionsFromApi, isDataArchived, isLoadingDetailQuestions]);
+    }, [singleResultData, detailQuestionsFromApi, isDataArchived, isLoadingDetailQuestions, attemptedIds]);
 
     // --- END OF THE DEFINITIVE FIX ---
 
