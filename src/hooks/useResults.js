@@ -21,14 +21,12 @@ export const useResults = (resultId) => {
     const { currentUser } = useAuth();
     const { topics: allTopics } = useTopics();
 
-    // 1. Fetch the entire list of results. This is the source of truth.
     const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
         queryKey: ['userResults', currentUser?.id],
         queryFn: fetchAllResults,
         enabled: !!currentUser,
     });
 
-    // 2. Memoize the enriched list (adding topic names).
     const historicalList = useMemo(() => {
         if (isLoadingList || allTopics.length === 0) return [];
         return allResults.map(res => {
@@ -37,7 +35,6 @@ export const useResults = (resultId) => {
         });
     }, [allResults, allTopics, isLoadingList]);
 
-    // 3. Find the specific result for the detail page from the reliable list.
     const singleResultData = useMemo(() => {
         if (!resultId || historicalList.length === 0) return null;
         return historicalList.find(r => String(r.id) === String(resultId));
@@ -45,38 +42,47 @@ export const useResults = (resultId) => {
 
     const topicIdForDetail = singleResultData?.topicId;
 
-    // 4. Fetch the questions for the detailed view.
-    const { data: detailQuestions = [], isLoading: isLoadingDetailQuestions } = useQuery({
+    // --- START OF THE DEFINITIVE FIX ---
+
+    // 1. Determine if the question data is already archived in the result object.
+    const isDataArchived = useMemo(() => {
+        if (!singleResultData?.questionsActuallyAttemptedIds) return false;
+        try {
+            const rawData = JSON.parse(singleResultData.questionsActuallyAttemptedIds);
+            // If the first item is an object with a 'text' property, we assume it's archived full question data.
+            return Array.isArray(rawData) && rawData.length > 0 && typeof rawData[0] === 'object' && 'text' in rawData[0];
+        } catch {
+            return false;
+        }
+    }, [singleResultData]);
+
+    // 2. Only fetch questions from the API if the data is NOT archived.
+    const { data: detailQuestionsFromApi = [], isLoading: isLoadingDetailQuestions } = useQuery({
         queryKey: ['questions', topicIdForDetail],
         queryFn: () => fetchQuestionsForTopic(topicIdForDetail),
-        enabled: !!topicIdForDetail,
+        enabled: !!topicIdForDetail && !isDataArchived, // <-- Key change here
     });
-    
-    // 5. Assemble the final detailData object with robust parsing.
+
+    // 3. Assemble the final detailed data, prioritizing the archived data.
     const detailData = useMemo(() => {
-        if (!singleResultData || !detailQuestions) return null;
-        
+        if (!singleResultData) return null;
+
         try {
             const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
-            
-            // --- START OF THE DEFINITIVE FIX ---
-            // This logic robustly handles both formats: an array of strings OR an array of objects.
-            let attemptedIds = [];
             const rawAttempted = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
-            
-            if (rawAttempted.length > 0) {
-                if (typeof rawAttempted[0] === 'object' && rawAttempted[0] !== null && 'id' in rawAttempted[0]) {
-                    // It's an array of question objects, so we map to get the IDs.
-                    attemptedIds = rawAttempted.map(q => q.id);
-                } else {
-                    // It's already an array of strings (the expected format).
-                    attemptedIds = rawAttempted;
-                }
-            }
-            // --- END OF THE DEFINITIVE FIX ---
 
-            // If we have questions for a standard quiz, use those. Otherwise, use the embedded questions.
-            const questionsSource = detailQuestions.length > 0 ? detailQuestions : rawAttempted;
+            // Determine the source of truth for the question data
+            let questionsSource = [];
+            if (isDataArchived) {
+                questionsSource = parseQuestionOptions(rawAttempted); // Use the archived data
+            } else {
+                if (isLoadingDetailQuestions) return null; // Wait for API fetch to finish
+                questionsSource = detailQuestionsFromApi; // Use the data from the API
+            }
+
+            if (questionsSource.length === 0) return { result: singleResultData, detailedQuestions: [] }; // Handle case where questions might be empty
+
+            const attemptedIds = questionsSource.map(q => q.id);
 
             const detailedQuestions = attemptedIds.map(qId => {
                 const fullData = questionsSource.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
@@ -88,14 +94,16 @@ export const useResults = (resultId) => {
 
         } catch (e) {
             console.error("Failed to parse result data:", e, singleResultData);
-            return null; // Return null if any parsing fails, preventing a crash.
+            return null;
         }
-    }, [singleResultData, detailQuestions]);
+    }, [singleResultData, detailQuestionsFromApi, isDataArchived, isLoadingDetailQuestions]);
+
+    // --- END OF THE DEFINITIVE FIX ---
 
     return {
         historicalList,
         detailData,
-        isLoading: resultId ? (isLoadingList || isLoadingDetailQuestions) : isLoadingList,
+        isLoading: resultId ? (isLoadingList || (!isDataArchived && isLoadingDetailQuestions)) : isLoadingList,
         error: listError ? listError.message : null,
     };
 };
