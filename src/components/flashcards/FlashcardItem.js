@@ -19,6 +19,8 @@ function FlashcardItem({
   const correctOptionObject = options?.find(opt => opt.id === correctOptionId);
   const correctAnswerText = correctOptionObject ? `${correctOptionObject.id.toUpperCase()}. ${correctOptionObject.text}` : "Answer not available";
 
+  const processedFrontText = frontText ? frontText.replace(/\\newline/g, '\n') : '';
+
   // --- START OF FIX: Increased minHeight ---
   const cardMinHeight = '480px';
   // --- END OF FIX ---
@@ -53,7 +55,7 @@ function FlashcardItem({
             </Typography>
             {/* --- START OF FIX: Increased font size --- */}
             <Box sx={{ mb: 2, width: '100%', whiteSpace: 'pre-wrap', flexGrow: 1, fontSize: '1.2rem' }}>
-                <MarkdownRenderer text={frontText} />
+                <MarkdownRenderer text={processedFrontText} />
             </Box>
             {/* --- END OF FIX --- */}
             <Divider sx={{ width: '100%', my: 1 }} />

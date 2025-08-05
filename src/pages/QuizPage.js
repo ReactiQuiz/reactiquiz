@@ -20,7 +20,11 @@ function QuizPage() {
     handleOptionSelect, submitAndNavigate, handleAbandonQuiz
   } = useQuiz();
 
-  const accentColor = getColor(quizContext.subject);
+  // --- START OF THE DEFINITIVE FIX ---
+  // Prioritize the accentColor passed in the quiz context (from useHomibhabha.js).
+  // If it doesn't exist, then fall back to looking it up by the subject key.
+  const accentColor = quizContext.accentColor || getColor(quizContext.subject);
+  // --- END OF THE DEFINITIVE FIX ---
 
   if (isLoading) {
     return (

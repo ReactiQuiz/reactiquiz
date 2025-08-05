@@ -1,11 +1,16 @@
 // src/components/quiz/QuestionItem.js
 import { Box, Typography, Button, Paper, useTheme } from '@mui/material';
 import { alpha, darken } from '@mui/material/styles';
-import MarkdownRenderer from '../shared/MarkdownRenderer'; // <-- IMPORT
+import MarkdownRenderer from '../shared/MarkdownRenderer';
 
 const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOptionId, accentColor }) => {
   const theme = useTheme();
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
+
+  // --- START OF THE DEFINITIVE FIX ---
+  // Pre-process the text to replace LaTeX newlines with standard newlines.
+  const processedText = question.text ? question.text.replace(/\\newline/g, '\n') : '';
+  // --- END OF THE DEFINITIVE FIX ---
 
   return (
     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3, width: '100%', borderRadius: 2 }}>
@@ -13,11 +18,15 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
         Question {questionNumber}:
       </Typography>
 
-      {/* --- START OF FIX --- */}
-      <Box sx={{ mb: 2.5, color: theme.palette.text.primary, fontSize: '1.1rem' }}>
-        <MarkdownRenderer text={question.text} />
+      <Box sx={{ 
+          mb: 2.5, 
+          color: theme.palette.text.primary, 
+          fontSize: '1.1rem',
+          whiteSpace: 'pre-wrap'
+      }}>
+        {/* Render the processed text */}
+        <MarkdownRenderer text={processedText} />
       </Box>
-      {/* --- END OF FIX --- */}
 
       <Box display="flex" flexDirection="column" gap={1.5}>
         {question.options.map((option) => {
@@ -35,17 +44,11 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
                 px: 2,
                 borderRadius: '8px',
                 borderColor: alpha(effectiveAccentColor, 0.5),
-                color: isSelected
-                  ? theme.palette.getContrastText(effectiveAccentColor)
-                  : theme.palette.text.primary,
-                backgroundColor: isSelected
-                  ? effectiveAccentColor
-                  : 'transparent',
+                color: isSelected ? theme.palette.getContrastText(effectiveAccentColor) : theme.palette.text.primary,
+                backgroundColor: isSelected ? effectiveAccentColor : 'transparent',
                 '&:hover': {
                   borderColor: effectiveAccentColor,
-                  backgroundColor: isSelected
-                    ? darken(effectiveAccentColor, 0.15)
-                    : alpha(effectiveAccentColor, 0.08),
+                  backgroundColor: isSelected ? darken(effectiveAccentColor, 0.15) : alpha(effectiveAccentColor, 0.08),
                 },
                 textTransform: 'none',
                 fontSize: '1rem',
@@ -53,7 +56,6 @@ const QuestionItem = ({ question, questionNumber, onOptionSelect, selectedOption
                 fontWeight: isSelected ? 500 : 400,
               }}
             >
-              {/* Also render options with the renderer */}
               <MarkdownRenderer text={option.text} />
             </Button>
           );
