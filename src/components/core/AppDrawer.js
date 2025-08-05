@@ -21,7 +21,7 @@ function AppDrawer({ open, onClose }) {
   const drawerItems = [
     { text: 'Dashboard', icon: <DashboardIcon sx={{ color: theme.palette.grey[500] }} />, path: '/dashboard', color: theme.palette.text.secondary },
     { text: 'All Subjects', icon: <CategoryIcon sx={{ color: theme.palette.primary.main }} />, path: '/subjects', color: theme.palette.primary.main },
-    { text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }} />, path: '/homibhabha', color: theme.palette.secondary.main },
+    //{ text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }} />, path: '/homibhabha', color: theme.palette.secondary.main },
     { text: 'Results', icon: <PollIcon sx={{ color: '#4DB6AC' }} />, path: '/results', color: '#4DB6AC' },
     { type: 'divider' },
     { text: 'AI Center', icon: <SmartToyIcon sx={{ color: '#00BFA5' }} />, path: '/ai-center', color: '#00BFA5' },
