@@ -664,11 +664,11 @@
         "subject": "physics"
     },
     {
-        "id": "basic-mathematics-11th",
-        "name": "Basic Mathematics",
+        "id": "logarithms-11th",
+        "name": "Logarithms",
         "description": "Learn the basics for Mathematics",
         "class": "9th",
-        "genre": "DC Pandey",
+        "genre": "ReactiQuiz Special",
         "subject": "mathematics"
     }
 ]
