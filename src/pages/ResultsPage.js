@@ -14,12 +14,11 @@ function ResultsPage() {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const { getColor } = useSubjectColors();
+    const theme = useTheme();
     
     const { historicalList, detailData, isLoading, error } = useResults(resultId);
 
-    const accentColor = resultId && detailData?.result?.subject
-        ? getColor(detailData.result.subject)
-        : '#4DB6AC'; // A consistent, pleasant color for the results page title
+    const accentColor = theme.palette.info.main;
 
     if (isLoading) {
         return (

@@ -6,7 +6,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
 import { useTopics } from '../contexts/TopicsContext';
 
-// --- Fetcher Functions ---
 const fetchAllResults = async () => {
     const { data } = await apiClient.get('/api/results');
     return data || [];
@@ -20,19 +19,19 @@ const fetchQuestionsForTopic = async (topicId) => {
 
 export const useResults = (resultId) => {
     const { currentUser } = useAuth();
-    const { topics: allTopics } = useTopics(); // Get topics from the context
+    const { topics: allTopics } = useTopics();
 
     // --- START OF THE DEFINITIVE FIX ---
 
-    // 1. Fetch the entire list of results. This query is ALWAYS enabled for a logged-in user.
-    // On a hard refresh of /results/38, this will run and populate the cache.
+    // 1. Fetch the entire list of results. This query is now ALWAYS enabled for a logged-in user,
+    // ensuring the data is always available in the cache for the detail page to use.
     const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
         queryKey: ['userResults', currentUser?.id],
         queryFn: fetchAllResults,
-        enabled: !!currentUser,
+        enabled: !!currentUser, // <-- This is the key change. It no longer checks for `!resultId`.
     });
 
-    // 2. Memoize the enriched list (adding topic names).
+    // 2. Memoize the enriched list (this logic is unchanged but now more reliable).
     const historicalList = useMemo(() => {
         if (isLoadingList || allTopics.length === 0) return [];
         return allResults.map(res => {
@@ -49,7 +48,7 @@ export const useResults = (resultId) => {
 
     const topicIdForDetail = singleResultData?.topicId;
 
-    // 4. Fetch the questions for the detailed view only when we have a result and topicId.
+    // 4. Fetch the questions for the detailed view.
     const { data: detailQuestions = [], isLoading: isLoadingDetailQuestions } = useQuery({
         queryKey: ['questions', topicIdForDetail],
         queryFn: () => fetchQuestionsForTopic(topicIdForDetail),
@@ -77,6 +76,8 @@ export const useResults = (resultId) => {
     return {
         historicalList,
         detailData,
+        // The page is loading if it's the detail page and either the list or questions are loading,
+        // or if it's the list page and the list is loading.
         isLoading: resultId ? (isLoadingList || isLoadingDetailQuestions) : isLoadingList,
         error: listError ? listError.message : null,
     };
