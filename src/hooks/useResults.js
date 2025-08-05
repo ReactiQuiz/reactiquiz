@@ -1,93 +1,83 @@
 // src/hooks/useResults.js
 import { useMemo } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
+import { useTopics } from '../contexts/TopicsContext';
 
 // --- Fetcher Functions ---
 const fetchAllResults = async () => {
-  const { data } = await apiClient.get('/api/results');
-  return data || [];
-};
-
-const fetchAllTopics = async () => {
-  const { data } = await apiClient.get('/api/topics');
-  return data || [];
+    const { data } = await apiClient.get('/api/results');
+    return data || [];
 };
 
 const fetchQuestionsForTopic = async (topicId) => {
-  if (!topicId) return [];
-  const { data } = await apiClient.get(`/api/questions?topicId=${topicId}`);
-  return parseQuestionOptions(data || []);
+    if (!topicId) return [];
+    const { data } = await apiClient.get(`/api/questions?topicId=${topicId}`);
+    return parseQuestionOptions(data || []);
 };
 
 export const useResults = (resultId) => {
-  const { currentUser } = useAuth();
-  const queryClient = useQueryClient();
+    const { currentUser } = useAuth();
+    const { topics: allTopics } = useTopics(); // Get topics from the context
 
-  // --- Fetch data for the LIST view ---
-  const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
-    queryKey: ['userResults', currentUser?.id],
-    queryFn: fetchAllResults,
-    enabled: !!currentUser && !resultId,
-  });
-  
-  const { data: allTopics = [] } = useQuery({
-    queryKey: ['topics'],
-    queryFn: fetchAllTopics,
-    staleTime: Infinity,
-  });
+    // --- START OF THE DEFINITIVE FIX ---
 
-  const historicalList = useMemo(() => {
-    return allResults.map(res => {
-      const topicInfo = allTopics.find(t => t.id === res.topicId);
-      return { ...res, topicName: topicInfo ? topicInfo.name : res.topicId.replace(/-/g, ' ') };
+    // 1. Fetch the entire list of results. This query is ALWAYS enabled for a logged-in user.
+    // On a hard refresh of /results/38, this will run and populate the cache.
+    const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
+        queryKey: ['userResults', currentUser?.id],
+        queryFn: fetchAllResults,
+        enabled: !!currentUser,
     });
-  }, [allResults, allTopics]);
 
-  // --- Fetch data for the DETAIL view ---
-  const { data: singleResultData, isLoading: isLoadingSingleResult } = useQuery({
-      queryKey: ['singleResult', resultId],
-      queryFn: async () => {
-        const results = await queryClient.getQueryData(['userResults', currentUser?.id]) || await fetchAllResults();
-        return results.find(r => String(r.id) === String(resultId));
-      },
-      enabled: !!currentUser && !!resultId,
-  });
+    // 2. Memoize the enriched list (adding topic names).
+    const historicalList = useMemo(() => {
+        if (isLoadingList || allTopics.length === 0) return [];
+        return allResults.map(res => {
+            const topicInfo = allTopics.find(t => t.id === res.topicId);
+            return { ...res, topicName: topicInfo ? topicInfo.name : res.topicId.replace(/-/g, ' ') };
+        });
+    }, [allResults, allTopics, isLoadingList]);
 
-  const topicIdForDetail = singleResultData?.topicId;
+    // 3. Find the specific result for the detail page from the now-reliable list.
+    const singleResultData = useMemo(() => {
+        if (!resultId || historicalList.length === 0) return null;
+        return historicalList.find(r => String(r.id) === String(resultId));
+    }, [resultId, historicalList]);
 
-  const { data: detailQuestions = [], isLoading: isLoadingDetailQuestions } = useQuery({
-    queryKey: ['questions', topicIdForDetail],
-    queryFn: () => fetchQuestionsForTopic(topicIdForDetail),
-    enabled: !!topicIdForDetail,
-  });
+    const topicIdForDetail = singleResultData?.topicId;
 
-  // --- START OF FIX: Removed the stray 'of' token ---
-  const detailData = useMemo(() => {
-  // --- END OF FIX ---
-    if (!resultId || !singleResultData || !detailQuestions || detailQuestions.length === 0) return null;
-
-    const topicInfo = allTopics.find(t => t.id === singleResultData.topicId);
-    const enrichedResult = { ...singleResultData, topicName: topicInfo ? topicInfo.name : singleResultData.topicId.replace(/-/g, ' ') };
+    // 4. Fetch the questions for the detailed view only when we have a result and topicId.
+    const { data: detailQuestions = [], isLoading: isLoadingDetailQuestions } = useQuery({
+        queryKey: ['questions', topicIdForDetail],
+        queryFn: () => fetchQuestionsForTopic(topicIdForDetail),
+        enabled: !!topicIdForDetail,
+    });
     
-    const attemptedIds = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
-    const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
+    // 5. Assemble the final detailData object.
+    const detailData = useMemo(() => {
+        if (!singleResultData || detailQuestions.length === 0) return null;
+        
+        const attemptedIds = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
+        const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
 
-    const detailedQuestions = attemptedIds.map(qId => {
-      const fullData = detailQuestions.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
-      const userAnswerId = userAnswers[qId];
-      return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
-    });
+        const detailedQuestions = attemptedIds.map(qId => {
+            const fullData = detailQuestions.find(q => q.id === qId) || { id: qId, text: `Question data not found.`, options: [] };
+            const userAnswerId = userAnswers[qId];
+            return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
+        });
 
-    return { result: enrichedResult, detailedQuestions };
-  }, [resultId, singleResultData, detailQuestions, allTopics]);
+        return { result: singleResultData, detailedQuestions };
+    }, [singleResultData, detailQuestions]);
 
-  return {
-    historicalList,
-    detailData,
-    isLoading: resultId ? (isLoadingSingleResult || isLoadingDetailQuestions) : isLoadingList,
-    error: resultId ? null : (listError ? listError.message : null),
-  };
+    // --- END OF THE DEFINITIVE FIX ---
+
+    return {
+        historicalList,
+        detailData,
+        isLoading: resultId ? (isLoadingList || isLoadingDetailQuestions) : isLoadingList,
+        error: listError ? listError.message : null,
+    };
 };
