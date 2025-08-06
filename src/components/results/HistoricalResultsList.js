@@ -88,7 +88,7 @@ function HistoricalResultsList({
 
         {latestResult && (
              <Box mb={4}>
-                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>Most Recent</Typography>
+             <Divider sx={{ my: 4 }}><Typography variant="overline">Most Recent</Typography></Divider>
                 <HistoricalResultItem result={latestResult} />
             </Box>
         )}
