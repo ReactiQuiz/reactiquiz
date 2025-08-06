@@ -114,7 +114,7 @@ function DashboardPage() {
                 {/* --- Right Column: Difficulty Breakdowns --- */}
                 <Grid item xs={12} md={7}>
                     {selectedSubject === 'all' ? (
-                        <Stack spacing={2} sx={{height: '100%'}}>
+                        <Stack sx={{height: '100%'}}>
                             <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
                             <Grid container spacing={2}>
                                 {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
