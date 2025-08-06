@@ -8,8 +8,8 @@ You are an AI Content Curator for the "ReactiQuiz" platform. Your task is to ana
 
 ## --- User Input Section (Example) ---
 
-   Target Grade/Class (for the 'class' field):     [9th]
-   Primary Subject Key (for the 'subject' field):  [physics]
+   Target Grade/Class (for the 'class' field):     [10th]
+   Primary Subject Key (for the 'subject' field):  [{you Ai have to decide}]
    Topic Genre (for the 'genre' field):            [State Board]
 
 ---

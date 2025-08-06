@@ -1,120 +1,159 @@
 // src/hooks/useResults.js
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
 import { useTopics } from '../contexts/TopicsContext';
 
+// --- Fetcher Functions (defined outside the hook for clarity) ---
 const fetchAllResults = async () => {
     const { data } = await apiClient.get('/api/results');
     return data || [];
 };
 
-// --- START OF THE DEFINITIVE FIX: New Fetcher Function ---
-// This new function fetches a specific set of questions by their IDs.
 const fetchQuestionsByIds = async (ids) => {
     if (!ids || ids.length === 0) return [];
-    // The API expects a comma-separated string
     const idString = ids.join(',');
     const { data } = await apiClient.get(`/api/questions?ids=${idString}`);
     return parseQuestionOptions(data || []);
 };
-// --- END OF THE DEFINITIVE FIX ---
 
-export const useResults = (resultId) => {
+export const useResults = () => {
+    const { resultId } = useParams();
     const { currentUser } = useAuth();
     const { topics: allTopics } = useTopics();
 
+    // --- State for UI Controls (Filters and Sorting) ---
+    const [filters, setFilters] = useState({ class: 'all', genre: 'all' });
+    const [sortOrder, setSortOrder] = useState('date_desc'); // Default to most recent
+
+// --- Add a function to clear filters ---
+    const clearFilters = useCallback(() => {
+        setFilters({ class: 'all', genre: 'all' });
+        setSortOrder('date_desc'); // Also reset sort order to the default
+    }, []);
+
+    // --- Data Fetching Layer ---
     const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
         queryKey: ['userResults', currentUser?.id],
         queryFn: fetchAllResults,
         enabled: !!currentUser,
     });
 
+    // --- Data Processing Layer (Enriching, Filtering, Sorting) ---
     const historicalList = useMemo(() => {
         if (isLoadingList || allTopics.length === 0) return [];
-        return allResults.map(res => {
+        
+        // 1. Enrich raw results with topic details like name, class, and genre.
+        let enriched = allResults.map(res => {
             const topicInfo = allTopics.find(t => t.id === res.topicId);
-            return { ...res, topicName: topicInfo ? topicInfo.name : res.topicId.replace(/-/g, ' ') };
+            return { 
+                ...res, 
+                topicName: topicInfo?.name || res.topicId.replace(/-/g, ' '),
+                class: topicInfo?.class,
+                genre: topicInfo?.genre
+            };
         });
+
+        // 2. Apply filters based on the current state.
+        let filtered = enriched;
+        if (filters.class !== 'all') {
+            filtered = filtered.filter(res => res.class === filters.class);
+        }
+        if (filters.genre !== 'all') {
+            filtered = filtered.filter(res => res.genre === filters.genre);
+        }
+
+        // 3. Apply sorting based on the current order.
+        switch (sortOrder) {
+            case 'date_asc':
+                filtered.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                break;
+            case 'score_desc':
+                filtered.sort((a, b) => b.percentage - a.percentage);
+                break;
+            case 'score_asc':
+                filtered.sort((a, b) => a.percentage - b.percentage);
+                break;
+            case 'date_desc':
+            default:
+                filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                break;
+        }
+
+        return filtered;
+    }, [allResults, allTopics, isLoadingList, filters, sortOrder]);
+
+    // --- Derived State for Populating Filter Dropdowns ---
+    const availableClasses = useMemo(() => {
+        if (isLoadingList) return [];
+        const classes = allResults
+            .map(res => allTopics.find(t => t.id === res.topicId)?.class)
+            .filter(Boolean);
+        return [...new Set(classes)].sort();
     }, [allResults, allTopics, isLoadingList]);
 
+    const availableGenres = useMemo(() => {
+        if (isLoadingList) return [];
+        const genres = allResults
+            .map(res => allTopics.find(t => t.id === res.topicId)?.genre)
+            .filter(Boolean);
+        return [...new Set(genres)].sort();
+    }, [allResults, allTopics, isLoadingList]);
+
+    // --- Logic for the Detail View ---
     const singleResultData = useMemo(() => {
         if (!resultId || historicalList.length === 0) return null;
         return historicalList.find(r => String(r.id) === String(resultId));
     }, [resultId, historicalList]);
 
-    // --- START OF THE DEFINITIVE FIX: Robust Data Fetching for Details ---
-
-    // 1. Memoize the parsing of attempted question IDs from the result object.
     const attemptedIds = useMemo(() => {
-        if (!singleResultData?.questionsActuallyAttemptedIds) return [];
+        if (!singleResultData) return [];
         try {
-            const rawAttempted = JSON.parse(singleResultData.questionsActuallyAttemptedIds);
-            if (rawAttempted.length > 0 && typeof rawAttempted[0] === 'object') {
-                return rawAttempted.map(q => q.id); // It's an array of objects
-            }
-            return rawAttempted; // It's an array of strings
-        } catch {
-            return [];
-        }
+            const raw = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
+            return typeof raw[0] === 'object' ? raw.map(q => q.id) : raw;
+        } catch { return []; }
     }, [singleResultData]);
 
-    // 2. Determine if the question data is already archived (for Homi Bhabha quizzes).
     const isDataArchived = useMemo(() => {
-        if (!singleResultData?.questionsActuallyAttemptedIds) return false;
+        if (!singleResultData) return false;
         try {
-            const rawData = JSON.parse(singleResultData.questionsActuallyAttemptedIds);
-            return Array.isArray(rawData) && rawData.length > 0 && typeof rawData[0] === 'object';
+            const raw = JSON.parse(singleResultData.questionsActuallyAttemptedIds || '[]');
+            return Array.isArray(raw) && raw.length > 0 && typeof raw[0] === 'object';
         } catch { return false; }
     }, [singleResultData]);
 
-    // 3. Fetch the specific questions using our new fetcher, but only if the data isn't archived.
     const { data: detailQuestionsFromApi = [], isLoading: isLoadingDetailQuestions } = useQuery({
-        queryKey: ['questions', resultId], // A unique key for this specific result's questions
+        queryKey: ['questions', resultId],
         queryFn: () => fetchQuestionsByIds(attemptedIds),
         enabled: !!resultId && attemptedIds.length > 0 && !isDataArchived,
     });
 
-    // 4. Assemble the final detailed data, prioritizing the correct source.
     const detailData = useMemo(() => {
         if (!singleResultData) return null;
         try {
             const userAnswers = JSON.parse(singleResultData.userAnswersSnapshot || '{}');
-            
-            let questionsSource = [];
-            if (isDataArchived) {
-                // For Homi Bhabha, the questions are stored directly in the result.
-                questionsSource = parseQuestionOptions(JSON.parse(singleResultData.questionsActuallyAttemptedIds));
-            } else {
-                // For standard quizzes, use the data we just fetched from the API.
-                if (isLoadingDetailQuestions) return null; // Wait for the fetch to complete
-                questionsSource = detailQuestionsFromApi;
-            }
+            const questionsSource = isDataArchived ? parseQuestionOptions(JSON.parse(singleResultData.questionsActuallyAttemptedIds)) : detailQuestionsFromApi;
+
+            if (isLoadingDetailQuestions && !isDataArchived) return null;
 
             const detailedQuestions = attemptedIds.map(qId => {
-                const fullData = questionsSource.find(q => q.id === qId);
-                // If a question is somehow missing (e.g., deleted from DB), show a clear message.
-                if (!fullData) return { id: qId, text: `Question data for ID ${qId} could not be found.`, options: [], userAnswerId: userAnswers[qId] };
-                
-                const userAnswerId = userAnswers[qId];
-                return { ...fullData, userAnswerId, isCorrect: userAnswerId === fullData.correctOptionId, isAnswered: userAnswerId != null };
+                const fullData = questionsSource.find(q => q.id === qId) || { id: qId, text: `Question data for ID ${qId} could not be found.`, options: [] };
+                return { ...fullData, userAnswerId: userAnswers[qId], isCorrect: userAnswers[qId] === fullData.correctOptionId, isAnswered: userAnswers[qId] != null };
             });
-
             return { result: singleResultData, detailedQuestions };
-        } catch (e) {
-            console.error("Failed to parse result data:", e);
-            return null;
-        }
+        } catch (e) { return null; }
     }, [singleResultData, detailQuestionsFromApi, isDataArchived, isLoadingDetailQuestions, attemptedIds]);
-
-    // --- END OF THE DEFINITIVE FIX ---
 
     return {
         historicalList,
         detailData,
-        isLoading: resultId ? (isLoadingList || (!isDataArchived && isLoadingDetailQuestions)) : isLoadingList,
+        isLoading: isLoadingList || (resultId && !isDataArchived && isLoadingDetailQuestions),
         error: listError ? listError.message : null,
+        filters, setFilters,
+        sortOrder, setSortOrder,
+        availableClasses, availableGenres, clearFilters,
     };
 };

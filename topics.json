@@ -664,10 +664,170 @@
         "subject": "physics"
     },
     {
+        "id": "gravitation-10th",
+        "name": "Gravitation",
+        "description": "Exploring Newton's universal law of gravitation, Kepler's laws, free fall, and the concept of escape velocity.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "periodic-classification-of-element-10th",
+        "name": "Periodic Classification of Element",
+        "description": "Understanding the modern periodic table, historical classification models, and trends in elemental properties.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "chemical-reactions-and-equations-10th",
+        "name": "Chemical Reactions and Equations",
+        "description": "Learning to write, balance, and identify various types of chemical reactions and their equations.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "effects-of-electric-current-10th",
+        "name": "Effects of Electric Current",
+        "description": "Investigating the heating and magnetic effects of electric current, including Joule's law and electric motors.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "heat-10th",
+        "name": "Heat",
+        "description": "Studying the concepts of latent heat, anomalous behavior of water, specific heat capacity, and humidity.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "refraction-of-light-10th",
+        "name": "Refraction of Light",
+        "description": "Understanding the laws of refraction, refractive index, dispersion of light, and related atmospheric phenomena.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "lenses-10th",
+        "name": "Lenses",
+        "description": "Exploring image formation by convex and concave lenses, the lens formula, and the human eye.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "metallurgy-10th",
+        "name": "Metallurgy",
+        "description": "Learning the principles of extracting metals from their ores, their purification, and methods to prevent corrosion.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "carbon-compounds-10th",
+        "name": "Carbon Compounds",
+        "description": "Delving into the versatile nature of carbon, hydrocarbons, functional groups, and their chemical properties.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "chemistry"
+    },
+    {
+        "id": "space-missions-10th",
+        "name": "Space Missions",
+        "description": "Understanding artificial satellites, their orbits, launch vehicles, and various missions in space exploration.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "physics"
+    },
+    {
+        "id": "heredity-and-evolution-10th",
+        "name": "Heredity and Evolution",
+        "description": "Explore the principles of heredity, genetic changes, and the theories of evolution and human ancestry.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "life-processes-in-living-organisms-part-1-10th",
+        "name": "Life Processes in Living Organisms Part - 1",
+        "description": "Learn about energy production through aerobic and anaerobic respiration and the process of cell division.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "life-processes-in-living-organisms-part-2-10th",
+        "name": "Life Processes in Living Organisms Part - 2",
+        "description": "Understand asexual and sexual reproduction in plants and animals, including human reproductive health.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "environmental-management-10th",
+        "name": "Environmental Management",
+        "description": "Study ecosystems, environmental conservation, biodiversity, hotspots, and our role in protecting the environment.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "towards-green-energy-10th",
+        "name": "Towards Green Energy",
+        "description": "Investigate electrical energy generation from various sources and the importance of environment-friendly green energy.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "animal-classification-10th",
+        "name": "Animal Classification",
+        "description": "Learn the history and new methods of classifying animals into different phyla and classes.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "introduction-to-microbiology-10th",
+        "name": "Introduction to Microbiology",
+        "description": "Discover the applications of microbiology in industries, food production, and environmental management.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "cell-biology-and-biotechnology-10th",
+        "name": "Cell Biology and Biotechnology",
+        "description": "Explore cytology, stem cells, and the revolutionary applications of biotechnology in modern agriculture and health.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "social-health-10th",
+        "name": "Social Health",
+        "description": "Understand the factors affecting social health, stress management, and the impact of modern technology.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
+        "id": "disaster-management-10th",
+        "name": "Disaster Management",
+        "description": "Learn about the types and effects of disasters, and the principles of emergency action and first aid.",
+        "class": "10th",
+        "genre": "State Board",
+        "subject": "biology"
+    },
+    {
         "id": "logarithms-11th",
         "name": "Logarithms",
         "description": "Learn the basics for Mathematics",
-        "class": "9th",
+        "class": "11th",
         "genre": "ReactiQuiz Special",
         "subject": "mathematics"
     }

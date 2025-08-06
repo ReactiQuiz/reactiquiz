@@ -1,12 +1,13 @@
 // src/components/results/HistoricalResultDetailView.js
 import React from 'react';
 import { Box, Button, Paper, Alert } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import QuizResultSummary from './QuizResultSummary';
 import QuestionBreakdown from './QuestionBreakdown';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 
+// --- START OF FIX: Removed the 'navigate' prop as it's not used here ---
 function HistoricalResultDetailView({ detailData, navigate }) {
+// --- END OF FIX ---
     const { getColor } = useSubjectColors();
     
     if (!detailData || !detailData.result) {
@@ -19,11 +20,10 @@ function HistoricalResultDetailView({ detailData, navigate }) {
     return (
         <Paper elevation={0} sx={{backgroundColor: 'transparent'}}>
             <Button
-                startIcon={<ArrowBackIcon />}
                 onClick={() => navigate('/results')}
                 sx={{ mb: 2 }}
             >
-                Back to History
+                &larr; Back to History
             </Button>
             
             <QuizResultSummary
