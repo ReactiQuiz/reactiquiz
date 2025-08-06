@@ -38,7 +38,7 @@ function ResultsPage() {
 
     // Render main content
     return (
-        <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '100%', margin: 'auto' }}>
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, width: '100%', margin: 'auto' }}>
             <Typography
                 variant="h4"
                 gutterBottom
