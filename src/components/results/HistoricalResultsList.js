@@ -1,16 +1,27 @@
 // src/components/results/HistoricalResultsList.js
 import React from 'react';
-import { Box, Typography, Paper, Button, Divider } from '@mui/material';
+// --- START OF FIX: Added all missing imports from MUI ---
+import { Box, Typography, Paper, Button, Divider, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+// --- END OF FIX ---
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
-import HistoricalResultItem from './HistoricalResultItem';
-import ResultsFilters from './ResultsFilters';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
+import HistoricalResultItem from './HistoricalResultItem';
+import ResultsFilters from './ResultsFilters'; // Although we moved the JSX here, keeping the import path is fine practice
 
 function HistoricalResultsList({
-    results, filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres
+    results, filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres, clearFilters
 }) {
   const navigate = useNavigate();
+
+  // --- START OF FIX: Added the missing handler function ---
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setFilters(prev => ({ ...prev, [name]: value }));
+  };
+  // --- END OF FIX ---
+
+  const isFiltered = filters.class !== 'all' || filters.genre !== 'all';
 
   if (!results) return null;
   
@@ -24,13 +35,12 @@ function HistoricalResultsList({
     );
   }
 
-  // Separate the latest result if we are sorting by date
-  const latestResult = sortOrder === 'date_desc' ? results[0] : null;
-  const otherResults = sortOrder === 'date_desc' ? results.slice(1) : results;
+  const latestResult = sortOrder === 'date_desc' && !isFiltered ? results[0] : null;
+  const otherResults = sortOrder === 'date_desc' && !isFiltered ? results.slice(1) : results;
 
   return (
     <Box>
- <Paper sx={{ p: 2, mb: 4 }}>
+        <Paper sx={{ p: 2, mb: 4 }}>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={6} md={3}>
                     <FormControl fullWidth variant="outlined">
@@ -68,18 +78,18 @@ function HistoricalResultsList({
                         startIcon={<ClearAllIcon />}
                         onClick={clearFilters}
                         disabled={!isFiltered}
-                        sx={{ height: '56px' }} // Match height of TextFields
+                        sx={{ height: '56px' }}
                     >
                         Clear Filters
                     </Button>
                 </Grid>
             </Grid>
         </Paper>
-        
+
         {latestResult && (
-            <Box mb={4}>
+             <Box mb={4}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>Most Recent</Typography>
-                <HistoricalResultItem result={latestResult} isFeatured={true} />
+                <HistoricalResultItem result={latestResult} />
             </Box>
         )}
         
