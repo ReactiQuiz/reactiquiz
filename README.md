@@ -4,7 +4,7 @@
 
 ReactiQuiz is a modern, open-source quiz application designed for students, educators, and lifelong learners. Our mission is to provide an engaging, high-performance, and data-driven platform for learning and self-assessment.
 
-🔗 **Live Demo:** [reactiquiz-preview.vercel.app](https://reactiquiz-preview.vercel.app/)
+🔗 **Live:** [reactiquiz.vercel.app](https://reactiquiz.vercel.app/)
 
 ---
 
