@@ -13,11 +13,11 @@ function ResultsPage() {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const theme = useTheme();
-    
+
     // Call the powerful hook to get all state and logic
-    const { 
+    const {
         historicalList, detailData, isLoading, error,
-        filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres 
+        filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres, clearFilters
     } = useResults();
 
     const accentColor = theme.palette.info.main;
@@ -33,12 +33,12 @@ function ResultsPage() {
 
     // Render error state
     if (error) {
-        return ( <Box sx={{ p: 3, textAlign: 'center' }}><Alert severity="error">{error}</Alert></Box> );
+        return (<Box sx={{ p: 3, textAlign: 'center' }}><Alert severity="error">{error}</Alert></Box>);
     }
 
     // Render main content
     return (
-        <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '1200px', margin: 'auto' }}>
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, maxWidth: '100%', margin: 'auto' }}>
             <Typography
                 variant="h4"
                 gutterBottom
@@ -60,14 +60,15 @@ function ResultsPage() {
             {resultId ? (
                 <HistoricalResultDetailView detailData={detailData} navigate={navigate} />
             ) : (
-                <HistoricalResultsList 
-                    results={historicalList} 
+                <HistoricalResultsList
+                    results={historicalList}
                     filters={filters}
                     setFilters={setFilters}
                     sortOrder={sortOrder}
                     setSortOrder={setSortOrder}
                     availableClasses={availableClasses}
                     availableGenres={availableGenres}
+                    clearFilters={clearFilters}
                 />
             )}
         </Box>

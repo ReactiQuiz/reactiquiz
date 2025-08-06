@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoricalResultItem from './HistoricalResultItem';
 import ResultsFilters from './ResultsFilters';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 
 function HistoricalResultsList({
     results, filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres
@@ -29,15 +30,52 @@ function HistoricalResultsList({
 
   return (
     <Box>
-        <ResultsFilters
-            filters={filters}
-            setFilters={setFilters}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
-            availableClasses={availableClasses}
-            availableGenres={availableGenres}
-        />
-
+ <Paper sx={{ p: 2, mb: 4 }}>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={6} md={3}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel>Sort By</InputLabel>
+                        <Select value={sortOrder} label="Sort By" onChange={(e) => setSortOrder(e.target.value)}>
+                            <MenuItem value="date_desc">Most Recent</MenuItem>
+                            <MenuItem value="date_asc">Oldest First</MenuItem>
+                            <MenuItem value="score_desc">Score (High-Low)</MenuItem>
+                            <MenuItem value="score_asc">Score (Low-High)</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel>Filter by Class</InputLabel>
+                        <Select name="class" value={filters.class} label="Filter by Class" onChange={handleFilterChange}>
+                            <MenuItem value="all"><em>All Classes</em></MenuItem>
+                            {availableClasses.map(cls => <MenuItem key={cls} value={cls}>{cls}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel>Filter by Genre</InputLabel>
+                        <Select name="genre" value={filters.genre} label="Filter by Genre" onChange={handleFilterChange}>
+                            <MenuItem value="all"><em>All Genres</em></MenuItem>
+                            {availableGenres.map(genre => <MenuItem key={genre} value={genre}>{genre}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<ClearAllIcon />}
+                        onClick={clearFilters}
+                        disabled={!isFiltered}
+                        sx={{ height: '56px' }} // Match height of TextFields
+                    >
+                        Clear Filters
+                    </Button>
+                </Grid>
+            </Grid>
+        </Paper>
+        
         {latestResult && (
             <Box mb={4}>
                 <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>Most Recent</Typography>

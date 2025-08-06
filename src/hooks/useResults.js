@@ -1,5 +1,5 @@
 // src/hooks/useResults.js
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
@@ -28,6 +28,12 @@ export const useResults = () => {
     // --- State for UI Controls (Filters and Sorting) ---
     const [filters, setFilters] = useState({ class: 'all', genre: 'all' });
     const [sortOrder, setSortOrder] = useState('date_desc'); // Default to most recent
+
+// --- Add a function to clear filters ---
+    const clearFilters = useCallback(() => {
+        setFilters({ class: 'all', genre: 'all' });
+        setSortOrder('date_desc'); // Also reset sort order to the default
+    }, []);
 
     // --- Data Fetching Layer ---
     const { data: allResults = [], isLoading: isLoadingList, error: listError } = useQuery({
@@ -148,6 +154,6 @@ export const useResults = () => {
         error: listError ? listError.message : null,
         filters, setFilters,
         sortOrder, setSortOrder,
-        availableClasses, availableGenres
+        availableClasses, availableGenres, clearFilters,
     };
 };
