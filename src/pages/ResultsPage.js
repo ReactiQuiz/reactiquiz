@@ -39,23 +39,6 @@ function ResultsPage() {
     // Render main content
     return (
         <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, width: '100%', margin: 'auto' }}>
-            <Typography
-                variant="h4"
-                gutterBottom
-                sx={{
-                    color: accentColor,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    mb: 4,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-                <PollIcon sx={{ fontSize: '1.2em', mr: 1 }} />
-                {currentUser?.name}'s Quiz History
-            </Typography>
-
             {/* Conditionally render either the detail view or the list view */}
             {resultId ? (
                 <HistoricalResultDetailView detailData={detailData} navigate={navigate} />
