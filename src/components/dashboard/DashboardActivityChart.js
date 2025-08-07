@@ -1,23 +1,26 @@
 // src/components/dashboard/DashboardActivityChart.js
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale } from 'chart.js';
-import 'chartjs-adapter-date-fns';
 import { parseISO, format, isValid } from 'date-fns';
 import { alpha } from '@mui/material/styles';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, TimeScale);
-
-// --- START OF FIX: Reverted to a standard functional component ---
-function DashboardActivityChart({ activityData, timeFrequency }) {
+const DashboardActivityChart = forwardRef(({ activityData, timeFrequency }, ref) => {
   const theme = useTheme();
 
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: true, position: 'top', labels: { color: theme.palette.text.primary } },
+      legend: { 
+        display: true, 
+        position: 'top', 
+        labels: { 
+            color: theme.palette.text.primary,
+            usePointStyle: true, // Use circles instead of boxes for a cleaner look
+            boxWidth: 8,
+        } 
+      },
       title: { display: false },
       tooltip: {
         callbacks: {
@@ -41,19 +44,24 @@ function DashboardActivityChart({ activityData, timeFrequency }) {
       },
       y: {
         beginAtZero: true,
-        ticks: { color: theme.palette.text.secondary, stepSize: 1 },
+        ticks: { color: theme.palette.text.secondary, precision: 0 }, // Ensure integer ticks
         grid: { color: alpha(theme.palette.text.secondary, 0.1) },
         title: { display: true, text: 'Number of Quizzes', color: theme.palette.text.secondary}
       }
     },
     interaction: { intersect: false, mode: 'index' },
+    elements: {
+        point: {
+            radius: 0, // Hide points by default
+            hoverRadius: 5, // Show points on hover
+        }
+    }
   };
 
   return (
-    // The ref is no longer passed to this Paper element
-    <Paper elevation={3} sx={{ p: {xs: 1, sm: 2}, mt: 2, border: `1px solid ${theme.palette.divider}` }}>
+    <Paper ref={ref} elevation={3} sx={{ p: {xs: 1.5, sm: 2.5}, mt: 2, border: `1px solid ${theme.palette.divider}` }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
-        <Typography variant="h6" sx={{color: theme.palette.text.primary, ml: {xs:1, sm:0}}}>Activity Overview</Typography>
+        <Typography variant="h6" sx={{color: theme.palette.text.primary, fontWeight: 'medium' }}>Activity Overview</Typography>
       </Box>
       <Box sx={{ height: { xs: '300px', sm: '350px', md: '400px' }, width: '100%' }}>
         {activityData && activityData.labels && activityData.labels.length > 0 ? (
@@ -68,7 +76,6 @@ function DashboardActivityChart({ activityData, timeFrequency }) {
       </Box>
     </Paper>
   );
-}
-// --- END OF FIX ---
+});
 
 export default DashboardActivityChart;
