@@ -38,7 +38,6 @@ function SubjectDifficultyCard({ subjectKey, title, data }) {
     const { easy, medium, hard } = data;
 
     return (
-        // --- START OF FIX: Use Stack to fill height and ensure alignment ---
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', borderTop: `4px solid ${accentColor}` }}>
             <Stack sx={{ height: '100%' }}>
                 <Typography variant="h6" sx={{ fontWeight: 'medium', color: accentColor }}>
@@ -51,7 +50,6 @@ function SubjectDifficultyCard({ subjectKey, title, data }) {
                 </List>
             </Stack>
         </Paper>
-        // --- END OF FIX ---
     );
 }
 
