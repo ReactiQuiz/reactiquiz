@@ -114,20 +114,20 @@ function DashboardPage() {
                 {/* --- Right Column: Difficulty Breakdowns --- */}
                 <Grid item xs={12} md={7}>
                     {selectedSubject === 'all' ? (
-                        <Stack sx={{height: '100%'}}>
-                            <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
-                            <Grid container>
-                                {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
-                                    <Grid item xs={12} sm={6} key={key} sx={{ display: 'flex' }}>
-                                        <SubjectDifficultyCard
-                                            subjectKey={key}
-                                            title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
-                                            data={value}
-                                        />
-                                    </Grid>
-                                ))}
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
                             </Grid>
-                        </Stack>
+                            {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
+                                <Grid item xs={12} sm={6} key={key} sx={{ display: 'flex' }}>
+                                    <SubjectDifficultyCard
+                                        subjectKey={key}
+                                        title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
+                                        data={value}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
                     ) : (
                         <SubjectDifficultyCard
                             subjectKey={selectedSubject}

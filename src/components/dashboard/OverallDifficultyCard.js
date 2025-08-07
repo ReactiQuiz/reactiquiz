@@ -35,7 +35,7 @@ function OverallDifficultyCard({ data }) {
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'medium' }}>
                 Correct Answers by Difficulty
             </Typography>
-            <Grid container spacing={1} alignItems="stretch">
+            <Grid container spacing={1} alignItems="stretch" sx={{ height: 'calc(100% - 40px)' }}>
                 <StatItem title="Easy" value={data.easy.correct} total={data.easy.total} color={theme.palette.success.main} />
                 <StatItem title="Medium" value={data.medium.correct} total={data.medium.total} color={theme.palette.warning.main} />
                 <StatItem title="Hard" value={data.hard.correct} total={data.hard.total} color={theme.palette.error.main} />
