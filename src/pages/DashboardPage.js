@@ -15,6 +15,7 @@ import DashboardActivityChart from '../components/dashboard/DashboardActivityCha
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
 import OverallDifficultyCard from '../components/dashboard/OverallDifficultyCard';
+import AverageScoreTrendChart from '../components/dashboard/AverageScoreTrendChart';
 
 // Register all necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend, ArcElement);
@@ -46,9 +47,9 @@ const DashboardSkeleton = () => (
 function DashboardPage() {
     const { currentUser, isLoadingAuth } = useAuth();
     const navigate = useNavigate();
-    const {
+const {
         allSubjects, isLoadingData, error, timeFrequency, selectedSubject,
-        processedStats, activityChartRef, topicPerformanceRef,
+        processedStats, activityChartRef, topicPerformanceRef, rollingAverageChartRef,
         handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport, isGeneratingPdf
     } = useDashboard();
     
