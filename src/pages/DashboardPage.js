@@ -137,6 +137,15 @@ function DashboardPage() {
                     )}
                 </Grid>
                 
+                <Grid item xs={12}>
+                    <Box ref={rollingAverageChartRef}>
+                        <AverageScoreTrendChart
+                            trendData={processedStats.rollingAverageData}
+                            title="30-Day Rolling Average Score"
+                        />
+                    </Box>
+                </Grid>
+                
                 {/* --- Bottom Row: Activity Chart --- */}
                 <Grid item xs={12}>
                     <Box ref={activityChartRef}>
