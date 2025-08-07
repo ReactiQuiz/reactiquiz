@@ -38,7 +38,7 @@ function SubjectDifficultyCard({ subjectKey, title, data }) {
     const { easy, medium, hard } = data;
 
     return (
-        <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', borderTop: `4px solid ${accentColor}` }}>
+        <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', width: '100%', borderTop: `4px solid ${accentColor}` }}>
             <Stack sx={{ height: '100%' }}>
                 <Typography variant="h6" sx={{ fontWeight: 'medium', color: accentColor }}>
                     {title}

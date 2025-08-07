@@ -119,7 +119,7 @@ function DashboardPage() {
                                 <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
                             </Grid>
                             {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
-                                <Grid item key={key} sx={{ display: 'flex', p: { xs: 2, sm: 2.5 } }}>
+                                <Grid item width="100%" key={key} sx={{ display: 'flex'}}>
                                     <SubjectDifficultyCard
                                         subjectKey={key}
                                         title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
