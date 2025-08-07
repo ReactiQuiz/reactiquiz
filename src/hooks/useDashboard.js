@@ -49,6 +49,7 @@ export const useDashboard = () => {
     const activityChartRef = useRef(null);
     const topicPerformanceRef = useRef(null);
     const rollingAverageChartRef = useRef(null);
+    const difficultyBreakdownChartRef = useRef(null); 
 
     const { data: allUserResults = [], isLoading: isLoadingResults } = useQuery({ queryKey: ['userResults', currentUser?.id], queryFn: fetchUserResults, enabled: !!currentUser });
     const { data: allSubjects = [], isLoading: isLoadingSubjects } = useQuery({ queryKey: ['subjects'], queryFn: fetchAllSubjects });
@@ -246,6 +247,7 @@ export const useDashboard = () => {
         activityChartRef,
         topicPerformanceRef,
         rollingAverageChartRef,
+        difficultyBreakdownChartRef,
         handleTimeFrequencyChange,
         handleSubjectChange,
         handleGenerateReport,
