@@ -5,6 +5,7 @@ import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 import LoginIcon from '@mui/icons-material/Login';
+import { useNotifications } from '../contexts/NotificationsContext'; 
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ function LoginPage() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const { addNotification } = useNotifications();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
 
@@ -26,13 +27,13 @@ function LoginPage() {
     const handleLogin = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
-        setError('');
-        setInfoMessage('');
         try {
             await signIn(username, password);
+            addNotification('Login successful!', 'success'); // <-- Success notification
             navigate('/dashboard');
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+            const message = err.response?.data?.message || 'Login failed. Please check your credentials.';
+            addNotification(message, 'error'); // <-- Use the new system for errors
         } finally {
             setIsSubmitting(false);
         }

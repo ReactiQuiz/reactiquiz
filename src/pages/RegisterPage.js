@@ -4,6 +4,7 @@ import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Link as MuiL
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
+import { useNotifications } from '../contexts/NotificationsContext';    
 
 function RegisterPage() {
     const theme = useTheme();
@@ -16,15 +17,15 @@ function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [address, setAddress] = useState('');
     const [userClass, setUserClass] = useState('');
+    const { addNotification } = useNotifications();
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleRegister = async (event) => {
         event.preventDefault();
-        setError('');
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match.');
+            addNotification('Passwords do not match.', 'error');
             return;
         }
         setIsSubmitting(true);
@@ -33,7 +34,8 @@ function RegisterPage() {
             // Redirect to login with a success message
             navigate('/login', { state: { message: "Registration successful! Please sign in." } });
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed. Please try again.');
+            const message = err.response?.data?.message || 'Registration failed. Please try again.';
+            addNotification(message, 'error'); // <-- Use notification system for errors
         } finally {
             setIsSubmitting(false);
         }

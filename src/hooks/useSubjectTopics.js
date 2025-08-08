@@ -5,6 +5,7 @@ import apiClient from '../api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
 import { useSubjects } from './useSubjects'; // We will use this to get subject details
 import { useTopics } from '../contexts/TopicsContext'; // <-- Import the new hook
+import { useNotifications } from '../contexts/NotificationsContext'; 
 
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
@@ -15,6 +16,7 @@ const fetchQuizBySessionId = async (sessionId) => {
 export const useSubjectTopics = () => {
   const { subjectKey } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotifications(); 
 
   // --- START OF REFACTOR: Get data from global contexts ---
   const { subjects, isLoading: isLoadingSubjects } = useSubjects();
@@ -50,8 +52,8 @@ export const useSubjectTopics = () => {
       navigate('/quiz/loading');
     },
     onError: (err) => {
-        console.error("Failed to create quiz session", err);
-        alert(err.response?.data?.message || "Could not start the quiz. Please try again.");
+        const message = err.response?.data?.message || "Could not start the quiz. Please try again.";
+        addNotification(message, 'error');
     }
   });
 

@@ -11,6 +11,8 @@ import NavBar from './components/core/Navbar';
 import AppRoutes from './components/AppRoutes';
 import ChangePasswordModal from './components/auth/ChangePasswordModal';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AppProviders } from './contexts/AppProviders'; 
+import NotificationManager from './components/core/NotificationManager'; 
 import { darkTheme } from './theme'; // Import darkTheme for the guest layout
 
 function AppContent() {
@@ -77,19 +79,13 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppThemeProvider>
-          <SubjectColorsProvider>
-            <TopicsProvider>
-              <CssBaseline />
-              <AppContent />
-            </TopicsProvider>
-          </SubjectColorsProvider>
-        </AppThemeProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <AppProviders> 
+      <CssBaseline />
+      <AppContent />
+      <NotificationManager /> 
+    </AppProviders>
   );
 }
+
 
 export default App;

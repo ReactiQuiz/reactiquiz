@@ -1,12 +1,15 @@
 // src/hooks/useAICenter.js
 import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api/axiosInstance';
+import { useNotifications } from '../contexts/NotificationsContext'; // <-- Import hook
 
 export const useAICenter = () => {
+    const { addNotification } = useNotifications(); // <-- Use hook
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    // The local 'error' state is no longer needed for display
+    // const [error, setError] = useState(null); // <-- Can be removed
 
     useEffect(() => {
         setMessages([
@@ -27,7 +30,6 @@ export const useAICenter = () => {
         setMessages(currentHistory);
         setInput('');
         setIsLoading(true);
-        setError(null);
 
         try {
             const historyForApi = messages;
@@ -40,33 +42,27 @@ export const useAICenter = () => {
             setMessages(prev => [...prev, modelMessage]);
 
         } catch (err) {
-            // --- START OF FIX: Custom Error Message Handling ---
-            // Get the error message sent from our backend.
+            // --- START OF FIX: Use the new notification system ---
             const backendError = err.response?.data?.error || 'Sorry, something went wrong. Please try again.';
             
-            // Check if the backend error indicates an overload.
             if (backendError.toLowerCase().includes('overloaded')) {
-                // If it is, set the error state to the specific message you requested.
-                const userFriendlyError = "The model is over-loaded. Please contact the admin or try again.";
-                setError(userFriendlyError);
-                setMessages(prev => [...prev, { role: 'model', parts: [{ text: userFriendlyError }], isError: true }]);
+                addNotification("The model is over-loaded. Please contact the admin or try again.", 'warning');
             } else {
-                // For all other errors, use the message from the backend directly.
-                setError(backendError);
-                setMessages(prev => [...prev, { role: 'model', parts: [{ text: backendError }], isError: true }]);
+                addNotification(backendError, 'error');
             }
+            // We no longer need to add an error message to the chat history itself
             // --- END OF FIX ---
         } finally {
             setIsLoading(false);
         }
-    }, [input, isLoading, messages]);
+    }, [input, isLoading, messages, addNotification]);
 
     return {
         messages,
         input,
         setInput,
         isLoading,
-        error,
+        error: null, // This can be returned as null now
         handleSendMessage
     };
 };

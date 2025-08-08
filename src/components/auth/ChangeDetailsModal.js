@@ -7,6 +7,7 @@ import {
 import { darken } from '@mui/material/styles';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import apiClient from '../../api/axiosInstance';
+import { useNotifications } from '../../contexts/NotificationsContext';
 
 const CLASS_OPTIONS = ['6', '7', '8', '9', '10', '11', '12'];
 
@@ -15,6 +16,7 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
 // --- END OF FIX ---
   const theme = useTheme();
   const ACCENT_COLOR = theme.palette.accountAccent?.main || theme.palette.primary.main;
+  const { addNotification } = useNotifications();
 
   const [formData, setFormData] = useState({
     address: '',
@@ -40,33 +42,27 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
+   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError('');
-    setSuccessMessage('');
-
     if (!formData.address.trim() || !formData.class) {
-        setError("Address and Class are required.");
+        addNotification("Address and Class are required.", 'warning');
         return;
     }
-
     setIsSubmitting(true);
     try {
       await apiClient.put('/api/users/update-details', {
         address: formData.address.trim(),
         class: formData.class,
       });
-      setSuccessMessage('Details updated successfully!');
+      addNotification('Details updated successfully!', 'success'); // <-- Success notification
       
-      // --- START OF FIX: Call the new prop on success ---
       if (onUpdateSuccess) {
         onUpdateSuccess({ address: formData.address, class: formData.class });
       }
-      // --- END OF FIX ---
-      
-      setTimeout(onClose, 2000);
+      onClose(); // Close the modal immediately on success
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update details.');
+      const message = err.response?.data?.message || 'Failed to update details.';
+      addNotification(message, 'error'); // <-- Error notification
     } finally {
       setIsSubmitting(false);
     }
