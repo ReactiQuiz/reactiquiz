@@ -1,148 +1,76 @@
-// src/components/ChangePasswordModal.js
+// src/components/auth/ChangePasswordModal.js
 import { useState } from 'react';
-import {
-  Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField,
-  Box, useTheme, Alert, CircularProgress, IconButton
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, useTheme, CircularProgress } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import apiClient from '../../api/axiosInstance';
 import { useNotifications } from '../../contexts/NotificationsContext';
 
-function ChangePasswordModal({ open, onClose, currentUser }) {
+function ChangePasswordModal({ open, onClose }) {
   const theme = useTheme();
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const { addNotification } = useNotifications();
 
-  const effectiveAccentColor = theme.palette.accountAccent?.main || theme.palette.success.main;
+  // --- START OF FIX: Re-added the missing state and handlers ---
+  const [formData, setFormData] = useState({ oldPassword: '', newPassword: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleClose = () => {
-    setOldPassword('');
-    setNewPassword('');
-    setConfirmNewPassword('');
-    setError('');
-    setSuccessMessage('');
-    setShowOldPassword(false);
-    setShowNewPassword(false);
-    setShowConfirmNewPassword(false);
-    onClose();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
-
-   const handleSubmit = async (event) => {
+  // --- END OF FIX ---
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!formData.oldPassword || !formData.newPassword) {
       addNotification('Both fields are required.', 'warning');
       return;
     }
+    if (formData.newPassword.length < 6) {
+        addNotification('New password must be at least 6 characters long.', 'warning');
+        return;
+    }
     setIsSubmitting(true);
     try {
       await apiClient.post('/api/users/change-password', formData);
       addNotification('Password changed successfully!', 'success');
-      onClose(); // Close modal on success
+      onClose();
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to change password.';
       addNotification(message, 'error');
     } finally {
       setIsSubmitting(false);
-      setFormData({ oldPassword: '', newPassword: '' }); // Clear fields
+      setFormData({ oldPassword: '', newPassword: '' });
     }
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { minWidth: { xs: '90%', sm: '450px' } } }}>
-      <DialogTitle sx={{ backgroundColor: effectiveAccentColor, color: theme.palette.getContrastText(effectiveAccentColor), pb: 1.5, pt: 2, textAlign: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <VpnKeyIcon sx={{ mr: 1 }} />
-          Change Your Password
-        </Box>
+    <Dialog open={open} onClose={onClose} PaperProps={{ sx: { width: '100%', maxWidth: '400px' } }}>
+      <DialogTitle sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', display: 'flex', alignItems: 'center', gap: 1 }}>
+        <VpnKeyIcon />
+        Change Password
       </DialogTitle>
       <DialogContent sx={{ pt: '20px !important' }}>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="oldPassword"
-            label="Old Password"
-            type={showOldPassword ? 'text' : 'password'}
-            id="old-password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-            error={!!error && (oldPassword.length === 0 || error.toLowerCase().includes("old password"))}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => setShowOldPassword(!showOldPassword)} edge="end">
-                  {showOldPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              ),
-            }}
+            margin="normal" required fullWidth name="oldPassword" label="Old Password"
+            type="password" autoComplete="current-password" autoFocus
+            value={formData.oldPassword} onChange={handleInputChange}
           />
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="newPassword"
-            label="New Password (min. 6 chars)"
-            type={showNewPassword ? 'text' : 'password'}
-            id="new-password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            error={!!error && (newPassword.length === 0 || error.toLowerCase().includes("new password") || newPassword.length < 6)}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => setShowNewPassword(!showNewPassword)} edge="end">
-                  {showNewPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              ),
-            }}
+            margin="normal" required fullWidth name="newPassword" label="New Password"
+            type="password" autoComplete="new-password"
+            value={formData.newPassword} onChange={handleInputChange}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="confirmNewPassword"
-            label="Confirm New Password"
-            type={showConfirmNewPassword ? 'text' : 'password'}
-            id="confirm-new-password"
-            value={confirmNewPassword}
-            onChange={(e) => setConfirmNewPassword(e.target.value)}
-            error={!!error && (confirmNewPassword.length === 0 || newPassword !== confirmNewPassword)}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)} edge="end">
-                  {showConfirmNewPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              ),
-            }}
-          />
-          {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-          {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
         </Box>
       </DialogContent>
-      <DialogActions sx={{ p: '16px 24px', justifyContent: 'space-between' }}>
-        <Button onClick={handleClose} sx={{ color: theme.palette.text.secondary }}>Cancel</Button>
+      <DialogActions sx={{ p: '16px 24px' }}>
+        <Button onClick={onClose}>Cancel</Button>
         <Button
-          onClick={handleSubmit}
-          variant="contained"
-          disabled={isSubmitting}
-          sx={{
-            backgroundColor: effectiveAccentColor,
-            color: theme.palette.getContrastText(effectiveAccentColor),
-            '&:hover': { backgroundColor: darken(effectiveAccentColor, 0.15) }
-          }}
+          onClick={handleSubmit} variant="contained" disabled={isSubmitting}
           startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : null}
         >
-          {isSubmitting ? 'Changing...' : 'Change Password'}
+          {isSubmitting ? 'Saving...' : 'Save Changes'}
         </Button>
       </DialogActions>
     </Dialog>
