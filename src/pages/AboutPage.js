@@ -42,7 +42,7 @@ function AboutPage() {
             {/* --- START OF THE DEFINITIVE FIX --- */}
             <Avatar
               alt="Sanskar Sontakke"
-              src="/profile-sanskar.jpg" // This path points to public/profile-sanskar.jpg
+              src="../public/profile-sanskar.jpg" // This path points to public/profile-sanskar.jpg
               sx={{
                 width: 150,
                 height: 150,
