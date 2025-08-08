@@ -1,40 +1,44 @@
 // api/index.js
+const path = require('path'); // <-- Import the 'path' module
+
 // This line is for local development only, to load environment variables
 if (process.env.NODE_ENV !== 'production') {
-    const path = require('path');
+    // Use path.resolve to ensure the .env file is found correctly from the project root
     require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 }
 
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 // Use a try-catch block for robustness during the Vercel build
 let logApi, logInfo, logError;
 try {
-    const logger = require('./_utils/logger');
+    // --- START OF DEFINITIVE FIX: Use absolute paths for requires ---
+    const logger = require(path.resolve(__dirname, './_utils/logger.js'));
     logApi = logger.logApi;
     logInfo = logger.logInfo;
     logError = logger.logError;
 } catch (e) {
-    // Fallback to console.log if logger fails
     console.log("Logger failed to initialize, falling back to console.log");
     logApi = (...args) => console.log('[API]', ...args);
     logInfo = (...args) => console.log('[INFO]', ...args);
     logError = (...args) => console.error('[ERROR]', ...args);
 }
 
-// Import all individual route handlers
-const userRoutes = require('./routes/users');
-const subjectRoutes = require('./routes/subjects');
-const topicRoutes = require('./routes/topics');
-const questionRoutes = require('./routes/questions');
-const resultRoutes = require('./routes/results');
-const friendRoutes = require('./routes/friends');
-const challengeRoutes = require('./routes/challenges');
-const contactRoutes = require('./routes/contact');
-const aiRoutes = require('./routes/ai');
-const homiBhabhaRoutes = require('./routes/homibhabha');
-const quizSessionRoutes = require('./routes/quizSessions');
+// Import all individual route handlers using absolute paths
+const userRoutes = require(path.resolve(__dirname, './routes/users.js'));
+const subjectRoutes = require(path.resolve(__dirname, './routes/subjects.js'));
+const topicRoutes = require(path.resolve(__dirname, './routes/topics.js'));
+const questionRoutes = require(path.resolve(__dirname, './routes/questions.js'));
+const resultRoutes = require(path.resolve(__dirname, './routes/results.js'));
+const friendRoutes = require(path.resolve(__dirname, './routes/friends.js'));
+const challengeRoutes = require(path.resolve(__dirname, './routes/challenges.js'));
+const contactRoutes = require(path.resolve(__dirname, './routes/contact.js'));
+const aiRoutes = require(path.resolve(__dirname, './routes/ai.js'));
+const homiBhabhaRoutes = require(path.resolve(__dirname, './routes/homibhabha.js'));
+const quizSessionRoutes = require(path.resolve(__dirname, './routes/quizSessions.js'));
+// --- END OF DEFINITIVE FIX ---
 
 const app = express();
 
@@ -42,8 +46,27 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
+// --- RATE LIMITING SETUP ---
+const apiLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100,
+	standardHeaders: true,
+	legacyHeaders: false,
+    message: { message: 'Too many requests, please try again after 15 minutes' },
+});
+
+const authLimiter = rateLimit({
+	windowMs: 30 * 60 * 1000,
+	max: 10,
+	standardHeaders: true,
+	legacyHeaders: false,
+    message: { message: 'Too many authentication attempts, please try again after 30 minutes' },
+});
+
+app.use('/api', apiLimiter);
+
 // --- API Route Registration ---
-app.use('/api/users', userRoutes);
+app.use('/api/users', authLimiter, userRoutes); 
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/questions', questionRoutes);
