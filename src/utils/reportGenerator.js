@@ -58,12 +58,8 @@ const captureChartWithLightModeStyles = async (element) => {
     }
 
     // --- START OF FIX 1: Override dataset colors to black for PDF ---
-    chartInstance.data.datasets.forEach(dataset => {
-      dataset.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Dark grey fill for bars/area
-      dataset.borderColor = blackColor;
-      dataset.pointBackgroundColor = blackColor;
-      dataset.pointBorderColor = blackColor;
-    });
+    // NO LONGER OVERRIDING TO BLACK. We will keep the original colors.
+    // This part is now removed to preserve the chart's original colors.
     // --- END OF FIX 1 ---
 
     chartInstance.update('none');
@@ -82,6 +78,8 @@ const captureChartWithLightModeStyles = async (element) => {
     chartInstance.options.scales = originalOptions.scales;
 
     // --- START OF FIX 1: Restore original dataset colors ---
+    // This is still needed to ensure the chart on the webpage returns to its original state,
+    // even though we are not forcing black colors anymore. It handles any potential mutation.
     chartInstance.data.datasets.forEach((dataset, index) => {
       dataset.backgroundColor = originalDatasetColors[index].backgroundColor;
       dataset.borderColor = originalDatasetColors[index].borderColor;
@@ -157,104 +155,128 @@ const captureElementAsImage = async (element) => {
 
 export const generateDashboardPdfReport = async ({
   currentUser,
-  overallStats,
-  activityChartElement,
-  subjectAveragesChartElement,
-  topicPerformanceElement,
-  isSubjectSelected,
-  timeFrequencyLabel
+  processedStats, // Pass the entire stats object
+  activityChartRef,
+  rollingAverageChartRef,
+  difficultyBreakdownChartRef,
+  topicPerformanceRef,
+  allSubjects,
+  timeFrequencyLabel,
+  selectedSubject
 }) => {
-  // The rest of this function remains the same.
-  // The fixes are entirely within the helper functions above.
   if (!currentUser) {
     alert("User data not available for report.");
     return false;
   }
-  if (!activityChartElement) {
-    alert("Activity Chart element not found. Cannot generate PDF.");
-    return false;
+  
+  if (!processedStats) {
+      alert("No data available to generate a report.");
+      return false;
   }
 
   try {
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
     const margin = 15;
     const contentWidth = pageWidth - 2 * margin;
     let currentY = margin;
 
-    // PDF Header & Overall Stats
+    // --- Section 1: Header and Overall KPIs ---
     pdf.setFontSize(22); pdf.setFont(undefined, 'bold');
-    pdf.text('ReactiQuiz User Analytics Report', pageWidth / 2, currentY, { align: 'center' });
+    pdf.text('ReactiQuiz Performance Report', pageWidth / 2, currentY, { align: 'center' });
     currentY += 10;
     pdf.setFontSize(14); pdf.setFont(undefined, 'normal');
     pdf.text(`User: ${currentUser.name || 'N/A'}`, margin, currentY); currentY += 7;
     pdf.text(`Report Generated: ${format(new Date(), 'MMM d, yyyy HH:mm')}`, margin, currentY); currentY += 7;
     pdf.text(`Time Period: ${timeFrequencyLabel}`, margin, currentY); currentY += 10;
+    
     pdf.setFontSize(16); pdf.setFont(undefined, 'bold');
-    pdf.text('Overall Performance', margin, currentY); currentY += 7;
-    pdf.setFontSize(12); pdf.setFont(undefined, 'normal');
-    pdf.text(`- Total Quizzes Solved: ${overallStats.totalQuizzes}`, margin + 5, currentY); currentY += 6;
-    pdf.text(`- Overall Average Score: ${overallStats.overallAverageScore}%`, margin + 5, currentY); currentY += 10;
+    pdf.text('Overall Performance Summary', margin, currentY); currentY += 8;
+    
+    // Using jspdf-autotable for a clean table layout
+    autoTable(pdf, {
+        startY: currentY,
+        head: [['Metric', 'Value']],
+        body: [
+            ['Total Quizzes Solved', processedStats.totalQuizzes],
+            ['Overall Average Score', `${processedStats.overallAverageScore.toFixed(1)}%`],
+            ['Total Questions Answered', processedStats.overallQuestionStats.total],
+            ['Total Correct Answers', processedStats.overallQuestionStats.correct],
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: [41, 128, 185] },
+    });
+    currentY = pdf.lastAutoTable.finalY + 10;
 
-    // Topic Performance (if applicable)
-    if (isSubjectSelected && topicPerformanceElement) {
-      if (currentY + 7 > pageHeight - margin) { pdf.addPage(); currentY = margin; }
-      const topicImgData = await captureElementAsImage(topicPerformanceElement);
-      if (topicImgData) {
-        const topicImgProps = pdf.getImageProperties(topicImgData);
-        let topicImgHeight = (topicImgProps.height * contentWidth) / topicImgProps.width;
-        if (topicImgHeight > pageHeight - margin - currentY - 5) { topicImgHeight = pageHeight - margin - currentY - 5; }
-        if (currentY + topicImgHeight > pageHeight - margin) { pdf.addPage(); currentY = margin; }
-        pdf.addImage(topicImgData, 'PNG', margin, currentY, contentWidth, topicImgHeight);
-        currentY += topicImgHeight + 10;
-      }
-    }
-
-    // Activity Chart
-    if (currentY + 7 > pageHeight - margin) { pdf.addPage(); currentY = margin; }
-    pdf.setFontSize(16); pdf.setFont(undefined, 'bold');
-    pdf.text('Quiz Activity Overview', margin, currentY); currentY += 7;
-    const activityImgData = await captureChartWithLightModeStyles(activityChartElement);
-    if (activityImgData) {
-      const activityImgProps = pdf.getImageProperties(activityImgData);
-      let activityImgHeight = (activityImgProps.height * contentWidth) / activityImgProps.width;
-      if (activityImgHeight > pageHeight - margin - currentY - 5) { activityImgHeight = pageHeight - margin - currentY - 5; }
-      if (currentY + activityImgHeight > pageHeight - margin) {
-        pdf.addPage(); currentY = margin;
-        pdf.setFontSize(16); pdf.setFont(undefined, 'bold');
-        pdf.text('Quiz Activity Overview (Continued)', margin, currentY); currentY += 7;
-      }
-      pdf.addImage(activityImgData, 'PNG', margin, currentY, contentWidth, activityImgHeight);
-      currentY += activityImgHeight + 10;
-    } else {
-      pdf.setFontSize(10);
-      pdf.setFont(undefined, 'italic');
-      pdf.text('- Could not render activity chart -', margin, currentY);
-      currentY += 10;
-    }
-
-    // Subject Averages Chart (if applicable)
-    if (!isSubjectSelected) {
-      if (currentY + 7 > pageHeight - margin) { pdf.addPage(); currentY = margin; }
-      pdf.setFontSize(16); pdf.setFont(undefined, 'bold');
-      pdf.text('Average Score by Subject', margin, currentY); currentY += 7;
-      const subjectImgData = await captureChartWithLightModeStyles(subjectAveragesChartElement);
-      if (subjectImgData) {
-        const subjectImgProps = pdf.getImageProperties(subjectImgData);
-        let subjectImgHeight = (subjectImgProps.height * contentWidth) / subjectImgProps.width;
-        if (subjectImgHeight > pageHeight - margin - currentY - 5) { subjectImgHeight = pageHeight - margin - currentY - 5; }
-        if (currentY + subjectImgHeight > pageHeight - margin) {
-          pdf.addPage(); currentY = margin;
-          pdf.setFontSize(16); pdf.setFont(undefined, 'bold');
-          pdf.text('Average Score by Subject (Continued)', margin, currentY); currentY += 7;
+    // --- Section 2: Difficulty Breakdown (if applicable) ---
+    if (selectedSubject === 'all' && difficultyBreakdownChartRef?.current) {
+        if (currentY + 70 > pdf.internal.pageSize.getHeight() - margin) { pdf.addPage(); currentY = margin; }
+        const chartImg = await captureChartWithLightModeStyles(difficultyBreakdownChartRef.current);
+        if (chartImg) {
+            const imgProps = pdf.getImageProperties(chartImg);
+            const imgHeight = (imgProps.height * contentWidth) / imgProps.width;
+            pdf.addImage(chartImg, 'PNG', margin, currentY, contentWidth, imgHeight);
+            currentY += imgHeight + 10;
         }
-        pdf.addImage(subjectImgData, 'PNG', margin, currentY, contentWidth, subjectImgHeight);
-      } else {
-        pdf.setFontSize(10);
-        pdf.setFont(undefined, 'italic');
-        pdf.text('- Subject averages chart is not applicable for this view or failed to render. -', margin, currentY);
-      }
+    }
+
+    // --- Section 3: Subject Performance Table (if applicable) ---
+    if (selectedSubject === 'all') {
+        if (currentY + 30 > pdf.internal.pageSize.getHeight() - margin) { pdf.addPage(); currentY = margin; }
+        pdf.setFontSize(16); pdf.setFont(undefined, 'bold');
+        pdf.text('Performance by Subject', margin, currentY); currentY += 8;
+        
+        const subjectBody = Object.entries(processedStats.subjectBreakdowns).map(([key, data]) => [
+            data.name,
+            data.count,
+            `${data.average.toFixed(1)}%`,
+            `${data.totalCorrect} / ${data.totalQuestions}`
+        ]);
+
+        autoTable(pdf, {
+            startY: currentY,
+            head: [['Subject', 'Quizzes', 'Avg. Score', 'Correct/Total Qs']],
+            body: subjectBody,
+            theme: 'striped',
+            headStyles: { fillColor: [41, 128, 185] },
+        });
+        currentY = pdf.lastAutoTable.finalY + 10;
+    }
+
+    // --- Section 4: Rolling Average Chart ---
+    if (rollingAverageChartRef?.current) {
+        if (currentY + 70 > pdf.internal.pageSize.getHeight() - margin) { pdf.addPage(); currentY = margin; }
+        const chartImg = await captureChartWithLightModeStyles(rollingAverageChartRef.current);
+        if (chartImg) {
+            const imgProps = pdf.getImageProperties(chartImg);
+            const imgHeight = (imgProps.height * contentWidth) / imgProps.width;
+            pdf.addImage(chartImg, 'PNG', margin, currentY, contentWidth, imgHeight);
+            currentY += imgHeight + 10;
+        }
+    }
+
+    // --- Section 5: Activity Chart ---
+    if (activityChartRef?.current) {
+        if (currentY + 70 > pdf.internal.pageSize.getHeight() - margin) { pdf.addPage(); currentY = margin; }
+        const chartImg = await captureChartWithLightModeStyles(activityChartRef.current);
+        if (chartImg) {
+            const imgProps = pdf.getImageProperties(chartImg);
+            const imgHeight = (imgProps.height * contentWidth) / imgProps.width;
+            pdf.addImage(chartImg, 'PNG', margin, currentY, contentWidth, imgHeight);
+            currentY += imgHeight + 10;
+        }
+    }
+
+    // --- Section 6: Topic Performance (if viewing a single subject) ---
+    if (selectedSubject !== 'all' && topicPerformanceRef?.current) {
+        if (currentY + 50 > pdf.internal.pageSize.getHeight() - margin) { pdf.addPage(); currentY = margin; }
+        const topicImg = await captureElementAsImage(topicPerformanceRef.current);
+        if (topicImg) {
+            const imgProps = pdf.getImageProperties(topicImg);
+            const imgHeight = (imgProps.height * contentWidth) / imgProps.width;
+            pdf.addImage(topicImg, 'PNG', margin, currentY, contentWidth, imgHeight);
+            currentY += imgHeight + 10;
+        }
     }
 
     pdf.save(`ReactiQuiz_Report_${currentUser.name}_${format(new Date(), 'yyyyMMdd')}.pdf`);
