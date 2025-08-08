@@ -42,7 +42,7 @@ function AboutPage() {
             {/* --- START OF THE DEFINITIVE FIX --- */}
             <Avatar
               alt="Sanskar Sontakke"
-              src="../public/profile-sanskar.jpg" // This path points to public/profile-sanskar.jpg
+              src="../public/profile-sanskar.png" // This path points to public/profile-sanskar.jpg
               sx={{
                 width: 150,
                 height: 150,
@@ -51,8 +51,8 @@ function AboutPage() {
                 border: `3px solid ${theme.palette.primary.main}`,
               }}
             />
-            <img src='../public/profile-sanskar.jpg'></img>
-            <img src='../../public/profile-sanskar.jpg'></img>
+            <img src='../public/profile-sanskar.png'></img>
+            <img src='../../public/profile-sanskar.png'></img>
             {/* --- END OF THE DEFINITIVE FIX --- */}
 
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
