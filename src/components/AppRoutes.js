@@ -13,22 +13,22 @@ const SuspenseFallback = () => (
     </Box>
 );
 
-const HomePage = React.lazy(() => import('../../pages/HomePage'));
-const AllSubjectsPage = React.lazy(() => import('../../pages/AllSubjectsPage'));
-const SubjectTopicsPage = React.lazy(() => import('../../pages/SubjectTopicsPage'));
-const DashboardPage = React.lazy(() => import('../../pages/DashboardPage'));
-const AccountPage = React.lazy(() => import('../../pages/AccountPage'));
-const LoginPage = React.lazy(() => import('../../pages/LoginPage'));
-const RegisterPage = React.lazy(() => import('../../pages/RegisterPage'));
-const ResultsPage = React.lazy(() => import('../../pages/ResultsPage'));
-const QuizPage = React.lazy(() => import('../../pages/QuizPage'));
-const AICenterPage = React.lazy(() => import('../../pages/AICenterPage'));
-const HomibhabhaPage = React.lazy(() => import('../../pages/HomibhabhaPage'));
-const AboutPage = React.lazy(() => import('../../pages/AboutPage'));
-const NotFoundPage = React.lazy(() => import('../../pages/NotFoundPage'));
-const QuizLoadingPage = React.lazy(() => import('../../pages/QuizLoadingPage'));
-const SettingsPage = React.lazy(() => import('../../pages/SettingsPage'));
-const FlashcardPage = React.lazy(() => import('../../pages/FlashcardPage'));
+const HomePage = React.lazy(() => import('../pages/HomePage'));
+const AllSubjectsPage = React.lazy(() => import('../pages/AllSubjectsPage'));
+const SubjectTopicsPage = React.lazy(() => import('../pages/SubjectTopicsPage'));
+const DashboardPage = React.lazy(() => import('../pages/DashboardPage'));
+const AccountPage = React.lazy(() => import('../pages/AccountPage'));
+const LoginPage = React.lazy(() => import('../pages/LoginPage'));
+const RegisterPage = React.lazy(() => import('../pages/RegisterPage'));
+const ResultsPage = React.lazy(() => import('../pages/ResultsPage'));
+const QuizPage = React.lazy(() => import('../pages/QuizPage'));
+const AICenterPage = React.lazy(() => import('../pages/AICenterPage'));
+const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
+const AboutPage = React.lazy(() => import('../pages/AboutPage'));
+const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
+const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
+const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
+const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
 
 // A helper to pass the outlet context down to pages that need it
 const AccountPageWithContext = () => {
