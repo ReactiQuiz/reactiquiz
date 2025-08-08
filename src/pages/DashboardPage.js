@@ -15,6 +15,8 @@ import DashboardActivityChart from '../components/dashboard/DashboardActivityCha
 import TopicPerformanceList from '../components/dashboard/TopicPerformanceList';
 import GenerateReportButton from '../components/dashboard/GenerateReportButton';
 import OverallDifficultyCard from '../components/dashboard/OverallDifficultyCard';
+import AverageScoreTrendChart from '../components/dashboard/AverageScoreTrendChart';
+import DifficultyBreakdownChart from '../components/dashboard/DifficultyBreakdownChart';
 
 // Register all necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend, ArcElement);
@@ -24,21 +26,10 @@ const DashboardSkeleton = () => (
     <Box sx={{ py: { xs: 1, sm: 2 }, px: { xs: 1, sm: 2 }, width: '100%' }}>
         <Skeleton variant="rectangular" height={90} sx={{ mb: 3, borderRadius: 2 }} />
         <Grid container spacing={2}>
-            <Grid item xs={12} md={5}>
-                <Stack spacing={2}>
-                    <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 2 }} />
-                    <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 2 }} />
-                </Stack>
-            </Grid>
-            <Grid item xs={12} md={7}>
-                <Stack spacing={2}>
-                    <Skeleton variant="rectangular" height={150} sx={{ borderRadius: 2 }} />
-                    <Skeleton variant="rectangular" height={234} sx={{ borderRadius: 2 }} />
-                </Stack>
-            </Grid>
-            <Grid item xs={12}>
-                <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
-            </Grid>
+            <Grid item xs={12} md={5}><Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} /></Grid>
+            <Grid item xs={12} md={7}><Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} /></Grid>
+            <Grid item xs={12}><Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} /></Grid>
+            <Grid item xs={12}><Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} /></Grid>
         </Grid>
     </Box>
 );
@@ -48,43 +39,43 @@ function DashboardPage() {
     const navigate = useNavigate();
     const {
         allSubjects, isLoadingData, error, timeFrequency, selectedSubject,
-        processedStats, activityChartRef, topicPerformanceRef,
-        handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport, isGeneratingPdf
+        processedStats, activityChartRef, topicPerformanceRef, rollingAverageChartRef,
+        handleTimeFrequencyChange, handleSubjectChange, handleGenerateReport, isGeneratingPdf, difficultyBreakdownChartRef
     } = useDashboard();
-    
+
     // Render the skeleton if either authentication or dashboard data is loading
     if (isLoadingAuth || isLoadingData) {
         return <DashboardSkeleton />;
     }
-    
+
     // Render an error message if data fetching fails
     if (error) {
-        return ( <Box sx={{ p: 2 }}><Alert severity="error">{error}</Alert></Box> );
+        return (<Box sx={{ p: 2 }}><Alert severity="error">{error}</Alert></Box>);
     }
 
     // Render a welcome/empty state if the user has no quiz results in the selected period
     if (!isLoadingData && (!processedStats || processedStats.totalQuizzes === 0)) {
         return (
-          <Box sx={{ py: 2, px: { xs: 1, sm: 2 }, width: '100%' }}>
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>My Dashboard</Typography>
-            <DashboardControls
-                timeFrequency={timeFrequency}
-                onTimeFrequencyChange={handleTimeFrequencyChange}
-                allSubjects={allSubjects}
-                selectedSubject={selectedSubject}
-                onSubjectChange={handleSubjectChange}
-            />
-            <Paper sx={{ p: 4, mt: 4, mx: 'auto', maxWidth: '600px', textAlign: 'center' }}>
-                <BarChartIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
-                <Typography variant="h5" gutterBottom>Welcome, {currentUser.name}!</Typography>
-                <Typography sx={{ my: 2, color: 'text.secondary' }}>
-                    Your dashboard is ready. Complete a quiz to start seeing your performance analytics here.
-                </Typography>
-                <Button variant="contained" onClick={() => navigate('/subjects')}>
-                    Explore Quizzes
-                </Button>
-            </Paper>
-          </Box>
+            <Box sx={{ py: 2, px: { xs: 1, sm: 2 }, width: '100%' }}>
+                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>My Dashboard</Typography>
+                <DashboardControls
+                    timeFrequency={timeFrequency}
+                    onTimeFrequencyChange={handleTimeFrequencyChange}
+                    allSubjects={allSubjects}
+                    selectedSubject={selectedSubject}
+                    onSubjectChange={handleSubjectChange}
+                />
+                <Paper sx={{ p: 4, mt: 4, mx: 'auto', maxWidth: '600px', textAlign: 'center' }}>
+                    <BarChartIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
+                    <Typography variant="h5" gutterBottom>Welcome, {currentUser.name}!</Typography>
+                    <Typography sx={{ my: 2, color: 'text.secondary' }}>
+                        Your dashboard is ready. Complete a quiz to start seeing your performance analytics here.
+                    </Typography>
+                    <Button variant="contained" onClick={() => navigate('/subjects')}>
+                        Explore Quizzes
+                    </Button>
+                </Paper>
+            </Box>
         );
     }
 
@@ -110,24 +101,24 @@ function DashboardPage() {
                         overallQuestionStats={processedStats.overallQuestionStats}
                     />
                 </Grid>
-                
+
                 {/* --- Right Column: Difficulty Breakdowns --- */}
                 <Grid item xs={12} md={7}>
                     {selectedSubject === 'all' ? (
-                        <Stack spacing={2} sx={{height: '100%'}}>
-                            <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
-                            <Grid container spacing={2}>
-                                {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
-                                    <Grid item xs={12} sm={6} key={key}>
-                                        <SubjectDifficultyCard
-                                            subjectKey={key}
-                                            title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
-                                            data={value}
-                                        />
-                                    </Grid>
-                                ))}
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <OverallDifficultyCard data={processedStats.overallDifficultyPerformance} />
                             </Grid>
-                        </Stack>
+                            {Object.entries(processedStats.subjectDifficultyPerformance).map(([key, value]) => (
+                                <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={key} sx={{ display: 'flex' }}>
+                                    <SubjectDifficultyCard
+                                        subjectKey={key}
+                                        title={allSubjects.find(s => s.subjectKey === key)?.name || ''}
+                                        data={value}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
                     ) : (
                         <SubjectDifficultyCard
                             subjectKey={selectedSubject}
@@ -136,7 +127,27 @@ function DashboardPage() {
                         />
                     )}
                 </Grid>
-                
+
+                {selectedSubject === 'all' && (
+                    <Grid item sx={{ width: '100%' }}>
+                        <Box ref={difficultyBreakdownChartRef}>
+                            <DifficultyBreakdownChart
+                                performanceData={processedStats.subjectDifficultyPerformance}
+                                subjects={allSubjects}
+                            />
+                        </Box>
+                    </Grid>
+                )}
+
+                <Grid item xs={12}>
+                    <Box ref={rollingAverageChartRef}>
+                        <AverageScoreTrendChart
+                            trendData={processedStats.rollingAverageData}
+                            title="30-Day Rolling Average Score"
+                        />
+                    </Box>
+                </Grid>
+
                 {/* --- Bottom Row: Activity Chart --- */}
                 <Grid item xs={12}>
                     <Box ref={activityChartRef}>
@@ -159,7 +170,7 @@ function DashboardPage() {
                     </Grid>
                 )}
             </Grid>
-            
+
             <GenerateReportButton onGenerate={handleGenerateReport} isLoading={isGeneratingPdf} />
         </Box>
     );

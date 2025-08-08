@@ -48,23 +48,12 @@ export const useDashboard = () => {
 
     const activityChartRef = useRef(null);
     const topicPerformanceRef = useRef(null);
+    const rollingAverageChartRef = useRef(null);
+    const difficultyBreakdownChartRef = useRef(null); 
 
-    // --- Data Fetching Layer: Fetch all data once ---
-    const { data: allUserResults = [], isLoading: isLoadingResults } = useQuery({
-        queryKey: ['userResults', currentUser?.id],
-        queryFn: fetchUserResults,
-        enabled: !!currentUser
-    });
-
-    const { data: allSubjects = [], isLoading: isLoadingSubjects } = useQuery({
-        queryKey: ['subjects'],
-        queryFn: fetchAllSubjects
-    });
-
-    const { data: allTopics = [], isLoading: isLoadingTopics } = useQuery({
-        queryKey: ['topics'],
-        queryFn: fetchAllTopics
-    });
+    const { data: allUserResults = [], isLoading: isLoadingResults } = useQuery({ queryKey: ['userResults', currentUser?.id], queryFn: fetchUserResults, enabled: !!currentUser });
+    const { data: allSubjects = [], isLoading: isLoadingSubjects } = useQuery({ queryKey: ['subjects'], queryFn: fetchAllSubjects });
+    const { data: allTopics = [], isLoading: isLoadingTopics } = useQuery({ queryKey: ['topics'], queryFn: fetchAllTopics });
 
     const allUniqueTopicIds = useMemo(() => [...new Set(allUserResults.map(r => r.topicId))], [allUserResults]);
 
@@ -76,28 +65,28 @@ export const useDashboard = () => {
 
     const isLoadingData = isLoadingResults || isLoadingSubjects || isLoadingTopics || isLoadingQuestions;
 
-    // --- Complex Data Processing Layer ---
     const processedStats = useMemo(() => {
-        // 1. Client-side filtering based on UI state
         const today = startOfDay(new Date());
-        const startDate = timeFrequency === 'all' ? new Date(0) : startOfDay(subDays(today, timeFrequency));
+        const overallStartDate = allUserResults.length > 0 ? startOfDay(min(allUserResults.map(r => parseISO(r.timestamp)))) : today;
+        const timeFilterStartDate = timeFrequency === 'all' ? overallStartDate : startOfDay(subDays(today, timeFrequency - 1));
+
         const resultsInTimePeriod = allUserResults.filter(r => {
             const resultDate = parseISO(r.timestamp);
-            return isValid(resultDate) && resultDate >= startDate;
+            return isValid(resultDate) && resultDate >= timeFilterStartDate;
         });
         const filteredResults = selectedSubject === 'all'
             ? resultsInTimePeriod
             : resultsInTimePeriod.filter(r => r.subject?.toLowerCase() === selectedSubject.toLowerCase());
 
-        // 2. Calculations based on the filtered data
         const defaultState = {
             totalQuizzes: 0, overallAverageScore: 0, subjectBreakdowns: {},
             subjectDifficultyPerformance: {},
             overallDifficultyPerformance: { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } },
             overallQuestionStats: { correct: 0, total: 0 },
-            activityData: { labels: [], datasets: [] }, topicPerformance: []
+            activityData: { labels: [], datasets: [] }, topicPerformance: [],
+            rollingAverageData: { labels: [], data: [] },
         };
-        if (filteredResults.length === 0 || allSubjects.length === 0) return defaultState;
+        if (allSubjects.length === 0) return defaultState;
 
         const questionMap = new Map(allRelevantQuestions.map(q => [q.id, q]));
         const subjectBreakdowns = {};
@@ -166,17 +155,23 @@ export const useDashboard = () => {
             }
         }
 
-        const activityStartDate = timeFrequency === 'all' ? (filteredResults.length > 0 ? startOfDay(min(filteredResults.map(r => parseISO(r.timestamp)))) : today) : startOfDay(subDays(today, timeFrequency));
-        const activityCounts = {};
-        filteredResults.forEach(r => {
+        const chartLabels = eachDayOfInterval({ start: timeFilterStartDate, end: today }).map(d => format(d, 'yyyy-MM-dd'));
+        const totalActivityCounts = {};
+        const subjectActivityCounts = {};
+        resultsInTimePeriod.forEach(r => {
             const dayKey = format(startOfDay(parseISO(r.timestamp)), 'yyyy-MM-dd');
-            activityCounts[dayKey] = (activityCounts[dayKey] || 0) + 1;
+            totalActivityCounts[dayKey] = (totalActivityCounts[dayKey] || 0) + 1;
+            if (r.subject) {
+                if (!subjectActivityCounts[r.subject]) subjectActivityCounts[r.subject] = {};
+                subjectActivityCounts[r.subject][dayKey] = (subjectActivityCounts[r.subject][dayKey] || 0) + 1;
+            }
         });
-        const chartLabels = eachDayOfInterval({ start: activityStartDate, end: today }).map(d => format(d, 'yyyy-MM-dd'));
-        const activityData = {
-            labels: chartLabels,
-            datasets: [{ label: 'Quizzes Taken', data: chartLabels.map(day => activityCounts[day] || 0), fill: true, backgroundColor: alpha(theme.palette.primary.main, 0.3), borderColor: theme.palette.primary.main, tension: 0.1 }],
-        };
+        const totalDataset = { label: 'Total Quizzes', data: chartLabels.map(day => totalActivityCounts[day] || 0), fill: true, borderColor: theme.palette.text.primary, backgroundColor: alpha(theme.palette.text.primary, 0.1), tension: 0.3, borderWidth: 2 };
+        const subjectDatasets = allSubjects.filter(subject => subjectActivityCounts[subject.subjectKey]).map(subject => {
+            const accentColor = getColor(subject.subjectKey);
+            return { label: subject.name, data: chartLabels.map(day => subjectActivityCounts[subject.subjectKey][day] || 0), borderColor: accentColor, backgroundColor: alpha(accentColor, 0.2), tension: 0.3, borderWidth: 2, fill: false };
+        });
+        const activityData = { labels: chartLabels, datasets: [totalDataset, ...subjectDatasets] };
 
         let topicPerformance = [];
         if (selectedSubject !== 'all' && allTopics.length > 0) {
@@ -192,6 +187,21 @@ export const useDashboard = () => {
             }).filter(Boolean).sort((a, b) => b.average - a.average);
         }
 
+        const rollingAverageData = { labels: [], data: [] };
+        if (resultsInTimePeriod.length > 0) {
+            rollingAverageData.labels = chartLabels;
+            rollingAverageData.data = chartLabels.map(dateStr => {
+                const currentDay = parseISO(dateStr);
+                const windowStart = startOfDay(subDays(currentDay, 29));
+                const resultsInWindow = allUserResults.filter(r => {
+                    const resultDate = startOfDay(parseISO(r.timestamp));
+                    return isValid(resultDate) && resultDate >= windowStart && resultDate <= currentDay;
+                });
+                if (resultsInWindow.length === 0) return null;
+                return resultsInWindow.reduce((acc, r) => acc + r.percentage, 0) / resultsInWindow.length;
+            });
+        }
+
         return {
             totalQuizzes: filteredResults.length,
             overallAverageScore: filteredResults.length > 0 ? Math.round(filteredResults.reduce((acc, r) => acc + r.percentage, 0) / filteredResults.length) : 0,
@@ -202,16 +212,13 @@ export const useDashboard = () => {
                 medium: { correct: overallDifficultyStats.medium.correct, total: overallDifficultyStats.medium.total },
                 hard: { correct: overallDifficultyStats.hard.correct, total: overallDifficultyStats.hard.total },
             },
-            overallQuestionStats: {
-                correct: overallCorrectAnswers,
-                total: overallTotalQuestions
-            },
+            overallQuestionStats: { correct: overallCorrectAnswers, total: overallTotalQuestions },
             activityData,
-            topicPerformance
+            topicPerformance,
+            rollingAverageData,
         };
-    }, [allUserResults, allSubjects, allTopics, allRelevantQuestions, theme, timeFrequency, selectedSubject]);
+    }, [allUserResults, allSubjects, allTopics, allRelevantQuestions, theme, timeFrequency, selectedSubject, getColor]);
 
-    // --- Handlers ---
     const handleTimeFrequencyChange = (event) => setTimeFrequency(event.target.value);
     const handleSubjectChange = (event) => setSelectedSubject(event.target.value);
     const handleGenerateReport = async () => {
@@ -228,7 +235,7 @@ export const useDashboard = () => {
         setIsGeneratingPdf(false);
     };
 
-    // --- Return statement ---
+    // --- START OF THE DEFINITIVE FIX: Corrected return statement ---
     return {
         allSubjects,
         isLoadingData,
@@ -239,8 +246,11 @@ export const useDashboard = () => {
         processedStats,
         activityChartRef,
         topicPerformanceRef,
+        rollingAverageChartRef,
+        difficultyBreakdownChartRef,
         handleTimeFrequencyChange,
         handleSubjectChange,
         handleGenerateReport,
     };
+    // --- END OF THE DEFINITIVE FIX ---
 };
