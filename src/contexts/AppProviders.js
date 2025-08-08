@@ -3,20 +3,16 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { AppThemeProvider } from './ThemeContext';
-import { SubjectColorsProvider } from './SubjectColorsContext';
+import { SubjectColorsProvider } from './SubjectColorsContext'; // Correct source
 import { TopicsProvider } from './TopicsContext';
-import { NotificationsProvider } from './NotificationsContext'; // Import our new provider
+import { NotificationsProvider } from './NotificationsContext';
 
-/**
- * This component composes all the global context providers for the application.
- * It's a clean way to manage "Provider Hell".
- */
 export const AppProviders = ({ children }) => {
   return (
     <BrowserRouter>
       <AuthProvider>
         <AppThemeProvider>
-          <NotificationsProvider> {/* <-- Add the new provider here */}
+          <NotificationsProvider>
             <SubjectColorsProvider>
               <TopicsProvider>
                 {children}

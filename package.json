@@ -30,6 +30,8 @@
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "express": "^4.19.2",
+    "express-rate-limit": "^8.0.1",
+    "express-validator": "^7.2.1",
     "html2canvas": "^1.4.1",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
@@ -71,6 +73,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!axios|react-markdown|remark-math|rehype-katex|react-katex|remark-parse|remark-gfm|micromark-extension-gfm|mdast-util-gfm|ccount|unist-util-visit|unist-util-is|github-slugger|unist-util-visit-parents)/"
     ]
   },
   "devDependencies": {

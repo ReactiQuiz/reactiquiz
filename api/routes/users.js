@@ -6,16 +6,55 @@ const { v4: uuidv4 } = require('uuid');
 const { turso } = require('../_utils/tursoClient');
 const { logApi, logError } = require('../_utils/logger');
 const { verifyToken } = require('../_middleware/auth');
+const { body, validationResult } = require('express-validator'); // <-- Import validation tools
 
 const router = Router();
 
-// --- START OF FIX: ALL DB CALLS NOW USE TRANSACTIONS ---
+// --- Reusable Validation Chains ---
+const registerValidation = [
+    body('username', 'Username must be at least 3 characters long').isLength({ min: 3 }).trim().escape(),
+    body('email', 'Please provide a valid email').isEmail().normalizeEmail(),
+    body('password', 'Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, and a number')
+        .isLength({ min: 8 })
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/),
+    body('address', 'Address is required').notEmpty().trim().escape(),
+    body('class', 'Class must be a valid number').isNumeric(),
+];
 
-router.put('/update-details', verifyToken, async (req, res) => {
+const loginValidation = [
+    body('username', 'Username is required').notEmpty().trim(),
+    body('password', 'Password is required').notEmpty(),
+];
+
+const changePasswordValidation = [
+    body('oldPassword', 'Old password is required').notEmpty(),
+    body('newPassword', 'New password must be at least 6 characters').isLength({ min: 6 }),
+];
+
+const updateDetailsValidation = [
+    body('address', 'Address is required').notEmpty().trim().escape(),
+    body('class', 'Class must be a valid number').isNumeric(),
+];
+
+// A helper function to handle validation errors
+const handleValidationErrors = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: 'Validation Error', errors: errors.array() });
+    }
+    next();
+};
+
+
+// --- Apply Validation to Routes ---
+
+router.put('/update-details', verifyToken, updateDetailsValidation, handleValidationErrors, async (req, res) => {
     const userId = req.user.id;
     const { address, class: userClass } = req.body;
     logApi('PUT', '/api/users/update-details', `User: ${userId}`);
-    if (!address || !userClass) return res.status(400).json({ message: 'Address and Class are required.' });
+
+    // No need for this check anymore, validator handles it:
+    // if (!address || !userClass) return res.status(400).json({ message: 'Address and Class are required.' });
 
     const tx = await turso.transaction("write");
     try {
@@ -32,11 +71,10 @@ router.put('/update-details', verifyToken, async (req, res) => {
     }
 });
 
-router.post('/change-password', verifyToken, async (req, res) => {
+router.post('/change-password', verifyToken, changePasswordValidation, handleValidationErrors, async (req, res) => {
     const userId = req.user.id;
     const { oldPassword, newPassword } = req.body;
     logApi('POST', '/api/users/change-password', `User: ${userId}`);
-    if (!oldPassword || !newPassword || newPassword.length < 6) return res.status(400).json({ message: 'Old password and a new password (min 6 chars) are required.' });
 
     const tx = await turso.transaction("write");
     try {
@@ -108,10 +146,9 @@ router.get('/stats', verifyToken, async (req, res) => {
     }
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', registerValidation, handleValidationErrors, async (req, res) => {
     const { username, email, password, address, class: userClass } = req.body;
     logApi('POST', '/api/users/register', `User: ${username}`);
-    if (!username || !email || !password || password.length < 6) return res.status(400).json({ message: 'Username, email, and a password of at least 6 characters are required.' });
 
     const tx = await turso.transaction("write");
     try {
@@ -119,7 +156,7 @@ router.post('/register', async (req, res) => {
         const userId = uuidv4();
         await tx.execute({
             sql: 'INSERT INTO users (id, username, email, password, address, class) VALUES (?, ?, ?, ?, ?, ?);',
-            args: [userId, username, email, hashedPassword, address || '', userClass || '']
+            args: [userId, username, email, hashedPassword, address, userClass]
         });
         await tx.commit();
         res.status(201).json({ message: 'User registered successfully!' });
@@ -133,11 +170,10 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginValidation, handleValidationErrors, async (req, res) => {
     const { username, password } = req.body;
     logApi('POST', '/api/users/login', `User: ${username}`);
-    if (!username || !password) return res.status(400).json({ message: 'Username and password are required.' });
-    
+
     const tx = await turso.transaction("read");
     try {
         const result = await tx.execute({
@@ -145,12 +181,16 @@ router.post('/login', async (req, res) => {
             args: [username]
         });
         await tx.commit();
-        
-        if (result.rows.length === 0) return res.status(401).json({ message: 'Invalid credentials.' });
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ message: 'Invalid credentials.' });
+        }
 
         const user = result.rows[0];
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) return res.status(401).json({ message: 'Invalid credentials.' });
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials.' });
+        }
 
         const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
@@ -184,7 +224,5 @@ router.get('/me', verifyToken, async (req, res) => {
         res.status(500).json({ message: 'Could not fetch user profile.' });
     }
 });
-
-// --- END OF FIX ---
 
 module.exports = router;

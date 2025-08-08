@@ -4,7 +4,7 @@ import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Link as MuiL
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
-import { useNotifications } from '../contexts/NotificationsContext';    
+import { useNotifications } from '../contexts/NotificationsContext';
 
 function RegisterPage() {
     const theme = useTheme();
@@ -23,11 +23,19 @@ function RegisterPage() {
 
     const handleRegister = async (event) => {
         event.preventDefault();
+        setPasswordError('');
 
         if (password !== confirmPassword) {
             addNotification('Passwords do not match.', 'error');
             return;
         }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            setPasswordError('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.');
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             await signUp({ username, email, password, address, class: userClass });
@@ -58,7 +66,7 @@ function RegisterPage() {
                     <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField margin="dense" required fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField margin="dense" required fullWidth label="Password (min. 6 chars)" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <TextField margin="dense" required fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} error={!!passwordError} helperText={passwordError || "Min. 8 characters, with uppercase, lowercase, and a number."}/>
                         <TextField margin="dense" required fullWidth label="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Class (e.g., 6-12)" type="number" value={userClass} onChange={(e) => setUserClass(e.target.value)} />
@@ -66,7 +74,7 @@ function RegisterPage() {
                         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
 
                         <Button type="submit" fullWidth variant="contained" disabled={isSubmitting} sx={{ mt: 2, mb: 1, py: 1.5 }}>
-                           Sign Up
+                            Sign Up
                         </Button>
                         <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
                             Already have an account?{' '}
