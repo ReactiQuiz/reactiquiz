@@ -243,7 +243,7 @@ export const useDashboard = () => {
         timeFrequency,
         selectedSubject,
         isGeneratingPdf,
-        processedStats, // This object contains all the calculated data
+        processedStats,
         activityChartRef,
         topicPerformanceRef,
         rollingAverageChartRef,
