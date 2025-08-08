@@ -3,18 +3,18 @@ import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, Alert, TextField, Button, Link as MuiLink, Paper, CircularProgress } from '@mui/material';
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotifications } from '../contexts/NotificationsContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 import LoginIcon from '@mui/icons-material/Login';
-import { useNotifications } from '../contexts/NotificationsContext'; 
 
 function LoginPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const { signIn } = useAuth();
+    const { addNotification } = useNotifications();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { addNotification } = useNotifications();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [infoMessage, setInfoMessage] = useState(location.state?.message || '');
 
@@ -27,13 +27,14 @@ function LoginPage() {
     const handleLogin = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
+        setInfoMessage('');
         try {
             await signIn(username, password);
-            addNotification('Login successful!', 'success'); // <-- Success notification
+            addNotification('Login successful!', 'success');
             navigate('/dashboard');
         } catch (err) {
             const message = err.response?.data?.message || 'Login failed. Please check your credentials.';
-            addNotification(message, 'error'); // <-- Use the new system for errors
+            addNotification(message, 'error');
         } finally {
             setIsSubmitting(false);
         }
@@ -53,9 +54,9 @@ function LoginPage() {
                     <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField margin="normal" required fullWidth label="Username" autoComplete="username" autoFocus value={username} onChange={(e) => setUsername(e.target.value)} />
                         <TextField margin="normal" required fullWidth label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        {error && <Alert severity="error" sx={{ my: 2 }}>{error}</Alert>}
                         
-                        {/* --- START OF FIX: Added loading indicator --- */}
+                        {/* --- START OF FIX: The old Alert component that used the 'error' state has been removed --- */}
+                        
                         <Button
                             type="submit" fullWidth variant="contained" disabled={isSubmitting}
                             sx={{ py: 1.5, mt: 3, mb: 2 }}
