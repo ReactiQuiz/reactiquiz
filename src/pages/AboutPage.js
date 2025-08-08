@@ -51,8 +51,6 @@ function AboutPage() {
                 border: `3px solid ${theme.palette.primary.main}`,
               }}
             />
-            <img src='../public/profile-sanskar.png'></img>
-            <img src='../../public/profile-sanskar.png'></img>
             {/* --- END OF THE DEFINITIVE FIX --- */}
 
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
