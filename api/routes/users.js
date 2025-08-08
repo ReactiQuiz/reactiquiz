@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const { turso } = require('../_utils/tursoClient');
 const { logApi, logError } = require('../_utils/logger');
 const { verifyToken } = require('../_middleware/auth');
-const { body, validationResult } = require('express-validator'); // <-- Import validation tools
+const { body, validationResult } = require('express-validator');
 
 const router = Router();
 
@@ -53,9 +53,6 @@ router.put('/update-details', verifyToken, updateDetailsValidation, handleValida
     const { address, class: userClass } = req.body;
     logApi('PUT', '/api/users/update-details', `User: ${userId}`);
 
-    // No need for this check anymore, validator handles it:
-    // if (!address || !userClass) return res.status(400).json({ message: 'Address and Class are required.' });
-
     const tx = await turso.transaction("write");
     try {
         await tx.execute({
@@ -75,7 +72,7 @@ router.post('/change-password', verifyToken, changePasswordValidation, handleVal
     const userId = req.user.id;
     const { oldPassword, newPassword } = req.body;
     logApi('POST', '/api/users/change-password', `User: ${userId}`);
-
+    
     const tx = await turso.transaction("write");
     try {
         const result = await tx.execute({
@@ -149,7 +146,7 @@ router.get('/stats', verifyToken, async (req, res) => {
 router.post('/register', registerValidation, handleValidationErrors, async (req, res) => {
     const { username, email, password, address, class: userClass } = req.body;
     logApi('POST', '/api/users/register', `User: ${username}`);
-
+    
     const tx = await turso.transaction("write");
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -173,7 +170,7 @@ router.post('/register', registerValidation, handleValidationErrors, async (req,
 router.post('/login', loginValidation, handleValidationErrors, async (req, res) => {
     const { username, password } = req.body;
     logApi('POST', '/api/users/login', `User: ${username}`);
-
+    
     const tx = await turso.transaction("read");
     try {
         const result = await tx.execute({
@@ -181,7 +178,7 @@ router.post('/login', loginValidation, handleValidationErrors, async (req, res) 
             args: [username]
         });
         await tx.commit();
-
+        
         if (result.rows.length === 0) {
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
@@ -215,7 +212,9 @@ router.get('/me', verifyToken, async (req, res) => {
             args: [userId]
         });
         await tx.commit();
-        if (result.rows.length === 0) return res.status(404).json({ message: 'User profile not found.' });
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User profile not found.' });
+        }
         const userProfile = { ...result.rows[0], name: result.rows[0].username };
         res.json(userProfile);
     } catch (e) {
