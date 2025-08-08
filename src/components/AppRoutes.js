@@ -2,8 +2,8 @@
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
-import ProtectedRoute from './ProtectedRoute';  
+import { useAuth } from '../contexts/AuthContext';
+import ProtectedRoute from './core/ProtectedRoute';  
 import MainLayout from '../layout/MainLayout';
 import MinimalLayout from '../layout/MinimalLayout';
 
