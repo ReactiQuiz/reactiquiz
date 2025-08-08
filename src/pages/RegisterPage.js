@@ -18,8 +18,9 @@ function RegisterPage() {
     const [address, setAddress] = useState('');
     const [userClass, setUserClass] = useState('');
     const { addNotification } = useNotifications();
-    const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(''); // General error state
+    const [passwordError, setPasswordError] = useState(''); // Specific password error state
 
     const handleRegister = async (event) => {
         event.preventDefault();
@@ -66,7 +67,7 @@ function RegisterPage() {
                     <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField margin="dense" required fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField margin="dense" required fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} error={!!passwordError} helperText={passwordError || "Min. 8 characters, with uppercase, lowercase, and a number."}/>
+                        <TextField margin="dense" required fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} error={!!passwordError} helperText={passwordError || "Min. 8 characters, with uppercase, lowercase, and a number."} />
                         <TextField margin="dense" required fullWidth label="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Class (e.g., 6-12)" type="number" value={userClass} onChange={(e) => setUserClass(e.target.value)} />
