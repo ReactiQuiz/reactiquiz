@@ -4,8 +4,8 @@ import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';  
-import MainLayout from '../layout/MainLayout';
-import MinimalLayout from '../layout/MinimalLayout';
+import MainLayout from './layout/MainLayout';
+import MinimalLayout from './layout/MinimalLayout';
 
 const SuspenseFallback = () => (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
