@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
+import { useNotifications } from '../contexts/NotificationsContext';
 
 // Fetcher and save functions (unchanged)
 const fetchQuizBySessionId = async (sessionId) => {
@@ -22,6 +23,7 @@ export const useQuiz = () => {
     const { quizId } = useParams();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const { addNotification } = useNotifications(); 
 
     const [questions, setQuestions] = useState([]);
     const [userAnswers, setUserAnswers] = useState({});
@@ -48,9 +50,9 @@ export const useQuiz = () => {
             // 2. Navigate to the main results list page.
             navigate('/results');
         },
-        onError: (err) => {
-            console.error("Failed to save result:", err);
-            // Error handling can be enhanced here if needed
+        onError: (err) => { // <-- Use notifications for errors
+            const message = err.response?.data?.message || "Failed to save your quiz result. Please try again.";
+            addNotification(message, 'error');
         }
     });
     // --- END OF FIX ---

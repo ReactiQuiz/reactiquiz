@@ -9,6 +9,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import apiClient from '../../api/axiosInstance';
+import { useNotifications } from '../../contexts/NotificationsContext';
 
 function ChangePasswordModal({ open, onClose, currentUser }) {
   const theme = useTheme();
@@ -21,6 +22,7 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const { addNotification } = useNotifications();
 
   const effectiveAccentColor = theme.palette.accountAccent?.main || theme.palette.success.main;
 
@@ -36,41 +38,23 @@ function ChangePasswordModal({ open, onClose, currentUser }) {
     onClose();
   };
 
-  const handleSubmit = async (event) => {
+   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError('');
-    setSuccessMessage('');
-
-    if (!oldPassword || !newPassword || !confirmNewPassword) {
-      setError('All password fields are required.');
+    if (!formData.oldPassword || !formData.newPassword) {
+      addNotification('Both fields are required.', 'warning');
       return;
     }
-    if (newPassword.length < 6) {
-      setError('New password must be at least 6 characters long.');
-      return;
-    }
-    if (newPassword !== confirmNewPassword) {
-      setError('New passwords do not match.');
-      return;
-    }
-    if (!currentUser || !currentUser.token) {
-      setError('User not authenticated. Please log in again.');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
-      // The axios interceptor automatically adds the auth token
-      await apiClient.post('/api/users/change-password', {
-        oldPassword,
-        newPassword
-      });
-      setSuccessMessage('Password changed successfully!');
-      setTimeout(handleClose, 2000);
+      await apiClient.post('/api/users/change-password', formData);
+      addNotification('Password changed successfully!', 'success');
+      onClose(); // Close modal on success
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to change password.');
+      const message = err.response?.data?.message || 'Failed to change password.';
+      addNotification(message, 'error');
     } finally {
       setIsSubmitting(false);
+      setFormData({ oldPassword: '', newPassword: '' }); // Clear fields
     }
   };
 

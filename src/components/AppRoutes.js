@@ -38,34 +38,35 @@ function AppRoutes({ onOpenChangePasswordModal }) {
   return (
     <Suspense fallback={<SuspenseFallback />}>
       <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={currentUser ? <Navigate to="/dashboard" replace /> : <HomePage />} />
+        <Route element={<MainLayout />}>
+          <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
+          <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute><AccountPageWithContext /></ProtectedRoute>} />
+          <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
+          <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
+          <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+          <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
+          <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
+          {/* The "About" page also uses the MainLayout if the user is logged in */}
+          <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
+        </Route>
+
+        {/* Minimal Layout Routes (for guests) */}
+        <Route element={<MinimalLayout />}>
+          <Route path="/about-guest" element={<AboutPage />} />
+        </Route>
+
+        {/* Auth pages have no layout */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/about" element={<AboutPage />} />
-
-        {/* Protected Routes */}
-        <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
-        <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
-        <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-        <Route path="/account" element={<ProtectedRoute><AccountPage onOpenChangePasswordModal={onOpenChangePasswordModal} /></ProtectedRoute>} />
-        <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-        <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-        <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
-        <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
-        <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-
-        {/* --- START OF FIX: Added the missing route for flashcards --- */}
-        <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
-        {/* --- END OF FIX --- */}
-
-        {/* Fallback Route */}
+        <Route path="/" element={currentUser ? <Navigate to="/dashboard" /> : <HomePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );
 }
-
 export default AppRoutes;

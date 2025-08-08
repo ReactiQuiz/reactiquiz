@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import apiClient from '../api/axiosInstance';
 import { useMutation } from '@tanstack/react-query'; // <-- Import useMutation
+import { useNotifications } from '../contexts/NotificationsContext'; 
 
 export const useHomibhabha = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+    const { addNotification } = useNotifications(); 
 
   const [pyqModalOpen, setPyqModalOpen] = useState(false);
   const [practiceTestModalOpen, setPracticeTestModalOpen] = useState(false);
@@ -21,9 +23,9 @@ export const useHomibhabha = () => {
       localStorage.setItem('activeQuizSessionId', sessionId);
       navigate('/quiz/loading');
     },
-    onError: (err) => {
-      console.error("Failed to create quiz session", err);
-      alert(err.response?.data?.message || "Could not start the quiz. Please try again.");
+     onError: (err) => { // <-- Use notifications for errors
+        const message = err.response?.data?.message || "Could not start the quiz. Please try again.";
+        addNotification(message, 'error');
     }
   });
 
