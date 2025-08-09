@@ -1,6 +1,18 @@
 // api/index.js
 const path = require('path'); // <-- Import the 'path' module
 
+if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process.env.JWT_SECRET) {
+    console.error("\n\n\x1b[31m%s\x1b[0m", "==================== FATAL ERROR ====================");
+    console.error("\x1b[33m%s\x1b[0m", "Missing essential environment variables (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, JWT_SECRET).");
+    console.error("\x1b[33m%s\x1b[0m", "The backend server cannot start without these credentials.");
+    console.error("\x1b[36m%s\x1b[0m", "This project requires official access. Please refer to the documentation or contact the owner.");
+    console.error("\x1b[31m%s\x1b[0m", "=====================================================\n\n");
+    // Prevent the server from starting if critical variables are missing
+    if (process.env.NODE_ENV !== 'production') {
+        process.exit(1);
+    }
+}
+
 // This line is for local development only, to load environment variables
 if (process.env.NODE_ENV !== 'production') {
     // Use path.resolve to ensure the .env file is found correctly from the project root

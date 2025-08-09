@@ -7,16 +7,19 @@ import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
 import { useNotifications } from '../contexts/NotificationsContext';
 
-// Fetcher and save functions (unchanged)
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
     const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
     return data;
 };
+
+// --- START OF CHANGE 1: Update the mutation function ---
+// It no longer sends score/percentage.
 const saveQuizResult = async (resultPayload) => {
     const { data } = await apiClient.post('/api/results', resultPayload);
-    return data;
+    return data; // The backend will now return the full result object, including the new result ID
 };
+// --- END OF CHANGE 1 ---
 
 export const useQuiz = () => {
     const { currentUser } = useAuth();
@@ -38,24 +41,27 @@ export const useQuiz = () => {
         retry: false,
     });
 
-    // --- START OF FIX: Updated mutation logic ---
     const saveResultMutation = useMutation({
         mutationFn: saveQuizResult,
+        // --- START OF CHANGE 2: Update the onSuccess handler ---
         onSuccess: async (data) => {
-            // 1. Wait for the query invalidation to complete.
-            // This ensures that the next time the results list is needed, it WILL refetch.
+            // The backend now returns the saved result data, including its new ID.
+            const { resultId, savedResult } = data;
+            
+            // Invalidate queries to ensure dashboard/history is fresh
             await queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
             await queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
             
-            // 2. Navigate to the main results list page.
-            navigate('/results');
+            // Navigate to the results page for the specific result we just created.
+            // Pass the full result data in the state to avoid a re-fetch.
+            navigate(`/results/${resultId}`, { state: { justFinished: true, resultData: savedResult } });
         },
-        onError: (err) => { // <-- Use notifications for errors
+        // --- END OF CHANGE 2 ---
+        onError: (err) => {
             const message = err.response?.data?.message || "Failed to save your quiz result. Please try again.";
             addNotification(message, 'error');
         }
     });
-    // --- END OF FIX ---
 
     useEffect(() => {
         if (!isLoading && !isError && sessionData) {
@@ -88,24 +94,23 @@ export const useQuiz = () => {
         }
         if (!currentUser || !quizContext.topicId) return;
 
-        const correctAnswers = questions.reduce((acc, q) => (userAnswers[q.id] === q.correctOptionId ? acc + 1 : acc), 0);
-        const percentage = questions.length > 0 ? Math.round((correctAnswers / questions.length) * 100) : 0;
+        // --- START OF CHANGE 3: Remove frontend score calculation ---
+        // const correctAnswers = questions.reduce((acc, q) => (userAnswers[q.id] === q.correctOptionId ? acc + 1 : acc), 0);
+        // const percentage = questions.length > 0 ? Math.round((correctAnswers / questions.length) * 100) : 0;
         
         saveResultMutation.mutate({
-            subject: quizContext.subject, topicId: quizContext.topicId,
-            score: correctAnswers, totalQuestions: questions.length, percentage,
+            // Send only the raw data. The backend will calculate the rest.
+            quizContext: quizContext, // Send the whole context for topicId, subject, etc.
             timeTaken: elapsedTime,
             questionsActuallyAttemptedIds: questions.map(q => q.id),
             userAnswersSnapshot: userAnswers,
-            difficulty: quizContext.difficulty,
         });
+        // --- END OF CHANGE 3 ---
     };
 
     const handleOptionSelect = (questionId, selectedOptionId) => {
         setUserAnswers(prev => ({ ...prev, [questionId]: selectedOptionId }));
     };
-
-
 
     const handleAbandonQuiz = () => {
         if (window.confirm("Are you sure? Your progress will be lost.")) {
