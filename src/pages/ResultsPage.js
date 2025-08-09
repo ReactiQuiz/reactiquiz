@@ -1,21 +1,29 @@
 // src/pages/ResultsPage.js
 import React from 'react';
 import { Box, Typography, CircularProgress, Alert, useTheme } from '@mui/material';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+// --- START OF FIX: Remove useLocation ---
+import { useParams, useNavigate } from 'react-router-dom';
+// --- END OF FIX ---
 import { useAuth } from '../contexts/AuthContext';
 import { useResults } from '../hooks/useResults';
 import HistoricalResultsList from '../components/results/HistoricalResultsList';
 import HistoricalResultDetailView from '../components/results/HistoricalResultDetailView';
-import CurrentResultView from '../components/results/CurrentResultView';
+// --- START OF FIX: Remove CurrentResultView import as it's no longer used in this flow ---
+// import CurrentResultView from '../components/results/CurrentResultView'; 
+// --- END OF FIX ---
+
 
 function ResultsPage() {
     const { resultId } = useParams();
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const theme = useTheme();
-    const location = useLocation();
-    const isNewResult = location.state?.justFinished;
-    const newResultData = location.state?.resultData;
+
+    // --- START OF FIX: Remove location state logic ---
+    // const location = useLocation();
+    // const isNewResult = location.state?.justFinished;
+    // const newResultData = location.state?.resultData;
+    // --- END OF FIX ---
 
     const {
         historicalList, detailData, isLoading, error,
@@ -38,18 +46,12 @@ function ResultsPage() {
 
     return (
         <Box sx={{ p: { xs: 1, sm: 2, md: 3 }, width: '100%', margin: 'auto' }}>
-            {isNewResult ? (
-                // If we just finished a quiz, show the special "CurrentResultView"
-                <CurrentResultView 
-                    currentQuizDataFromState={newResultData} 
-                    onViewHistory={() => navigate('/results', { replace: true })}
-                    onNavigateHome={() => navigate('/')}
-                />
-            ) : resultId ? (
-                // If viewing a specific old result, show the detail view
+            {/* --- START OF FIX: Simplified conditional rendering --- */}
+            {resultId ? (
+                // If a resultId is in the URL, show the detail view for that historical result.
                 <HistoricalResultDetailView detailData={detailData} navigate={navigate} />
             ) : (
-                // Otherwise, show the list of all historical results
+                // Otherwise, show the main list of all historical results.
                 <HistoricalResultsList
                     results={historicalList}
                     filters={filters}
@@ -61,6 +63,7 @@ function ResultsPage() {
                     clearFilters={clearFilters}
                 />
             )}
+            {/* --- END OF FIX --- */}
         </Box>
     );
 }

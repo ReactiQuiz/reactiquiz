@@ -26,7 +26,7 @@ export const useQuiz = () => {
     const { quizId } = useParams();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const { addNotification } = useNotifications(); 
+    const { addNotification } = useNotifications();
 
     const [questions, setQuestions] = useState([]);
     const [userAnswers, setUserAnswers] = useState({});
@@ -43,20 +43,16 @@ export const useQuiz = () => {
 
     const saveResultMutation = useMutation({
         mutationFn: saveQuizResult,
-        // --- START OF CHANGE 2: Update the onSuccess handler ---
-        onSuccess: async (data) => {
-            // The backend now returns the saved result data, including its new ID.
-            const { resultId, savedResult } = data;
-            
-            // Invalidate queries to ensure dashboard/history is fresh
+        // --- START OF THE DEFINITIVE FIX ---
+        onSuccess: async () => {
+            // 1. Invalidate queries to ensure the results list will be fresh.
             await queryClient.invalidateQueries({ queryKey: ['userResults', currentUser?.id] });
             await queryClient.invalidateQueries({ queryKey: ['userStats', currentUser?.id] });
-            
-            // Navigate to the results page for the specific result we just created.
-            // Pass the full result data in the state to avoid a re-fetch.
-            navigate(`/results/${resultId}`, { state: { justFinished: true, resultData: savedResult } });
+
+            // 2. Navigate to the main results list page.
+            navigate('/results');
         },
-        // --- END OF CHANGE 2 ---
+        // --- END OF THE DEFINITIVE FIX ---
         onError: (err) => {
             const message = err.response?.data?.message || "Failed to save your quiz result. Please try again.";
             addNotification(message, 'error');
@@ -77,7 +73,7 @@ export const useQuiz = () => {
             }
         }
     }, [sessionData, isLoading, isError]);
-    
+
     useEffect(() => {
         let interval;
         if (timerActive && questions.length > 0) {
@@ -97,7 +93,7 @@ export const useQuiz = () => {
         // --- START OF CHANGE 3: Remove frontend score calculation ---
         // const correctAnswers = questions.reduce((acc, q) => (userAnswers[q.id] === q.correctOptionId ? acc + 1 : acc), 0);
         // const percentage = questions.length > 0 ? Math.round((correctAnswers / questions.length) * 100) : 0;
-        
+
         saveResultMutation.mutate({
             // Send only the raw data. The backend will calculate the rest.
             quizContext: quizContext, // Send the whole context for topicId, subject, etc.
@@ -119,10 +115,10 @@ export const useQuiz = () => {
     };
 
     return {
-        questions, userAnswers, isLoading, 
+        questions, userAnswers, isLoading,
         error: isError ? (error.response?.data?.message || error.message) : (saveResultMutation.isError ? saveResultMutation.error.message : null),
         infoMessage: '',
-        elapsedTime, timerActive, 
+        elapsedTime, timerActive,
         isSubmitting: saveResultMutation.isPending,
         quizContext: quizContext,
         handleOptionSelect, submitAndNavigate, handleAbandonQuiz
