@@ -1,7 +1,7 @@
 // src/components/account/UserProfileCard.js
 import React from 'react';
 import {
-  Paper, Avatar, Typography, Divider, Box, Button, useTheme
+  Paper, Avatar, Typography, Divider, Box, Button, useTheme, Stack, ListItem, ListItemIcon, ListItemText
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
