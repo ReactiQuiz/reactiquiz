@@ -17,9 +17,11 @@ const AverageScoreTrendChart = forwardRef(({ trendData, title }, ref) => {
         fill: true,
         borderColor: theme.palette.primary.main,
         backgroundColor: alpha(theme.palette.primary.main, 0.2),
-        tension: 0.3,
+        // --- START OF FIX ---
+        tension: 0.3, // This adds the curve to the line, making it smooth.
+        // --- END OF FIX ---
         pointBackgroundColor: theme.palette.primary.main,
-        spanGaps: true, // Connects line over null data points for a continuous trend
+        spanGaps: true,
       },
     ],
   };
@@ -53,6 +55,12 @@ const AverageScoreTrendChart = forwardRef(({ trendData, title }, ref) => {
       },
     },
     interaction: { intersect: false, mode: 'index' },
+    elements: {
+        point: {
+            radius: 0, // Keep points hidden for a cleaner look
+            hoverRadius: 5,
+        }
+    }
   };
 
   return (

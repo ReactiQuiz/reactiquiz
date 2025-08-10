@@ -50,14 +50,14 @@ const handleValidationErrors = (req, res, next) => {
 
 router.put('/update-details', verifyToken, updateDetailsValidation, handleValidationErrors, async (req, res) => {
     const userId = req.user.id;
-    const { address, class: userClass } = req.body;
+    const { address, class: userClass, phone } = req.body;
     logApi('PUT', '/api/users/update-details', `User: ${userId}`);
 
     const tx = await turso.transaction("write");
     try {
         await tx.execute({
-            sql: "UPDATE users SET address = ?, class = ? WHERE id = ?;",
-            args: [address, userClass, userId]
+            sql: "UPDATE users SET address = ?, class = ?, phone = ? WHERE id = ?;",
+            args: [address, userClass, phone || null, userId] // Save phone or null
         });
         await tx.commit();
         res.status(200).json({ message: 'Profile updated successfully!' });
@@ -144,7 +144,7 @@ router.get('/stats', verifyToken, async (req, res) => {
 });
 
 router.post('/register', registerValidation, handleValidationErrors, async (req, res) => {
-    const { username, email, password, address, class: userClass } = req.body;
+    const { username, email, password, address, phone, class: userClass } = req.body;
     logApi('POST', '/api/users/register', `User: ${username}`);
     
     const tx = await turso.transaction("write");
@@ -152,8 +152,8 @@ router.post('/register', registerValidation, handleValidationErrors, async (req,
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = uuidv4();
         await tx.execute({
-            sql: 'INSERT INTO users (id, username, email, password, address, class) VALUES (?, ?, ?, ?, ?, ?);',
-            args: [userId, username, email, hashedPassword, address, userClass]
+            sql: 'INSERT INTO users (id, username, email, password, address, class, phone) VALUES (?, ?, ?, ?, ?, ?, ?);',
+            args: [userId, username, email, hashedPassword, address || '', userClass || '', phone || null] // Add phone, default to null if not provided
         });
         await tx.commit();
         res.status(201).json({ message: 'User registered successfully!' });
@@ -174,7 +174,7 @@ router.post('/login', loginValidation, handleValidationErrors, async (req, res) 
     const tx = await turso.transaction("read");
     try {
         const result = await tx.execute({
-            sql: 'SELECT id, username, email, address, class, password FROM users WHERE username = ?;',
+            sql: 'SELECT id, username, email, address, class, password, phone FROM users WHERE username = ?;',
             args: [username]
         });
         await tx.commit();
@@ -193,7 +193,7 @@ router.post('/login', loginValidation, handleValidationErrors, async (req, res) 
 
         res.json({
             token,
-            user: { id: user.id, name: user.username, email: user.email, address: user.address, class: user.class }
+            user: { id: user.id, name: user.username, email: user.email, address: user.address, class: user.class, phone: user.phone }
         });
     } catch (e) {
         await tx.rollback();

@@ -9,7 +9,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import apiClient from '../../api/axiosInstance';
 import { useNotifications } from '../../contexts/NotificationsContext';
 
-const CLASS_OPTIONS = ['6', '7', '8', '9', '10', '11', '12'];
+const CLASS_OPTIONS = ['6', '7', '8', '9', '10'];
 
 // --- START OF FIX: Change prop from 'setCurrentUser' to 'onUpdateSuccess' ---
 function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
@@ -30,10 +30,9 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
     if (currentUser && open) {
       setFormData({
         address: currentUser.address || '',
-        class: String(currentUser.class || '')
+        class: String(currentUser.class || ''),
+        phone: currentUser.phone || '' // <-- Set phone state
       });
-      setError('');
-      setSuccessMessage('');
     }
   }, [currentUser, open]);
 
@@ -53,16 +52,17 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
       await apiClient.put('/api/users/update-details', {
         address: formData.address.trim(),
         class: formData.class,
+        phone: formData.phone.trim() // <-- Send phone data
       });
-      addNotification('Details updated successfully!', 'success'); // <-- Success notification
+      addNotification('Details updated successfully!', 'success');
       
       if (onUpdateSuccess) {
-        onUpdateSuccess({ address: formData.address, class: formData.class });
+        onUpdateSuccess({ address: formData.address, class: formData.class, phone: formData.phone }); // <-- Update context
       }
-      onClose(); // Close the modal immediately on success
+      onClose();
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to update details.';
-      addNotification(message, 'error'); // <-- Error notification
+      addNotification(message, 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -110,6 +110,28 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
             value={formData.address}
             onChange={handleInputChange}
             error={!!error && error.toLowerCase().includes("address")}
+            InputLabelProps={{ shrink: true }}
+          />
+           <TextField
+            margin="normal"
+            fullWidth
+            label="Phone Number"
+            name="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={handleInputChange}
+            InputLabelProps={{ shrink: true }}
+          />
+        <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Address"
+            name="address"
+            multiline
+            rows={2}
+            value={formData.address}
+            onChange={handleInputChange}
             InputLabelProps={{ shrink: true }}
           />
           <FormControl fullWidth margin="normal" required error={!!error && error.toLowerCase().includes("class")}>

@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Analytics } from '@vercel/analytics/react';
 import 'katex/dist/katex.min.css';
 import { SpeedInsights } from "@vercel/speed-insights/react";
-// --- START OF TANSTACK QUERY SETUP ---
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Create a client
@@ -19,7 +18,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-// --- END OF TANSTACK QUERY SETUP ---
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

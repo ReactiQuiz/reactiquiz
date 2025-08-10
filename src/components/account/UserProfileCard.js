@@ -6,6 +6,8 @@ import {
 import { alpha } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
 
 const formatUserClassDisplay = (userClass) => {
   if (!userClass) return 'Class Not Set';
@@ -28,7 +30,7 @@ function UserProfileCard({
   accentColor
 }) {
   const theme = useTheme();
-  
+
   return (
     <Paper
       elevation={3}
@@ -59,8 +61,21 @@ function UserProfileCard({
         {formatUserClassDisplay(currentUser?.class)}
       </Typography>
       <Divider sx={{ width: '90%', mb: 2 }} />
-      
-      {/* The stats section has been completely removed */}
+
+      <Stack spacing={1} sx={{ width: '100%', alignItems: 'flex-start', mb: 2 }}>
+        <ListItem disablePadding>
+          <ListItemIcon sx={{ minWidth: '40px' }}>
+            <EmailIcon fontSize="small" color="action" />
+          </ListItemIcon>
+          <ListItemText primary={currentUser?.email || 'No email set'} />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemIcon sx={{ minWidth: '40px' }}>
+            <PhoneIcon fontSize="small" color="action" />
+          </ListItemIcon>
+          <ListItemText primary={currentUser?.phone || 'No phone number set'} />
+        </ListItem>
+      </Stack>
 
       <Button
         fullWidth

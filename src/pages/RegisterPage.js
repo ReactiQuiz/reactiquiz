@@ -1,10 +1,12 @@
 // src/pages/RegisterPage.js
 import { useState } from 'react';
-import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Link as MuiLink, Paper } from '@mui/material';
+import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Link as MuiLink, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material'; // <-- Add FormControl etc.
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
-import { useNotifications } from '../contexts/NotificationsContext';
+import { useNotifications } from '../contexts/NotificationsContext';    
+
+const CLASS_OPTIONS = ['6', '7', '8', '9', '10', '11', '12']; // Define options
 
 function RegisterPage() {
     const theme = useTheme();
@@ -16,35 +18,30 @@ function RegisterPage() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [address, setAddress] = useState('');
-    const [userClass, setUserClass] = useState('');
+    // --- START OF CHANGES ---
+    const [phone, setPhone] = useState('');
+    const [userClass, setUserClass] = useState(''); // Default to empty
+    // --- END OF CHANGES ---
     const { addNotification } = useNotifications();
+    const [error, setError] = useState(''); // Keep for local form errors
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState(''); // General error state
-    const [passwordError, setPasswordError] = useState(''); // Specific password error state
 
     const handleRegister = async (event) => {
         event.preventDefault();
-        setPasswordError('');
 
         if (password !== confirmPassword) {
             addNotification('Passwords do not match.', 'error');
             return;
         }
-
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/;
-        if (!passwordRegex.test(password)) {
-            setPasswordError('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.');
-            return;
-        }
-
         setIsSubmitting(true);
         try {
-            await signUp({ username, email, password, address, class: userClass });
-            // Redirect to login with a success message
+            // --- START OF CHANGES ---
+            await signUp({ username, email, password, address, phone, class: userClass });
+            // --- END OF CHANGES ---
             navigate('/login', { state: { message: "Registration successful! Please sign in." } });
         } catch (err) {
             const message = err.response?.data?.message || 'Registration failed. Please try again.';
-            addNotification(message, 'error'); // <-- Use notification system for errors
+            addNotification(message, 'error');
         } finally {
             setIsSubmitting(false);
         }
@@ -67,15 +64,35 @@ function RegisterPage() {
                     <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField margin="dense" required fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField margin="dense" required fullWidth label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} error={!!passwordError} helperText={passwordError || "Min. 8 characters, with uppercase, lowercase, and a number."} />
+                        {/* --- START OF CHANGES --- */}
+                        <TextField margin="dense" fullWidth label="Phone Number (Optional)" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                        {/* --- END OF CHANGES --- */}
+                        <TextField margin="dense" required fullWidth label="Password (min. 6 chars)" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         <TextField margin="dense" required fullWidth label="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
-                        <TextField margin="dense" required fullWidth label="Class (e.g., 6-12)" type="number" value={userClass} onChange={(e) => setUserClass(e.target.value)} />
+                        {/* --- START OF CHANGES: Class Dropdown --- */}
+                        <FormControl fullWidth margin="dense" required>
+                            <InputLabel id="class-select-label">Class</InputLabel>
+                            <Select
+                                labelId="class-select-label"
+                                value={userClass}
+                                label="Class"
+                                onChange={(e) => setUserClass(e.target.value)}
+                            >
+                                <MenuItem value=""><em>Select Class</em></MenuItem>
+                                {CLASS_OPTIONS.map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}th
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {/* --- END OF CHANGES --- */}
 
                         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
 
                         <Button type="submit" fullWidth variant="contained" disabled={isSubmitting} sx={{ mt: 2, mb: 1, py: 1.5 }}>
-                            Sign Up
+                           Sign Up
                         </Button>
                         <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
                             Already have an account?{' '}
