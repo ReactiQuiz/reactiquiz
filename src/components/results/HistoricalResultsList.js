@@ -1,45 +1,35 @@
 // src/components/results/HistoricalResultsList.js
 import React from 'react';
-// --- START OF FIX: Added all missing imports from MUI ---
 import { Box, Typography, Paper, Button, Divider, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-// --- END OF FIX ---
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import HistoricalResultItem from './HistoricalResultItem';
-import ResultsFilters from './ResultsFilters'; // Although we moved the JSX here, keeping the import path is fine practice
+// --- START OF CHANGE: Import the EmptyState component ---
+import EmptyState from '../shared/EmptyState';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
+// --- END OF CHANGE ---
 
 function HistoricalResultsList({
     results, filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres, clearFilters
 }) {
   const navigate = useNavigate();
 
-  // --- START OF FIX: Added the missing handler function ---
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
     setFilters(prev => ({ ...prev, [name]: value }));
   };
-  // --- END OF FIX ---
 
   const isFiltered = filters.class !== 'all' || filters.genre !== 'all';
-
-  if (!results) return null;
   
-  if (results.length === 0) {
-    return (
-      <Paper elevation={2} sx={{ p: 3, textAlign: 'center', mt: 4 }}>
-        <Typography variant="h6" gutterBottom>No Saved Results Found</Typography>
-        <Typography sx={{ mb: 2 }}>No results match your current filters. Try clearing them to see all your history.</Typography>
-        <Button variant="contained" onClick={() => navigate('/subjects')}>Explore Quizzes</Button>
-      </Paper>
-    );
-  }
-
-  const latestResult = sortOrder === 'date_desc' && !isFiltered ? results[0] : null;
-  const otherResults = sortOrder === 'date_desc' && !isFiltered ? results.slice(1) : results;
+  // --- START OF THE DEFINITIVE FIX ---
+  // The logic for what to display is now separate from the filter controls.
+  const latestResult = sortOrder === 'date_desc' && !isFiltered && results.length > 0 ? results[0] : null;
+  const otherResults = sortOrder === 'date_desc' && !isFiltered && results.length > 0 ? results.slice(1) : results;
 
   return (
     <Box>
+        {/* Step 1: Always render the filter controls at the top. */}
         <Paper sx={{ p: 2, mb: 4 }}>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={6} md={3}>
@@ -86,30 +76,45 @@ function HistoricalResultsList({
             </Grid>
         </Paper>
 
-        {latestResult && (
-             <Box mb={4}>
-             <Divider sx={{ my: 4 }}><Typography variant="overline">Most Recent</Typography></Divider>
-                <HistoricalResultItem result={latestResult} />
-            </Box>
-        )}
-        
-        {otherResults.length > 0 && latestResult && (
-             <Divider sx={{ my: 4 }}><Typography variant="overline">Older Results</Typography></Divider>
-        )}
+        {/* Step 2: Conditionally render either the results or the empty state message. */}
+        {results.length > 0 ? (
+            <>
+                {latestResult && (
+                    <Box mb={4}>
+                        <Divider sx={{ my: 4 }}><Typography variant="overline">Most Recent</Typography></Divider>
+                        <HistoricalResultItem result={latestResult} />
+                    </Box>
+                )}
+                
+                {otherResults.length > 0 && latestResult && (
+                    <Divider sx={{ my: 4 }}><Typography variant="overline">Older Results</Typography></Divider>
+                )}
 
-        <Box
-            sx={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: 2,
-            }}
-        >
-            {otherResults.map((result) => (
-                <HistoricalResultItem key={result.id} result={result} />
-            ))}
-        </Box>
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                        gap: 2,
+                    }}
+                >
+                    {otherResults.map((result) => (
+                        <HistoricalResultItem key={result.id} result={result} />
+                    ))}
+                </Box>
+            </>
+        ) : (
+            // Use the professional EmptyState component for a better UI.
+            <EmptyState
+                IconComponent={SearchOffIcon}
+                title="No Saved Results Found"
+                message="No results match your current filters. Try clearing them to see all your history."
+                actionText="Explore Quizzes"
+                onActionClick={() => navigate('/subjects')}
+            />
+        )}
     </Box>
   );
+  // --- END OF THE DEFINITIVE FIX ---
 }
 
 export default HistoricalResultsList;
