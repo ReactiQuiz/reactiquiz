@@ -48,25 +48,38 @@ const handleValidationErrors = (req, res, next) => {
 
 // --- Apply Validation to Routes ---
 
-router.put('/update-details', verifyToken, updateDetailsValidation, handleValidationErrors, async (req, res) => {
-    const userId = req.user.id;
-    const { address, class: userClass, phone } = req.body;
-    logApi('PUT', '/api/users/update-details', `User: ${userId}`);
+router.put('/update-details',
+    verifyToken,
+    // Add validation rules here as well
+    body('address', 'Address is required').notEmpty().trim().escape(),
+    body('class', 'Class is required').notEmpty(),
+    body('phone', 'Phone number is optional').optional({ checkFalsy: true }).trim().escape(),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
 
-    const tx = await turso.transaction("write");
-    try {
-        await tx.execute({
-            sql: "UPDATE users SET address = ?, class = ?, phone = ? WHERE id = ?;",
-            args: [address, userClass, phone || null, userId] // Save phone or null
-        });
-        await tx.commit();
-        res.status(200).json({ message: 'Profile updated successfully!' });
-    } catch (e) {
-        await tx.rollback();
-        logError('DB ERROR', `Updating details for user ${userId} failed`, e.message);
-        res.status(500).json({ message: 'Could not update profile.' });
+        const userId = req.user.id;
+        const { address, class: userClass, phone } = req.body;
+        logApi('PUT', '/api/users/update-details', `User: ${userId}`);
+
+        const tx = await turso.transaction("write");
+        try {
+            await tx.execute({
+                sql: "UPDATE users SET address = ?, class = ?, phone = ? WHERE id = ?;",
+                args: [address, userClass, phone || null, userId]
+            });
+            await tx.commit();
+            res.status(200).json({ message: 'Profile updated successfully!' });
+        } catch (e) {
+            await tx.rollback();
+            logError('DB ERROR', `Updating details for user ${userId} failed`, e.message);
+            res.status(500).json({ message: 'Could not update profile.' });
+        }
     }
-});
+);
+
 
 router.post('/change-password', verifyToken, changePasswordValidation, handleValidationErrors, async (req, res) => {
     const userId = req.user.id;
@@ -143,29 +156,50 @@ router.get('/stats', verifyToken, async (req, res) => {
     }
 });
 
-router.post('/register', registerValidation, handleValidationErrors, async (req, res) => {
-    const { username, email, password, address, phone, class: userClass } = req.body;
-    logApi('POST', '/api/users/register', `User: ${username}`);
-    
-    const tx = await turso.transaction("write");
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userId = uuidv4();
-        await tx.execute({
-            sql: 'INSERT INTO users (id, username, email, password, address, class, phone) VALUES (?, ?, ?, ?, ?, ?, ?);',
-            args: [userId, username, email, hashedPassword, address || '', userClass || '', phone || null] // Add phone, default to null if not provided
-        });
-        await tx.commit();
-        res.status(201).json({ message: 'User registered successfully!' });
-    } catch (e) {
-        await tx.rollback();
-        if (e.message && e.message.includes('UNIQUE constraint failed')) {
-            return res.status(409).json({ message: 'Username or email already exists.' });
+router.post('/register',
+    // 1. Define validation rules for each field.
+    body('username', 'Username must be at least 3 characters long').isLength({ min: 3 }).trim().escape(),
+    body('email', 'Please provide a valid email address').isEmail().normalizeEmail(),
+    body('password', 'Password must be at least 6 characters long').isLength({ min: 6 }),
+    body('address', 'Address is required').notEmpty().trim().escape(),
+    body('phone', 'Phone number is optional').optional({ checkFalsy: true }).trim().escape(),
+    body('class', 'Class selection is required').notEmpty(),
+
+    // 2. The main route handler now runs *after* the validation.
+    async (req, res) => {
+        // 3. Check for validation errors.
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            // If there are errors, return a 400 Bad Request with the first error message.
+            return res.status(400).json({ message: errors.array()[0].msg });
         }
-        logError('DB ERROR', 'User registration failed', e.message);
-        res.status(500).json({ message: 'Could not register user.' });
+
+        const { username, email, password, address, phone, class: userClass } = req.body;
+        logApi('POST', '/api/users/register', `User: ${username}`);
+        
+        // No need for this check anymore, as the validation chain handles it.
+        // if (!username || !email || !password || password.length < 6) ...
+        
+        const tx = await turso.transaction("write");
+        try {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const userId = uuidv4();
+            await tx.execute({
+                sql: 'INSERT INTO users (id, username, email, password, address, class, phone) VALUES (?, ?, ?, ?, ?, ?, ?);',
+                args: [userId, username, email, hashedPassword, address, userClass, phone || null]
+            });
+            await tx.commit();
+            res.status(201).json({ message: 'User registered successfully!' });
+        } catch (e) {
+            await tx.rollback();
+            if (e.message && e.message.includes('UNIQUE constraint failed')) {
+                return res.status(409).json({ message: 'Username or email already exists.' });
+            }
+            logError('DB ERROR', 'User registration failed', e.message);
+            res.status(500).json({ message: 'Could not register user.' });
+        }
     }
-});
+);
 
 router.post('/login', loginValidation, handleValidationErrors, async (req, res) => {
     const { username, password } = req.body;

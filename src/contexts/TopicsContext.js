@@ -1,6 +1,8 @@
 // src/contexts/TopicsContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import apiClient from '../api/axiosInstance';
+const TOPICS_CACHE_VERSION = 'v1';
+const TOPICS_CACHE_KEY = `reactiquiz-topics-${TOPICS_CACHE_VERSION}`;
 
 const TopicsContext = createContext({
     topics: [],
@@ -18,18 +20,25 @@ export const TopicsProvider = ({ children }) => {
     useEffect(() => {
         const loadTopics = async () => {
             setIsLoading(true);
-            try {
-                // First, try to load from localStorage
-                const storedTopics = localStorage.getItem('reactiquiz-topics');
+try {
+                // --- START OF CHANGE: Use the versioned key ---
+                const storedTopics = localStorage.getItem(TOPICS_CACHE_KEY);
+                // --- END OF CHANGE ---
                 if (storedTopics) {
                     setTopics(JSON.parse(storedTopics));
                 } else {
-                    // If not in storage, fetch from the API
                     const { data } = await apiClient.get('/api/topics');
                     if (data && Array.isArray(data)) {
                         setTopics(data);
-                        // Save to localStorage for next time
-                        localStorage.setItem('reactiquiz-topics', JSON.stringify(data));
+                        // --- START OF CHANGE: Use the versioned key and clear old versions ---
+                        // Clear any old, unversioned or differently versioned keys
+                        Object.keys(localStorage).forEach(key => {
+                            if (key.startsWith('reactiquiz-topics-')) {
+                                localStorage.removeItem(key);
+                            }
+                        });
+                        localStorage.setItem(TOPICS_CACHE_KEY, JSON.stringify(data));
+                        // --- END OF CHANGE ---
                     }
                 }
             } catch (error) {
