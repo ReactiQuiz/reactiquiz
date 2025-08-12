@@ -6,6 +6,11 @@
       "use": "@vercel/node"
     },
     {
+      "src": "admin/package.json",
+      "use": "@vercel/next",
+      "config": { "distDir": ".next" }
+    },
+    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -19,20 +24,15 @@
       "dest": "api/index.js"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "src": "/admin",
+      "dest": "/admin"
     },
     {
-      "src": "/logo.png",
-      "dest": "/logo.png"
+      "src": "/admin/(.*)",
+      "dest": "/admin/$1"
     },
     {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
