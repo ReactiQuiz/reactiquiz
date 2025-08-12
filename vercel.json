@@ -7,8 +7,7 @@
     },
     {
       "src": "admin/package.json",
-      "use": "@vercel/next",
-      "config": { "distDir": ".next" }
+      "use": "@vercel/next"
     },
     {
       "src": "package.json",
@@ -24,12 +23,8 @@
       "dest": "api/index.js"
     },
     {
-      "src": "/admin",
-      "dest": "/admin"
-    },
-    {
       "src": "/admin/(.*)",
-      "dest": "/admin/$1"
+      "handle": "filesystem"
     },
     {
       "handle": "filesystem"
