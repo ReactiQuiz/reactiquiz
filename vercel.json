@@ -24,7 +24,11 @@
     },
     {
       "src": "/admin/(.*)",
-      "handle": "filesystem"
+      "dest": "/admin/$1"
+    },
+    {
+      "src": "/_next/(.*)",
+      "dest": "/_next/$1"
     },
     {
       "handle": "filesystem"
