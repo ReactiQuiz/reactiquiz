@@ -1,15 +1,39 @@
 // admin/src/app/(admin)/page.js
-'use client'; // This page uses state and event handlers
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box, Paper, Typography, TextField, Button, Divider, Switch,
-  FormControlLabel, Alert, Grid, Link, CircularProgress
+  FormControlLabel, Alert, Grid, Link, CircularProgress, Skeleton
 } from '@mui/material';
-import NextLink from 'next/link'; // Use Next.js's Link for client-side navigation
+import NextLink from 'next/link';
 
-// --- Reusable Components ---
+// Custom hook for fetching admin data (a good practice)
+function useAdminStatus() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    async function fetchStatus() {
+      try {
+        const response = await fetch('/api/admin/status');
+        if (!response.ok) {
+          throw new Error('Failed to fetch admin status');
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchStatus();
+  }, []);
+
+  return { data, isLoading, error, setData };
+}
 // SettingsCard: Our base component for settings sections
 function SettingsCard({ title, description, children, footerContent }) {
   return (
@@ -37,35 +61,43 @@ function SettingsCard({ title, description, children, footerContent }) {
   );
 }
 
-// StatBox: A small component for displaying a single statistic
-function StatBox({ title, value, linkHref }) {
+function StatBox({ title, value, linkHref, isLoading }) {
     return (
         <Grid item xs={12} sm={4}>
-            <Paper component={NextLink} href={linkHref} sx={{ p: 2, textAlign: 'center', textDecoration: 'none', display: 'block', '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' } }}>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{value}</Typography>
+            <Paper component={isLoading ? Box : NextLink} href={linkHref} sx={{ p: 2, textAlign: 'center', textDecoration: 'none', display: 'block', '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' } }}>
+                {isLoading ? <Skeleton variant="text" width={80} height={48} sx={{mx: 'auto'}} /> : <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{value}</Typography>}
                 <Typography variant="body2" color="text.secondary">{title}</Typography>
             </Paper>
         </Grid>
     );
 }
 
-
 // --- Main Page Component ---
-
 export default function GeneralSettingsPage() {
-  const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState('');
+  const { data, isLoading: isLoadingStatus, error, setData } = useAdminStatus();
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState({ message: '', severity: 'success' });
 
-  const handleMaintenanceToggle = () => {
-    setIsLoading(true);
-    setStatusMessage('');
-    // Simulate an API call
-    setTimeout(() => {
-      setIsMaintenanceMode(!isMaintenanceMode);
-      setStatusMessage(`Site is now ${!isMaintenanceMode ? 'in maintenance mode' : 'live'}.`);
-      setIsLoading(false);
-    }, 1500);
+  const handleMaintenanceToggle = async () => {
+    setIsSaving(true);
+    setSaveStatus({ message: '', severity: 'success' });
+    try {
+        const response = await fetch('/api/admin/maintenance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enable: !data.isMaintenanceMode })
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message);
+        
+        // Update local state on success
+        setData(prev => ({ ...prev, isMaintenanceMode: result.isMaintenanceMode }));
+        setSaveStatus({ message: result.message, severity: 'success' });
+    } catch (err) {
+        setSaveStatus({ message: err.message, severity: 'error' });
+    } finally {
+        setIsSaving(false);
+    }
   };
 
   return (
@@ -74,73 +106,39 @@ export default function GeneralSettingsPage() {
         General
       </Typography>
 
-      {/* --- Site Status Card --- */}
+      {error && <Alert severity="error" sx={{mb: 3}}>{error}</Alert>}
+
       <SettingsCard
         title="Site Status"
-        description="Control the public availability of the main ReactiQuiz application."
+        description="Control the public availability of the ReactiQuiz application."
         footerContent={
             <>
-                {statusMessage && <Typography sx={{flexGrow: 1, alignSelf: 'center', color: 'success.main'}}>{statusMessage}</Typography>}
-                <Button variant="contained" onClick={handleMaintenanceToggle} disabled={isLoading}>
-                    {isLoading ? <CircularProgress size={24} /> : 'Save'}
+                {saveStatus.message && <Typography sx={{flexGrow: 1, alignSelf: 'center', color: `${saveStatus.severity}.main`}}>{saveStatus.message}</Typography>}
+                <Button variant="contained" onClick={handleMaintenanceToggle} disabled={isSaving || isLoadingStatus}>
+                    {isSaving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
                 </Button>
             </>
         }
       >
         <FormControlLabel
-          control={<Switch checked={isMaintenanceMode} onChange={handleMaintenanceToggle} />}
+          control={<Switch checked={data?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoadingStatus || isSaving} />}
           label="Enable Maintenance Mode"
         />
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
-          When enabled, visitors to the main site will see a maintenance page instead of the application. The admin panel will remain accessible.
+          When enabled, visitors will be redirected to a maintenance page. The admin panel remains accessible.
         </Typography>
       </SettingsCard>
       
-      {/* --- Content Overview Card --- */}
       <SettingsCard
         title="Content Overview"
-        description="A high-level summary of the content in your database. Click to manage."
+        description="High-level summary of the content in your database."
       >
         <Grid container spacing={2}>
-            <StatBox title="Registered Users" value="1,234" linkHref="/admin/users" />
-            <StatBox title="Quiz Topics" value="82" linkHref="/admin/topics" />
-            <StatBox title="Total Questions" value="7,500+" linkHref="/admin/questions" />
+            <StatBox title="Registered Users" value={data?.userCount} linkHref="/admin/users" isLoading={isLoadingStatus} />
+            <StatBox title="Quiz Topics" value={data?.topicCount} linkHref="/admin/topics" isLoading={isLoadingStatus} />
+            <StatBox title="Total Questions" value={data?.questionCount} linkHref="/admin/questions" isLoading={isLoadingStatus} />
         </Grid>
       </SettingsCard>
-
-      {/* --- Services Status Card --- */}
-      <SettingsCard
-        title="Services Status"
-        description="Current operational status of integrated services."
-      >
-        <Box>
-            <Alert severity="success" icon={false} sx={{mb: 1}}><strong>Database Connection (Turso):</strong> Operational</Alert>
-            <Alert severity="success" icon={false} sx={{mb: 1}}><strong>AI Service (Google Gemini):</strong> Operational</Alert>
-            <Alert severity="warning" icon={false}><strong>Email Service (Nodemailer):</strong> Not Configured</Alert>
-        </Box>
-      </SettingsCard>
-
-      {/* --- Dangerous Settings Card --- */}
-      <SettingsCard
-        title="Dangerous Zone"
-        description="High-risk actions that can affect site performance or data. Proceed with caution."
-        footerContent={
-            <Button variant="contained" color="error" disabled>
-                Perform Action
-            </Button>
-        }
-      >
-        <Alert severity="error" sx={{mb: 2}}>
-            These actions are irreversible. Ensure you have a backup before proceeding.
-        </Alert>
-        <Button variant="outlined" color="error" sx={{ mr: 2 }}>
-            Clear Application Cache
-        </Button>
-        <Button variant="outlined" color="error">
-            Wipe User Analytics Data
-        </Button>
-      </SettingsCard>
-
     </Box>
   );
 }
