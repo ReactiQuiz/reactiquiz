@@ -1,12 +1,19 @@
 // admin/src/app/layout.js
-'use client'; // This is required for MUI components
+'use client';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+// --- START OF FIX ---
+// The path is correct here because this file is in the same directory as globals.css
+import './globals.css'; 
+// --- END OF FIX ---
 
-// A professional dark theme for the admin panel
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    background: {
+      default: '#0A0A0A',
+      paper: '#1A1A1A',
+    },
   },
 });
 

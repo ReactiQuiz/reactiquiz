@@ -1,28 +1,28 @@
-// admin/src/app/layout.js
-'use client'; // This is required for MUI ThemeProvider
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import './globals.css'; // Keep the default global styles
+// admin/src/app/(admin)/layout.js
+'use client'; 
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#0A0A0A', // A slightly off-black for a professional look
-      paper: '#1A1A1A',
-    },
-  },
-});
+import { Box } from '@mui/material';
+import AdminSidebar from '../../components/AdminSidebar';
 
-export default function RootLayout({ children }) {
+const drawerWidth = 240;
+
+export default function AdminLayout({ children }) {
+  // This layout doesn't need to import globals.css directly.
+  // The root layout (admin/src/app/layout.js) handles that.
+  // We can safely remove the import if it exists.
   return (
-    <html lang="en">
-      <body>
-        <ThemeProvider theme={darkTheme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <AdminSidebar drawerWidth={drawerWidth} />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
   );
 }
