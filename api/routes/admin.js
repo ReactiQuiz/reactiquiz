@@ -3,17 +3,11 @@ const { Router } = require('express');
 const { Redis } = require('@upstash/redis');
 const { turso } = require('../_utils/tursoClient');
 const { logApi, logError } = require('../_utils/logger');
-// Note: We might want a separate, more stringent auth middleware for admin later.
-// For now, `verifyToken` ensures only a logged-in user can access this.
 const { verifyToken } = require('../_middleware/auth'); 
 
 const router = Router();
 
-// Initialize Redis client using the single REDIS_URL from Vercel
-const redis = new Redis({
-  url: process.env.REDIS_URL,
-  token: process.env.REDIS_TOKEN || '', // Vercel's REDIS_URL often includes the token
-});
+const redis = Redis.fromEnv();
 
 const MAINTENANCE_KEY = 'reactiquiz:maintenance_mode';
 
