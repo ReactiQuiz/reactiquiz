@@ -3,98 +3,102 @@
 
 import { useState, useEffect } from 'react';
 import {
-  Box, Paper, Typography, TextField, Button, Divider, Switch,
+  Box, Paper, Typography, Button, Divider, Switch,
   FormControlLabel, Alert, Grid, Link, CircularProgress, Skeleton
 } from '@mui/material';
 import NextLink from 'next/link';
+import apiClient from '../../lib/apiClient'; // <-- Use our new admin-specific API client
 
-// Custom hook for fetching admin data (a good practice)
-function useAdminStatus() {
-  const [data, setData] = useState(null);
+// --- Custom Hooks for Data Fetching ---
+function useMaintenanceStatus() {
+  const [data, setData] = useState({ isMaintenanceMode: false });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchStatus() {
-      try {
-        const response = await fetch('/api/admin/status');
-        if (!response.ok) {
-          throw new Error('Failed to fetch admin status');
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchStatus();
+    apiClient.get('/admin/status')
+      .then(response => setData(response.data))
+      .catch(err => setError(err.message || 'Failed to fetch status'))
+      .finally(() => setIsLoading(false));
   }, []);
 
   return { data, isLoading, error, setData };
 }
-// SettingsCard: Our base component for settings sections
-function SettingsCard({ title, description, children, footerContent }) {
+
+function useContentCounts() {
+  const [counts, setCounts] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch from the Next.js Route Handler
+    fetch('/admin/api/content-counts')
+      .then(res => res.json())
+      .then(data => setCounts(data))
+      .catch(() => setCounts({ userCount: 'N/A', topicCount: 'N/A', questionCount: 'N/A' }))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  return { counts, isLoading };
+}
+
+
+// --- Reusable UI Components ---
+function SettingsSection({ title, description, action, children }) {
   return (
-    <Paper variant="outlined" sx={{ mb: 3 }}>
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h6" component="h2" sx={{ fontWeight: 500 }}>
+    <Grid container spacing={2} sx={{ mb: 4, alignItems: 'flex-start' }}>
+      <Grid item xs={12} md={4}>
+        <Typography variant="h6" component="h2" sx={{ fontWeight: 600 }}>
           {title}
         </Typography>
-        {description && (
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
-        )}
-      </Box>
-      <Divider />
-      <Box sx={{ p: 3, backgroundColor: 'rgba(0,0,0,0.1)' }}>
-        {children}
-      </Box>
-      {footerContent && (
-        <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.2)' }}>
-          {footerContent}
-        </Box>
-      )}
-    </Paper>
+        <Typography variant="body2" color="text.secondary">
+          {description}
+        </Typography>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <Paper variant="outlined" sx={{ p: 2 }}>
+          <Box>{children}</Box>
+          {action && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                {action}
+              </Box>
+            </>
+          )}
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }
 
-function StatBox({ title, value, linkHref, isLoading }) {
+function StatBox({ title, value, isLoading }) {
     return (
         <Grid item xs={12} sm={4}>
-            <Paper component={isLoading ? Box : NextLink} href={linkHref} sx={{ p: 2, textAlign: 'center', textDecoration: 'none', display: 'block', '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' } }}>
-                {isLoading ? <Skeleton variant="text" width={80} height={48} sx={{mx: 'auto'}} /> : <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{value}</Typography>}
-                <Typography variant="body2" color="text.secondary">{title}</Typography>
-            </Paper>
+            <Box>
+                <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'uppercase', fontSize: '0.8rem' }}>{title}</Typography>
+                {isLoading ? <Skeleton variant="text" width={60} height={40} /> : <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{value}</Typography>}
+            </Box>
         </Grid>
     );
 }
 
+
 // --- Main Page Component ---
 export default function GeneralSettingsPage() {
-  const { data, isLoading: isLoadingStatus, error, setData } = useAdminStatus();
+  const { data: statusData, isLoading: isLoadingStatus, error: statusError, setData: setStatusData } = useMaintenanceStatus();
+  const { counts, isLoading: isLoadingCounts } = useContentCounts();
   const [isSaving, setIsSaving] = useState(false);
-  const [saveStatus, setSaveStatus] = useState({ message: '', severity: 'success' });
 
   const handleMaintenanceToggle = async () => {
     setIsSaving(true);
-    setSaveStatus({ message: '', severity: 'success' });
     try {
-        const response = await fetch('/api/admin/maintenance', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ enable: !data.isMaintenanceMode })
+        const response = await apiClient.post('/api/admin/maintenance', {
+            enable: !statusData.isMaintenanceMode
         });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.message);
-        
-        // Update local state on success
-        setData(prev => ({ ...prev, isMaintenanceMode: result.isMaintenanceMode }));
-        setSaveStatus({ message: result.message, severity: 'success' });
+        setStatusData(prev => ({ ...prev, isMaintenanceMode: response.data.isMaintenanceMode }));
     } catch (err) {
-        setSaveStatus({ message: err.message, severity: 'error' });
+        // You can add a notification here if you like
+        console.error("Failed to toggle maintenance mode", err);
     } finally {
         setIsSaving(false);
     }
@@ -106,39 +110,40 @@ export default function GeneralSettingsPage() {
         General
       </Typography>
 
-      {error && <Alert severity="error" sx={{mb: 3}}>{error}</Alert>}
+      {statusError && <Alert severity="error" sx={{mb: 3}}>{statusError}</Alert>}
 
-      <SettingsCard
+      <SettingsSection
         title="Site Status"
-        description="Control the public availability of the ReactiQuiz application."
-        footerContent={
-            <>
-                {saveStatus.message && <Typography sx={{flexGrow: 1, alignSelf: 'center', color: `${saveStatus.severity}.main`}}>{saveStatus.message}</Typography>}
-                <Button variant="contained" onClick={handleMaintenanceToggle} disabled={isSaving || isLoadingStatus}>
-                    {isSaving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
-                </Button>
-            </>
+        description="Enable maintenance mode to show a maintenance page to all non-admin visitors."
+        action={
+          <Button variant="contained" onClick={handleMaintenanceToggle} disabled={isSaving || isLoadingStatus}>
+            {isSaving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+          </Button>
         }
       >
         <FormControlLabel
-          control={<Switch checked={data?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoadingStatus || isSaving} />}
-          label="Enable Maintenance Mode"
+          control={<Switch checked={statusData?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoadingStatus || isSaving} />}
+          label="Application is in Maintenance Mode"
         />
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
-          When enabled, visitors will be redirected to a maintenance page. The admin panel remains accessible.
-        </Typography>
-      </SettingsCard>
-      
-      <SettingsCard
+      </SettingsSection>
+
+      <SettingsSection
         title="Content Overview"
-        description="High-level summary of the content in your database."
+        description="A real-time summary of the content in your database."
       >
         <Grid container spacing={2}>
-            <StatBox title="Registered Users" value={data?.userCount} linkHref="/admin/users" isLoading={isLoadingStatus} />
-            <StatBox title="Quiz Topics" value={data?.topicCount} linkHref="/admin/topics" isLoading={isLoadingStatus} />
-            <StatBox title="Total Questions" value={data?.questionCount} linkHref="/admin/questions" isLoading={isLoadingStatus} />
+            <StatBox title="Registered Users" value={counts?.userCount} isLoading={isLoadingCounts} />
+            <StatBox title="Quiz Topics" value={counts?.topicCount} isLoading={isLoadingCounts} />
+            <StatBox title="Total Questions" value={counts?.questionCount} isLoading={isLoadingCounts} />
         </Grid>
-      </SettingsCard>
+      </SettingsSection>
+
+      <SettingsSection
+        title="Project ID"
+        description="The unique identifier for this project on Vercel."
+      >
+        <TextField fullWidth disabled value="prj_JmYz..." />
+      </SettingsSection>
     </Box>
   );
 }
