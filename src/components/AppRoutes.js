@@ -31,7 +31,7 @@ const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
-const GeneralSettingsPage = React.lazy(() => import('../../pages/admin/GeneralSettingsPage')); 
+const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage')); 
 
 // A helper to pass the outlet context down to pages that need it
 const AccountPageWithContext = () => {
