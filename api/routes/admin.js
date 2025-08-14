@@ -8,43 +8,59 @@ const { verifyAdmin } = require('../_middleware/adminAuth');
 const router = Router();
 const MAINTENANCE_KEY = 'reactiquiz:maintenance_mode';
 
+// Protect all routes in this file with the admin middleware
 router.use(verifyAdmin);
 
-// NEW ENDPOINT: /api/admin/stats
-router.get('/stats', async (req, res) => {
-    logApi('GET', '/api/admin/stats');
+// GET /api/admin/dashboard - The single endpoint to power the page
+router.get('/dashboard', async (req, res) => {
+    logApi('GET', '/api/admin/dashboard');
     const tx = await turso.transaction('read');
     try {
-        const [usersResult, topicsResult, questionsResult, maintenanceStatus] = await Promise.all([
+        // Fetch all data in parallel for maximum efficiency
+        const [
+            usersResult, 
+            topicsResult, 
+            questionsResult, 
+            recentUsersResult,
+            recentQuizzesResult,
+            maintenanceStatus
+        ] = await Promise.all([
             tx.execute("SELECT count(*) as total FROM users"),
             tx.execute("SELECT count(*) as total FROM quiz_topics"),
             tx.execute("SELECT count(*) as total FROM questions"),
+            tx.execute("SELECT username, created_at FROM users ORDER BY created_at DESC LIMIT 5"),
+            tx.execute("SELECT topicId, percentage, timestamp FROM quiz_results ORDER BY timestamp DESC LIMIT 5"),
             kv.get(MAINTENANCE_KEY)
         ]);
+
         await tx.commit();
+
         res.json({
             isMaintenanceMode: !!maintenanceStatus,
-            userCount: usersResult.rows[0].total,
-            topicCount: topicsResult.rows[0].total,
-            questionCount: questionsResult.rows[0].total,
+            counts: {
+                users: usersResult.rows[0].total,
+                topics: topicsResult.rows[0].total,
+                questions: questionsResult.rows[0].total,
+            },
+            recentActivity: {
+                users: recentUsersResult.rows,
+                quizzes: recentQuizzesResult.rows,
+            }
         });
+
     } catch (e) {
         await tx.rollback();
-        logError('DB/KV ERROR', 'Fetching admin stats failed', e.message);
-        res.status(500).json({ message: 'Could not fetch admin stats.' });
+        logError('DB/KV ERROR', 'Fetching admin dashboard data failed', e.message);
+        res.status(500).json({ message: 'Could not fetch dashboard data.' });
     }
 });
 
-// EXISTING ENDPOINT: /api/admin/maintenance
+// POST /api/admin/maintenance - Toggle maintenance mode
 router.post('/maintenance', async (req, res) => {
     const { enable } = req.body;
     logApi('POST', '/api/admin/maintenance', `Enable: ${enable}`);
-    if (typeof enable !== 'boolean') {
-        return res.status(400).json({ message: 'A boolean "enable" field is required.' });
-    }
     try {
         await kv.set(MAINTENANCE_KEY, enable);
-        // This response is crucial. It confirms the new state to the frontend.
         res.status(200).json({ 
             message: `Maintenance mode successfully ${enable ? 'enabled' : 'disabled'}.`,
             isMaintenanceMode: enable
