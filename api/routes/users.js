@@ -208,7 +208,7 @@ router.post('/login', loginValidation, handleValidationErrors, async (req, res) 
     const tx = await turso.transaction("read");
     try {
         const result = await tx.execute({
-            sql: 'SELECT id, username, email, address, class, password, phone FROM users WHERE username = ?;',
+            sql: 'SELECT id, username, email, address, class, password, phone, isAdmin FROM users WHERE username = ?;',
             args: [username]
         });
         await tx.commit();
@@ -227,7 +227,7 @@ router.post('/login', loginValidation, handleValidationErrors, async (req, res) 
 
         res.json({
             token,
-            user: { id: user.id, name: user.username, email: user.email, address: user.address, class: user.class, phone: user.phone }
+            user: { id: user.id, name: user.username, email: user.email, address: user.address, class: user.class, phone: user.phone, isAdmin: user.isAdmin }
         });
     } catch (e) {
         await tx.rollback();
@@ -242,7 +242,7 @@ router.get('/me', verifyToken, async (req, res) => {
     const tx = await turso.transaction("read");
     try {
         const result = await tx.execute({
-            sql: 'SELECT id, username, email, address, class FROM users WHERE id = ?;',
+            sql: 'SELECT id, username, email, address, class, phone, isAdmin FROM users WHERE id = ?;',
             args: [userId]
         });
         await tx.commit();

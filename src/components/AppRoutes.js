@@ -3,14 +3,16 @@ import React, { Suspense } from 'react';
 import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import ProtectedRoute from './core/ProtectedRoute';  
+import ProtectedRoute from './core/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
 import MinimalLayout from './layout/MinimalLayout';
+import AdminRoute from './AdminRoute';
+import AdminLayout from './admin/AdminLayout';
 
 const SuspenseFallback = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
-        <CircularProgress />
-    </Box>
+  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
+    <CircularProgress />
+  </Box>
 );
 
 const HomePage = React.lazy(() => import('../pages/HomePage'));
@@ -32,8 +34,8 @@ const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
 
 // A helper to pass the outlet context down to pages that need it
 const AccountPageWithContext = () => {
-    const context = useOutletContext();
-    return <AccountPage onOpenChangePasswordModal={context.onOpenChangePasswordModal} />;
+  const context = useOutletContext();
+  return <AccountPage onOpenChangePasswordModal={context.onOpenChangePasswordModal} />;
 };
 
 function AppRoutes() {
@@ -47,29 +49,35 @@ function AppRoutes() {
     <Suspense fallback={<SuspenseFallback />}>
       <Routes>
         <Route element={<MainLayout />}>
-            <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
-            <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-            <Route path="/account" element={<ProtectedRoute><AccountPageWithContext /></ProtectedRoute>} />
-            <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-            <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-            <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
-            <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
-            <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-            <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
-            <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
-            <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
+          <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
+          <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute><AccountPageWithContext /></ProtectedRoute>} />
+          <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
+          <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
+          <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+          <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
+          <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
+          <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
         </Route>
-        
+
         <Route element={<MinimalLayout />}>
-            <Route path="/about-guest" element={<AboutPage />} />
+          <Route path="/about-guest" element={<AboutPage />} />
         </Route>
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={currentUser ? <Navigate to="/dashboard" /> : <HomePage />} />
         <Route path="*" element={<NotFoundPage />} />
+
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+          <Route path="general" element={<GeneralSettingsPage />} />
+          <Route path="users" element={<Typography>User Management Page</Typography>} />
+          <Route index element={<Navigate to="general" replace />} />
+        </Route>
       </Routes>
     </Suspense>
   );
