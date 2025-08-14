@@ -1,6 +1,6 @@
 // src/components/core/AppRoutes.js
 import React, { Suspense } from 'react';
-import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
+import { Routes, Route, Navigate, useOutletContext, Typography } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';
@@ -31,6 +31,7 @@ const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
+const GeneralSettingsPage = React.lazy(() => import('../../pages/admin/GeneralSettingsPage')); 
 
 // A helper to pass the outlet context down to pages that need it
 const AccountPageWithContext = () => {
