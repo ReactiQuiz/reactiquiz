@@ -9,7 +9,8 @@ import {
   Alert, 
   Grid, 
   Skeleton,
-  useTheme
+  useTheme,
+  Divider
 } from '@mui/material';
 import { useNotifications } from '../../contexts/NotificationsContext';
 import apiClient from '../../api/axiosInstance';
