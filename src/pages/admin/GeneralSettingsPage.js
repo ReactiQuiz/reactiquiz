@@ -15,7 +15,7 @@ import apiClient from '../../api/axiosInstance';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
-// Custom hook to encapsulate the data fetching for this page
+// No changes needed in this custom hook
 function useAdminStats() {
     const [stats, setStats] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -48,28 +48,38 @@ function useAdminStats() {
 function GeneralSettingsPage() {
     const { addNotification } = useNotifications();
     const { stats, isLoading, error, setStats } = useAdminStats();
-    const [isSaving, setIsSaving] = useState(false);
+    // --- START OF FIX: Remove isSaving state ---
+    // const [isSaving, setIsSaving] = useState(false);
+    // We will now use a single state to represent any loading activity.
+    const [isUpdating, setIsUpdating] = useState(false);
+    // --- END OF FIX ---
 
     const handleMaintenanceToggle = async () => {
-        if (!stats) return; // Don't do anything if initial data isn't loaded
+        if (!stats) return;
         
-        setIsSaving(true);
+        // --- START OF FIX: Use the new isUpdating state ---
+        setIsUpdating(true); 
+        // --- END OF FIX ---
+        
         try {
             const response = await apiClient.post('/api/admin/maintenance', {
                 enable: !stats.isMaintenanceMode
             });
             
-            // THIS IS THE FIX: Update the local state with the confirmed state from the server's response
             setStats(prev => ({ ...prev, isMaintenanceMode: response.data.isMaintenanceMode }));
             addNotification(response.data.message, 'success');
         } catch (err) {
             const message = err.response?.data?.message || "Failed to update maintenance status.";
             addNotification(message, 'error');
-            // No need to revert the switch visually, as the state `stats.isMaintenanceMode` remains unchanged until a successful API call
         } finally {
-            setIsSaving(false);
+            // --- START OF FIX: Use the new isUpdating state ---
+            setIsUpdating(false);
+            // --- END OF FIX ---
         }
     };
+    
+    // Combine initial loading and update operations into one disabled flag.
+    const isActionDisabled = isLoading || isUpdating;
     
     return (
         <Box>
@@ -93,8 +103,10 @@ function GeneralSettingsPage() {
                     </Box>
                     <FormControlLabel
                         sx={{ mr: 0 }}
-                        control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoading || isSaving} />}
-                        label={isSaving ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
+                        control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isActionDisabled} />}
+                        // --- START OF FIX: Simplified label logic ---
+                        label={isUpdating ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
+                        // --- END OF FIX ---
                     />
                 </Box>
             </Paper>
