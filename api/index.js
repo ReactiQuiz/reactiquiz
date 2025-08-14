@@ -55,6 +55,11 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
+// This setting tells Express to trust the headers set by Vercel's proxy.
+// It's essential for correct IP address identification, which is needed by
+// security middleware like rate limiters.
+app.set('trust proxy', 1);
+
 // --- Core Middleware ---
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
