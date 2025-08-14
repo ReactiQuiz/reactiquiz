@@ -15,72 +15,83 @@ import apiClient from '../../api/axiosInstance';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
-// No changes needed in this custom hook
+// Custom hook to manage the data fetching and state for this page
 function useAdminStats() {
     const [stats, setStats] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const { addNotification } = useNotifications();
 
+    // Encapsulate the fetching logic into a memoized function
     const fetchStats = useCallback(() => {
+        console.log("HOOK: Starting to fetch stats...");
         setIsLoading(true);
         apiClient.get('/admin/stats')
             .then(response => {
+                console.log("HOOK: Successfully fetched stats:", response.data);
                 setStats(response.data);
             })
             .catch((err) => {
                 const message = err.response?.data?.message || 'Failed to fetch admin statistics.';
+                console.error("HOOK: Error fetching stats:", message);
                 setError(message);
                 addNotification(message, 'error');
             })
             .finally(() => {
+                console.log("HOOK: Finished fetching stats.");
                 setIsLoading(false);
             });
     }, [addNotification]);
 
+    // Fetch stats when the component first mounts
     useEffect(() => {
         fetchStats();
     }, [fetchStats]);
 
-    return { stats, isLoading, error, setStats };
+    // Return the state and the refetch function
+    return { stats, isLoading, error, refetchStats: fetchStats };
 }
 
 function GeneralSettingsPage() {
     const { addNotification } = useNotifications();
-    const { stats, isLoading, error, setStats } = useAdminStats();
-    // --- START OF FIX: Remove isSaving state ---
-    // const [isSaving, setIsSaving] = useState(false);
-    // We will now use a single state to represent any loading activity.
-    const [isUpdating, setIsUpdating] = useState(false);
+    // --- START OF FIX: Use the refetch function from the hook ---
+    const { stats, isLoading, error, refetchStats } = useAdminStats();
+    const [isToggling, setIsToggling] = useState(false); // State specifically for the toggle action
     // --- END OF FIX ---
 
     const handleMaintenanceToggle = async () => {
-        if (!stats) return;
+        if (!stats) return; // Guard against clicking before initial load
         
-        // --- START OF FIX: Use the new isUpdating state ---
-        setIsUpdating(true); 
-        // --- END OF FIX ---
+        console.log("HANDLER: Toggle initiated. Current state is:", stats.isMaintenanceMode);
+        setIsToggling(true);
         
         try {
             const response = await apiClient.post('/api/admin/maintenance', {
                 enable: !stats.isMaintenanceMode
             });
             
-            setStats(prev => ({ ...prev, isMaintenanceMode: response.data.isMaintenanceMode }));
+            console.log("HANDLER: API call successful. Response:", response.data);
             addNotification(response.data.message, 'success');
+            
+            // --- THIS IS THE CRITICAL FIX ---
+            // Instead of manually setting state, we re-fetch the single source of truth from the server.
+            console.log("HANDLER: Refetching stats to confirm change...");
+            refetchStats();
+            // --- END OF FIX ---
+
         } catch (err) {
             const message = err.response?.data?.message || "Failed to update maintenance status.";
+            console.error("HANDLER: API call failed.", message);
             addNotification(message, 'error');
         } finally {
-            // --- START OF FIX: Use the new isUpdating state ---
-            setIsUpdating(false);
-            // --- END OF FIX ---
+            console.log("HANDLER: Toggle action finished.");
+            setIsToggling(false);
         }
     };
     
-    // Combine initial loading and update operations into one disabled flag.
-    const isActionDisabled = isLoading || isUpdating;
-    
+    // Determine the disabled state based on initial load OR the toggle action
+    const isActionDisabled = isLoading || isToggling;
+
     return (
         <Box>
             <Typography variant="h4" component="h1" sx={{ mb: 1, fontWeight: 'bold' }}>
@@ -103,14 +114,15 @@ function GeneralSettingsPage() {
                     </Box>
                     <FormControlLabel
                         sx={{ mr: 0 }}
+                        // The switch is ALWAYS controlled by the `stats` object, the single source of truth.
                         control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isActionDisabled} />}
-                        // --- START OF FIX: Simplified label logic ---
-                        label={isUpdating ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
-                        // --- END OF FIX ---
+                        // The label reflects the current action being performed.
+                        label={isToggling ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
                     />
                 </Box>
             </Paper>
 
+            {/* Content Overview and Services Status are unchanged */}
             <Paper sx={{ p: 3, mb: 4 }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Content Overview</Typography>
                 <Grid container spacing={3}>

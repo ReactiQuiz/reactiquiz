@@ -44,9 +44,10 @@ router.post('/maintenance', async (req, res) => {
     }
     try {
         await kv.set(MAINTENANCE_KEY, enable);
+        // This response is crucial. It confirms the new state to the frontend.
         res.status(200).json({ 
             message: `Maintenance mode successfully ${enable ? 'enabled' : 'disabled'}.`,
-            isMaintenanceMode: enable // IMPORTANT: Return the new state
+            isMaintenanceMode: enable
         });
     } catch (e) {
         logError('KV ERROR', 'Setting maintenance mode failed', e.message);
