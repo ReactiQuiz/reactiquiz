@@ -4,12 +4,10 @@ import {
   Box, 
   Paper, 
   Typography, 
-  Button, 
-  Divider, 
   Switch, 
   FormControlLabel, 
+  Alert, 
   Grid, 
-  CircularProgress, 
   Skeleton,
   useTheme
 } from '@mui/material';
@@ -18,7 +16,7 @@ import apiClient from '../../api/axiosInstance';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
-// A custom hook to encapsulate the data fetching logic for this page
+// Custom hook is good, no changes needed here
 function useAdminStats() {
     const [stats, setStats] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -49,9 +47,9 @@ function useAdminStats() {
 }
 
 function GeneralSettingsPage() {
-    const theme = useTheme();
     const { addNotification } = useNotifications();
     const { stats, isLoading, error, setStats } = useAdminStats();
+    // --- START OF THE DEFINITIVE FIX ---
     const [isSaving, setIsSaving] = useState(false);
 
     const handleMaintenanceToggle = async () => {
@@ -61,17 +59,29 @@ function GeneralSettingsPage() {
             const response = await apiClient.post('/api/admin/maintenance', {
                 enable: !stats.isMaintenanceMode
             });
-            // --- THIS IS THE CRITICAL FIX ---
-            // Update the local state with the confirmed state from the server's response
+            // This logic is correct: update the stats object with the server's response
             setStats(prev => ({ ...prev, isMaintenanceMode: response.data.isMaintenanceMode }));
             addNotification(response.data.message, 'success');
         } catch (err) {
             const message = err.response?.data?.message || "Failed to update maintenance status.";
             addNotification(message, 'error');
         } finally {
+            // This correctly sets the saving state back to false
             setIsSaving(false);
         }
     };
+    
+    // Create a variable to determine the label text.
+    // This ensures that every time the component re-renders, the label is re-evaluated.
+    let maintenanceLabel = "Off";
+    if (isLoading) {
+        maintenanceLabel = <Skeleton width={40} />;
+    } else if (isSaving) {
+        maintenanceLabel = "Updating...";
+    } else if (stats?.isMaintenanceMode) {
+        maintenanceLabel = "On";
+    }
+    // --- END OF THE DEFINITIVE FIX ---
     
     return (
         <Box>
@@ -81,6 +91,8 @@ function GeneralSettingsPage() {
             <Typography color="text.secondary" sx={{ mb: 4 }}>
                 Manage site-wide settings and view content summaries.
             </Typography>
+    
+            {error && <Alert severity="error" sx={{mb: 3}}>{error}</Alert>}
     
             {/* --- Site Status Card --- */}
             <Paper sx={{ p: 3, mb: 4 }}>
@@ -96,7 +108,7 @@ function GeneralSettingsPage() {
                     <FormControlLabel
                         sx={{ mr: 0 }}
                         control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoading || isSaving} />}
-                        label={isSaving ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
+                        label={maintenanceLabel}
                     />
                 </Box>
             </Paper>
