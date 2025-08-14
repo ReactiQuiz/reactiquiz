@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
 import MinimalLayout from './layout/MinimalLayout';
-import AdminRoute from './AdminRoute';
+import AdminRoute from './core/AdminRoute';
 import AdminLayout from './admin/AdminLayout';
 
 const SuspenseFallback = () => (
