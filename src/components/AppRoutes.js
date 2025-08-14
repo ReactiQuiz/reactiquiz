@@ -1,7 +1,7 @@
 // src/components/core/AppRoutes.js
 import React, { Suspense } from 'react';
-import { Routes, Route, Navigate, useOutletContext, Typography } from 'react-router-dom';
-import { Box, CircularProgress } from '@mui/material';
+import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
+import { Box, CircularProgress,Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
