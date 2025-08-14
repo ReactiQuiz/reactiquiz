@@ -201,9 +201,10 @@ router.post('/register',
     }
 );
 
-router.post('/login', loginValidation, handleValidationErrors, async (req, res) => {
+router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     logApi('POST', '/api/users/login', `User: ${username}`);
+    if (!username || !password) return res.status(400).json({ message: 'Username and password are required.' });
     
     const tx = await turso.transaction("read");
     try {
@@ -223,11 +224,25 @@ router.post('/login', loginValidation, handleValidationErrors, async (req, res) 
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
-        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const tokenPayload = { 
+            id: user.id, 
+            username: user.username, 
+            isAdmin: !!user.isAdmin 
+        };
+
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         res.json({
             token,
-            user: { id: user.id, name: user.username, email: user.email, address: user.address, class: user.class, phone: user.phone, isAdmin: user.isAdmin }
+            user: { 
+                id: user.id, 
+                name: user.username, 
+                email: user.email, 
+                address: user.address, 
+                class: user.class, 
+                phone: user.phone, 
+                isAdmin: !!user.isAdmin 
+            }
         });
     } catch (e) {
         await tx.rollback();
