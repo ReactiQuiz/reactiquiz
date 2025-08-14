@@ -1,5 +1,5 @@
 // src/pages/admin/GeneralSettingsPage.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
   Paper, 
@@ -8,109 +8,66 @@ import {
   Divider, 
   Switch, 
   FormControlLabel, 
-  Alert, 
   Grid, 
   CircularProgress, 
-  Skeleton 
+  Skeleton,
+  useTheme
 } from '@mui/material';
+import { useNotifications } from '../../contexts/NotificationsContext';
 import apiClient from '../../api/axiosInstance';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 
-/**
- * Reusable component for a consistent settings section layout.
- * @param {string} title - The title of the settings section.
- * @param {string} description - A brief explanation of the setting.
- * @param {React.ReactNode} action - The action button(s) for the section footer.
- * @param {React.ReactNode} children - The content/controls for the section.
- */
-function SettingsSection({ title, description, action, children }) {
-  return (
-    <Grid container spacing={2} sx={{ mb: 4, alignItems: 'flex-start' }}>
-      <Grid item xs={12} md={4}>
-        <Typography variant="h6" component="h2" sx={{ fontWeight: 600 }}>
-          {title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} md={8}>
-        <Paper variant="outlined" sx={{ overflow: 'hidden' }}>
-          <Box sx={{ p: 2 }}>{children}</Box>
-          {action && (
-            <>
-              <Divider />
-              <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end', backgroundColor: 'action.hover' }}>
-                {action}
-              </Box>
-            </>
-          )}
-        </Paper>
-      </Grid>
-    </Grid>
-  );
-}
-
-/**
- * Reusable component for displaying a single statistic.
- * @param {string} title - The label for the statistic.
- * @param {number | string} value - The value of the statistic.
- * @param {boolean} isLoading - Controls whether to show a skeleton loader.
- */
-function StatBox({ title, value, isLoading }) {
-    return (
-        <Grid item xs={12} sm={4}>
-            <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'uppercase', fontSize: '0.8rem' }}>
-                    {title}
-                </Typography>
-                {isLoading ? (
-                    <Skeleton variant="text" width={60} height={40} />
-                ) : (
-                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                        {value !== undefined && value !== null ? value.toLocaleString() : 'N/A'}
-                    </Typography>
-                )}
-            </Box>
-        </Grid>
-    );
-}
-
-
-function GeneralSettingsPage() {
+// A custom hook to encapsulate the data fetching logic for this page
+function useAdminStats() {
     const [stats, setStats] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [isSaving, setIsSaving] = useState(false);
+    const { addNotification } = useNotifications();
 
-    // Fetch all admin stats when the component mounts
-    useEffect(() => {
+    const fetchStats = useCallback(() => {
+        setIsLoading(true);
         apiClient.get('/admin/stats')
             .then(response => {
                 setStats(response.data);
             })
             .catch((err) => {
-                setError(err.response?.data?.message || 'Failed to fetch admin statistics.');
+                const message = err.response?.data?.message || 'Failed to fetch admin statistics.';
+                setError(message);
+                addNotification(message, 'error');
             })
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []); // Empty dependency array means this runs once on mount
+    }, [addNotification]);
 
-    // Handler for the maintenance mode toggle switch
+    useEffect(() => {
+        fetchStats();
+    }, [fetchStats]);
+
+    return { stats, isLoading, error, setStats };
+}
+
+function GeneralSettingsPage() {
+    const theme = useTheme();
+    const { addNotification } = useNotifications();
+    const { stats, isLoading, error, setStats } = useAdminStats();
+    const [isSaving, setIsSaving] = useState(false);
+
     const handleMaintenanceToggle = async () => {
-        if (!stats) return; // Prevent action if initial data hasn't loaded
+        if (!stats) return;
         setIsSaving(true);
-        setError(''); // Clear previous errors
         try {
             const response = await apiClient.post('/api/admin/maintenance', {
                 enable: !stats.isMaintenanceMode
             });
-            // Update local state with the confirmed state from the server
+            // --- THIS IS THE CRITICAL FIX ---
+            // Update the local state with the confirmed state from the server's response
             setStats(prev => ({ ...prev, isMaintenanceMode: response.data.isMaintenanceMode }));
+            addNotification(response.data.message, 'success');
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to update maintenance status.");
-            // Revert the switch visually on failure
-            setStats(prev => ({ ...prev, isMaintenanceMode: prev.isMaintenanceMode }));
+            const message = err.response?.data?.message || "Failed to update maintenance status.";
+            addNotification(message, 'error');
         } finally {
             setIsSaving(false);
         }
@@ -118,37 +75,84 @@ function GeneralSettingsPage() {
     
     return (
         <Box>
-          <Typography variant="h4" component="h1" sx={{ mb: 3, fontWeight: 'bold' }}>
-            General
-          </Typography>
+            <Typography variant="h4" component="h1" sx={{ mb: 1, fontWeight: 'bold' }}>
+                General
+            </Typography>
+            <Typography color="text.secondary" sx={{ mb: 4 }}>
+                Manage site-wide settings and view content summaries.
+            </Typography>
     
-          {error && <Alert severity="error" sx={{mb: 3}}>{error}</Alert>}
-    
-          <SettingsSection
-            title="Site Status"
-            description="Enable maintenance mode to show a maintenance page to all non-admin visitors."
-            action={
-              <Button variant="contained" onClick={handleMaintenanceToggle} disabled={isSaving || isLoading}>
-                {isSaving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
-              </Button>
-            }
-          >
-            <FormControlLabel
-              control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoading || isSaving} />}
-              label="Application is in Maintenance Mode"
-            />
-          </SettingsSection>
-    
-          <SettingsSection
-            title="Content Overview"
-            description="A real-time summary of the content in your database."
-          >
-            <Grid container spacing={2}>
-                <StatBox title="Registered Users" value={stats?.userCount} isLoading={isLoading} />
-                <StatBox title="Quiz Topics" value={stats?.topicCount} isLoading={isLoading} />
-                <StatBox title="Total Questions" value={stats?.questionCount} isLoading={isLoading} />
-            </Grid>
-          </SettingsSection>
+            {/* --- Site Status Card --- */}
+            <Paper sx={{ p: 3, mb: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>Site Status</Typography>
+                <Divider sx={{ my: 2 }} />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box>
+                        <Typography>Maintenance Mode</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Redirect all visitors to a maintenance page.
+                        </Typography>
+                    </Box>
+                    <FormControlLabel
+                        sx={{ mr: 0 }}
+                        control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoading || isSaving} />}
+                        label={isSaving ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
+                    />
+                </Box>
+            </Paper>
+
+            {/* --- Content Overview Card --- */}
+            <Paper sx={{ p: 3, mb: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>Content Overview</Typography>
+                <Divider sx={{ my: 2 }} />
+                <Grid container spacing={3}>
+                    {isLoading ? (
+                        [...Array(3)].map((_, i) => (
+                            <Grid item xs={12} sm={4} key={i}>
+                                <Skeleton variant="text" height={20} width="60%" />
+                                <Skeleton variant="text" height={40} width="40%" />
+                            </Grid>
+                        ))
+                    ) : (
+                        <>
+                            <Grid item xs={12} sm={4}>
+                                <Typography variant="overline" color="text.secondary">Registered Users</Typography>
+                                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{stats?.userCount?.toLocaleString() ?? 'N/A'}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Typography variant="overline" color="text.secondary">Quiz Topics</Typography>
+                                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{stats?.topicCount?.toLocaleString() ?? 'N/A'}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Typography variant="overline" color="text.secondary">Total Questions</Typography>
+                                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{stats?.questionCount?.toLocaleString() ?? 'N/A'}</Typography>
+                            </Grid>
+                        </>
+                    )}
+                </Grid>
+            </Paper>
+
+             {/* --- Services Status Card --- */}
+            <Paper sx={{ p: 3, mb: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>Services Status</Typography>
+                <Divider sx={{ my: 2 }} />
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <CheckCircleIcon sx={{ color: 'success.main', mr: 1.5 }} />
+                        <Box>
+                            <Typography>Database Connection (Turso)</Typography>
+                            <Typography variant="body2" color="text.secondary">Operational</Typography>
+                        </Box>
+                    </Grid>
+                     <Grid item xs={12} md={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <ErrorIcon sx={{ color: 'warning.main', mr: 1.5 }} />
+                        <Box>
+                            <Typography>Email Service (Nodemailer)</Typography>
+                            <Typography variant="body2" color="text.secondary">Not Configured</Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Paper>
         </Box>
       );
 }

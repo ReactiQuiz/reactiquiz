@@ -1,13 +1,14 @@
 // src/components/core/AppRoutes.js
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
-import { Box, CircularProgress,Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, ThemeProvider } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
 import MinimalLayout from './layout/MinimalLayout';
 import AdminRoute from './core/AdminRoute';
 import AdminLayout from './admin/AdminLayout';
+import { adminTheme } from '../adminTheme';
 
 const SuspenseFallback = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
@@ -31,7 +32,7 @@ const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
-const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage')); 
+const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage'));
 
 // A helper to pass the outlet context down to pages that need it
 const AccountPageWithContext = () => {
@@ -74,11 +75,22 @@ function AppRoutes() {
         <Route path="/" element={currentUser ? <Navigate to="/dashboard" /> : <HomePage />} />
         <Route path="*" element={<NotFoundPage />} />
 
-        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-          <Route path="general" element={<GeneralSettingsPage />} />
-          <Route path="users" element={<Typography>User Management Page</Typography>} />
-          <Route index element={<Navigate to="general" replace />} />
-        </Route>
+        <Route
+          path="/admin/*"
+          element={
+            <AdminRoute>
+              <ThemeProvider theme={adminTheme}>
+                <Routes>
+                  <Route element={<AdminLayout />}>
+                    <Route path="general" element={<GeneralSettingsPage />} />
+                    <Route path="users" element={<Typography>User Management</Typography>} />
+                    <Route path="/" element={<Navigate to="general" replace />} />
+                  </Route>
+                </Routes>
+              </ThemeProvider>
+            </AdminRoute>
+          }
+        />
       </Routes>
     </Suspense>
   );
