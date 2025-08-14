@@ -8,11 +8,8 @@ export const adminTheme = createTheme({
     primary: {
       main: '#3979F1', // A vibrant blue for primary actions
     },
-    secondary: {
-      main: '#9c27b0', // A rich purple for accents
-    },
     background: {
-      default: '#0A0A0A',
+      default: '#0A0A0A', // A deep, near-black for high contrast
       paper: '#121212',
     },
     text: {
@@ -23,7 +20,7 @@ export const adminTheme = createTheme({
       main: '#4caf50',
     },
     warning: {
-        main: '#ff9800',
+      main: '#ff9800',
     },
     divider: 'rgba(255, 255, 255, 0.12)',
   },
@@ -47,6 +44,7 @@ export const adminTheme = createTheme({
             contained: {
                 fontWeight: 'bold',
                 textTransform: 'none',
+                boxShadow: 'none',
             },
         }
     },
@@ -64,7 +62,7 @@ export const adminTheme = createTheme({
                         transform: 'translateX(16px)',
                         color: '#fff',
                         '& + .MuiSwitch-track': {
-                            backgroundColor: '#4caf50', // Success Green
+                            backgroundColor: '#4caf50', // Success Green when ON
                             opacity: 1,
                             border: 0,
                         },

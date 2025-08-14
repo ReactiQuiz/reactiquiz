@@ -9,15 +9,13 @@ import {
   Alert, 
   Grid, 
   Skeleton,
-  useTheme,
-  Divider
 } from '@mui/material';
 import { useNotifications } from '../../contexts/NotificationsContext';
 import apiClient from '../../api/axiosInstance';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
-// Custom hook is good, no changes needed here
+// Custom hook to encapsulate the data fetching for this page
 function useAdminStats() {
     const [stats, setStats] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -50,39 +48,28 @@ function useAdminStats() {
 function GeneralSettingsPage() {
     const { addNotification } = useNotifications();
     const { stats, isLoading, error, setStats } = useAdminStats();
-    // --- START OF THE DEFINITIVE FIX ---
     const [isSaving, setIsSaving] = useState(false);
 
     const handleMaintenanceToggle = async () => {
-        if (!stats) return;
+        if (!stats) return; // Don't do anything if initial data isn't loaded
+        
         setIsSaving(true);
         try {
             const response = await apiClient.post('/api/admin/maintenance', {
                 enable: !stats.isMaintenanceMode
             });
-            // This logic is correct: update the stats object with the server's response
+            
+            // THIS IS THE FIX: Update the local state with the confirmed state from the server's response
             setStats(prev => ({ ...prev, isMaintenanceMode: response.data.isMaintenanceMode }));
             addNotification(response.data.message, 'success');
         } catch (err) {
             const message = err.response?.data?.message || "Failed to update maintenance status.";
             addNotification(message, 'error');
+            // No need to revert the switch visually, as the state `stats.isMaintenanceMode` remains unchanged until a successful API call
         } finally {
-            // This correctly sets the saving state back to false
             setIsSaving(false);
         }
     };
-    
-    // Create a variable to determine the label text.
-    // This ensures that every time the component re-renders, the label is re-evaluated.
-    let maintenanceLabel = "Off";
-    if (isLoading) {
-        maintenanceLabel = <Skeleton width={40} />;
-    } else if (isSaving) {
-        maintenanceLabel = "Updating...";
-    } else if (stats?.isMaintenanceMode) {
-        maintenanceLabel = "On";
-    }
-    // --- END OF THE DEFINITIVE FIX ---
     
     return (
         <Box>
@@ -95,10 +82,8 @@ function GeneralSettingsPage() {
     
             {error && <Alert severity="error" sx={{mb: 3}}>{error}</Alert>}
     
-            {/* --- Site Status Card --- */}
             <Paper sx={{ p: 3, mb: 4 }}>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>Site Status</Typography>
-                <Divider sx={{ my: 2 }} />
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Site Status</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box>
                         <Typography>Maintenance Mode</Typography>
@@ -109,15 +94,13 @@ function GeneralSettingsPage() {
                     <FormControlLabel
                         sx={{ mr: 0 }}
                         control={<Switch checked={stats?.isMaintenanceMode || false} onChange={handleMaintenanceToggle} disabled={isLoading || isSaving} />}
-                        label={maintenanceLabel}
+                        label={isSaving ? "Updating..." : (stats?.isMaintenanceMode ? "On" : "Off")}
                     />
                 </Box>
             </Paper>
 
-            {/* --- Content Overview Card --- */}
             <Paper sx={{ p: 3, mb: 4 }}>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>Content Overview</Typography>
-                <Divider sx={{ my: 2 }} />
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Content Overview</Typography>
                 <Grid container spacing={3}>
                     {isLoading ? (
                         [...Array(3)].map((_, i) => (
@@ -145,10 +128,8 @@ function GeneralSettingsPage() {
                 </Grid>
             </Paper>
 
-             {/* --- Services Status Card --- */}
-            <Paper sx={{ p: 3, mb: 4 }}>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>Services Status</Typography>
-                <Divider sx={{ my: 2 }} />
+             <Paper sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Services Status</Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6} sx={{ display: 'flex', alignItems: 'center' }}>
                         <CheckCircleIcon sx={{ color: 'success.main', mr: 1.5 }} />
@@ -167,7 +148,7 @@ function GeneralSettingsPage() {
                 </Grid>
             </Paper>
         </Box>
-      );
+    );
 }
 
 export default GeneralSettingsPage;
