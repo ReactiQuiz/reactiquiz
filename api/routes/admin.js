@@ -62,6 +62,32 @@ router.get('/status', async (req, res) => {
     }
 });
 
-// The maintenance route has been removed.
+/**
+ * @route   GET /api/admin/users
+ * @desc    Fetches a list of all registered users.
+ * @access  Private (Admin Only)
+ */
+router.get('/users', async (req, res) => {
+    logApi('GET', '/api/admin/users', `Admin: ${req.user.username}`);
+    
+    const tx = await turso.transaction('read');
+    try {
+        // Select all relevant user fields, excluding the password hash for security.
+        const usersResult = await tx.execute(
+            "SELECT id, username, email, phone, address, class, created_at FROM users ORDER BY created_at DESC"
+        );
+        
+        await tx.commit();
+
+        res.json(usersResult.rows);
+
+    } catch (e) {
+        if (tx && !tx.isClosed()) {
+            await tx.rollback();
+        }
+        logError('DB ERROR', 'Fetching all users failed', e.message);
+        res.status(500).json({ message: 'Could not fetch user list.' });
+    }
+});
 
 module.exports = router;
