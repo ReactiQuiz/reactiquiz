@@ -6,7 +6,7 @@ const { verifyToken } = require('../_middleware/auth');
 
 const router = Router();
 
-// --- Admin-Only Verification Middleware ---
+// --- Admin-Only Verification Middleware (Unchanged) ---
 const verifyAdmin = (req, res, next) => {
     const adminId = process.env.ADMIN_USER_ID;
 
@@ -23,22 +23,15 @@ const verifyAdmin = (req, res, next) => {
     next();
 };
 
-// Apply the middleware stack to all routes in this file.
 router.use(verifyToken, verifyAdmin);
 
 // --- API Endpoints ---
 
-/**
- * @route   GET /api/admin/status
- * @desc    Fetches content counts.
- * @access  Private (Admin Only)
- */
 router.get('/status', async (req, res) => {
     logApi('GET', '/api/admin/status', `Admin: ${req.user.username}`);
     
     const tx = await turso.transaction('read');
     try {
-        // Fetch all database counts concurrently for performance
         const [usersResult, topicsResult, questionsResult] = await Promise.all([
             tx.execute("SELECT count(*) as total FROM users"),
             tx.execute("SELECT count(*) as total FROM quiz_topics"),
@@ -54,25 +47,22 @@ router.get('/status', async (req, res) => {
         });
 
     } catch (e) {
-        if (tx && !tx.isClosed()) {
+        // --- START OF FIX 1 ---
+        // Removed the check for tx.isClosed()
+        if (tx) {
             await tx.rollback();
         }
+        // --- END OF FIX 1 ---
         logError('DB ERROR', 'Fetching admin status failed', e.message);
         res.status(500).json({ message: 'Could not fetch admin status.' });
     }
 });
 
-/**
- * @route   GET /api/admin/users
- * @desc    Fetches a list of all registered users.
- * @access  Private (Admin Only)
- */
 router.get('/users', async (req, res) => {
     logApi('GET', '/api/admin/users', `Admin: ${req.user.username}`);
     
     const tx = await turso.transaction('read');
     try {
-        // Select all relevant user fields, excluding the password hash for security.
         const usersResult = await tx.execute(
             "SELECT id, username, email, phone, address, class, created_at FROM users ORDER BY created_at DESC"
         );
@@ -82,9 +72,12 @@ router.get('/users', async (req, res) => {
         res.json(usersResult.rows);
 
     } catch (e) {
-        if (tx && !tx.isClosed()) {
+        // --- START OF FIX 2 ---
+        // Removed the check for tx.isClosed()
+        if (tx) {
             await tx.rollback();
         }
+        // --- END OF FIX 2 ---
         logError('DB ERROR', 'Fetching all users failed', e.message);
         res.status(500).json({ message: 'Could not fetch user list.' });
     }
