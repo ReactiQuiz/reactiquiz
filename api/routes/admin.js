@@ -1,73 +1,112 @@
 // api/routes/admin.js
 const { Router } = require('express');
-const { kv } = require('@vercel/kv');
+const { Redis } = require('@upstash/redis');
 const { turso } = require('../_utils/tursoClient');
-const { logApi, logError } = require('../_utils/logger');
-const { verifyAdmin } = require('../_middleware/adminAuth');
+const { logApi, logError, logInfo } = require('../_utils/logger');
+const { verifyToken } = require('../_middleware/auth'); 
 
 const router = Router();
+
+let redis;
+// Initialize Redis client only if the URL is provided
+if (process.env.REDIS_URL) {
+    redis = Redis.fromEnv();
+    logInfo('INFO', 'Redis client initialized for admin routes.');
+} else {
+    logInfo('WARN', 'REDIS_URL not found. Maintenance mode feature will be disabled.');
+}
+
 const MAINTENANCE_KEY = 'reactiquiz:maintenance_mode';
 
-// Protect all routes in this file with the admin middleware
-router.use(verifyAdmin);
+// --- Admin-Only Verification Middleware ---
+const verifyAdmin = (req, res, next) => {
+    // This middleware runs *after* verifyToken, so req.user is available.
+    const adminId = process.env.ADMIN_USER_ID;
 
-// GET /api/admin/dashboard - The single endpoint to power the page
-router.get('/dashboard', async (req, res) => {
-    logApi('GET', '/api/admin/dashboard');
+    if (!adminId) {
+        logError('FATAL', 'ADMIN_USER_ID is not configured on the server.');
+        return res.status(500).json({ message: 'Admin access is not configured.' });
+    }
+
+    if (req.user.id !== adminId) {
+        logApi('FORBIDDEN', req.path, `User ${req.user.username} is not admin.`);
+        return res.status(403).json({ message: 'Forbidden: You do not have administrator privileges.' });
+    }
+
+    // If the check passes, continue to the next middleware or route handler.
+    next();
+};
+
+// Apply the middleware stack to all routes in this file.
+// Any request to /api/admin/* will first require a valid token, then require admin privileges.
+router.use(verifyToken, verifyAdmin);
+
+
+// --- API Endpoints ---
+
+/**
+ * @route   GET /api/admin/status
+ * @desc    Fetches current site status including maintenance mode and content counts.
+ * @access  Private (Admin Only)
+ */
+router.get('/status', async (req, res) => {
+    logApi('GET', '/api/admin/status', `Admin: ${req.user.username}`);
+    
     const tx = await turso.transaction('read');
     try {
-        // Fetch all data in parallel for maximum efficiency
-        const [
-            usersResult, 
-            topicsResult, 
-            questionsResult, 
-            recentUsersResult,
-            recentQuizzesResult,
-            maintenanceStatus
-        ] = await Promise.all([
+        // Fetch database counts and Redis status concurrently for performance
+        const [usersResult, topicsResult, questionsResult, maintenanceStatus] = await Promise.all([
             tx.execute("SELECT count(*) as total FROM users"),
             tx.execute("SELECT count(*) as total FROM quiz_topics"),
             tx.execute("SELECT count(*) as total FROM questions"),
-            tx.execute("SELECT username, created_at FROM users ORDER BY created_at DESC LIMIT 5"),
-            tx.execute("SELECT topicId, percentage, timestamp FROM quiz_results ORDER BY timestamp DESC LIMIT 5"),
-            kv.get(MAINTENANCE_KEY)
+            redis ? redis.get(MAINTENANCE_KEY) : Promise.resolve(null) // Safely handle missing Redis
         ]);
 
         await tx.commit();
 
         res.json({
-            isMaintenanceMode: !!maintenanceStatus,
-            counts: {
-                users: usersResult.rows[0].total,
-                topics: topicsResult.rows[0].total,
-                questions: questionsResult.rows[0].total,
-            },
-            recentActivity: {
-                users: recentUsersResult.rows,
-                quizzes: recentQuizzesResult.rows,
-            }
+            isMaintenanceMode: maintenanceStatus === 'true',
+            userCount: usersResult.rows[0].total || 0,
+            topicCount: topicsResult.rows[0].total || 0,
+            questionCount: questionsResult.rows[0].total || 0,
         });
 
     } catch (e) {
-        await tx.rollback();
-        logError('DB/KV ERROR', 'Fetching admin dashboard data failed', e.message);
-        res.status(500).json({ message: 'Could not fetch dashboard data.' });
+        if (!tx.isClosed()) {
+            await tx.rollback();
+        }
+        logError('DB/REDIS ERROR', 'Fetching admin status failed', e.message);
+        res.status(500).json({ message: 'Could not fetch admin status.' });
     }
 });
 
-// POST /api/admin/maintenance - Toggle maintenance mode
+/**
+ * @route   POST /api/admin/maintenance
+ * @desc    Enables or disables site-wide maintenance mode.
+ * @access  Private (Admin Only)
+ */
 router.post('/maintenance', async (req, res) => {
     const { enable } = req.body;
-    logApi('POST', '/api/admin/maintenance', `Enable: ${enable}`);
+    logApi('POST', '/api/admin/maintenance', `Admin: ${req.user.username}, Enable: ${enable}`);
+
+    if (typeof enable !== 'boolean') {
+        return res.status(400).json({ message: 'A boolean "enable" field is required.' });
+    }
+    
+    // If Redis isn't configured, we can't change the maintenance state.
+    if (!redis) {
+        return res.status(503).json({ message: 'Maintenance mode service is not available.' });
+    }
+
     try {
-        await kv.set(MAINTENANCE_KEY, enable);
+        await redis.set(MAINTENANCE_KEY, enable.toString());
         res.status(200).json({ 
             message: `Maintenance mode successfully ${enable ? 'enabled' : 'disabled'}.`,
             isMaintenanceMode: enable
         });
     } catch (e) {
-        logError('KV ERROR', 'Setting maintenance mode failed', e.message);
-        res.status(500).json({ message: 'Could not update maintenance mode.' });
+        logError('REDIS ERROR', 'Setting maintenance mode failed', e.message);
+        res.status(500).json({ message: 'Could not update maintenance mode status.' });
     }
 });
 

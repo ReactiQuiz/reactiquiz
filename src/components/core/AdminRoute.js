@@ -1,35 +1,28 @@
 // src/components/core/AdminRoute.js
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+
+// This is a simplified check. In a real app, you'd have a robust role system.
+const ADMIN_USER_ID = process.env.REACT_APP_ADMIN_USER_ID;
 
 function AdminRoute({ children }) {
   const { currentUser, isLoadingAuth } = useAuth();
-  const location = useLocation();
 
   if (isLoadingAuth) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <Box>Loading...</Box>; // Or a spinner
   }
 
-  if (!currentUser) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  // Check if the logged-in user's ID matches the one from environment variables
+  const isAdmin = currentUser && currentUser.id === ADMIN_USER_ID;
+
+  if (!isAdmin) {
+    // If not an admin, redirect them to the main dashboard or a "not found" page.
+    return <Navigate to="/dashboard" replace />;
   }
 
-  // The crucial check: is the user an admin?
-  if (currentUser && !currentUser.isAdmin) {
-    return (
-        <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Typography variant="h5">Access Denied</Typography>
-            <Typography color="text.secondary">You do not have permission to view this page.</Typography>
-        </Box>
-    );
-  }
-
+  // If they are an admin, render the requested admin page.
   return children;
 }
 
