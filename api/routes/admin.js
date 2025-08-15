@@ -63,21 +63,22 @@ router.get('/users', async (req, res) => {
     
     const tx = await turso.transaction('read');
     try {
+        // --- START OF THE DEFINITIVE FIX ---
+        // Removed `created_at` from the SELECT statement and the ORDER BY clause.
+        // We will order by username alphabetically instead, which is a sensible default.
         const usersResult = await tx.execute(
-            "SELECT id, username, email, phone, address, class, created_at FROM users ORDER BY created_at DESC"
+            "SELECT id, username, email, phone, address, class FROM users ORDER BY username ASC"
         );
+        // --- END OF THE DEFINITIVE FIX ---
         
         await tx.commit();
 
         res.json(usersResult.rows);
 
     } catch (e) {
-        // --- START OF FIX 2 ---
-        // Removed the check for tx.isClosed()
         if (tx) {
             await tx.rollback();
         }
-        // --- END OF FIX 2 ---
         logError('DB ERROR', 'Fetching all users failed', e.message);
         res.status(500).json({ message: 'Could not fetch user list.' });
     }

@@ -5,7 +5,6 @@ import {
   TableContainer, TableHead, TableRow, Alert, Skeleton,
   TablePagination
 } from '@mui/material';
-import { format } from 'date-fns';
 import apiClient from '../../api/axiosInstance';
 
 function UserManagementPage() {
@@ -43,7 +42,7 @@ function UserManagementPage() {
   
   const paginatedUsers = users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-  return (
+    return (
     <Box>
       <Typography variant="h4" component="h1" sx={{ mb: 3, fontWeight: 'bold' }}>
         User Management
@@ -60,21 +59,23 @@ function UserManagementPage() {
                 <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Phone</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Class</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Registered On</TableCell>
+                {/* --- START OF FIX: Removed the "Registered On" column header --- */}
+                {/* <TableCell sx={{ fontWeight: 'bold' }}>Registered On</TableCell> */}
+                {/* --- END OF FIX --- */}
               </TableRow>
             </TableHead>
             <TableBody>
               {isLoading ? (
-                // Display Skeleton loaders while data is being fetched
                 Array.from(new Array(5)).map((_, index) => (
                   <TableRow key={index}>
-                    <TableCell colSpan={5}>
+                    {/* --- START OF FIX: Adjusted colSpan for skeleton --- */}
+                    <TableCell colSpan={4}>
+                    {/* --- END OF FIX --- */}
                       <Skeleton variant="text" sx={{ width: '100%' }} />
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
-                // Display the actual user data
                 paginatedUsers.map((user) => (
                   <TableRow
                     key={user.id}
@@ -86,9 +87,11 @@ function UserManagementPage() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone || 'N/A'}</TableCell>
                     <TableCell>{user.class || 'N/A'}</TableCell>
-                    <TableCell>
+                    {/* --- START OF FIX: Removed the cell that displayed the date --- */}
+                    {/* <TableCell>
                       {format(new Date(user.created_at), 'MMM d, yyyy')}
-                    </TableCell>
+                    </TableCell> */}
+                    {/* --- END OF FIX --- */}
                   </TableRow>
                 ))
               )}
