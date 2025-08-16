@@ -36,11 +36,10 @@ const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
 
-// --- START OF NEW CODE: Lazy-loaded Admin Pages ---
+// Lazy-loaded Admin Pages
 const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage'));
 const UserManagementPage = React.lazy(() => import('../pages/admin/UserManagementPage'));
-// --- END OF NEW CODE ---
-
+const ContentManagementPage = React.lazy(() => import('../pages/admin/ContentManagementPage'));
 
 // Helper for passing context to AccountPage
 const AccountPageWithContext = () => {
@@ -75,7 +74,6 @@ function AppRoutes() {
             <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
             <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
 
-            {/* --- START OF NEW CODE: Admin Routes --- */}
             {/* 
               This block defines the admin section.
               1. The parent route `/admin` is protected by `AdminRoute`, which verifies the user's ID.
@@ -84,11 +82,11 @@ function AppRoutes() {
             */}
             <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
                 <Route path="general" element={<GeneralSettingsPage />} />
+                <Route path="content" element={<ContentManagementPage />} />
                 <Route path="users" element={<UserManagementPage />} />
                 {/* This index route makes `/admin/general` the default page for `/admin` */}
                 <Route index element={<Navigate to="general" replace />} />
             </Route>
-            {/* --- END OF NEW CODE --- */}
 
         </Route>
         
