@@ -13,6 +13,7 @@ import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'; 
 import { useAuth } from '../../contexts/AuthContext'; 
+import { alpha } from '@mui/material/styles'; 
 
 function AppDrawer({ open, onClose }) {
   const theme = useTheme();
@@ -100,6 +101,5 @@ function AppDrawer({ open, onClose }) {
 }
 
 const drawerWidth = 250;
-import { alpha } from '@mui/material/styles'; 
 
 export default AppDrawer;
