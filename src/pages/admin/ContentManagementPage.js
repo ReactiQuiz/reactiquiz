@@ -225,9 +225,32 @@ function ContentManagementPage() {
         />
       </Paper>
 
-      {/* --- Subjects Section (unchanged) --- */}
+      {/* --- Subjects Section --- */}
       <Typography variant="h5" sx={{ mb: 2 }}>Subjects Summary</Typography>
-      {/* ... */}
+      <Grid container spacing={3}>
+        {isLoading ? (
+          Array.from(new Array(4)).map((_, i) => (
+            <Grid item xs={12} md={6} key={i}><Skeleton variant="rectangular" height={150} /></Grid>
+          ))
+        ) : (
+          subjects.map(subject => (
+            <Grid item xs={12} md={6} key={subject.id}>
+              <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+                <Typography variant="h6" gutterBottom>{subject.name}</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>Total Topics: <strong>{subject.totalTopics}</strong></Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {Object.entries(subject.classCounts).map(([cls, count]) => (
+                    <Chip key={cls} label={`Class ${cls}: ${count}`} size="small" />
+                  ))}
+                  {Object.entries(subject.genreCounts).map(([genre, count]) => (
+                    <Chip key={genre} label={`${genre}: ${count}`} size="small" variant="outlined" />
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+          ))
+        )}
+      </Grid>
     </Box>
   );
 }
