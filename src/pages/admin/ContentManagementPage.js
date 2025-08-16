@@ -4,7 +4,7 @@ import {
   Box, Paper, Typography, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Alert, Skeleton,
   TableSortLabel, TextField, InputAdornment, Grid, Chip,
-  FormControl, InputLabel, Select, MenuItem, Divider
+  FormControl, InputLabel, Select, MenuItem, Divider, TablePagination
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import apiClient from '../../api/axiosInstance';
@@ -48,6 +48,15 @@ function ContentManagementPage() {
     setSortConfig({ key, direction });
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to the first page when rows per page changes
+  };
+
   const filteredAndSortedTopics = useMemo(() => {
     let filtered = [...topics];
 
@@ -62,6 +71,13 @@ function ContentManagementPage() {
     }
 
     filtered.sort((a, b) => {
+      if (sortConfig.key === 'class') {
+        const classA = parseInt(a.class) || 0;
+        const classB = parseInt(b.class) || 0;
+        if (classA < classB) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (classA > classB) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === 'asc' ? -1 : 1;
       }
@@ -73,6 +89,8 @@ function ContentManagementPage() {
 
     return filtered;
   }, [topics, searchTerm, subjectFilter, sortConfig]);
+
+  const paginatedTopics = filteredAndSortedTopics.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Box>
@@ -112,7 +130,7 @@ function ContentManagementPage() {
             </Select>
           </FormControl>
         </Box>
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: 600 }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
@@ -122,7 +140,9 @@ function ContentManagementPage() {
                 <TableCell>
                   <TableSortLabel active={sortConfig.key === 'subjectName'} direction={sortConfig.key === 'subjectName' ? sortConfig.direction : 'asc'} onClick={() => handleSort('subjectName')}>Subject</TableSortLabel>
                 </TableCell>
-                <TableCell align="center">Class</TableCell>
+                <TableCell align="center">
+                  <TableSortLabel active={sortConfig.key === 'class'} direction={sortConfig.key === 'class' ? sortConfig.direction : 'asc'} onClick={() => handleSort('class')}>Class</TableSortLabel>
+                </TableCell>
                 <TableCell>Genre</TableCell>
                 <TableCell align="center">
                   <TableSortLabel active={sortConfig.key === 'totalQuestions'} direction={sortConfig.key === 'totalQuestions' ? sortConfig.direction : 'asc'} onClick={() => handleSort('totalQuestions')}>Total Qs</TableSortLabel>
@@ -138,7 +158,7 @@ function ContentManagementPage() {
                   <TableRow key={i}><TableCell colSpan={8}><Skeleton /></TableCell></TableRow>
                 ))
               ) : (
-                filteredAndSortedTopics.map((topic) => (
+                paginatedTopics.map((topic) => (
                   <TableRow key={topic.id}>
                     <TableCell sx={{ fontWeight: 500 }}>{topic.name}</TableCell>
                     <TableCell>{topic.subjectName}</TableCell>
@@ -154,32 +174,41 @@ function ContentManagementPage() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={filteredAndSortedTopics.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Paper>
 
       {/* --- Subjects Section --- */}
       <Typography variant="h5" sx={{ mb: 2 }}>Subjects Summary</Typography>
       <Grid container spacing={3}>
         {isLoading ? (
-            Array.from(new Array(4)).map((_, i) => (
-                <Grid item xs={12} md={6} key={i}><Skeleton variant="rectangular" height={150} /></Grid>
-            ))
+          Array.from(new Array(4)).map((_, i) => (
+            <Grid item xs={12} md={6} key={i}><Skeleton variant="rectangular" height={150} /></Grid>
+          ))
         ) : (
-            subjects.map(subject => (
-                <Grid item xs={12} md={6} key={subject.id}>
-                    <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
-                        <Typography variant="h6" gutterBottom>{subject.name}</Typography>
-                        <Typography variant="body1" sx={{mb: 1}}>Total Topics: <strong>{subject.totalTopics}</strong></Typography>
-                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                            {Object.entries(subject.classCounts).map(([cls, count]) => (
-                                <Chip key={cls} label={`Class ${cls}: ${count}`} size="small" />
-                            ))}
-                            {Object.entries(subject.genreCounts).map(([genre, count]) => (
-                                <Chip key={genre} label={`${genre}: ${count}`} size="small" variant="outlined" />
-                            ))}
-                        </Box>
-                    </Paper>
-                </Grid>
-            ))
+          subjects.map(subject => (
+            <Grid item xs={12} md={6} key={subject.id}>
+              <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+                <Typography variant="h6" gutterBottom>{subject.name}</Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>Total Topics: <strong>{subject.totalTopics}</strong></Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {Object.entries(subject.classCounts).map(([cls, count]) => (
+                    <Chip key={cls} label={`Class ${cls}: ${count}`} size="small" />
+                  ))}
+                  {Object.entries(subject.genreCounts).map(([genre, count]) => (
+                    <Chip key={genre} label={`${genre}: ${count}`} size="small" variant="outlined" />
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+          ))
         )}
       </Grid>
     </Box>
