@@ -19,6 +19,9 @@ function ContentManagementPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [subjectFilter, setSubjectFilter] = useState('all');
   const [sortConfig, setSortConfig] = useState({ key: 'subjectName', direction: 'asc' });
+  
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
