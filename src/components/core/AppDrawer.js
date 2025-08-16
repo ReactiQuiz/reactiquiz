@@ -1,35 +1,43 @@
 // src/components/core/AppDrawer.js
 import {
-  Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Box, Typography, useTheme
+  Drawer, List, ListItem, ListItemButton, ListItemIcon,
+  ListItemText, Divider, Box, Typography, useTheme
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CategoryIcon from '@mui/icons-material/Category';
-import SchoolIcon from '@mui/icons-material/School';
 import PollIcon from '@mui/icons-material/Poll';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InfoIcon from '@mui/icons-material/Info';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SettingsIcon from '@mui/icons-material/Settings';
-
-const drawerWidth = 250;
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'; 
+import { useAuth } from '../../contexts/AuthContext'; 
 
 function AppDrawer({ open, onClose }) {
   const theme = useTheme();
+  const { currentUser } = useAuth();
+  const isAdmin = currentUser && currentUser.id === process.env.REACT_APP_ADMIN_USER_ID;
 
-  // --- START OF FIX: Use theme.palette for colors instead of the deleted object ---
-  const drawerItems = [
-    { text: 'Dashboard', icon: <DashboardIcon sx={{ color: theme.palette.grey[500] }} />, path: '/dashboard', color: theme.palette.text.secondary },
-    { text: 'All Subjects', icon: <CategoryIcon sx={{ color: theme.palette.primary.main }} />, path: '/subjects', color: theme.palette.primary.main },
-    //{ text: 'Homibhabha', icon: <SchoolIcon sx={{ color: theme.palette.secondary.main }} />, path: '/homibhabha', color: theme.palette.secondary.main },
-    { text: 'Results', icon: <PollIcon sx={{ color: '#4DB6AC' }} />, path: '/results', color: '#4DB6AC' },
+  const baseDrawerItems = [
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { text: 'All Subjects', icon: <CategoryIcon />, path: '/subjects' },
+    { text: 'Results', icon: <PollIcon />, path: '/results' },
     { type: 'divider' },
-    { text: 'AI Center', icon: <SmartToyIcon sx={{ color: '#00BFA5' }} />, path: '/ai-center', color: '#00BFA5' },
-    { text: 'My Account', icon: <AccountCircleIcon sx={{ color: '#81C784' }} />, path: '/account', color: '#81C784' },
-    { text: 'Settings', icon: <SettingsIcon sx={{ color: theme.palette.grey[500] }} />, path: '/settings', color: theme.palette.text.secondary },
-    { text: 'About Us', icon: <InfoIcon sx={{ color: '#FFA000' }} />, path: '/about', color: '#FFA000' },
+    { text: 'AI Center', icon: <SmartToyIcon />, path: '/ai-center' },
+    { text: 'My Account', icon: <AccountCircleIcon />, path: '/account' },
+    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+    { text: 'About Us', icon: <InfoIcon />, path: '/about' },
   ];
-  // --- END OF FIX ---
+
+  const drawerItems = [...baseDrawerItems];
+  if (isAdmin) {
+    drawerItems.splice(3, 0, { 
+      text: 'Admin Panel',
+      icon: <AdminPanelSettingsIcon color="primary" />,
+      path: '/admin',
+    });
+  }
 
   const drawerContent = (
     <Box
@@ -48,11 +56,23 @@ function AppDrawer({ open, onClose }) {
           item.type === 'divider' ?
             <Divider key={`divider-${index}`} sx={{ my: 1 }} /> :
             <ListItem key={item.text} disablePadding>
-              <ListItemButton component={RouterLink} to={item.path}>
-                <ListItemIcon sx={{ minWidth: 40 }}>
+              <ListItemButton
+                component={NavLink}
+                to={item.path}
+                sx={{
+                  '&.active': {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                    borderRight: `3px solid ${theme.palette.primary.main}`,
+                    '& .MuiListItemIcon-root': {
+                      color: theme.palette.primary.main
+                    }
+                  }
+                }}
+              >
+                <ListItemIcon>
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={item.text} sx={{ color: item.color || theme.palette.text.primary }} />
+                <ListItemText primary={item.text} />
               </ListItemButton>
             </ListItem>
         ))}
@@ -78,5 +98,8 @@ function AppDrawer({ open, onClose }) {
     </Drawer>
   );
 }
+
+const drawerWidth = 250;
+import { alpha } from '@mui/material/styles'; 
 
 export default AppDrawer;
