@@ -8,40 +8,44 @@ import { Outlet } from 'react-router-dom';
 import ChangePasswordModal from '../auth/ChangePasswordModal';
 import { useAuth } from '../../contexts/AuthContext';
 
-function MainLayout({ onOpenChangePasswordModal }) {
+// --- START OF THE DEFINITIVE FIX ---
+
+function MainLayout() { // Removed the onOpenChangePasswordModal prop from here
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // 1. Centralize the state for the Change Password modal here.
   const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
   const { currentUser } = useAuth();
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
   
-  // The modal is now controlled by the App/Navbar level, but we still need a local handler
-  // if we want to open it from within the layout itself in the future.
-  const handleOpenLocalPasswordModal = () => setChangePasswordModalOpen(true);
-  const handleCloseLocalPasswordModal = () => setChangePasswordModalOpen(false);
+  // 2. Create handler functions that this component owns.
+  const handleOpenPasswordModal = () => setChangePasswordModalOpen(true);
+  const handleClosePasswordModal = () => setChangePasswordModalOpen(false);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <NavBar
         onIconButtonClick={handleDrawerToggle}
-        onOpenChangePasswordModal={onOpenChangePasswordModal} // Pass the prop down to the navbar
+        // 3. Pass the *correct handler function* down to the NavBar.
+        onOpenChangePasswordModal={handleOpenPasswordModal}
       />
       <AppDrawer open={drawerOpen} onClose={handleDrawerToggle} />
       <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Toolbar />
-        {/* Pass the prop down to the child routes via the Outlet's context */}
-        <Outlet context={{ onOpenChangePasswordModal }} />
+        {/* 4. Pass the handler function down to child routes via the Outlet's context. */}
+        <Outlet context={{ onOpenChangePasswordModal: handleOpenPasswordModal }} />
       </Box>
       <Footer />
-      {/* It's better to keep the modal instance at the top level (App.js)
-          but this structure still works if needed. */}
+      {/* 5. The modal instance is now controlled by this layout's state. */}
       {currentUser && (
         <ChangePasswordModal
           open={changePasswordModalOpen}
-          onClose={handleCloseLocalPasswordModal}
+          onClose={handleClosePasswordModal}
         />
       )}
     </Box>
   );
 }
+// --- END OF THE DEFINITIVE FIX ---
+
 export default MainLayout;
