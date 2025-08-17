@@ -121,64 +121,6 @@ router.get('/topics', async (req, res) => {
     }
 });
 
-/**
- * @route   GET /api/admin/subjects
- * @desc    Fetches all subjects with aggregated topic counts by class and genre.
- * @access  Private (Admin Only)
- */
-router.get('/subjects', async (req, res) => {
-    logApi('GET', '/api/admin/subjects', `Admin: ${req.user.username}`);
-    const tx = await turso.transaction('read');
-    try {
-        const subjectsResult = await tx.execute(`
-            SELECT 
-                s.id,
-                s.name,
-                s.subjectKey,
-                t.class,
-                t.genre,
-                COUNT(t.id) as topicCount
-            FROM subjects s
-            LEFT JOIN quiz_topics t ON s.id = t.subject_id
-            GROUP BY s.id, s.name, s.subjectKey, t.class, t.genre
-            ORDER BY s.displayOrder, s.name;
-        `);
-        
-        await tx.commit();
-        
-        // Process the flat data into a structured object
-        const subjectMap = {};
-        subjectsResult.rows.forEach(row => {
-            if (!subjectMap[row.id]) {
-                subjectMap[row.id] = {
-                    id: row.id,
-                    name: row.name,
-                    subjectKey: row.subjectKey,
-                    totalTopics: 0,
-                    classCounts: {},
-                    genreCounts: {}
-                };
-            }
-            if (row.topicCount > 0) {
-                subjectMap[row.id].totalTopics += row.topicCount;
-                if (row.class) {
-                    subjectMap[row.id].classCounts[row.class] = (subjectMap[row.id].classCounts[row.class] || 0) + row.topicCount;
-                }
-                if (row.genre) {
-                    subjectMap[row.id].genreCounts[row.genre] = (subjectMap[row.id].genreCounts[row.genre] || 0) + row.topicCount;
-                }
-            }
-        });
-
-        res.json(Object.values(subjectMap));
-
-    } catch (e) {
-        if (tx) await tx.rollback();
-        logError('DB ERROR', 'Fetching all admin subjects failed', e.message);
-        res.status(500).json({ message: 'Could not fetch subject list.' });
-    }
-});
-
 // --- START OF NEW ENDPOINT ---
 /**
  * @route   GET /api/admin/overview-stats
@@ -233,6 +175,134 @@ router.get('/overview-stats', async (req, res) => {
         if (tx) await tx.rollback();
         logError('DB ERROR', 'Fetching admin overview stats failed', e.message);
         res.status(500).json({ message: 'Could not fetch overview stats.' });
+    }
+});
+
+/**
+ * @route   POST /api/admin/subjects
+ * @desc    Creates a new subject.
+ * @access  Private (Admin Only)
+ */
+router.post('/subjects', async (req, res) => {
+    const { name, description, iconName, displayOrder, subjectKey, accentColorDark, accentColorLight } = req.body;
+    logApi('POST', '/api/admin/subjects', `Creating: ${name}`);
+
+    // Basic validation
+    if (!name || !displayOrder || !subjectKey) {
+        return res.status(400).json({ message: 'Name, Display Order, and Subject Key are required.' });
+    }
+
+    const tx = await turso.transaction('write');
+    try {
+        const result = await tx.execute({
+            sql: `INSERT INTO subjects (name, description, iconName, displayOrder, subjectKey, accentColorDark, accentColorLight)
+                  VALUES (?, ?, ?, ?, ?, ?, ?);`,
+            args: [name, description || '', iconName || 'DefaultIcon', displayOrder, subjectKey, accentColorDark || '#FFFFFF', accentColorLight || '#000000']
+        });
+
+        const newSubjectId = result.lastInsertRowid;
+        const { rows } = await tx.execute({
+            sql: `SELECT * FROM subjects WHERE id = ?;`,
+            args: [newSubjectId]
+        });
+
+        await tx.commit();
+        res.status(201).json(rows[0]);
+
+    } catch (e) {
+        await tx.rollback();
+        if (e.message.includes('UNIQUE constraint failed')) {
+            return res.status(409).json({ message: 'A subject with that Display Order or Subject Key already exists.' });
+        }
+        logError('DB ERROR', `Creating subject failed`, e.message);
+        res.status(500).json({ message: 'Could not create subject.' });
+    }
+});
+
+/**
+ * @route   PUT /api/admin/subjects/:id
+ * @desc    Updates an existing subject.
+ * @access  Private (Admin Only)
+ */
+router.put('/subjects/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, description, iconName, displayOrder, subjectKey, accentColorDark, accentColorLight } = req.body;
+    logApi('PUT', `/api/admin/subjects/${id}`, `Updating: ${name}`);
+
+    if (!name || !displayOrder || !subjectKey) {
+        return res.status(400).json({ message: 'Name, Display Order, and Subject Key are required.' });
+    }
+    
+    const tx = await turso.transaction('write');
+    try {
+        const result = await tx.execute({
+            sql: `UPDATE subjects SET name = ?, description = ?, iconName = ?, displayOrder = ?, subjectKey = ?, accentColorDark = ?, accentColorLight = ?
+                  WHERE id = ?;`,
+            args: [name, description || '', iconName || 'DefaultIcon', displayOrder, subjectKey, accentColorDark || '#FFFFFF', accentColorLight || '#000000', id]
+        });
+        
+        if (result.rowsAffected === 0) {
+            await tx.rollback();
+            return res.status(404).json({ message: 'Subject not found.' });
+        }
+
+        const { rows } = await tx.execute({
+            sql: `SELECT * FROM subjects WHERE id = ?;`,
+            args: [id]
+        });
+
+        await tx.commit();
+        res.status(200).json(rows[0]);
+
+    } catch (e) {
+        await tx.rollback();
+        if (e.message.includes('UNIQUE constraint failed')) {
+            return res.status(409).json({ message: 'A subject with that Display Order or Subject Key already exists.' });
+        }
+        logError('DB ERROR', `Updating subject ${id} failed`, e.message);
+        res.status(500).json({ message: 'Could not update subject.' });
+    }
+});
+
+/**
+ * @route   DELETE /api/admin/subjects/:id
+ * @desc    Deletes a subject.
+ * @access  Private (Admin Only)
+ */
+router.delete('/subjects/:id', async (req, res) => {
+    const { id } = req.params;
+    logApi('DELETE', `/api/admin/subjects/${id}`);
+
+    // !! DANGER ZONE: Check for linked topics before deleting !!
+    const tx = await turso.transaction('write');
+    try {
+        const topicsResult = await tx.execute({
+            sql: `SELECT COUNT(*) as count FROM quiz_topics WHERE subject_id = ?;`,
+            args: [id]
+        });
+
+        if (topicsResult.rows[0].count > 0) {
+            await tx.rollback();
+            return res.status(409).json({ message: `Cannot delete subject. It is linked to ${topicsResult.rows[0].count} topic(s).` });
+        }
+
+        const result = await tx.execute({
+            sql: `DELETE FROM subjects WHERE id = ?;`,
+            args: [id]
+        });
+
+        if (result.rowsAffected === 0) {
+            await tx.rollback();
+            return res.status(404).json({ message: 'Subject not found.' });
+        }
+        
+        await tx.commit();
+        res.status(200).json({ message: 'Subject deleted successfully.' });
+
+    } catch(e) {
+        await tx.rollback();
+        logError('DB ERROR', `Deleting subject ${id} failed`, e.message);
+        res.status(500).json({ message: 'Could not delete subject.' });
     }
 });
 
