@@ -40,6 +40,8 @@ const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
 const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage'));
 const UserManagementPage = React.lazy(() => import('../pages/admin/UserManagementPage'));
 const ContentManagementPage = React.lazy(() => import('../pages/admin/ContentManagementPage'));
+const ContentOverview = React.lazy(() => import('../components/admin/ContentOverview'));
+const SubjectsTable = React.lazy(() => import('../components/admin/SubjectsTable'));
 
 // Helper for passing context to AccountPage
 const AccountPageWithContext = ({ context }) => {
@@ -80,12 +82,17 @@ function AppRoutes() {
               3. Child routes define the individual pages within the admin panel.
             */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-            <Route path="general" element={<GeneralSettingsPage />} />
-            <Route path="content" element={<ContentManagementPage />} />
-            <Route path="users" element={<UserManagementPage />} />
-            {/* This index route makes `/admin/general` the default page for `/admin` */}
-            <Route index element={<Navigate to="general" replace />} />
-          </Route>
+                <Route path="general" element={<GeneralSettingsPage />} />
+                <Route path="content" element={<ContentManagementPage />}>
+                    {/* These are the nested routes that will render inside the Outlet */}
+                    <Route path="overview" element={<ContentOverview />} />
+                    <Route path="subjects" element={<SubjectsTable />} />
+                    {/* Default to the overview tab */}
+                    <Route index element={<Navigate to="overview" replace />} />
+                </Route>
+                <Route path="users" element={<UserManagementPage />} />
+                <Route index element={<Navigate to="general" replace />} />
+            </Route>
 
         </Route>
 
