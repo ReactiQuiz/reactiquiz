@@ -13,9 +13,9 @@ import AdminLayout from './layout/AdminLayout'; // The new layout for the admin 
 
 // Fallback component for lazy loading
 const SuspenseFallback = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
-        <CircularProgress />
-    </Box>
+  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 128px)' }}>
+    <CircularProgress />
+  </Box>
 );
 
 // Lazy-loaded User Pages
@@ -42,9 +42,8 @@ const UserManagementPage = React.lazy(() => import('../pages/admin/UserManagemen
 const ContentManagementPage = React.lazy(() => import('../pages/admin/ContentManagementPage'));
 
 // Helper for passing context to AccountPage
-const AccountPageWithContext = () => {
-    const context = useOutletContext();
-    return <AccountPage onOpenChangePasswordModal={context.onOpenChangePasswordModal} />;
+const AccountPageWithContext = ({ context }) => {
+  return <AccountPage onOpenChangePasswordModal={context.onOpenChangePasswordModal} />;
 };
 
 function AppRoutes() {
@@ -59,40 +58,40 @@ function AppRoutes() {
       <Routes>
         {/* === Main Authenticated Layout === */}
         <Route element={<MainLayout />}>
-            {/* --- User-Facing Protected Routes --- */}
-            <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
-            <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-            <Route path="/account" element={<ProtectedRoute><AccountPageWithContext /></ProtectedRoute>} />
-            <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-            <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-            <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
-            <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
-            <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-            <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
-            <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
-            <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
+          {/* --- User-Facing Protected Routes --- */}
+          <Route path="/subjects" element={<ProtectedRoute><AllSubjectsPage /></ProtectedRoute>} />
+          <Route path="/subjects/:subjectKey" element={<ProtectedRoute><SubjectTopicsPage /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute><AccountPageWithContext /></ProtectedRoute>} />
+          <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
+          <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
+          <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+          <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
+          <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
+          <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
 
-            {/* 
+          {/* 
               This block defines the admin section.
               1. The parent route `/admin` is protected by `AdminRoute`, which verifies the user's ID.
               2. It uses the `AdminLayout`, which renders the admin-specific sidebar.
               3. Child routes define the individual pages within the admin panel.
             */}
-            <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-                <Route path="general" element={<GeneralSettingsPage />} />
-                <Route path="content" element={<ContentManagementPage />} />
-                <Route path="users" element={<UserManagementPage />} />
-                {/* This index route makes `/admin/general` the default page for `/admin` */}
-                <Route index element={<Navigate to="general" replace />} />
-            </Route>
+          <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+            <Route path="general" element={<GeneralSettingsPage />} />
+            <Route path="content" element={<ContentManagementPage />} />
+            <Route path="users" element={<UserManagementPage />} />
+            {/* This index route makes `/admin/general` the default page for `/admin` */}
+            <Route index element={<Navigate to="general" replace />} />
+          </Route>
 
         </Route>
-        
+
         {/* === Minimal Layout for Guests === */}
         <Route element={<MinimalLayout />}>
-            <Route path="/about-guest" element={<AboutPage />} />
+          <Route path="/about-guest" element={<AboutPage />} />
         </Route>
 
         {/* === Standalone Auth Pages === */}
