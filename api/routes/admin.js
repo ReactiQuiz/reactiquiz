@@ -179,4 +179,61 @@ router.get('/subjects', async (req, res) => {
     }
 });
 
+// --- START OF NEW ENDPOINT ---
+/**
+ * @route   GET /api/admin/overview-stats
+ * @desc    Fetches aggregated stats for the content overview dashboard.
+ * @access  Private (Admin Only)
+ */
+router.get('/overview-stats', async (req, res) => {
+    logApi('GET', '/api/admin/overview-stats', `Admin: ${req.user.username}`);
+    const tx = await turso.transaction('read');
+    try {
+        const [subjectsResult, topicsBySubjectResult, questionsBySubjectResult] = await Promise.all([
+            tx.execute("SELECT id, name, subjectKey, accentColorDark FROM subjects ORDER BY displayOrder"),
+            tx.execute(`
+                SELECT s.subjectKey, COUNT(t.id) as count
+                FROM subjects s
+                LEFT JOIN quiz_topics t ON s.id = t.subject_id
+                GROUP BY s.subjectKey
+            `),
+            tx.execute(`
+                SELECT s.subjectKey, COUNT(q.id) as count
+                FROM subjects s
+                LEFT JOIN quiz_topics t ON s.id = t.subject_id
+                LEFT JOIN questions q ON t.id = q.topicId
+                GROUP BY s.subjectKey
+            `)
+        ]);
+
+        await tx.commit();
+
+        const topicsMap = new Map(topicsBySubjectResult.rows.map(r => [r.subjectKey, r.count]));
+        const questionsMap = new Map(questionsBySubjectResult.rows.map(r => [r.subjectKey, r.count]));
+
+        const subjectBreakdown = subjectsResult.rows.map(subject => ({
+            name: subject.name,
+            subjectKey: subject.subjectKey,
+            color: subject.accentColorDark,
+            topicCount: topicsMap.get(subject.subjectKey) || 0,
+            questionCount: questionsMap.get(subject.subjectKey) || 0,
+        }));
+
+        const totalTopics = Array.from(topicsMap.values()).reduce((sum, count) => sum + count, 0);
+        const totalQuestions = Array.from(questionsMap.values()).reduce((sum, count) => sum + count, 0);
+
+        res.json({
+            totalSubjects: subjectsResult.rows.length,
+            totalTopics,
+            totalQuestions,
+            subjectBreakdown
+        });
+
+    } catch (e) {
+        if (tx) await tx.rollback();
+        logError('DB ERROR', 'Fetching admin overview stats failed', e.message);
+        res.status(500).json({ message: 'Could not fetch overview stats.' });
+    }
+});
+
 module.exports = router;
