@@ -11,25 +11,36 @@ function UserManagementPage() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-
-  // State for pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  // --- START OF THE DEFINITIVE FIX: Robust useEffect with AbortController ---
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchUsers = async () => {
       setIsLoading(true);
+      setError('');
       try {
-        const response = await apiClient.get('/api/admin/users');
+        const response = await apiClient.get('/api/admin/users', {
+            signal: controller.signal,
+        });
         setUsers(response.data);
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to fetch user data.');
+        if (err.name !== 'CanceledError') {
+            setError(err.response?.data?.message || 'Failed to fetch user data.');
+        }
       } finally {
         setIsLoading(false);
       }
     };
     fetchUsers();
-  }, []); // Empty dependency array ensures this runs once on mount.
+
+    return () => {
+        controller.abort();
+    };
+  }, []);
+  // --- END OF THE DEFINITIVE FIX ---
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,7 +53,7 @@ function UserManagementPage() {
   
   const paginatedUsers = users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-    return (
+  return (
     <Box>
       <Typography variant="h4" component="h1" sx={{ mb: 3, fontWeight: 'bold' }}>
         User Management
@@ -59,39 +70,24 @@ function UserManagementPage() {
                 <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Phone</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Class</TableCell>
-                {/* --- START OF FIX: Removed the "Registered On" column header --- */}
-                {/* <TableCell sx={{ fontWeight: 'bold' }}>Registered On</TableCell> */}
-                {/* --- END OF FIX --- */}
               </TableRow>
             </TableHead>
             <TableBody>
               {isLoading ? (
                 Array.from(new Array(5)).map((_, index) => (
                   <TableRow key={index}>
-                    {/* --- START OF FIX: Adjusted colSpan for skeleton --- */}
                     <TableCell colSpan={4}>
-                    {/* --- END OF FIX --- */}
                       <Skeleton variant="text" sx={{ width: '100%' }} />
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 paginatedUsers.map((user) => (
-                  <TableRow
-                    key={user.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {user.username}
-                    </TableCell>
+                  <TableRow key={user.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell component="th" scope="row">{user.username}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone || 'N/A'}</TableCell>
                     <TableCell>{user.class || 'N/A'}</TableCell>
-                    {/* --- START OF FIX: Removed the cell that displayed the date --- */}
-                    {/* <TableCell>
-                      {format(new Date(user.created_at), 'MMM d, yyyy')}
-                    </TableCell> */}
-                    {/* --- END OF FIX --- */}
                   </TableRow>
                 ))
               )}
