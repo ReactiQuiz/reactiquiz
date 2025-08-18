@@ -7,11 +7,11 @@ import {
 import { NavLink } from 'react-router-dom'; // Use NavLink for active styling
 import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleIcon from '@mui/icons-material/People';
-import ArticleIcon from '@mui/icons-material/Article';
+import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 
 const navItems = [
     { text: 'General', path: '/admin/general', icon: <SettingsIcon /> },
-    { text: 'Content', path: '/admin/content', icon: <ArticleIcon /> },
+    { text: 'Content', path: '/admin/content', icon: <FolderCopyIcon /> }, 
     { text: 'Users', path: '/admin/users', icon: <PeopleIcon /> },
 ];
 

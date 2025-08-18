@@ -82,17 +82,11 @@ function AppRoutes() {
               3. Child routes define the individual pages within the admin panel.
             */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-                <Route path="general" element={<GeneralSettingsPage />} />
-                <Route path="content" element={<ContentManagementPage />}>
-                    {/* These are the nested routes that will render inside the Outlet */}
-                    <Route path="overview" element={<ContentOverview />} />
-                    <Route path="subjects" element={<SubjectsTable />} />
-                    {/* Default to the overview tab */}
-                    <Route index element={<Navigate to="overview" replace />} />
-                </Route>
-                <Route path="users" element={<UserManagementPage />} />
-                <Route index element={<Navigate to="general" replace />} />
-            </Route>
+            <Route path="general" element={<GeneralSettingsPage />} />
+            <Route path="content" element={<ContentManagementPage />} /> {/* New Route */}
+            <Route path="users" element={<UserManagementPage />} />
+            <Route index element={<Navigate to="general" replace />} />
+          </Route>
 
         </Route>
 

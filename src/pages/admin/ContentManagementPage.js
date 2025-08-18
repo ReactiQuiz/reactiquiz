@@ -1,43 +1,29 @@
 // src/pages/admin/ContentManagementPage.js
 import React from 'react';
 import { Box, Typography, Tabs, Tab } from '@mui/material';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import ManageSubjects from '../../components/admin/content/ManageSubjects'; // We will create this
 
 function ContentManagementPage() {
-  const location = useLocation();
-
-  // Determine the current tab value based on the URL
-  const currentTab = location.pathname;
+  // For now, we only have one tab. This structure allows for easy expansion.
+  const [tabValue, setTabValue] = React.useState(0);
 
   return (
     <Box>
       <Typography variant="h4" component="h1" sx={{ mb: 2, fontWeight: 'bold' }}>
         Content Management
       </Typography>
-
-      {/* --- Tab Navigation --- */}
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-        <Tabs value={currentTab}>
-          <Tab
-            label="Overview"
-            value="/admin/content/overview"
-            component={NavLink}
-            to="overview"
-          />
-          <Tab
-            label="Subjects"
-            value="/admin/content/subjects"
-            component={NavLink}
-            to="subjects"
-          />
-          <Tab label="Topics" disabled />
-          <Tab label="Questions" disabled />
+        <Tabs value={tabValue} aria-label="content management tabs">
+          <Tab label="Subjects" id="tab-0" />
+          <Tab label="Topics" id="tab-1" disabled />
+          <Tab label="Questions" id="tab-2" disabled />
         </Tabs>
       </Box>
 
-      {/* --- Tab Content --- */}
-      {/* React Router's <Outlet> will render the component for the active nested route */}
-      <Outlet />
+      {/* Panel for Subjects */}
+      {tabValue === 0 && (
+        <ManageSubjects />
+      )}
     </Box>
   );
 }
