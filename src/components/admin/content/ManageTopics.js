@@ -60,12 +60,27 @@ function ManageTopics() {
         const genreMatch = filters.genre === 'all' || topic.genre === filters.genre;
         return subjectMatch && classMatch && genreMatch;
     });
-    return { availableClasses: allClasses, availableGenres: allGenres, filteredTopics: filtered };
+    return { availableClasses, availableGenres, filteredTopics };
   }, [topics, filters]);
 
-  const handleFilterChange = (e) => setFilters(prev => ({ ...prev, [name]: e.target.value }));
-  const handleInputChange = (e, id) => setTopics(prev => prev.map(t => t.id === id ? { ...t, [e.target.name]: e.target.value } : t));
-  const handleNewTopicChange = (e) => setNewTopic(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  // --- START OF THE DEFINITIVE FIX ---
+  const handleFilterChange = (e) => {
+    // Destructure both name and value from the event target
+    const { name, value } = e.target;
+    setFilters(prev => ({ ...prev, [name]: value }));
+  };
+  // --- END OF THE DEFINITIVE FIX ---
+
+  const handleInputChange = (e, id) => {
+      const { name, value } = e.target;
+      setTopics(prev => prev.map(t => t.id === id ? { ...t, [name]: value } : t))
+  };
+
+  const handleNewTopicChange = (e) => {
+      const { name, value } = e.target;
+      setNewTopic(prev => ({ ...prev, [name]: value }))
+  };
+
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -116,7 +131,6 @@ function ManageTopics() {
   const paginatedTopics = filteredTopics.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
-    // --- START OF LAYOUT FIX ---
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6">Manage Topics</Typography>
@@ -210,7 +224,6 @@ function ManageTopics() {
           />
       </Paper>
     </Box>
-    // --- END OF LAYOUT FIX ---
   );
 }
 
