@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Box, Typography, Button, Paper, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Skeleton, TextField, IconButton, Tooltip, CircularProgress,
-  Grid, FormControl, InputLabel, Select, MenuItem
+  Grid, FormControl, InputLabel, Select, MenuItem, TablePagination
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,6 +23,10 @@ function ManageTopics() {
   // State for filters
   const [filters, setFilters] = useState({ subject: 'all', class: 'all', genre: 'all' });
 
+  // State for pagination
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   // State for the "Add New Topic" form
   const [newTopic, setNewTopic] = useState({
     id: '', name: '', description: '', class: '', genre: '', subject_id: ''
@@ -31,6 +35,7 @@ function ManageTopics() {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
+      // Fetch topics and subjects concurrently
       const [topicsRes, subjectsRes] = await Promise.all([
         apiClient.get('/api/admin/topics'),
         apiClient.get('/api/admin/subjects')
@@ -48,6 +53,11 @@ function ManageTopics() {
     fetchData();
   }, [fetchData]);
 
+  // Reset page to 0 when filters change
+  useEffect(() => {
+    setPage(0);
+  }, [filters]);
+
   // Memoized derived state for filters and filtered topics
   const { availableClasses, availableGenres, filteredTopics } = useMemo(() => {
     const allClasses = [...new Set(topics.map(t => t.class).filter(Boolean))].sort();
@@ -63,6 +73,7 @@ function ManageTopics() {
     return { availableClasses: allClasses, availableGenres: allGenres, filteredTopics: filtered };
   }, [topics, filters]);
 
+  // Event Handlers
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
@@ -80,6 +91,16 @@ function ManageTopics() {
       setNewTopic(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // API Call Handlers
   const handleSaveChanges = async () => {
     setIsSaving(true);
     const updatePromises = topics.map(topic => apiClient.put(`/api/admin/topics/${topic.id}`, topic));
@@ -100,7 +121,7 @@ function ManageTopics() {
       await apiClient.post('/api/admin/topics', newTopic);
       addNotification('New topic added successfully!', 'success');
       setNewTopic({ id: '', name: '', description: '', class: '', genre: '', subject_id: '' });
-      fetchData();
+      fetchData(); // Refetch all topics to get the new one
     } catch (error) {
       addNotification(error.response?.data?.message || 'Failed to add topic', 'error');
     } finally {
@@ -109,16 +130,18 @@ function ManageTopics() {
   };
 
   const handleDeleteTopic = async (id) => {
-    if (window.confirm('Are you sure you want to delete this topic? All questions within it will also be affected.')) {
+    if (window.confirm('Are you sure you want to delete this topic? This action cannot be undone.')) {
       try {
         await apiClient.delete(`/api/admin/topics/${id}`);
         addNotification('Topic deleted successfully', 'success');
-        fetchData();
+        fetchData(); // Refetch to update the list
       } catch (error) {
         addNotification(error.response?.data?.message || 'Failed to delete topic', 'error');
       }
     }
   };
+  
+  const paginatedTopics = filteredTopics.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Paper variant="outlined">
@@ -132,7 +155,6 @@ function ManageTopics() {
         </Box>
       </Box>
       
-      {/* --- Filter Controls --- */}
       <Grid container spacing={2} sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
         <Grid item xs={12} sm={4}>
             <FormControl fullWidth size="small">
@@ -167,53 +189,92 @@ function ManageTopics() {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Subject</TableCell>
-              <TableCell>Class</TableCell>
-              <TableCell>Genre</TableCell>
-              <TableCell>ID</TableCell>
-              {isEditMode && <TableCell align="right">Actions</TableCell>}
+              <TableCell sx={{width: '25%'}}>Name</TableCell>
+              <TableCell sx={{width: '15%'}}>Subject</TableCell>
+              <TableCell sx={{width: '10%'}}>Class</TableCell>
+              <TableCell sx={{width: '15%'}}>Genre</TableCell>
+              <TableCell sx={{width: '25%'}}>ID</TableCell>
+              {isEditMode && <TableCell align="right" sx={{width: '10%'}}>Actions</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
             {isLoading ? (
-                Array.from(new Array(5)).map((_, i) => <TableRow key={i}><TableCell colSpan={6}><Skeleton /></TableCell></TableRow>)
+                Array.from(new Array(rowsPerPage)).map((_, i) => <TableRow key={i}><TableCell colSpan={isEditMode ? 6 : 5}><Skeleton /></TableCell></TableRow>)
             ) : (
-              filteredTopics.map(topic => (
+              paginatedTopics.map(topic => (
                 <TableRow key={topic.id}>
-                  <TableCell>{isEditMode ? <TextField size="small" variant="standard" name="name" value={topic.name} onChange={e => handleInputChange(e, topic.id)} /> : topic.name}</TableCell>
+                  <TableCell>
+                    {isEditMode ? 
+                      <TextField fullWidth size="small" variant="outlined" name="name" value={topic.name} onChange={e => handleInputChange(e, topic.id)} /> 
+                      : topic.name}
+                  </TableCell>
                   <TableCell>
                     {isEditMode ? (
-                        <Select size="small" variant="standard" name="subject_id" value={topic.subject_id} onChange={e => handleInputChange(e, topic.id)} sx={{minWidth: 120}}>
+                        <Select fullWidth size="small" variant="outlined" name="subject_id" value={topic.subject_id} onChange={e => handleInputChange(e, topic.id)}>
                             {subjects.map(s => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
                         </Select>
                     ) : topic.subjectName}
                   </TableCell>
-                  <TableCell>{isEditMode ? <TextField size="small" variant="standard" name="class" value={topic.class} onChange={e => handleInputChange(e, topic.id)} sx={{width: 80}}/> : topic.class}</TableCell>
-                  <TableCell>{isEditMode ? <TextField size="small" variant="standard" name="genre" value={topic.genre} onChange={e => handleInputChange(e, topic.id)} sx={{width: 100}}/> : topic.genre}</TableCell>
-                  <TableCell>{isEditMode ? <TextField size="small" variant="standard" name="id" value={topic.id} disabled /> : <Typography variant="caption" sx={{bgcolor: 'action.hover', p: 0.5, borderRadius: 1}}>{topic.id}</Typography>}</TableCell>
-                  {isEditMode && <TableCell align="right"><Tooltip title="Delete Topic"><IconButton size="small" color="error" onClick={() => handleDeleteTopic(topic.id)}><DeleteIcon /></IconButton></Tooltip></TableCell>}
+                  <TableCell>
+                    {isEditMode ? 
+                      <TextField size="small" variant="outlined" name="class" value={topic.class} onChange={e => handleInputChange(e, topic.id)} /> 
+                      : topic.class}
+                  </TableCell>
+                  <TableCell>
+                    {isEditMode ? 
+                      <TextField size="small" variant="outlined" name="genre" value={topic.genre} onChange={e => handleInputChange(e, topic.id)} /> 
+                      : topic.genre}
+                  </TableCell>
+                  <TableCell>
+                    {isEditMode ? 
+                      <TextField fullWidth size="small" variant="outlined" name="id" value={topic.id} disabled /> 
+                      : <Typography variant="caption" sx={{bgcolor: 'action.hover', p: 0.5, borderRadius: 1, wordBreak: 'break-all'}}>{topic.id}</Typography>}
+                  </TableCell>
+                  {isEditMode && 
+                    <TableCell align="right">
+                      <Tooltip title="Delete Topic">
+                        <IconButton size="small" color="error" onClick={() => handleDeleteTopic(topic.id)}><DeleteIcon /></IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  }
                 </TableRow>
               ))
             )}
             {isEditMode && (
                 <TableRow sx={{bgcolor: 'action.hover'}}>
-                     <TableCell><TextField size="small" label="Name*" variant="filled" name="name" value={newTopic.name} onChange={handleNewTopicChange}/></TableCell>
+                     <TableCell><TextField fullWidth size="small" label="Name*" variant="outlined" name="name" value={newTopic.name} onChange={handleNewTopicChange}/></TableCell>
                      <TableCell>
-                         <Select size="small" displayEmpty variant="filled" name="subject_id" value={newTopic.subject_id} onChange={handleNewTopicChange} sx={{minWidth: 120}}>
+                         <Select fullWidth size="small" displayEmpty variant="outlined" name="subject_id" value={newTopic.subject_id} onChange={handleNewTopicChange}>
                             <MenuItem value=""><em>Select Subject*</em></MenuItem>
                             {subjects.map(s => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
                         </Select>
                      </TableCell>
-                     <TableCell><TextField size="small" label="Class" variant="filled" name="class" value={newTopic.class} onChange={handleNewTopicChange} sx={{width: 80}}/></TableCell>
-                     <TableCell><TextField size="small" label="Genre" variant="filled" name="genre" value={newTopic.genre} onChange={handleNewTopicChange} sx={{width: 100}}/></TableCell>
-                     <TableCell><TextField size="small" label="ID (slug)*" variant="filled" name="id" value={newTopic.id} onChange={handleNewTopicChange}/></TableCell>
-                     <TableCell align="right"><Tooltip title="Add Topic"><IconButton color="success" onClick={handleAddTopic} disabled={isSaving}><AddCircleIcon /></IconButton></Tooltip></TableCell>
+                     <TableCell><TextField size="small" label="Class" variant="outlined" name="class" value={newTopic.class} onChange={handleNewTopicChange}/></TableCell>
+                     <TableCell><TextField size="small" label="Genre" variant="outlined" name="genre" value={newTopic.genre} onChange={handleNewTopicChange}/></TableCell>
+                     <TableCell><TextField fullWidth size="small" label="ID (slug)*" variant="outlined" name="id" value={newTopic.id} onChange={handleNewTopicChange}/></TableCell>
+                     <TableCell align="right">
+                        <Tooltip title="Add Topic">
+                            <span>
+                                <IconButton color="success" onClick={handleAddTopic} disabled={isSaving || !newTopic.name || !newTopic.id || !newTopic.subject_id}>
+                                    <AddCircleIcon />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                     </TableCell>
                 </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          component="div"
+          count={filteredTopics.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
     </Paper>
   );
 }
