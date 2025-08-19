@@ -103,13 +103,14 @@ function ManageTopics() {
   // API Call Handlers
   const handleSaveChanges = async () => {
     setIsSaving(true);
-    const updatePromises = topics.map(topic => apiClient.put(`/api/admin/topics/${topic.id}`, topic));
     try {
-      await Promise.all(updatePromises);
-      addNotification('All visible topics updated successfully!', 'success');
+      for (const topic of paginatedTopics) {
+        await apiClient.put(`/api/admin/topics/${topic.id}`, topic);
+      }      
+      addNotification('All changes saved successfully!', 'success');
       setIsEditMode(false);
     } catch (error) {
-      addNotification(error.response?.data?.message || 'An error occurred while saving', 'error');
+      addNotification(error.response?.data?.message || 'An error occurred while saving. Some changes may not have been saved.', 'error');
     } finally {
       setIsSaving(false);
     }
