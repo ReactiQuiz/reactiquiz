@@ -11,6 +11,7 @@ import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
+// Define the navigation items for the sidebar
 const navItems = [
     { text: 'General', path: '/admin/general', icon: <SettingsIcon /> },
     { text: 'Content', path: '/admin/content', icon: <FolderCopyIcon /> },
@@ -20,10 +21,11 @@ const navItems = [
 function AdminSidebar({ drawerWidth, open, toggleDrawer }) {
   const theme = useTheme();
 
+  // The content inside the drawer (header, links, etc.)
   const drawerContent = (
     <div>
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', opacity: open ? 1 : 0, transition: 'opacity 0.2s' }}>
+        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', opacity: open ? 1 : 0, transition: 'opacity 0.3s' }}>
           Admin Panel
         </Typography>
         <IconButton onClick={toggleDrawer}>
@@ -65,47 +67,33 @@ function AdminSidebar({ drawerWidth, open, toggleDrawer }) {
     </div>
   );
 
-  // --- START OF THE DEFINITIVE FIX ---
-  // We remove the wrapping <Box> and apply its styles directly to the <Drawer>.
-  // The Drawer component itself will now act as the flex item in the layout.
   return (
     <Drawer
       variant="permanent"
-      open={open}
-      component="nav" // Moved from the Box
       sx={{
-        flexShrink: 0, // Moved from the Box
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        // The dynamic width transition styles now apply directly to the root element
-        '& .MuiDrawer-paper': {
-          position: 'relative',
-          width: drawerWidth,
-          transition: theme.transitions.create('width', {
+        // The root Drawer component itself animates its width
+        width: open ? drawerWidth : `calc(${theme.spacing(7)} + 1px)`,
+        transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
-          }),
-          overflowX: 'hidden',
-        },
-        // Styles for the collapsed state
-        ...(!open && {
-            '& .MuiDrawer-paper': {
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: `calc(${theme.spacing(7)} + 1px)`,
-                [theme.breakpoints.up('sm')]: {
-                    width: `calc(${theme.spacing(8)} + 1px)`,
-                },
-            },
         }),
+        flexShrink: 0,
+        // The styles for the paper inside the Drawer
+        '& .MuiDrawer-paper': {
+            width: open ? drawerWidth : `calc(${theme.spacing(7)} + 1px)`,
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            position: 'relative', // Keeps the drawer within the flexbox flow
+            overflowX: 'hidden',
+            boxSizing: 'border-box',
+        },
       }}
     >
-      {drawerContent}
+        {drawerContent}
     </Drawer>
   );
-  // --- END OF THE DEFINITIVE FIX ---
 }
 
 export default AdminSidebar;
