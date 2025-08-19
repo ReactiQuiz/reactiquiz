@@ -416,4 +416,100 @@ router.delete('/topics/:id', async (req, res) => {
     }
 });
 
+/**
+ * @route   GET /api/admin/topics/summary
+ * @desc    Fetches all topics with a count of their questions and difficulty breakdown.
+ * @access  Private (Admin Only)
+ */
+router.get('/topics/summary', async (req, res) => {
+    logApi('GET', '/api/admin/topics/summary', `Admin: ${req.user.username}`);
+    const tx = await turso.transaction('read');
+    try {
+        const result = await tx.execute(`
+            SELECT 
+                t.id, 
+                t.name,
+                s.name as subjectName,
+                t.class,
+                t.genre,
+                COUNT(q.id) as questionCount,
+                SUM(CASE WHEN q.difficulty BETWEEN 10 AND 13 THEN 1 ELSE 0 END) as easyCount,
+                SUM(CASE WHEN q.difficulty BETWEEN 14 AND 17 THEN 1 ELSE 0 END) as mediumCount,
+                SUM(CASE WHEN q.difficulty >= 18 THEN 1 ELSE 0 END) as hardCount
+            FROM quiz_topics t
+            LEFT JOIN questions q ON t.id = q.topicId
+            LEFT JOIN subjects s ON t.subject_id = s.id
+            GROUP BY t.id
+            ORDER BY s.name, t.name ASC;
+        `);
+        await tx.commit();
+        res.json(result.rows);
+    } catch (e) {
+        if (tx) await tx.rollback();
+        logError('DB ERROR', 'Fetching topics summary failed', e.message);
+        res.status(500).json({ message: 'Could not fetch topics summary.' });
+    }
+});
+
+/**
+ * @route   GET /api/admin/questions-by-topic
+ * @desc    Fetches a paginated list of questions for a specific topic.
+ * @access  Private (Admin Only)
+ */
+router.get('/questions-by-topic', async (req, res) => {
+    const { topicId, page = 1, limit = 10 } = req.query;
+    if (!topicId) return res.status(400).json({ message: 'A topicId is required.' });
+
+    const tx = await turso.transaction('read');
+    try {
+        const offset = (page - 1) * limit;
+        const [questionsRes, totalRes] = await Promise.all([
+            tx.execute({
+                sql: "SELECT * FROM questions WHERE topicId = ? ORDER BY id ASC LIMIT ? OFFSET ?",
+                args: [topicId, limit, offset]
+            }),
+            tx.execute({
+                sql: "SELECT COUNT(*) as total FROM questions WHERE topicId = ?",
+                args: [topicId]
+            })
+        ]);
+        await tx.commit();
+        res.json({
+            questions: questionsRes.rows,
+            total: totalRes.rows[0].total
+        });
+    } catch (e) {
+        if (tx) await tx.rollback();
+        res.status(500).json({ message: 'Could not fetch questions.' });
+    }
+});
+
+/**
+ * @route   POST /api/admin/questions/batch-import
+ * @desc    Imports an array of questions from JSON.
+ * @access  Private (Admin Only)
+ */
+router.post('/questions/batch-import', async (req, res) => {
+    const questions = req.body;
+    if (!Array.isArray(questions) || questions.length === 0) {
+        return res.status(400).json({ message: 'Request body must be a non-empty array of questions.' });
+    }
+
+    const tx = await turso.transaction('write');
+    try {
+        const statements = questions.map(q => ({
+            sql: 'INSERT OR REPLACE INTO questions (id, topicId, text, options, correctOptionId, explanation, difficulty) VALUES (?, ?, ?, ?, ?, ?, ?);',
+            args: [q.id, q.topicId, q.text, JSON.stringify(q.options), q.correctOptionId, q.explanation || '', q.difficulty]
+        }));
+
+        await tx.batch(statements);
+        await tx.commit();
+        res.status(201).json({ message: `Successfully imported ${questions.length} questions.` });
+    } catch (e) {
+        if (tx) await tx.rollback();
+        logError('DB ERROR', 'Batch import failed', e.message);
+        res.status(500).json({ message: `Failed to import questions: ${e.message}` });
+    }
+});
+
 module.exports = router;
