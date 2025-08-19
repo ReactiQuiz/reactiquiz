@@ -17,13 +17,11 @@ const navItems = [
     { text: 'Users', path: '/admin/users', icon: <PeopleIcon /> },
 ];
 
-// --- START OF CHANGES: Added open and toggleDrawer props ---
 function AdminSidebar({ drawerWidth, open, toggleDrawer }) {
   const theme = useTheme();
 
   const drawerContent = (
     <div>
-      {/* --- START OF CHANGES: Header with Toggle Button --- */}
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', opacity: open ? 1 : 0, transition: 'opacity 0.2s' }}>
           Admin Panel
@@ -32,12 +30,10 @@ function AdminSidebar({ drawerWidth, open, toggleDrawer }) {
           {open ? <ChevronLeftIcon /> : <MenuIcon />}
         </IconButton>
       </Box>
-      {/* --- END OF CHANGES --- */}
       <Divider />
       <List>
         {navItems.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
-            {/* --- START OF CHANGES: Tooltip for collapsed state --- */}
             <Tooltip title={item.text} placement="right" disableHoverListener={open}>
               <ListItemButton
                 component={NavLink}
@@ -63,48 +59,53 @@ function AdminSidebar({ drawerWidth, open, toggleDrawer }) {
                 <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </Tooltip>
-            {/* --- END OF CHANGES --- */}
           </ListItem>
         ))}
       </List>
     </div>
   );
 
+  // --- START OF THE DEFINITIVE FIX ---
+  // We remove the wrapping <Box> and apply its styles directly to the <Drawer>.
+  // The Drawer component itself will now act as the flex item in the layout.
   return (
     <Drawer
       variant="permanent"
       open={open}
+      component="nav" // Moved from the Box
       sx={{
-        width: drawerWidth,
-        flexShrink: 0,
+        flexShrink: 0, // Moved from the Box
         whiteSpace: 'nowrap',
         boxSizing: 'border-box',
-        // --- START OF CHANGES: CSS Transitions for smooth collapse/expand ---
+        // The dynamic width transition styles now apply directly to the root element
         '& .MuiDrawer-paper': {
-          position: 'relative', // Keep it inside the flex layout
+          position: 'relative',
           width: drawerWidth,
           transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
           }),
           overflowX: 'hidden',
-          ...(!open && {
-            transition: theme.transitions.create('width', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: `calc(${theme.spacing(7)} + 1px)`, // Icon size + border
-            [theme.breakpoints.up('sm')]: {
-              width: `calc(${theme.spacing(8)} + 1px)`,
-            },
-          }),
         },
-        // --- END OF CHANGES ---
+        // Styles for the collapsed state
+        ...(!open && {
+            '& .MuiDrawer-paper': {
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                }),
+                width: `calc(${theme.spacing(7)} + 1px)`,
+                [theme.breakpoints.up('sm')]: {
+                    width: `calc(${theme.spacing(8)} + 1px)`,
+                },
+            },
+        }),
       }}
     >
       {drawerContent}
     </Drawer>
   );
+  // --- END OF THE DEFINITIVE FIX ---
 }
 
 export default AdminSidebar;
