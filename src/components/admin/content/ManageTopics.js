@@ -63,22 +63,19 @@ function ManageTopics() {
     return { availableClasses: allClasses, availableGenres: allGenres, filteredTopics: filtered };
   }, [topics, filters]);
 
-  // --- START OF THE DEFINITIVE FIX ---
   const handleFilterChange = (e) => {
-    // Correctly destructure `name` and `value` from the event target
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
   };
-  // --- END OF THE DEFINITIVE FIX ---
-
+  
   const handleInputChange = (e, id) => {
-      const { name, value } = e.target;
-      setTopics(prev => prev.map(t => t.id === id ? { ...t, [name]: value } : t))
+    const { name, value } = e.target;
+    setTopics(prev => prev.map(t => (t.id === id ? { ...t, [name]: value } : t)));
   };
-
+  
   const handleNewTopicChange = (e) => {
-      const { name, value } = e.target;
-      setNewTopic(prev => ({ ...prev, [name]: value }))
+    const { name, value } = e.target;
+    setNewTopic(prev => ({ ...prev, [name]: value }));
   };
 
   const handleChangePage = (event, newPage) => setPage(newPage);
@@ -143,37 +140,41 @@ function ManageTopics() {
       </Box>
 
       <Paper variant="outlined">
-        <Grid container spacing={2} sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-          <Grid item xs={12} sm={4}>
-              <FormControl fullWidth size="small">
-                  <InputLabel>Subject</InputLabel>
-                  <Select name="subject" value={filters.subject} label="Subject" onChange={handleFilterChange}>
-                      <MenuItem value="all">All Subjects</MenuItem>
-                      {subjects.map(s => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
-                  </Select>
-              </FormControl>
+        {/* --- START OF THE DEFINITIVE FIX --- */}
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+                <FormControl fullWidth size="small">
+                    <InputLabel>Subject</InputLabel>
+                    <Select name="subject" value={filters.subject} label="Subject" onChange={handleFilterChange}>
+                        <MenuItem value="all">All Subjects</MenuItem>
+                        {subjects.map(s => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                <FormControl fullWidth size="small">
+                    <InputLabel>Class</InputLabel>
+                    <Select name="class" value={filters.class} label="Class" onChange={handleFilterChange}>
+                        <MenuItem value="all">All Classes</MenuItem>
+                        {availableClasses.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                <FormControl fullWidth size="small">
+                    <InputLabel>Genre</InputLabel>
+                    <Select name="genre" value={filters.genre} label="Genre" onChange={handleFilterChange}>
+                        <MenuItem value="all">All Genres</MenuItem>
+                        {availableGenres.map(g => <MenuItem key={g} value={g}>{g}</MenuItem>)}
+                    </Select>
+                </FormControl>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={4}>
-              <FormControl fullWidth size="small">
-                  <InputLabel>Class</InputLabel>
-                  <Select name="class" value={filters.class} label="Class" onChange={handleFilterChange}>
-                      <MenuItem value="all">All Classes</MenuItem>
-                      {availableClasses.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
-                  </Select>
-              </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-              <FormControl fullWidth size="small">
-                  <InputLabel>Genre</InputLabel>
-                  <Select name="genre" value={filters.genre} label="Genre" onChange={handleFilterChange}>
-                      <MenuItem value="all">All Genres</MenuItem>
-                      {availableGenres.map(g => <MenuItem key={g} value={g}>{g}</MenuItem>)}
-                  </Select>
-              </FormControl>
-          </Grid>
-        </Grid>
+        </Box>
+        {/* --- END OF THE DEFINITIVE FIX --- */}
         
-        <TableContainer>
+<TableContainer>
           <Table size="small">
             <TableHead>
               <TableRow>
