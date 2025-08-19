@@ -219,17 +219,26 @@ router.post('/subjects',
         const { name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight } = req.body;
         const tx = await turso.transaction('write');
         try {
+            // --- START OF THE DEFINITIVE FIX ---
+            // We now explicitly include the `id` column in the INSERT statement
+            // and use the `subjectKey` as its value.
             await tx.execute({
-                sql: `INSERT INTO subjects (name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?);`,
-                args: [name, subjectKey, description || '', displayOrder, iconName || 'DefaultIcon', accentColorDark || '#FFFFFF', accentColorLight || '#000000']
+                sql: `INSERT INTO subjects (id, name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
+                args: [subjectKey, name, subjectKey, description || '', displayOrder, iconName || 'DefaultIcon', accentColorDark || '#FFFFFF', accentColorLight || '#000000']
             });
+            // --- END OF THE DEFINITIVE FIX ---
+
             await tx.commit();
             res.status(201).json({ message: 'Subject created successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
             logError('DB ERROR', 'Creating subject failed', e.message);
-            res.status(500).json({ message: 'Failed to create subject. The Subject Key may already exist.' });
+            // Add a more specific error message for UNIQUE constraint violation
+            if (e.message.includes('UNIQUE constraint failed: subjects.id') || e.message.includes('UNIQUE constraint failed: subjects.subjectKey')) {
+                return res.status(409).json({ message: 'A subject with this ID or Subject Key already exists.' });
+            }
+            res.status(500).json({ message: 'Failed to create subject.' });
         }
     }
 );
