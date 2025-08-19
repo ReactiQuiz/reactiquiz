@@ -60,12 +60,12 @@ function ManageTopics() {
         const genreMatch = filters.genre === 'all' || topic.genre === filters.genre;
         return subjectMatch && classMatch && genreMatch;
     });
-    return { availableClasses, availableGenres, filteredTopics };
+    return { availableClasses: allClasses, availableGenres: allGenres, filteredTopics: filtered };
   }, [topics, filters]);
 
   // --- START OF THE DEFINITIVE FIX ---
   const handleFilterChange = (e) => {
-    // Destructure both name and value from the event target
+    // Correctly destructure `name` and `value` from the event target
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
   };
