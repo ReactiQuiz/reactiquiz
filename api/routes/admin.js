@@ -85,43 +85,6 @@ router.get('/users', async (req, res) => {
     }
 });
 
-/**
- * @route   GET /api/admin/topics
- * @desc    Fetches all topics with detailed question counts by difficulty.
- * @access  Private (Admin Only)
- */
-router.get('/topics', async (req, res) => {
-    logApi('GET', '/api/admin/topics', `Admin: ${req.user.username}`);
-    const tx = await turso.transaction('read');
-    try {
-        const topicsResult = await tx.execute(`
-            SELECT 
-                t.id, 
-                t.name, 
-                t.class, 
-                t.genre, 
-                s.name as subjectName,
-                COUNT(q.id) as totalQuestions,
-                SUM(CASE WHEN q.difficulty BETWEEN 10 AND 13 THEN 1 ELSE 0 END) as easyCount,
-                SUM(CASE WHEN q.difficulty BETWEEN 14 AND 17 THEN 1 ELSE 0 END) as mediumCount,
-                SUM(CASE WHEN q.difficulty >= 18 THEN 1 ELSE 0 END) as hardCount
-            FROM quiz_topics t
-            LEFT JOIN questions q ON t.id = q.topicId
-            LEFT JOIN subjects s ON t.subject_id = s.id
-            GROUP BY t.id
-            ORDER BY s.name, t.name;
-        `);
-        
-        await tx.commit();
-        res.json(topicsResult.rows);
-
-    } catch (e) {
-        if (tx) await tx.rollback();
-        logError('DB ERROR', 'Fetching all admin topics failed', e.message);
-        res.status(500).json({ message: 'Could not fetch topic list.' });
-    }
-});
-
 // --- START OF NEW ENDPOINT ---
 /**
  * @route   GET /api/admin/overview-stats
@@ -314,6 +277,142 @@ router.delete('/subjects/:id', async (req, res) => {
         if (tx) await tx.rollback();
         logError('DB ERROR', `Deleting subject ${id} failed`, e.message);
         res.status(500).json({ message: 'Failed to delete subject.' });
+    }
+});
+
+/**
+ * @route   GET /api/admin/topics
+ * @desc    Fetches all topics for the admin panel, joined with subject names.
+ * @access  Private (Admin Only)
+ */
+router.get('/topics', async (req, res) => {
+    logApi('GET', '/api/admin/topics', `Admin: ${req.user.username}`);
+    const tx = await turso.transaction('read');
+    try {
+        const result = await tx.execute({
+            sql: `SELECT t.*, s.name as subjectName FROM quiz_topics t
+                  LEFT JOIN subjects s ON t.subject_id = s.id
+                  ORDER BY s.name, t.name ASC`,
+            args: []
+        });
+        await tx.commit();
+        res.json(result.rows);
+    } catch (e) {
+        if (tx) await tx.rollback();
+        logError('DB ERROR', 'Fetching topics for admin failed', e.message);
+        res.status(500).json({ message: 'Could not fetch topics.' });
+    }
+});
+
+/**
+ * @route   POST /api/admin/topics
+ * @desc    Creates a new topic.
+ * @access  Private (Admin Only)
+ */
+router.post('/topics', 
+    [
+        body('name').notEmpty().withMessage('Name is required.'),
+        body('id').notEmpty().withMessage('ID (slug) is required.'),
+        body('subject_id').notEmpty().withMessage('Subject is required.'),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
+        
+        logApi('POST', '/api/admin/topics', `Admin: ${req.user.username}`);
+        const { id, name, description, class: topicClass, genre, subject_id } = req.body;
+        const tx = await turso.transaction('write');
+        try {
+            await tx.execute({
+                sql: `INSERT INTO quiz_topics (id, name, description, class, genre, subject_id) 
+                      VALUES (?, ?, ?, ?, ?, ?);`,
+                args: [id, name, description || '', topicClass || '', genre || '', subject_id]
+            });
+            await tx.commit();
+            res.status(201).json({ message: 'Topic created successfully.' });
+        } catch (e) {
+            if (tx) await tx.rollback();
+            logError('DB ERROR', 'Creating topic failed', e.message);
+            if (e.message.includes('UNIQUE constraint failed')) {
+                return res.status(409).json({ message: 'A topic with this ID already exists.' });
+            }
+            res.status(500).json({ message: 'Failed to create topic.' });
+        }
+    }
+);
+
+/**
+ * @route   PUT /api/admin/topics/:id
+ * @desc    Updates an existing topic.
+ * @access  Private (Admin Only)
+ */
+router.put('/topics/:id',
+    [
+        body('name').notEmpty().withMessage('Name is required.'),
+        body('subject_id').notEmpty().withMessage('Subject is required.'),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
+
+        const { id } = req.params;
+        logApi('PUT', `/api/admin/topics/${id}`, `Admin: ${req.user.username}`);
+        const { name, description, class: topicClass, genre, subject_id } = req.body;
+        const tx = await turso.transaction('write');
+        try {
+            const result = await tx.execute({
+                sql: `UPDATE quiz_topics SET name = ?, description = ?, class = ?, genre = ?, subject_id = ?
+                      WHERE id = ?;`,
+                args: [name, description, topicClass, genre, subject_id, id]
+            });
+
+            if (result.rowsAffected === 0) {
+                 await tx.rollback();
+                 return res.status(404).json({ message: 'Topic not found.' });
+            }
+
+            await tx.commit();
+            res.status(200).json({ message: 'Topic updated successfully.' });
+        } catch (e) {
+            if (tx) await tx.rollback();
+            logError('DB ERROR', `Updating topic ${id} failed`, e.message);
+            res.status(500).json({ message: 'Failed to update topic.' });
+        }
+    }
+);
+
+/**
+ * @route   DELETE /api/admin/topics/:id
+ * @desc    Deletes a topic.
+ * @access  Private (Admin Only)
+ */
+router.delete('/topics/:id', async (req, res) => {
+    const { id } = req.params;
+    logApi('DELETE', `/api/admin/topics/${id}`, `Admin: ${req.user.username}`);
+    const tx = await turso.transaction('write');
+    try {
+        // In a real app, you might also want to delete all questions associated with this topic.
+        // For now, we will just delete the topic itself.
+        const result = await tx.execute({
+            sql: "DELETE FROM quiz_topics WHERE id = ?;",
+            args: [id]
+        });
+
+        if (result.rowsAffected === 0) {
+            await tx.rollback();
+            return res.status(404).json({ message: 'Topic not found.' });
+        }
+        
+        await tx.commit();
+        res.status(200).json({ message: 'Topic deleted successfully.' });
+    } catch (e) {
+        if (tx) await tx.rollback();
+        logError('DB ERROR', `Deleting topic ${id} failed`, e.message);
+        res.status(500).json({ message: 'Failed to delete topic.' });
     }
 });
 
