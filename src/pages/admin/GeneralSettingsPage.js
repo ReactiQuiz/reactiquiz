@@ -1,9 +1,11 @@
 // src/pages/admin/GeneralSettingsPage.js
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Paper, Typography, Divider, Grid, Alert, Skeleton
+    Box, Paper, Typography, Divider, Grid, Alert, Skeleton
 } from '@mui/material';
-import apiClient from '../../api/axiosInstance'; // Using Axios which supports cancellation
+import NextLink from 'next/link';
+import apiClient from '../../api/axiosInstance'; // Use the configured Axios instance
+import { useNotifications } from '../../contexts/NotificationsContext'; // Import for notifications
 
 // --- Reusable StatBox component (Unchanged) ---
 function StatBox({ title, value, isLoading }) {
@@ -43,7 +45,7 @@ function GeneralSettingsPage() {
             try {
                 // 2. Pass the controller's signal to the Axios request.
                 const response = await apiClient.get('/api/admin/status', {
-                    signal: controller.signal,
+                    signal: controller.signal
                 });
                 setStats(response.data);
             } catch (err) {
@@ -72,10 +74,10 @@ function GeneralSettingsPage() {
                 General
             </Typography>
 
-            {error && <Alert severity="error" sx={{mb: 3}}>{error}</Alert>}
-            
+            {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+
             <Paper variant="outlined">
-                 <Box sx={{ p: 3 }}>
+                <Box sx={{ p: 3 }}>
                     <Typography variant="h6">Content Overview</Typography>
                     <Typography variant="body2" color="text.secondary">
                         A real-time summary of the content in the database.
@@ -84,20 +86,20 @@ function GeneralSettingsPage() {
                 <Divider />
                 <Box sx={{ p: 3 }}>
                     <Grid container spacing={2}>
-                        <StatBox 
-                            title="Registered Users" 
-                            value={stats?.userCount} 
-                            isLoading={isLoading} 
+                        <StatBox
+                            title="Registered Users"
+                            value={stats?.userCount}
+                            isLoading={isLoading}
                         />
-                        <StatBox 
-                            title="Quiz Topics" 
-                            value={stats?.topicCount} 
-                            isLoading={isLoading} 
+                        <StatBox
+                            title="Quiz Topics"
+                            value={stats?.topicCount}
+                            isLoading={isLoading}
                         />
-                        <StatBox 
-                            title="Total Questions" 
-                            value={stats?.questionCount} 
-                            isLoading={isLoading} 
+                        <StatBox
+                            title="Total Questions"
+                            value={stats?.questionCount}
+                            isLoading={isLoading}
                         />
                     </Grid>
                 </Box>

@@ -3,6 +3,7 @@ const { Router } = require('express');
 const { turso } = require('../_utils/tursoClient');
 const { logApi, logError, logInfo } = require('../_utils/logger');
 const { verifyToken } = require('../_middleware/auth'); 
+const { body, validationResult } = require('express-validator');
 
 const router = Router();
 
