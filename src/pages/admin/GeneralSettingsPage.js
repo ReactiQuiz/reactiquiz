@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {
     Box, Paper, Typography, Divider, Grid, Alert, Skeleton
 } from '@mui/material';
-import NextLink from 'next/link';
 import apiClient from '../../api/axiosInstance'; // Use the configured Axios instance
 import { useNotifications } from '../../contexts/NotificationsContext'; // Import for notifications
 
