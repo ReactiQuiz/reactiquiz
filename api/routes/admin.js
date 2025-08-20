@@ -512,4 +512,116 @@ router.post('/questions/batch-import', async (req, res) => {
     }
 });
 
+/**
+ * @route   POST /api/admin/questions
+ * @desc    Creates a single new question.
+ * @access  Private (Admin Only)
+ */
+router.post('/questions', 
+    [
+        body('id').notEmpty().withMessage('ID is required.'),
+        body('topicId').notEmpty().withMessage('Topic ID is required.'),
+        body('text').notEmpty().withMessage('Question text is required.'),
+        body('options').isArray({ min: 4, max: 4 }).withMessage('Options must be an array of 4 objects.'),
+        body('correctOptionId').isIn(['a', 'b', 'c', 'd']).withMessage('Correct Option ID must be a, b, c, or d.'),
+        body('difficulty').isInt({ min: 10, max: 20 }).withMessage('Difficulty must be a number between 10 and 20.'),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
+        
+        const { id, topicId, text, options, correctOptionId, explanation, difficulty } = req.body;
+        const tx = await turso.transaction('write');
+        try {
+            await tx.execute({
+                sql: `INSERT INTO questions (id, topicId, text, options, correctOptionId, explanation, difficulty) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?);`,
+                args: [id, topicId, text, JSON.stringify(options), correctOptionId, explanation || '', difficulty]
+            });
+            await tx.commit();
+            res.status(201).json({ message: 'Question created successfully.' });
+        } catch (e) {
+            if (tx) await tx.rollback();
+            logError('DB ERROR', 'Creating question failed', e.message);
+            if (e.message.includes('UNIQUE constraint failed')) {
+                return res.status(409).json({ message: 'A question with this ID already exists.' });
+            }
+            res.status(500).json({ message: 'Failed to create question.' });
+        }
+    }
+);
+
+/**
+ * @route   PUT /api/admin/questions/:id
+ * @desc    Updates an existing question.
+ * @access  Private (Admin Only)
+ */
+router.put('/questions/:id',
+    [
+        body('text').notEmpty().withMessage('Question text is required.'),
+        body('options').isArray({ min: 4, max: 4 }).withMessage('Options must be an array of 4 objects.'),
+        body('correctOptionId').isIn(['a', 'b', 'c', 'd']).withMessage('Correct Option ID must be a, b, c, or d.'),
+        body('difficulty').isInt({ min: 10, max: 20 }).withMessage('Difficulty must be a number between 10 and 20.'),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: errors.array()[0].msg });
+        }
+
+        const { id } = req.params;
+        const { text, options, correctOptionId, explanation, difficulty } = req.body;
+        const tx = await turso.transaction('write');
+        try {
+            const result = await tx.execute({
+                sql: `UPDATE questions SET text = ?, options = ?, correctOptionId = ?, explanation = ?, difficulty = ?
+                      WHERE id = ?;`,
+                args: [text, JSON.stringify(options), correctOptionId, explanation || '', difficulty, id]
+            });
+
+            if (result.rowsAffected === 0) {
+                 await tx.rollback();
+                 return res.status(404).json({ message: 'Question not found.' });
+            }
+
+            await tx.commit();
+            res.status(200).json({ message: 'Question updated successfully.' });
+        } catch (e) {
+            if (tx) await tx.rollback();
+            logError('DB ERROR', `Updating question ${id} failed`, e.message);
+            res.status(500).json({ message: 'Failed to update question.' });
+        }
+    }
+);
+
+/**
+ * @route   DELETE /api/admin/questions/:id
+ * @desc    Deletes a question.
+ * @access  Private (Admin Only)
+ */
+router.delete('/questions/:id', async (req, res) => {
+    const { id } = req.params;
+    const tx = await turso.transaction('write');
+    try {
+        const result = await tx.execute({
+            sql: "DELETE FROM questions WHERE id = ?;",
+            args: [id]
+        });
+
+        if (result.rowsAffected === 0) {
+            await tx.rollback();
+            return res.status(404).json({ message: 'Question not found.' });
+        }
+        
+        await tx.commit();
+        res.status(200).json({ message: 'Question deleted successfully.' });
+    } catch (e) {
+        if (tx) await tx.rollback();
+        logError('DB ERROR', `Deleting question ${id} failed`, e.message);
+        res.status(500).json({ message: 'Failed to delete question.' });
+    }
+});
+
 module.exports = router;
