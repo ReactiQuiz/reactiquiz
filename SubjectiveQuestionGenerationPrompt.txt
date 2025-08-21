@@ -5,10 +5,9 @@ You are an expert Content Creator for the "ReactiQuiz" educational platform. You
 
 ---
 ## --- User Input Section (Example) ---
-   Chapter to Focus On:      [Chapter 5: Heat]
-   Target Grade/Class:       [7th]
-   Number of Questions:      [20]
-   Topic ID for Questions:   [heat-7th]
+   Chapter to Focus On:      [1]
+   Target Grade/Class:       [9th]
+   Number of Questions:      [100]
 ---
 
 ## --- AI Task & Requirements ---

@@ -1,0 +1,802 @@
+[
+  {
+    "id": "laws-of-motion-9th-sq001",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Define motion and explain why it is considered a relative concept.",
+    "expected_answer": "Motion is defined as the change in position of an object with respect to its surroundings. It is considered a relative concept because an object's state of motion depends on the frame of reference of the observer. For example, a person sitting in a moving train is at rest relative to other passengers but is in motion relative to a person standing on the platform.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq002",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the difference between distance and displacement?",
+    "expected_answer": "Distance is the total length of the actual path travelled by an object between its starting and finishing points. It is a scalar quantity. Displacement is the minimum straight-line distance between the starting and finishing points. It is a vector quantity, having both magnitude and direction.",
+    "marks": 2,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq003",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Can an object have zero displacement even if it has travelled a certain distance? Explain with an example.",
+    "expected_answer": "Yes, an object can have zero displacement even after travelling a certain distance. This occurs when the object returns to its starting point. For example, if an athlete runs one complete lap around a circular track of 400m, the distance travelled is 400m, but the displacement is zero because the starting and finishing points are the same.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq004",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Define speed and velocity and state their SI units.",
+    "expected_answer": "Speed is the total distance travelled by an object in a unit time. It is a scalar quantity. The formula is Speed = Total distance / Time required. Velocity is the displacement that occurs in a unit time. It is a vector quantity. The formula is Velocity = Displacement / Time. The SI unit for both speed and velocity is meters per second (m/s).",
+    "marks": 3,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq005",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Under what condition are the values of speed and velocity the same for a moving object?",
+    "expected_answer": "The values of speed and velocity are the same when an object is moving along a straight line in a single direction. In this case, the magnitude of the displacement is equal to the distance travelled, and therefore the magnitude of velocity is equal to the speed.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq006",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is meant by uniform linear motion and non-uniform linear motion?",
+    "expected_answer": "Uniform linear motion is when an object covers equal distances in equal time intervals along a straight line. In this case, the object moves with a constant speed. Non-uniform linear motion is when an object covers unequal distances in equal time intervals. For example, the motion of a vehicle in heavy traffic is non-uniform.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq007",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Define acceleration and write its formula. What is its SI unit?",
+    "expected_answer": "Acceleration is the rate of change of velocity. The formula for acceleration is: $a = \\frac{(v-u)}{t}$, where 'a' is acceleration, 'v' is the final velocity, 'u' is the initial velocity, and 't' is the time period. The SI unit of acceleration is meters per second squared (m/s²).",
+    "marks": 3,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq008",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain the concepts of positive, negative, and zero acceleration.",
+    "expected_answer": "1. **Positive acceleration:** Occurs when the velocity of an object increases with time. The acceleration is in the direction of velocity.\n2. **Negative acceleration (or deceleration/retardation):** Occurs when the velocity of an object decreases with time. The direction of acceleration is opposite to the direction of velocity.\n3. **Zero acceleration:** Occurs when the velocity of an object does not change with time, meaning it is moving at a constant velocity.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq009",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What does the slope of a distance-time graph for an object in uniform motion indicate?",
+    "expected_answer": "The slope of a distance-time graph for an object in uniform motion indicates the speed of the object. Since the object covers equal distances in equal time intervals, the graph is a straight line, and its constant slope represents the constant speed.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq010",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "How can you determine the distance covered by a train between 2 and 4 hours from its velocity-time graph, if it's moving with a uniform velocity of 60 km/hr?",
+    "expected_answer": "For an object moving with uniform velocity, the distance covered in a given time interval is equal to the area of the quadrangle formed under the velocity-time graph for that interval. In this case, the distance covered between 2 and 4 hours is the area of the rectangle with height 60 km/hr and width (4-2) = 2 hours. Distance = Velocity × Time = 60 km/hr × 2 hr = 120 km.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq011",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "State Newton's first law of motion. Why is it also called the law of inertia?",
+    "expected_answer": "Newton's first law of motion states that an object continues to remain at rest or in a state of uniform motion along a straight line unless an external unbalanced force acts on it. It is also called the law of inertia because it explains the phenomenon of inertia, which is the inability of an object to change its state of motion on its own.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq012",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the difference between balanced and unbalanced forces? Use the example of a tug-of-war.",
+    "expected_answer": "Balanced forces are equal in magnitude and opposite in direction, resulting in a net force of zero and no change in the object's state of motion. In a tug-of-war, if both teams apply equal force, the rope remains static. Unbalanced forces are unequal, resulting in a net force that causes a change in the object's state of motion. If one team pulls harder, the rope moves in the direction of the greater force.",
+    "marks": 3,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq013",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Define momentum and state its SI unit. Is it a scalar or a vector quantity?",
+    "expected_answer": "Momentum is the product of the mass and velocity of an object. The formula is P = mv, where P is momentum, m is mass, and v is velocity. It is a vector quantity, and its direction is the same as that of the velocity. The SI unit of momentum is kilogram-meter per second (kg m/s).",
+    "marks": 3,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq014",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "State Newton's second law of motion in terms of momentum.",
+    "expected_answer": "Newton's second law of motion states that the rate of change of momentum is proportional to the applied force, and the change of momentum occurs in the direction of the force.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq015",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Derive the formula F = ma from Newton's second law of motion.",
+    "expected_answer": "According to Newton's second law, the rate of change of momentum is proportional to the applied force. Rate of change of momentum = (Final momentum - Initial momentum) / time = (mv - mu) / t = m(v-u)/t. Since acceleration a = (v-u)/t, the rate of change of momentum is ma. Therefore, F ∝ ma. This can be written as F = kma, where k is the constant of proportionality. The value of k is 1, so F = ma.",
+    "marks": 4,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq016",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "State Newton's third law of motion and give two examples.",
+    "expected_answer": "Newton's third law of motion states that every action force has an equal and opposite reaction force which acts simultaneously. Examples include:\n1. A gun recoiling backwards (reaction) when a bullet is fired forwards (action).\n2. A rocket moving upwards (reaction) by expelling hot gases downwards (action).",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq017",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain why action and reaction forces do not cancel each other out.",
+    "expected_answer": "Action and reaction forces do not cancel each other out because they act on two different objects. For one force to cancel another, they must act on the same object. Since action and reaction forces act on different bodies, they produce different effects, such as acceleration, on those bodies.",
+    "marks": 3,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq018",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "State the law of conservation of momentum.",
+    "expected_answer": "The law of conservation of momentum states that when no external force acts on two interacting objects, their total momentum remains constant; it does not change. In other words, the total momentum before collision is equal to the total momentum after collision.",
+    "marks": 2,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq019",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Using a velocity-time graph, derive the equation of motion: s = ut + ½at².",
+    "expected_answer": "For a uniformly accelerated object, the distance covered 's' in time 't' is given by the area of the quadrangle under the velocity-time graph. This quadrangle can be divided into a rectangle and a triangle. \nArea of rectangle = initial velocity × time = u × t = ut.\nArea of triangle = ½ × base × height = ½ × t × (v-u). \nSince v = u + at, (v-u) = at. \nArea of triangle = ½ × t × (at) = ½at². \nTotal distance s = Area of rectangle + Area of triangle. \nTherefore, s = ut + ½at².",
+    "marks": 5,
+    "difficulty": 19
+  },
+  {
+    "id": "laws-of-motion-9th-sq020",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is uniform circular motion? Give an example.",
+    "expected_answer": "Uniform circular motion is the motion of an object along a circular path with a constant speed. Although the speed is constant, the velocity is continuously changing because the direction of motion is changing at every point. An example is the motion of the tip of the second hand of a clock.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq021",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Why is uniform circular motion considered an accelerated motion?",
+    "expected_answer": "Uniform circular motion is considered an accelerated motion because, even though the speed of the object is constant, its direction of motion changes continuously. Since velocity is a vector quantity (having both speed and direction), a change in direction means a change in velocity. The rate of change of velocity is acceleration. Therefore, the object is accelerating.",
+    "marks": 3,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq022",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "State the three equations of motion for an object moving along a straight line with uniform acceleration.",
+    "expected_answer": "The three equations of motion are:\n1. Relation between velocity and time: $v = u + at$\n2. Relation between displacement and time: $s = ut + \\frac{1}{2}at^2$\n3. Relation between displacement and velocity: $v^2 = u^2 + 2as$",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq023",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Using a velocity-time graph, derive the third equation of motion: v² = u² + 2as.",
+    "expected_answer": "The distance covered 's' is the area of the trapezium under the velocity-time graph. The formula for the area of a trapezium is $s = \\frac{1}{2} \\times (\\text{sum of parallel sides}) \\times \\text{height}$. Here, the parallel sides are the initial velocity 'u' and final velocity 'v', and the height is time 't'. So, $s = \\frac{1}{2}(u+v)t$. From the first equation of motion, $t = \\frac{(v-u)}{a}$. Substituting this value of t, we get $s = \\frac{1}{2}(v+u)\\frac{(v-u)}{a}$. This simplifies to $2as = (v+u)(v-u)$, which is $2as = v^2 - u^2$. Therefore, $v^2 = u^2 + 2as$.",
+    "marks": 5,
+    "difficulty": 20
+  },
+  {
+    "id": "laws-of-motion-9th-sq024",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "An electric fan keeps on rotating for some time even after it is switched off. Which property of motion does this illustrate?",
+    "expected_answer": "This illustrates the property of inertia of motion, as described by Newton's first law. The fan, being in a state of uniform rotational motion, tends to continue in that state due to its inertia. It only stops because of the opposing force of air resistance and friction.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq025",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is inertia and how is it related to the mass of an object?",
+    "expected_answer": "Inertia is the natural tendency of an object to resist a change in its state of rest or of uniform motion. Inertia is directly related to the mass of the object. The greater the mass of an object, the greater its inertia, meaning it is more difficult to change its state of motion.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq026",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Define one newton (N) of force.",
+    "expected_answer": "One newton is the force necessary to cause an acceleration of 1 m/s² in an object of mass 1 kg. It is the SI unit of force. Formula: 1 N = 1 kg × 1 m/s².",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq027",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the key difference in the shape of a distance-time graph for uniform motion and non-uniform motion?",
+    "expected_answer": "For uniform motion, the distance-time graph is a straight line, indicating that equal distances are covered in equal intervals of time. For non-uniform motion, the distance-time graph is a curve, indicating that unequal distances are covered in equal intervals of time.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq028",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What does the area under a velocity-time graph represent?",
+    "expected_answer": "The area under a velocity-time graph represents the displacement (or distance covered) of the object during that time interval.",
+    "marks": 1,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq029",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain what happens to the velocity of a motorcycle in the following two scenarios: a) its speed increases but its direction remains unchanged, b) its direction changes but its speed remains constant.",
+    "expected_answer": "a) If its speed increases but direction is unchanged, the magnitude of its velocity increases. The velocity changes.\nb) If its direction changes but its speed is constant (e.g., on a turning), its velocity changes because velocity is a vector quantity that depends on both speed and direction.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq030",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If a car starts from rest and reaches a velocity of 15 m/s in 5 s with uniform acceleration, what is its acceleration?",
+    "expected_answer": "Using the first equation of motion, $v = u + at$. Here, initial velocity $u = 0$, final velocity $v = 15$ m/s, and time $t = 5$ s. So, $15 = 0 + a(5)$, which gives $5a = 15$. Therefore, the acceleration $a = 3$ m/s².",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq031",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Why does a fruit fall from a tree when its branches are shaken?",
+    "expected_answer": "This happens due to inertia of rest. Initially, both the branches and the fruit are at rest. When the branches are shaken, they are set into motion. However, the fruit tends to remain at rest due to its inertia. This causes the fruit to detach from the branch and fall down due to gravity.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq032",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "The speed of sound in dry air is 343.2 m/s, while the speed of light is about $3 \\times 10^8$ m/s. How does this explain why we see lightning before we hear thunder?",
+    "expected_answer": "Lightning and thunder occur simultaneously. However, light travels significantly faster than sound. The speed of light is approximately $3 \\times 10^8$ m/s, while the speed of sound is only 343.2 m/s. Because of this vast difference in speeds, the light from the lightning reaches our eyes almost instantaneously, while the sound of thunder takes a noticeable amount of time to travel the same distance.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq033",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A kangaroo can jump 2.5 m vertically. What must be its initial velocity? (Use g = -9.8 m/s²)",
+    "expected_answer": "We use the third equation of motion: $v^2 = u^2 + 2as$. At the maximum height, the final velocity $v = 0$. The distance $s = 2.5$ m, and acceleration $a = g = -9.8$ m/s². \nSo, $0^2 = u^2 + 2(-9.8)(2.5)$.\n$0 = u^2 - 49$.\n$u^2 = 49$.\n$u = 7$ m/s. The initial velocity of the kangaroo must be 7 m/s.",
+    "marks": 4,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq034",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What information is conveyed by a velocity-time graph for a uniformly accelerated motion?",
+    "expected_answer": "A velocity-time graph for a uniformly accelerated motion is a straight line. It conveys several pieces of information:\n1. The slope of the line gives the magnitude of the uniform acceleration.\n2. The intercept on the y-axis (velocity axis) gives the initial velocity.\n3. The area under the graph for a given time interval gives the displacement of the object during that time.",
+    "marks": 3,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq035",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "How is the speed of an object in uniform circular motion calculated if its radius 'r' and time period 't' are known?",
+    "expected_answer": "The speed of an object in uniform circular motion can be calculated using the formula: Speed = Circumference / Time. The circumference of the circular path is $2\\pi r$. Therefore, the formula is $v = \\frac{2\\pi r}{t}$, where 'v' is the speed, 'r' is the radius of the circle, and 't' is the time taken to complete one revolution.",
+    "marks": 2,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq036",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the initial velocity of an object that is at rest at the beginning of its motion?",
+    "expected_answer": "The initial velocity (u) of an object at rest at the beginning of its motion is zero.",
+    "marks": 1,
+    "difficulty": 10
+  },
+  {
+    "id": "laws-of-motion-9th-sq037",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the final velocity of an object that comes to rest at the end of its motion?",
+    "expected_answer": "The final velocity (v) of an object that comes to rest at the end of its motion is zero.",
+    "marks": 1,
+    "difficulty": 10
+  },
+  {
+    "id": "laws-of-motion-9th-sq038",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If an object covers equal distances in equal time intervals, what can you say about its speed?",
+    "expected_answer": "If an object covers equal distances in equal time intervals, it is said to be moving with uniform speed.",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq039",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "An athlete runs a distance of 400 m in 25 s on a circular track and returns to his original position. What is his average speed and average velocity?",
+    "expected_answer": "Total distance = 400 m. Total time = 25 s.\nAverage speed = Total distance / Total time = 400 m / 25 s = 16 m/s.\nSince the athlete returns to his original position, the total displacement is 0.\nAverage velocity = Total displacement / Total time = 0 m / 25 s = 0 m/s.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq040",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What are vectors and scalars? Classify distance, displacement, speed, and velocity as either a scalar or a vector.",
+    "expected_answer": "A scalar is a quantity that has only magnitude. A vector is a quantity that has both magnitude and direction.\n- Distance: Scalar\n- Displacement: Vector\n- Speed: Scalar\n- Velocity: Vector",
+    "marks": 3,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq041",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain why a thick bed of sand is used for a high jumper to fall on after his jump.",
+    "expected_answer": "This is an application of Newton's second law ($F = ma$ or $F = \\frac{\\Delta p}{\\Delta t}$). When the high jumper lands on the sand, the sand gives way, increasing the time interval ($\"\\Delta t\"$) over which the jumper's momentum is brought to zero. By increasing the time of impact, the force of impact ($F$) on the jumper is significantly reduced, preventing injury.",
+    "marks": 4,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq042",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain the recoil of a gun using the law of conservation of momentum.",
+    "expected_answer": "Before firing, both the gun and the bullet are at rest, so the total initial momentum is zero. When the bullet is fired, it moves forward with a certain momentum ($m_1v_1$). According to the law of conservation of momentum, the total final momentum must also be zero. To conserve momentum, the gun must move backward with an equal and opposite momentum ($m_2v_2$). This backward motion is called recoil. So, $m_1v_1 + m_2v_2 = 0$.",
+    "marks": 4,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq043",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What determines if an object is in uniform or non-uniform acceleration?",
+    "expected_answer": "If the velocity of an object changes by equal amounts in equal time intervals, the object is said to be in uniform acceleration. If the velocity changes by unequal amounts in equal time intervals, the object is in non-uniform acceleration.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq044",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "While travelling in a bus, is the person sitting next to you in motion or at rest? Explain.",
+    "expected_answer": "The person sitting next to you is at rest with respect to you because their position is not changing relative to you or the inside of the bus. However, they are in motion with respect to a person or object outside the bus, as their position is changing relative to the surroundings outside.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq045",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If a coin is placed on a cardboard covering a glass and the cardboard is struck hard, the coin falls into the glass. Explain this phenomenon.",
+    "expected_answer": "This phenomenon is an example of inertia of rest. The coin is initially at rest. When the cardboard is struck hard, a force acts on the cardboard, causing it to move quickly. Due to its inertia, the coin resists this change in its state of rest and tends to remain in its position. As the cardboard moves away from under it, the coin falls vertically into the glass due to gravity.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq046",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "The mass of a cannon is 500 kg and it recoils with a speed of 0.25 m/s. What is the momentum of the cannon?",
+    "expected_answer": "Momentum is calculated as mass times velocity ($P = mv$).\nGiven: mass ($m$) = 500 kg, recoil speed ($v$) = 0.25 m/s.\nMomentum ($P$) = 500 kg × 0.25 m/s = 125 kg m/s.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq047",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "In the context of the equations of motion, what do the symbols u, v, a, t, and s represent?",
+    "expected_answer": "u: initial velocity\nv: final velocity\na: acceleration\nt: time\ns: displacement",
+    "marks": 2,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq048",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A motorboat starts from rest and attains a velocity of 15 m/s in 5 s. Calculate the distance travelled in that time.",
+    "expected_answer": "First, find the acceleration: $a = (v-u)/t = (15-0)/5 = 3$ m/s². \nNow, use the second equation of motion: $s = ut + \\frac{1}{2}at^2$. \n$s = (0)(5) + \\frac{1}{2}(3)(5)^2 = 0 + \\frac{1}{2}(3)(25) = \\frac{75}{2} = 37.5$ m.\nAlternatively, use the third equation: $v^2 = u^2 + 2as$. \n$15^2 = 0^2 + 2(3)s$. \n$225 = 6s$. \n$s = 225/6 = 37.5$ m.",
+    "marks": 4,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq049",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the direction of the velocity vector of an object in uniform circular motion at any given point?",
+    "expected_answer": "The direction of the velocity vector of an object in uniform circular motion at any given point is tangent to the circular path at that point. As the object moves, the direction of this tangent continuously changes.",
+    "marks": 2,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq050",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A coin on a rotating disc is thrown off when the disc is moved at a higher speed. In which direction is it thrown off?",
+    "expected_answer": "The coin will be thrown off in the direction of the tangent to the circular path at the point where it was at the moment of getting thrown off. This happens because of its inertia of direction; it tends to continue moving in a straight line (tangential path).",
+    "marks": 3,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq051",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What type of motion is exhibited by the leaves flying through the air?",
+    "expected_answer": "The motion of leaves flying through the air is an example of non-uniform motion, as both their speed and direction change randomly and unpredictably.",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq052",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "In the context of motion graphs, what does a horizontal line on a velocity-time graph signify?",
+    "expected_answer": "A horizontal line on a velocity-time graph signifies that the velocity of the object is constant. This means the object has zero acceleration and is in uniform motion.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq053",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If two objects of different masses are at rest, which one has greater inertia?",
+    "expected_answer": "The object with the greater mass has greater inertia. Inertia is a measure of an object's mass, so a more massive object will have a greater resistance to a change in its state of rest.",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq054",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain why it is easier to catch a ball thrown at a slow speed than the same ball thrown at a high speed.",
+    "expected_answer": "This relates to the concept of momentum ($p=mv$). The ball thrown at a high speed has a greater velocity and therefore greater momentum. To stop the ball, we must apply a force to change its momentum to zero. A larger initial momentum requires a larger force or a longer time to stop. Catching the high-speed ball requires applying a larger impulse ($F \\times \\Delta t$) to stop it, which feels more difficult and can be more painful.",
+    "marks": 4,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq055",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "When a ball is hit with a bat, the speed of the bat decreases. Explain this using Newton's third law of motion.",
+    "expected_answer": "According to Newton's third law, when the bat hits the ball (action), the ball exerts an equal and opposite force on the bat (reaction). This reaction force exerted by the ball on the bat acts in the direction opposite to the bat's motion, causing the speed of the bat to decrease.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq056",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Describe the change in velocity of a ball rolling down a channel-shaped track that is inclined.",
+    "expected_answer": "As the ball is released from the top of the inclined channel, its initial velocity is zero. Due to gravity, it accelerates down the channel. Its velocity is less at the top, increases as it moves through the middle, and is maximum at the bottom. The velocity is not the same at all points because it is undergoing positive acceleration.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq057",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the relationship between the CGS unit of force (dyne) and the SI unit of force (newton)?",
+    "expected_answer": "A newton is the force required to accelerate 1 kg by 1 m/s², while a dyne is the force required to accelerate 1 g by 1 cm/s². \n1 N = 1 kg × 1 m/s² = 1000 g × 100 cm/s² = 100,000 g cm/s² = $10^5$ dynes.",
+    "marks": 2,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq058",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "An aeroplane taxies on the runway for 30 s with an acceleration of 3.2 m/s² before taking off. How much distance does it cover on the runway?",
+    "expected_answer": "The aeroplane starts from rest, so initial velocity $u = 0$. Time $t = 30$ s, and acceleration $a = 3.2$ m/s². \nUsing the second equation of motion, $s = ut + \\frac{1}{2}at^2$. \n$s = (0)(30) + \\frac{1}{2}(3.2)(30)^2 = 0 + (1.6)(900) = 1440$ m. \nThe aeroplane covers 1440 meters on the runway.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq059",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the average speed of an object?",
+    "expected_answer": "Average speed is the total distance travelled by an object divided by the total time taken to travel that distance. It does not account for variations in speed during the journey.",
+    "marks": 1,
+    "difficulty": 10
+  },
+  {
+    "id": "laws-of-motion-9th-sq060",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If the velocity of an object changes by unequal amounts in equal time intervals, what can be said about its acceleration?",
+    "expected_answer": "If the velocity changes by unequal amounts in equal time intervals, the object is said to have non-uniform acceleration.",
+    "marks": 1,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq061",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain why the total momentum is constant during the launch of a rocket, considering the rocket and its expelled gases as a single system.",
+    "expected_answer": "The rocket and its fuel are initially at rest, so the total momentum of the system is zero. As the rocket expels hot gases downwards, these gases gain downward momentum. To conserve the total momentum of the system (which must remain zero as there are no external forces), the rocket itself gains an equal amount of upward momentum. The sum of the upward momentum of the rocket and the downward momentum of the gases remains zero, thus conserving momentum.",
+    "marks": 4,
+    "difficulty": 18
+  },
+  {
+    "id": "laws-of-motion-9th-sq062",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What are the key characteristics of a velocity-time graph for a motion with uniform acceleration?",
+    "expected_answer": "For a motion with uniform acceleration, the velocity-time graph is a straight line. The line is not horizontal (unless acceleration is zero). A positive slope indicates positive uniform acceleration, while a negative slope indicates negative uniform acceleration (deceleration).",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq063",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What kind of force is required to change the state of motion of an object?",
+    "expected_answer": "An external unbalanced force is required to change the state of motion of an object, either from rest to motion, or from motion to rest, or to change its speed or direction.",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq064",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "An object moves 18 m in the first 3 s, 22 m in the next 3 s and 14 m in the last 3 s. What is its average speed?",
+    "expected_answer": "Total distance travelled = 18 m + 22 m + 14 m = 54 m.\nTotal time taken = 3 s + 3 s + 3 s = 9 s.\nAverage speed = Total distance / Total time = 54 m / 9 s = 6 m/s.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq065",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Why do we say that velocity depends on both speed and direction?",
+    "expected_answer": "Velocity is a vector quantity, defined as the rate of change of displacement. It has both magnitude (which is speed) and direction. A change in either the speed or the direction of motion (or both) results in a change in velocity. For instance, a car moving at a constant speed around a bend is changing its velocity because its direction is changing.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq066",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What happens to the momentum of interacting objects after a collision if no external force is acting on them?",
+    "expected_answer": "If no external force acts on them, the total momentum of the interacting objects is conserved. The momentum gets redistributed between the colliding objects. The momentum of one of the objects may decrease while that of the other increases, but their vector sum remains constant.",
+    "marks": 3,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq067",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Describe the motion of a ball thrown vertically upwards. What is its acceleration throughout the motion?",
+    "expected_answer": "When a ball is thrown vertically upwards, it moves against gravity. Its upward velocity decreases continuously due to the downward acceleration of gravity (negative acceleration). At its highest point, its velocity momentarily becomes zero. Then, it starts falling back down, and its downward velocity increases (positive acceleration). Throughout the entire motion (both up and down), the acceleration is constant and directed downwards, equal to the acceleration due to gravity, g (approximately 9.8 m/s²).",
+    "marks": 4,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq068",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "How do you graphically represent the motion of an object starting from rest and moving with uniform velocity?",
+    "expected_answer": "This is a trick question. An object cannot start from rest and immediately move with a uniform (non-zero) velocity, as this would imply infinite acceleration. A more realistic scenario is starting from rest and accelerating to a uniform velocity. However, if describing an object already in uniform velocity, the velocity-time graph is a horizontal line at that velocity. The distance-time graph is a straight line with a positive slope passing through the origin.",
+    "marks": 3,
+    "difficulty": 18
+  },
+  {
+    "id": "laws-of-motion-9th-sq069",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the cause and effect relationship between motion and the laws of motion?",
+    "expected_answer": "The laws of motion describe the cause and effect relationship. The cause is the application of an unbalanced force. The effect is the change in the object's state of motion, i.e., acceleration (a change in velocity). Newton's first law describes the condition for no effect (balanced forces). The second law quantifies the effect ($F=ma$). The third law describes the interaction of forces.",
+    "marks": 4,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq070",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "An object of mass 16 kg is moving with an acceleration of 3 m/s². Calculate the applied force.",
+    "expected_answer": "Using Newton's second law, Force = mass × acceleration ($F=ma$).\nGiven: mass ($m$) = 16 kg, acceleration ($a$) = 3 m/s².\nForce ($F$) = 16 kg × 3 m/s² = 48 N.",
+    "marks": 2,
+    "difficulty": 12
+  },
+    {
+    "id": "laws-of-motion-9th-sq071",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is negative acceleration also known as?",
+    "expected_answer": "Negative acceleration is also known as deceleration or retardation.",
+    "marks": 1,
+    "difficulty": 10
+  },
+  {
+    "id": "laws-of-motion-9th-sq072",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the key assumption made when deriving the equations of motion using the graphical method shown in the textbook?",
+    "expected_answer": "The key assumption is that the object is undergoing uniformly accelerated motion. This is why the velocity-time graph is a straight line, allowing for the calculation of areas of simple geometric shapes like rectangles and triangles.",
+    "marks": 2,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq073",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If two balls of masses 50 g and 100 g are moving along the same line with velocities of 3 m/s and 1.5 m/s respectively, calculate the total initial momentum of the system.",
+    "expected_answer": "First, convert masses to kg: $m_1 = 50$ g = 0.05 kg, $m_2 = 100$ g = 0.1 kg.\nInitial momentum of first ball: $p_1 = m_1u_1 = 0.05 \\times 3 = 0.15$ kg m/s.\nInitial momentum of second ball: $p_2 = m_2u_2 = 0.1 \\times 1.5 = 0.15$ kg m/s.\nTotal initial momentum = $p_1 + p_2 = 0.15 + 0.15 = 0.30$ kg m/s.",
+    "marks": 4,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq074",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain why a static object does not move without the application of a force, using Newton's laws.",
+    "expected_answer": "This is explained by Newton's first law of motion (the law of inertia). A static object is in a state of rest. It will continue to remain in this state of rest unless an external unbalanced force acts upon it. Without such a force, it cannot overcome its inertia of rest and start moving.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq075",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A car travelling at 20 m/s applies brakes and comes to a stop in 4 seconds. What is its deceleration?",
+    "expected_answer": "Initial velocity $u = 20$ m/s, final velocity $v = 0$ m/s, time $t = 4$ s. \nUsing the formula $a = (v-u)/t$. \n$a = (0 - 20) / 4 = -20 / 4 = -5$ m/s². \nThe acceleration is -5 m/s², which means the deceleration is 5 m/s².",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq076",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the condition for an object to be considered 'at rest'?",
+    "expected_answer": "An object is considered to be at rest if its position does not change with respect to its immediate surroundings.",
+    "marks": 1,
+    "difficulty": 10
+  },
+  {
+    "id": "laws-of-motion-9th-sq077",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Describe the graphical representation of a body in non-uniform motion on a distance-time graph.",
+    "expected_answer": "On a distance-time graph, a body in non-uniform motion is represented by a curved line. The changing slope of the curve indicates that the speed of the body is changing over time.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq078",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Who was the first scientist to measure speed as the ratio of distance to time?",
+    "expected_answer": "The first scientist to measure speed as the distance divided by time was Galileo.",
+    "marks": 1,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq079",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If the same force is applied to two different objects, how will the change in their momentum compare?",
+    "expected_answer": "According to Newton's second law, Force is the rate of change of momentum ($F = \\Delta p / \\Delta t$). If the same force is applied for the same duration of time, the total change in momentum (impulse, $F \\Delta t$) for both objects will be the same, regardless of their masses.",
+    "marks": 3,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq080",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A car starts from point P, goes to point Q which is 360 metres away, and then returns to point P. What is the total distance travelled and what is its displacement?",
+    "expected_answer": "The total distance travelled is the path from P to Q and back to P, which is 360 m + 360 m = 720 m. The displacement is the minimum distance between the starting and final points. Since the car returns to the starting point P, its displacement is zero.",
+    "marks": 2,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq081",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Draw a velocity-time graph for a uniformly accelerated object starting with an initial velocity 'u' and reaching a final velocity 'v' in time 't'. Label all the axes and important points.",
+    "expected_answer": "The student should draw a graph with Time on the X-axis and Velocity on the Y-axis. The graph should be a straight line with a positive slope. The line should start at the point (0, u) and end at the point (t, v). The axes should be labeled 'Time (t)' and 'Velocity (v)'.",
+    "marks": 4,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq082",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain why a person in a moving car is pushed forward when the car stops suddenly.",
+    "expected_answer": "This is due to the inertia of motion. Both the car and the person are in motion. When the car stops suddenly, the person's body tends to continue moving forward due to its inertia. This makes them feel as if they are being pushed forward.",
+    "marks": 3,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq083",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the acceleration of a train moving with a uniform velocity of 60 km/hour?",
+    "expected_answer": "If the train is moving with a uniform (constant) velocity, its velocity is not changing. Since acceleration is the rate of change of velocity, its acceleration is zero.",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq084",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If a bullet of mass 10 g is fired from a gun of mass 900 g and they both move together after the bullet gets embedded in a plank, what principle would you use to determine their final velocity?",
+    "expected_answer": "To determine their final velocity, you would use the principle of conservation of momentum. The total momentum of the bullet and the plank before the collision (plank at rest) must be equal to the total momentum of the bullet and plank moving together after the collision.",
+    "marks": 2,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq085",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the relation between the number of images formed by two plane mirrors and the angle between them?",
+    "expected_answer": "The relationship is given by the formula $n = \\frac{360°}{A} - 1$, where 'n' is the number of images and 'A' is the angle between the mirrors.",
+    "marks": 2,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq086",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If you want to see your full image in a plane mirror, what is the minimum height the mirror must have?",
+    "expected_answer": "To see the full image of a person standing in front of a mirror, the minimum height of the mirror must be half the height of the person.",
+    "marks": 2,
+    "difficulty": 17
+  },
+  {
+    "id": "laws-of-motion-9th-sq087",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "In a collision between object A and object B, if the force on A due to B is $F_1$ and the force on B due to A is $F_2$, what is the relationship between $F_1$ and $F_2$ according to Newton's third law?",
+    "expected_answer": "According to Newton's third law, the forces are equal in magnitude and opposite in direction. Therefore, the relationship is $F_2 = -F_1$.",
+    "marks": 2,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq088",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A negative sign in the value of acceleration indicates what?",
+    "expected_answer": "A negative sign in the value of acceleration indicates that the acceleration is in the direction opposite to the initial velocity, meaning the object is decelerating or slowing down.",
+    "marks": 1,
+    "difficulty": 12
+  },
+  {
+    "id": "laws-of-motion-9th-sq089",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "If a car is accelerating uniformly, how would you determine its average velocity over a time interval?",
+    "expected_answer": "For an object moving with uniform acceleration, the average velocity over a time interval is the arithmetic mean of the initial and final velocities. Average velocity = $\\frac{(u+v)}{2}$.",
+    "marks": 2,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq090",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is the unit of momentum in the CGS system?",
+    "expected_answer": "In the CGS system, mass is in grams (g) and velocity is in centimeters per second (cm/s). Therefore, the unit of momentum is gram-centimeter per second (g cm/s).",
+    "marks": 1,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq091",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Does the velocity of an object at rest have to be uniform?",
+    "expected_answer": "Yes, if an object is at rest, its velocity is zero. Since its velocity is not changing, it is constant, and therefore its motion (or lack thereof) is considered uniform. Its acceleration is zero.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq092",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A person swims 100 m in the first 40 s, 80 m in the next 40 s, and 45 m in the last 20 s. What is the average speed?",
+    "expected_answer": "Total distance = 100 m + 80 m + 45 m = 225 m.\nTotal time = 40 s + 40 s + 20 s = 100 s.\nAverage speed = Total distance / Total time = 225 m / 100 s = 2.25 m/s.",
+    "marks": 3,
+    "difficulty": 15
+  },
+  {
+    "id": "laws-of-motion-9th-sq093",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "How many types of acceleration can an object in motion have? Name them.",
+    "expected_answer": "An object in motion can have two types of acceleration: \n1. Uniform acceleration, where velocity changes by equal amounts in equal time intervals. \n2. Non-uniform acceleration, where velocity changes by unequal amounts in equal time intervals.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq094",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "It is easier to stop a tennis ball than a cricket ball when both are travelling with the same velocity. Explain the scientific reason.",
+    "expected_answer": "The scientific reason is the difference in their momentum. A cricket ball has a much larger mass than a tennis ball. Since momentum is the product of mass and velocity ($p=mv$), the cricket ball has a greater momentum even at the same velocity. A greater momentum requires a greater impulse (force applied over time) to stop, making it more difficult to stop.",
+    "marks": 4,
+    "difficulty": 16
+  },
+  {
+    "id": "laws-of-motion-9th-sq095",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "What is meant by deceleration?",
+    "expected_answer": "Deceleration is a negative acceleration. It occurs when the velocity of an object decreases with time. The direction of deceleration is opposite to the direction of the object's velocity.",
+    "marks": 1,
+    "difficulty": 11
+  },
+  {
+    "id": "laws-of-motion-9th-sq096",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "When an object falls freely to the ground, its acceleration is uniform. What is this acceleration called and what is its approximate value?",
+    "expected_answer": "This uniform acceleration is called acceleration due to gravity, denoted by 'g'. Its approximate value on the surface of the Earth is 9.8 m/s².",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq097",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "During a collision, what quantity remains constant for the system if there are no external forces?",
+    "expected_answer": "During a collision, if there are no external forces acting on the system, the total momentum of the system remains constant (is conserved).",
+    "marks": 1,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq098",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Which law of motion explains the working of a rocket?",
+    "expected_answer": "The working of a rocket is primarily explained by Newton's third law of motion (action-reaction) and the law of conservation of momentum.",
+    "marks": 2,
+    "difficulty": 14
+  },
+  {
+    "id": "laws-of-motion-9th-sq099",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "Explain the terms 'action force' and 'reaction force' in the context of Newton's third law.",
+    "expected_answer": "In Newton's third law, the 'action force' is the force applied by the first object on the second object. The 'reaction force' is the force applied by the second object on the first. These forces are always equal in magnitude and opposite in direction, and they act on different objects.",
+    "marks": 2,
+    "difficulty": 13
+  },
+  {
+    "id": "laws-of-motion-9th-sq100",
+    "topic_id": "laws-of-motion-9th",
+    "question_text": "A vehicle moving with a velocity of 10 m/s stops after 5 seconds. What kind of acceleration does it have? Classify it as positive, negative, or zero.",
+    "expected_answer": "The vehicle is slowing down, so its velocity is decreasing. This means it has negative acceleration (deceleration).",
+    "marks": 2,
+    "difficulty": 12
+  }
+]
