@@ -17,7 +17,7 @@ function SubjectTopicsPage() {
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,
     filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
     handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal,
-    createSessionMutation,handleStartTheoryPaper
+    createSessionMutation, handleStartTheoryPaper
   } = useSubjectTopics();
 
   const { getColor } = useSubjectColors();
@@ -59,9 +59,41 @@ function SubjectTopicsPage() {
       </Typography>
 
       {/* Filters UI (Unchanged) */}
-      <Grid container sx={{ mb: { xs: 2, sm: 3, md: 4 }, mt: { xs: 1, sm: 1 } }} alignItems="flex-end">
-        {/* ... Grid items for filters are unchanged ... */}
-      </Grid>
+      <Paper sx={{ p: 2, mb: 4 }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              size="small"
+              variant="outlined"
+              label="Search Topics"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>),
+              }}
+            />
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Filter by Class</InputLabel>
+              <Select value={selectedClass} label="Filter by Class" onChange={(e) => setSelectedClass(e.target.value)}>
+                <MenuItem value=""><em>All Classes</em></MenuItem>
+                {availableClasses.map(cls => <MenuItem key={cls} value={cls}>{cls}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Filter by Genre</InputLabel>
+              <Select value={selectedGenre} label="Filter by Genre" onChange={(e) => setSelectedGenre(e.target.value)}>
+                <MenuItem value=""><em>All Genres</em></MenuItem>
+                {availableGenres.map(genre => <MenuItem key={genre} value={genre}>{genre}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Paper>
 
       {isLoading ? (
         <TopicSkeletonGrid />
@@ -82,7 +114,7 @@ function SubjectTopicsPage() {
                 <TopicCard
                   topic={topic}
                   onStartQuiz={() => handleOpenQuizModal(topic)}
-                  onStartTheory={() => handleStartTheoryPaper(topic)} 
+                  onStartTheory={() => handleStartTheoryPaper(topic)}
                   onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   onPrintQuestions={() => handleOpenPdfModal(topic)}
                   accentColor={accentColor}

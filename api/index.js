@@ -50,6 +50,7 @@ const contactRoutes = require(path.resolve(__dirname, './routes/contact.js'));
 const aiRoutes = require(path.resolve(__dirname, './routes/ai.js'));
 const homiBhabhaRoutes = require(path.resolve(__dirname, './routes/homibhabha.js'));
 const quizSessionRoutes = require(path.resolve(__dirname, './routes/quizSessions.js'));
+const subjectiveRoutes = require('./routes/subjective');
 const adminRoutes = require('./routes/admin');
 // --- END OF DEFINITIVE FIX ---
 
@@ -95,6 +96,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/homibhabha', homiBhabhaRoutes); 
 app.use('/api/quiz-sessions', quizSessionRoutes);
+app.use('/api/subjective', subjectiveRoutes); 
 app.use('/api/admin', adminRoutes);
 
 // --- Health Check Endpoint ---

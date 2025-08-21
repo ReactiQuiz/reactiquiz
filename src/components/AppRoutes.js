@@ -36,6 +36,7 @@ const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
 const SubjectivePaperPage = React.lazy(() => import('../pages/SubjectivePaperPage'));
+const SubjectiveResultPage = React.lazy(() => import('../pages/SubjectiveResultPage'));
 
 // Lazy-loaded Admin Pages
 const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage'));
@@ -68,6 +69,7 @@ function AppRoutes() {
           <Route path="/account" element={<ProtectedRoute><AccountPageWithContext /></ProtectedRoute>} />
           <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
           <Route path="/results/:resultId" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+          <Route path="/subjective-result/:resultId" element={<ProtectedRoute><SubjectiveResultPage /></ProtectedRoute>} />
           <Route path="/ai-center" element={<ProtectedRoute><AICenterPage /></ProtectedRoute>} />
           <Route path="/quiz/loading" element={<ProtectedRoute><QuizLoadingPage /></ProtectedRoute>} />
           <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />

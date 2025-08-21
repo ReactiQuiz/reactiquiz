@@ -1,9 +1,10 @@
 // src/pages/SubjectivePaperPage.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, CircularProgress, Alert, Paper, Divider, Stack } from '@mui/material';
 import apiClient from '../api/axiosInstance';
 import RichTextEditor from '../components/subjective/RichTextEditor';
+import { useNotifications } from '../contexts/NotificationsContext';
 
 function SubjectivePaperPage() {
   const { topicId } = useParams();
@@ -14,67 +15,48 @@ function SubjectivePaperPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const { addNotification } = useNotifications();
 
-  useEffect(() => {
-    // In a real app, you would fetch both topic details and questions
-    // For now, we just fetch questions.
-    const fetchPaper = async () => {
-        setIsLoading(true);
-        try {
-            // This is a placeholder for the real API endpoint we'll build in Phase 3
-            // const response = await apiClient.get(`/api/subjective-questions/${topicId}`);
-            // setQuestions(response.data.questions);
-            // setTopic(response.data.topic);
-
-            // --- MOCK DATA FOR UI DEVELOPMENT ---
-            // Replace this with the API call above once the backend is ready
-            setTimeout(() => {
-                setTopic({ id: topicId, name: topicId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) });
-                setQuestions([
-                    { id: 'heat-7th-sq001', topic_id: topicId, question_text: "Define 'latent heat of vaporization'.", marks: 2, difficulty: 14 },
-                    { id: 'heat-7th-sq002', topic_id: topicId, question_text: "Explain the process of convection with an example.", marks: 3, difficulty: 16 },
-                ]);
-                setIsLoading(false);
-            }, 1000);
-            // --- END OF MOCK DATA ---
-
-        } catch (err) {
-            setError(err.response?.data?.message || `Failed to load paper for ${topicId}`);
-            setIsLoading(false);
-        }
-    };
-    fetchPaper();
+  const fetchPaper = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await apiClient.get(`/api/subjective/paper/${topicId}`);
+      setTopic(response.data.topic);
+      setQuestions(response.data.questions);
+    } catch (err) {
+      setError(err.response?.data?.message || `Failed to load paper for ${topicId}`);
+    } finally {
+      setIsLoading(false);
+    }
   }, [topicId]);
 
+  useEffect(() => {
+    fetchPaper();
+  }, [fetchPaper]);
+
   const handleAnswerUpdate = (questionId, content) => {
-    setUserAnswers(prev => ({
-      ...prev,
-      [questionId]: content,
-    }));
+    setUserAnswers(prev => ({ ...prev, [questionId]: content }));
   };
 
   const handleSubmit = async () => {
-      setIsSubmitting(true);
-      const submissionPayload = {
-          topicId: topic.id,
-          answers: questions.map(q => ({
-              questionId: q.id,
-              userAnswer: userAnswers[q.id] || {}, // Send empty object if not answered
-          }))
-      };
-      
-      console.log("Submitting Payload:", JSON.stringify(submissionPayload, null, 2));
-      
-      // In Phase 3, we will implement this API call:
-      // await apiClient.post('/api/subjective-results/submit', submissionPayload);
-      
-      setTimeout(() => {
-          alert("Submission logic will be implemented in the next phase! Check the browser console for the payload.");
-          setIsSubmitting(false);
-          // navigate(`/subjective-result/some-new-id`);
-      }, 1000);
+    setIsSubmitting(true);
+    try {
+        const submissionPayload = {
+            topicId: topic.id,
+            answers: questions.map(q => ({
+                questionId: q.id,
+                userAnswer: userAnswers[q.id] || null,
+            }))
+        };
+        const response = await apiClient.post('/api/subjective/submit', submissionPayload);
+        addNotification('Paper submitted! Your results will be ready shortly.', 'success');
+        navigate(`/subjective-result/${response.data.resultId}`);
+    } catch (err) {
+        addNotification(err.response?.data?.message || 'Failed to submit paper.', 'error');
+        setIsSubmitting(false);
+    }
   };
-
+  
   if (isLoading) {
     return <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}><CircularProgress /></Box>;
   }
