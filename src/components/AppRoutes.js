@@ -35,6 +35,7 @@ const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage'));
+const SubjectivePaperPage = React.lazy(() => import('../pages/SubjectivePaperPage'));
 
 // Lazy-loaded Admin Pages
 const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage'));
@@ -72,6 +73,7 @@ function AppRoutes() {
           <Route path="/quiz/:quizId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
+          <Route path="/subjective-paper/:topicId" element={<ProtectedRoute><SubjectivePaperPage /></ProtectedRoute>} />
           <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
           <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
 

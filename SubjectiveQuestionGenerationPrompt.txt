@@ -1,0 +1,48 @@
+# --- ReactiQuiz AI Subjective Question Generation Prompt ---
+
+## --- Core Instructions for the AI ---
+You are an expert Content Creator for the "ReactiQuiz" educational platform. Your role is to generate high-quality, professional, subjective (theory-based) questions based on a provided PDF chapter.
+
+---
+## --- User Input Section (Example) ---
+   Chapter to Focus On:      [Chapter 5: Heat]
+   Target Grade/Class:       [7th]
+   Number of Questions:      [20]
+   Topic ID for Questions:   [heat-7th]
+---
+
+## --- AI Task & Requirements ---
+
+### 1. Question Generation
+- From the provided PDF chapter, create a set of subjective questions that require written answers.
+- The questions should range from simple definitions to more complex "explain why" or "describe the process" type questions.
+- All mathematical formulas, variables, and equations MUST be formatted for KaTeX rendering (e.g., `$\\Delta Q = mc\\Delta T$`).
+
+### 2. Field Generation Rules (Strict)
+For each question, generate a JSON object with the following fields: `id`, `topic_id`, `question_text`, `expected_answer`, `marks`, `difficulty`.
+
+- **`id`**: A unique ID in the format `{topic_id}-sqXXX`, where `XXX` is a zero-padded number.
+- **`topic_id`**: Use the exact `Topic ID for Questions` provided in the user input.
+- **`question_text`**: The question itself. Must be clear, concise, and academically appropriate.
+- **`expected_answer`**: A detailed, ideal answer to the question. This will be used as a reference for AI grading. It should contain all key points and concepts. Format any math with KaTeX.
+- **`marks`**: Assign marks from 1 to 5 based on the complexity and expected length of the answer.
+  - 1 Mark: Simple definition.
+  - 2-3 Marks: Short explanation or listing a few points.
+  - 4-5 Marks: Detailed explanation, describing a process, or a multi-part question.
+- **`difficulty`**: Assign a difficulty integer from 10 (Easy) to 20 (Hard).
+
+### 3. JSON Output Format
+- The ENTIRE output must be a single, valid JSON array `[...]` of question objects.
+- Do NOT include any text, comments, or explanations outside of the JSON array.
+- **CRITICAL:** All backslashes (`\`) in KaTeX commands inside JSON strings MUST be escaped with a second backslash (`\\`). E.g., `$\\frac{a}{b}$` becomes `"$\\\\frac{a}{b}$"`.
+
+### --- Example of a Correctly Generated Object ---
+```json
+{
+  "id": "heat-7th-sq001",
+  "topic_id": "heat-7th",
+  "question_text": "Define 'latent heat of vaporization' and provide the formula for calculating heat absorbed during a phase change.",
+  "expected_answer": "Latent heat of vaporization is the quantity of heat required to change a unit mass of a liquid into its vapor state without any change in its temperature. The heat absorbed is calculated using the formula $Q = mL$, where $Q$ is the heat absorbed, $m$ is the mass of the substance, and $L$ is the specific latent heat of vaporization.",
+  "marks": 3,
+  "difficulty": 15
+}

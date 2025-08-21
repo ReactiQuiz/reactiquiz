@@ -3,8 +3,11 @@ import { Card, CardContent, Typography, CardActions, Stack, Chip, Divider, IconB
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import StyleIcon from '@mui/icons-material/Style';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import EditNoteIcon from '@mui/icons-material/EditNote'; // <-- IMPORT NEW ICON
 
-function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, accentColor }) {
+// --- START OF CHANGE: Add onStartTheory prop ---
+function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, onStartTheory, accentColor }) {
+// --- END OF CHANGE ---
   const theme = useTheme();
 
   return (
@@ -33,7 +36,10 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, ac
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'space-around', p: 1 }}>
-        <Tooltip title="Start Quiz"><IconButton onClick={onStartQuiz} sx={{ color: accentColor }}><PlayCircleOutlineIcon /></IconButton></Tooltip>
+        <Tooltip title="Start MCQ Quiz"><IconButton onClick={onStartQuiz} sx={{ color: accentColor }}><PlayCircleOutlineIcon /></IconButton></Tooltip>
+        {/* --- START OF CHANGE: Add new button --- */}
+        <Tooltip title="Start Theory Paper"><IconButton onClick={onStartTheory} sx={{ color: accentColor }}><EditNoteIcon /></IconButton></Tooltip>
+        {/* --- END OF CHANGE --- */}
         <Tooltip title="Study Flashcards"><IconButton onClick={onStudyFlashcards} sx={{ color: accentColor }}><StyleIcon /></IconButton></Tooltip>
         <Tooltip title="Print Questions"><IconButton onClick={onPrintQuestions} sx={{ color: accentColor }}><PictureAsPdfIcon /></IconButton></Tooltip>
       </CardActions>

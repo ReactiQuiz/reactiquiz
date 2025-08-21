@@ -17,7 +17,7 @@ function SubjectTopicsPage() {
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,
     filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
     handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal,
-    createSessionMutation
+    createSessionMutation,handleStartTheoryPaper
   } = useSubjectTopics();
 
   const { getColor } = useSubjectColors();
@@ -82,9 +82,9 @@ function SubjectTopicsPage() {
                 <TopicCard
                   topic={topic}
                   onStartQuiz={() => handleOpenQuizModal(topic)}
+                  onStartTheory={() => handleStartTheoryPaper(topic)} 
                   onStudyFlashcards={() => handleStudyFlashcards(topic)}
                   onPrintQuestions={() => handleOpenPdfModal(topic)}
-                  // --- START OF FIX: Pass the accentColor prop correctly ---
                   accentColor={accentColor}
                 // --- END OF FIX ---
                 />

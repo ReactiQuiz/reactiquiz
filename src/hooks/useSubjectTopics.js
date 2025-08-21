@@ -5,18 +5,18 @@ import apiClient from '../api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
 import { useSubjects } from './useSubjects'; // We will use this to get subject details
 import { useTopics } from '../contexts/TopicsContext'; // <-- Import the new hook
-import { useNotifications } from '../contexts/NotificationsContext'; 
+import { useNotifications } from '../contexts/NotificationsContext';
 
 const fetchQuizBySessionId = async (sessionId) => {
-    if (!sessionId) return null;
-    const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
-    return data;
+  if (!sessionId) return null;
+  const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
+  return data;
 };
 
 export const useSubjectTopics = () => {
   const { subjectKey } = useParams();
   const navigate = useNavigate();
-  const { addNotification } = useNotifications(); 
+  const { addNotification } = useNotifications();
 
   // --- START OF REFACTOR: Get data from global contexts ---
   const { subjects, isLoading: isLoadingSubjects } = useSubjects();
@@ -43,7 +43,7 @@ export const useSubjectTopics = () => {
   const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState(null);
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [selectedTopicForPdf, setSelectedTopicForPdf] = useState(null);
-  
+
   const createSessionMutation = useMutation({
     mutationFn: (quizParams) => apiClient.post('/api/quiz-sessions', { quizParams }),
     onSuccess: (response) => {
@@ -52,20 +52,24 @@ export const useSubjectTopics = () => {
       navigate('/quiz/loading');
     },
     onError: (err) => {
-        const message = err.response?.data?.message || "Could not start the quiz. Please try again.";
-        addNotification(message, 'error');
+      const message = err.response?.data?.message || "Could not start the quiz. Please try again.";
+      addNotification(message, 'error');
     }
   });
 
+  const handleStartTheoryPaper = (topic) => {
+    navigate(`/subjective-paper/${topic.id}`);
+  };
+
   const handleStartQuizWithSettings = (settings) => {
     if (selectedTopicForQuiz && currentSubject) {
-      const quizParams = { 
+      const quizParams = {
         topicId: selectedTopicForQuiz.id,
-        difficulty: settings.difficulty, 
-        numQuestions: settings.numQuestions, 
-        topicName: selectedTopicForQuiz.name, 
-        subject: currentSubject.subjectKey, 
-        quizClass: selectedTopicForQuiz.class 
+        difficulty: settings.difficulty,
+        numQuestions: settings.numQuestions,
+        topicName: selectedTopicForQuiz.name,
+        subject: currentSubject.subjectKey,
+        quizClass: selectedTopicForQuiz.class
       };
       createSessionMutation.mutate(quizParams);
     }
@@ -86,7 +90,7 @@ export const useSubjectTopics = () => {
     return topicsForSubject.filter(topic => {
       const classMatch = !selectedClass || topic.class === selectedClass;
       const genreMatch = !selectedGenre || topic.genre === selectedGenre;
-      const searchMatch = !searchTerm || 
+      const searchMatch = !searchTerm ||
         topic.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (topic.description && topic.description.toLowerCase().includes(searchTerm.toLowerCase()));
       return classMatch && genreMatch && searchMatch;
@@ -95,22 +99,22 @@ export const useSubjectTopics = () => {
 
   const handleOpenQuizModal = (topic) => { setSelectedTopicForQuiz(topic); setModalOpen(true); };
   const handleCloseQuizModal = () => { setModalOpen(false); setSelectedTopicForQuiz(null); };
-  
+
   const handleStudyFlashcards = (topic) => {
     if (currentSubject) {
-      navigate(`/flashcards/${topic.id}`, { 
-        state: { 
-          topicName: topic.name, 
-          subject: currentSubject.subjectKey, 
-          quizClass: topic.class 
-        } 
+      navigate(`/flashcards/${topic.id}`, {
+        state: {
+          topicName: topic.name,
+          subject: currentSubject.subjectKey,
+          quizClass: topic.class
+        }
       });
     }
   };
 
   const handleOpenPdfModal = (topic) => { setSelectedTopicForPdf(topic); setPdfModalOpen(true); };
   const handleClosePdfModal = () => { setSelectedTopicForPdf(null); setPdfModalOpen(false); };
-  
+
   return {
     subjectKey,
     currentSubject,
@@ -125,6 +129,7 @@ export const useSubjectTopics = () => {
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,
     filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
     handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal,
-    createSessionMutation, 
+    createSessionMutation,
+    handleStartTheoryPaper,
   };
 };
