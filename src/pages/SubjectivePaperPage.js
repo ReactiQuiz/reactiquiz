@@ -6,6 +6,9 @@ import apiClient from '../api/axiosInstance';
 import RichTextEditor from '../components/subjective/RichTextEditor';
 import { useNotifications } from '../contexts/NotificationsContext';
 
+// Maximum number of questions to display
+const MAX_QUESTIONS = 10;
+
 function SubjectivePaperPage() {
   const { topicId } = useParams();
   const navigate = useNavigate();
@@ -22,7 +25,16 @@ function SubjectivePaperPage() {
     try {
       const response = await apiClient.get(`/api/subjective/paper/${topicId}`);
       setTopic(response.data.topic);
-      setQuestions(response.data.questions);
+      
+      // Check if there are any questions available
+      if (response.data.questions.length === 0) {
+        setError('No subjective questions are available for this topic.');
+        return;
+      }
+      
+      // Limit to MAX_QUESTIONS (10)
+      const limitedQuestions = response.data.questions.slice(0, MAX_QUESTIONS);
+      setQuestions(limitedQuestions);
     } catch (err) {
       setError(err.response?.data?.message || `Failed to load paper for ${topicId}`);
     } finally {

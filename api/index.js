@@ -7,10 +7,8 @@ if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process
     console.error("\x1b[33m%s\x1b[0m", "The backend server cannot start without these credentials.");
     console.error("\x1b[36m%s\x1b[0m", "This project requires official access. Please refer to the documentation or contact the owner.");
     console.error("\x1b[31m%s\x1b[0m", "=====================================================\n\n");
-    // Prevent the server from starting if critical variables are missing
-    if (process.env.NODE_ENV !== 'production') {
-        process.exit(1);
-    }
+    // Prevent the server from starting if critical variables are missing in any environment
+    process.exit(1);
 }
 
 // This line is for local development only, to load environment variables
@@ -50,8 +48,8 @@ const contactRoutes = require(path.resolve(__dirname, './routes/contact.js'));
 const aiRoutes = require(path.resolve(__dirname, './routes/ai.js'));
 const homiBhabhaRoutes = require(path.resolve(__dirname, './routes/homibhabha.js'));
 const quizSessionRoutes = require(path.resolve(__dirname, './routes/quizSessions.js'));
-const subjectiveRoutes = require('./routes/subjective');
-const adminRoutes = require('./routes/admin');
+const subjectiveRoutes = require(path.resolve(__dirname, './routes/subjective.js'));
+const adminRoutes = require(path.resolve(__dirname, './routes/admin.js'));
 // --- END OF DEFINITIVE FIX ---
 
 const app = express();
@@ -62,7 +60,12 @@ const app = express();
 app.set('trust proxy', 1);
 
 // --- Core Middleware ---
-app.use(cors());
+if (process.env.CORS_ORIGIN) {
+    const origins = process.env.CORS_ORIGIN.split(',').map(s => s.trim());
+    app.use(cors({ origin: origins, credentials: true }));
+} else {
+    app.use(cors());
+}
 app.use(express.json({ limit: '5mb' }));
 
 // --- RATE LIMITING SETUP ---

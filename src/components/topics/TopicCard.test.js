@@ -26,6 +26,7 @@ const mockTopic = {
 const mockOnStartQuiz = jest.fn();
 const mockOnStudyFlashcards = jest.fn();
 const mockOnPrintQuestions = jest.fn();
+const mockOnStartTheory = jest.fn();
 
 describe('TopicCard Component', () => {
   beforeEach(() => {
@@ -40,6 +41,7 @@ describe('TopicCard Component', () => {
         onStartQuiz={mockOnStartQuiz}
         onStudyFlashcards={mockOnStudyFlashcards}
         onPrintQuestions={mockOnPrintQuestions}
+        onStartTheory={mockOnStartTheory}
         // We pass the accentColor prop as the component expects it
         accentColor="#0070F3" 
       />
@@ -60,6 +62,13 @@ describe('TopicCard Component', () => {
     expect(mockOnStartQuiz).toHaveBeenCalledTimes(1);
   });
 
+  it('should call onStartTheory when the theory button is clicked', async () => {
+    const user = userEvent.setup();
+    const theoryBtn = screen.getByRole('button', { name: 'Start Theory Paper' });
+    await user.click(theoryBtn);
+    expect(mockOnStartTheory).toHaveBeenCalledTimes(1);
+  });
+
   it('should call onStudyFlashcards when the flashcards button is clicked', async () => {
     const user = userEvent.setup();
     const flashcardsButton = screen.getByRole('button', { name: 'Study Flashcards' });
@@ -72,5 +81,12 @@ describe('TopicCard Component', () => {
     const pdfButton = screen.getByRole('button', { name: 'Print Questions' });
     await user.click(pdfButton);
     expect(mockOnPrintQuestions).toHaveBeenCalledTimes(1);
+  });
+
+  it('exposes expected accessible button names', () => {
+    const names = screen.getAllByRole('button').map((el) => el.getAttribute('aria-label'));
+    expect(names).toEqual(
+      expect.arrayContaining(['Start Quiz', 'Start Theory Paper', 'Study Flashcards', 'Print Questions'])
+    );
   });
 });

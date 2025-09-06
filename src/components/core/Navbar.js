@@ -77,7 +77,7 @@ function NavBar({
                     ) : ( // User is logged in
                         <>
                             <Tooltip title="Account options">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>
+                                <IconButton aria-label="Account options" onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>
                                     <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32, fontSize: '1rem' }}>
                                         {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : <AccountCircleIcon />}
                                     </Avatar>

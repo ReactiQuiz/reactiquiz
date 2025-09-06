@@ -1,6 +1,6 @@
 // src/components/AppRoutes.js
 import React, { Suspense } from 'react';
-import { Routes, Route, Navigate, useOutletContext } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -47,7 +47,8 @@ const SubjectsTable = React.lazy(() => import('../components/admin/SubjectsTable
 
 // Helper for passing context to AccountPage
 const AccountPageWithContext = ({ context }) => {
-  return <AccountPage onOpenChangePasswordModal={context.onOpenChangePasswordModal} />;
+  const onOpen = context?.onOpenChangePasswordModal;
+  return <AccountPage onOpenChangePasswordModal={onOpen} />;
 };
 
 function AppRoutes() {

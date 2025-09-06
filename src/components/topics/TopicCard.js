@@ -36,12 +36,12 @@ function TopicCard({ topic, onStartQuiz, onStudyFlashcards, onPrintQuestions, on
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'space-around', p: 1 }}>
-        <Tooltip title="Start MCQ Quiz"><IconButton onClick={onStartQuiz} sx={{ color: accentColor }}><PlayCircleOutlineIcon /></IconButton></Tooltip>
+        <Tooltip title="Start MCQ Quiz"><IconButton aria-label="Start Quiz" onClick={onStartQuiz} sx={{ color: accentColor }}><PlayCircleOutlineIcon /></IconButton></Tooltip>
         {/* --- START OF CHANGE: Add new button --- */}
-        <Tooltip title="Start Theory Paper"><IconButton onClick={onStartTheory} sx={{ color: accentColor }}><EditNoteIcon /></IconButton></Tooltip>
+        <Tooltip title="Start Theory Paper"><IconButton aria-label="Start Theory Paper" onClick={onStartTheory} sx={{ color: accentColor }}><EditNoteIcon /></IconButton></Tooltip>
         {/* --- END OF CHANGE --- */}
-        <Tooltip title="Study Flashcards"><IconButton onClick={onStudyFlashcards} sx={{ color: accentColor }}><StyleIcon /></IconButton></Tooltip>
-        <Tooltip title="Print Questions"><IconButton onClick={onPrintQuestions} sx={{ color: accentColor }}><PictureAsPdfIcon /></IconButton></Tooltip>
+        <Tooltip title="Study Flashcards"><IconButton aria-label="Study Flashcards" onClick={onStudyFlashcards} sx={{ color: accentColor }}><StyleIcon /></IconButton></Tooltip>
+        <Tooltip title="Print Questions"><IconButton aria-label="Print Questions" onClick={onPrintQuestions} sx={{ color: accentColor }}><PictureAsPdfIcon /></IconButton></Tooltip>
       </CardActions>
     </Card>
   );

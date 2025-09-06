@@ -141,6 +141,28 @@ router.post('/submit', verifyToken, async (req, res) => {
     }
 });
 
+// GET /api/subjective/results - Fetches all subjective results for a user
+router.get('/results', verifyToken, async (req, res) => {
+    const userId = req.user.id;
+    const tx = await turso.transaction('read');
+    try {
+        const resultsRes = await tx.execute({
+            sql: `SELECT sr.id, sr.topic_id, sr.timestamp, sr.total_marks_awarded, sr.total_max_marks, sr.grading_status,
+                  qt.name as topicName, qt.class, qt.genre
+                  FROM subjective_results sr
+                  JOIN quiz_topics qt ON sr.topic_id = qt.id
+                  WHERE sr.user_id = ?
+                  ORDER BY sr.timestamp DESC`,
+            args: [userId]
+        });
+        await tx.commit();
+        res.json(resultsRes.rows);
+    } catch (e) {
+        if (tx) await tx.rollback();
+        res.status(500).json({ message: 'Could not fetch results.' });
+    }
+});
+
 // GET /api/subjective/results/:resultId - Fetches a graded paper
 router.get('/results/:resultId', verifyToken, async (req, res) => {
     const { resultId } = req.params;

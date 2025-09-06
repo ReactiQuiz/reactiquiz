@@ -27,7 +27,7 @@ function UserManagementPage() {
         });
         setUsers(response.data);
       } catch (err) {
-        if (err.name !== 'CanceledError') {
+        if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
             setError(err.response?.data?.message || 'Failed to fetch user data.');
         }
       } finally {

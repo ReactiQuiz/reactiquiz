@@ -11,7 +11,11 @@ const errorDebugger = debug('reactiquiz:error');
 const dbDebugger = debug('reactiquiz:db');
 const apiDebugger = debug('reactiquiz:api');
 
-debug.enable('reactiquiz:*');
+if (process.env.DEBUG) {
+    debug.enable(process.env.DEBUG);
+} else if (process.env.NODE_ENV !== 'production') {
+    debug.enable('reactiquiz:*');
+}
 
 function log(debuggerInstance, status, message, details = '') {
     if (!debuggerInstance.enabled) return;

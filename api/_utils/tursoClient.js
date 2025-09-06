@@ -7,7 +7,7 @@ const tursoConfig = {
 };
 
 if (!tursoConfig.url || !tursoConfig.authToken) {
-  console.error("FATAL: Turso database URL or Auth Token is not configured. Check environment variables.");
+  throw new Error('FATAL: Turso database URL or Auth Token is not configured.');
 }
 
 const turso = createClient(tursoConfig);

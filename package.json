@@ -39,7 +39,6 @@
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
-    "mysql2": "^3.10.1",
     "nodemailer": "^6.9.14",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
@@ -50,6 +49,7 @@
     "react-scripts": "5.0.1",
     "rehype-katex": "^7.0.0",
     "remark-math": "^6.0.0",
+    "uuid": "^9.0.1",
     "web-vitals": "^4.2.0"
   },
   "scripts": {
@@ -57,7 +57,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev:api": "nodemon api/index.js",
+    "dev:api": "nodemon api/server.js",
+    "start:api": "node api/server.js",
     "db:populate": "node populate-turso-from-json.js"
   },
   "eslintConfig": {

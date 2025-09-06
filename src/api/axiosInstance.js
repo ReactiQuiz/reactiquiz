@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: '/',
+  baseURL: process.env.REACT_APP_API_BASE_URL || '/',
+  timeout: 15000,
 });
 
 // Request Interceptor: To add the JWT to every outgoing request
@@ -27,10 +28,14 @@ apiClient.interceptors.response.use(
   (error) => {
     // If the server responds with 401 Unauthorized, the token is invalid/expired.
     if (error.response && error.response.status === 401) {
+      // Avoid redirect loop when already on auth routes
+      const isAuthRoute = window.location.pathname.startsWith('/login') || window.location.pathname.startsWith('/register');
       // --- START OF FIX: Only remove the token. AuthContext handles the user object. ---
       localStorage.removeItem('reactiquizToken');
       // --- END OF FIX ---
-      window.location.href = '/login';
+      if (!isAuthRoute) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

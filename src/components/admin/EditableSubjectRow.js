@@ -46,8 +46,8 @@ const EditableSubjectRow = ({
                         </Box>
                     </TableCell>
                     <TableCell align="right">
-                        <Tooltip title="Save Changes"><IconButton onClick={() => onSave(subject.id, editData)} color="primary"><SaveIcon /></IconButton></Tooltip>
-                        <Tooltip title="Cancel Edit"><IconButton onClick={onCancel}><CancelIcon /></IconButton></Tooltip>
+                        <Tooltip title="Save Changes"><IconButton aria-label="Save changes" onClick={() => onSave(subject.id, editData)} color="primary"><SaveIcon /></IconButton></Tooltip>
+                        <Tooltip title="Cancel Edit"><IconButton aria-label="Cancel edit" onClick={onCancel}><CancelIcon /></IconButton></Tooltip>
                     </TableCell>
                 </>
             ) : (
@@ -68,8 +68,8 @@ const EditableSubjectRow = ({
                         {/* Show edit/delete buttons only when global edit mode is on */}
                         {isGloballyEditing && (
                             <>
-                                <Tooltip title="Edit Row"><IconButton onClick={() => onEdit(subject.id)}><EditIcon /></IconButton></Tooltip>
-                                <Tooltip title="Delete Subject"><IconButton onClick={() => onDelete(subject.id)} color="error"><DeleteIcon /></IconButton></Tooltip>
+                                <Tooltip title="Edit Row"><IconButton aria-label="Edit row" onClick={() => onEdit(subject.id)}><EditIcon /></IconButton></Tooltip>
+                                <Tooltip title="Delete Subject"><IconButton aria-label="Delete subject" onClick={() => onDelete(subject.id)} color="error"><DeleteIcon /></IconButton></Tooltip>
                             </>
                         )}
                     </TableCell>

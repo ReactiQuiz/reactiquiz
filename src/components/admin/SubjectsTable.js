@@ -131,6 +131,7 @@ function SubjectsTable() {
                 <Typography variant="h6">Manage Subjects</Typography>
                 <Tooltip title={isEditMode ? "Finish Editing" : "Enable Editing"}>
                     <Button
+                        aria-pressed={isEditMode}
                         variant="outlined"
                         onClick={() => {
                             setIsEditMode(!isEditMode);
@@ -163,7 +164,7 @@ function SubjectsTable() {
                                 <TableRow key={i}><TableCell colSpan={7}><Skeleton /></TableCell></TableRow>
                             ))
                         ) : (
-                            subjects
+                            [...subjects]
                                 .sort((a, b) => a.displayOrder - b.displayOrder)
                                 .map((subject) => (
                                 <EditableSubjectRow

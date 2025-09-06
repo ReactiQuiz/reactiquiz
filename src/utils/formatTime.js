@@ -19,3 +19,23 @@ export const formatTime = (totalSeconds) => {
   }
   return `${paddedSeconds}s`;
 };
+
+/**
+ * Formats a date string or timestamp into a readable format
+ * @param {string|Date} dateInput - Date string or Date object
+ * @returns {string} Formatted date string
+ */
+export const formatDate = (dateInput) => {
+  if (!dateInput) return 'Unknown date';
+  
+  const date = new Date(dateInput);
+  if (isNaN(date.getTime())) return 'Invalid date';
+  
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};

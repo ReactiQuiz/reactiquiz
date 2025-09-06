@@ -34,7 +34,7 @@ function AdminSidebar({ drawerWidth, open, toggleDrawer }) {
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', opacity: open ? 1 : 0, transition: 'opacity 0.3s' }}>
           Admin Panel
         </Typography>
-        <IconButton onClick={toggleDrawer}>
+        <IconButton aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'} onClick={toggleDrawer}>
           {open ? <ChevronLeftIcon /> : <MenuIcon />}
         </IconButton>
       </Box>

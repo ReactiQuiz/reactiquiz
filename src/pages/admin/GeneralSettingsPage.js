@@ -4,7 +4,6 @@ import {
     Box, Paper, Typography, Divider, Grid, Alert, Skeleton
 } from '@mui/material';
 import apiClient from '../../api/axiosInstance'; // Use the configured Axios instance
-import { useNotifications } from '../../contexts/NotificationsContext'; // Import for notifications
 
 // --- Reusable StatBox component (Unchanged) ---
 function StatBox({ title, value, isLoading }) {
@@ -49,7 +48,7 @@ function GeneralSettingsPage() {
                 setStats(response.data);
             } catch (err) {
                 // 3. If the error was due to cancellation, we don't set an error state.
-                if (err.name !== 'CanceledError') {
+                if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
                     setError(err.response?.data?.message || 'An error occurred while fetching dashboard data.');
                 }
             } finally {

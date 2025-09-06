@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Box, Typography } from '@mui/material';
 
-// This is a simplified check. In a real app, you'd have a robust role system.
+// Prefer server-provided isAdmin flag; fallback to specific admin id if provided
 const ADMIN_USER_ID = process.env.REACT_APP_ADMIN_USER_ID;
 
 function AdminRoute({ children }) {
@@ -14,8 +14,8 @@ function AdminRoute({ children }) {
     return <Box>Loading...</Box>; // Or a spinner
   }
 
-  // Check if the logged-in user's ID matches the one from environment variables
-  const isAdmin = currentUser && currentUser.id === ADMIN_USER_ID;
+  // Prefer explicit isAdmin flag from the profile; fallback to ID check if configured
+  const isAdmin = Boolean(currentUser?.isAdmin) || (ADMIN_USER_ID ? currentUser?.id === ADMIN_USER_ID : false);
 
   if (!isAdmin) {
     // If not an admin, redirect them to the main dashboard or a "not found" page.
