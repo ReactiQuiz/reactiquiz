@@ -2,7 +2,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import CssBaseline from '@mui/material/CssBaseline';
 import { Analytics } from '@vercel/analytics/react';
 import 'katex/dist/katex.min.css';
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -24,7 +23,6 @@ root.render(
   <React.StrictMode>
     {/* --- WRAP APP WITH THE PROVIDER --- */}
     <QueryClientProvider client={queryClient}>
-      <CssBaseline />
       <App />
       <Analytics />
       <SpeedInsights />
