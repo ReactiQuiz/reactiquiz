@@ -2,22 +2,23 @@
 import { createTheme } from '@mui/material/styles';
 
 const QuantumDark = {
-  background: '#000000',
-  surface: '#121212',
-  primaryText: '#FAFAFA',
-  secondaryText: '#B0B0B0',
-  border: 'rgba(255, 255, 255, 0.30)',
+  background: '#0A0A0A',
+  surface: '#111111',
+  primaryText: '#F5F7FA',
+  secondaryText: '#C2C8D0',
+  border: 'rgba(255, 255, 255, 0.16)',
   accentBlue: '#0070F3',
-  accentGreen: '#50E3C2',
-  accentPink: '#f48fb1',
+  accentGreen: '#17C964',
+  accentPink: '#F31260',
+  accentOrange: '#F5A524',
 };
 
 const QuantumLight = {
-  background: '#F9FAFB',
+  background: '#F6F7F9',
   surface: '#FFFFFF',
-  primaryText: '#1A1A1A',
-  secondaryText: '#667085',
-  border: '#E5E7EB',
+  primaryText: '#0A0A0A',
+  secondaryText: '#475467',
+  border: '#E4E7EC',
 };
 
 export const darkTheme = createTheme({
@@ -30,12 +31,30 @@ export const darkTheme = createTheme({
     divider: QuantumDark.border,
     error: { main: '#F44336' },
     success: { main: QuantumDark.accentGreen },
+    warning: { main: QuantumDark.accentOrange },
   },
-  typography: { fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', h3: { fontWeight: 700 }, h4: { fontWeight: 700 }, h5: { fontWeight: 600 }, h6: { fontWeight: 600 } },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h3: { fontWeight: 800 },
+    h4: { fontWeight: 800 },
+    h5: { fontWeight: 700 },
+    h6: { fontWeight: 700 },
+    button: { fontWeight: 700 },
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: { backgroundColor: QuantumDark.background, color: QuantumDark.primaryText },
+        '*::-webkit-scrollbar': { width: 10, height: 10 },
+        '*::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(255,255,255,0.16)', borderRadius: 8 },
+      },
+    },
     MuiPaper: { styleOverrides: { root: { border: `1px solid ${QuantumDark.border}`, backgroundImage: 'none' } } },
-    MuiAppBar: { styleOverrides: { root: { backgroundColor: '#111111', boxShadow: 'none', borderBottom: `1px solid ${QuantumDark.border}` } } },
-    MuiButton: { styleOverrides: { root: { textTransform: 'none', fontWeight: 600, borderRadius: '8px' } } },
+    MuiAppBar: { styleOverrides: { root: { backgroundColor: '#0D0D0D', boxShadow: 'none', borderBottom: `1px solid ${QuantumDark.border}` } } },
+    MuiButton: { styleOverrides: { root: { textTransform: 'none', fontWeight: 700, borderRadius: '10px' } } },
+    MuiInputBase: { styleOverrides: { root: { backgroundColor: '#0F0F0F' } } },
+    MuiOutlinedInput: { styleOverrides: { notchedOutline: { borderColor: QuantumDark.border } } },
+    MuiDivider: { styleOverrides: { root: { borderColor: QuantumDark.border } } },
   },
 });
 
@@ -48,12 +67,27 @@ export const lightTheme = createTheme({
     text: { primary: QuantumLight.primaryText, secondary: QuantumLight.secondaryText },
     divider: QuantumLight.border,
     error: { main: '#D32F2F' },
-    success: { main: '#2E7D32' },
+    success: { main: '#1B5E20' },
+    warning: { main: '#B26A00' },
   },
-  typography: { fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', h3: { fontWeight: 700, color: QuantumLight.primaryText }, h4: { fontWeight: 700, color: QuantumLight.primaryText }, h5: { fontWeight: 600, color: QuantumLight.primaryText }, h6: { fontWeight: 600, color: QuantumLight.primaryText } },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h3: { fontWeight: 800, color: QuantumLight.primaryText },
+    h4: { fontWeight: 800, color: QuantumLight.primaryText },
+    h5: { fontWeight: 700, color: QuantumLight.primaryText },
+    h6: { fontWeight: 700, color: QuantumLight.primaryText },
+    button: { fontWeight: 700 },
+  },
   components: {
-    MuiPaper: { styleOverrides: { root: { border: `1px solid ${QuantumLight.border}`, boxShadow: '0 1px 2px rgba(0,0,0,0.05)' } } },
-    MuiAppBar: { styleOverrides: { root: { backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(8px)', boxShadow: 'none', borderBottom: `1px solid ${QuantumLight.border}`, color: QuantumLight.primaryText } } },
-    MuiButton: { styleOverrides: { root: { textTransform: 'none', fontWeight: 600, borderRadius: '8px', boxShadow: 'none' } } },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: { backgroundColor: QuantumLight.background, color: QuantumLight.primaryText },
+      },
+    },
+    MuiPaper: { styleOverrides: { root: { border: `1px solid ${QuantumLight.border}`, boxShadow: '0 1px 2px rgba(0,0,0,0.08)' } } },
+    MuiAppBar: { styleOverrides: { root: { backgroundColor: '#FFFFFF', boxShadow: 'none', borderBottom: `1px solid ${QuantumLight.border}`, color: QuantumLight.primaryText } } },
+    MuiButton: { styleOverrides: { root: { textTransform: 'none', fontWeight: 700, borderRadius: '10px', boxShadow: 'none' } } },
+    MuiOutlinedInput: { styleOverrides: { notchedOutline: { borderColor: QuantumLight.border } } },
+    MuiDivider: { styleOverrides: { root: { borderColor: QuantumLight.border } } },
   },
 });
