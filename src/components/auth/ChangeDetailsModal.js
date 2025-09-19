@@ -22,8 +22,7 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
     address: '',
     class: ''
   });
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [error] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -153,7 +152,6 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
             </Select>
           </FormControl>
           {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-          {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
         </Box>
       </DialogContent>
       <DialogActions sx={{ p: '16px 24px', justifyContent: 'space-between' }}>

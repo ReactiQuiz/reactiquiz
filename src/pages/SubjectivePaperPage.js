@@ -1,7 +1,7 @@
 // src/pages/SubjectivePaperPage.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, CircularProgress, Alert, Paper, Divider, Stack } from '@mui/material';
+import { Box, Typography, Button, CircularProgress, Alert, Paper, Stack } from '@mui/material';
 import apiClient from '../api/axiosInstance';
 import RichTextEditor from '../components/subjective/RichTextEditor';
 import { useNotifications } from '../contexts/NotificationsContext';

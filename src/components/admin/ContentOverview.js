@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Paper, Typography, Alert, Skeleton, Grid, Divider
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import apiClient from '../../api/axiosInstance';
 
 // Big stat card for the main totals

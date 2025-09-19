@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 // Prefer server-provided isAdmin flag; fallback to specific admin id if provided
 const ADMIN_USER_ID = process.env.REACT_APP_ADMIN_USER_ID;

@@ -1,6 +1,6 @@
 // src/components/auth/AuthBrandingPanel.js
 import React from 'react';
-import { Box, Typography, useTheme, Grid } from '@mui/material';
+import { Typography, useTheme, Grid } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
 function AuthBrandingPanel({ variant = 'login' }) {

@@ -11,7 +11,7 @@ import QuestionsPdfModal from '../components/quiz/QuestionsPdfModal';
 
 function SubjectTopicsPage() {
   const {
-    subjectKey, currentSubject, topics, isLoading, error,
+    subjectKey, currentSubject, isLoading, error,
     modalOpen, selectedTopicForQuiz, pdfModalOpen, selectedTopicForPdf,
     searchTerm, setSearchTerm, selectedClass, setSelectedClass,
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,

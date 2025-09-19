@@ -1,6 +1,6 @@
 // src/components/dashboard/OverallDifficultyCard.js
 import React from 'react';
-import { Paper, Typography, Box, Grid, LinearProgress, useTheme } from '@mui/material';
+import { Paper, Typography, Grid, LinearProgress, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
 const StatItem = ({ title, value, total, color }) => (

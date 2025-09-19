@@ -1,5 +1,5 @@
 // src/components/shared/EmptyState.js
-import { Box, Paper, Typography, Button } from '@mui/material';
+import { Paper, Typography, Button } from '@mui/material';
 
 function EmptyState({ IconComponent, title, message, actionText, onActionClick }) {
     return (

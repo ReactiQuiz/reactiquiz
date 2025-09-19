@@ -2,17 +2,15 @@
 import React, { useState } from 'react';
 import { Box, Typography, CircularProgress, Alert, useTheme, Tabs, Tab } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { useResults } from '../hooks/useResults';
 import HistoricalResultsList from '../components/results/HistoricalResultsList';
 import HistoricalResultDetailView from '../components/results/HistoricalResultDetailView';
-import CurrentResultView from '../components/results/CurrentResultView';
 import SubjectiveResultsList from '../components/results/SubjectiveResultsList';
 
 
 function ResultsPage() {
     const { resultId } = useParams();
-    const { currentUser } = useAuth();
+    // Removed unused currentUser
     const navigate = useNavigate();
     const theme = useTheme();
     const [tabValue, setTabValue] = useState(0);

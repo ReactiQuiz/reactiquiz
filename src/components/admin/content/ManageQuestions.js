@@ -1,6 +1,6 @@
 // src/components/admin/content/ManageQuestions.js
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+// Removed unused Box import
 import TopicSummaryList from './TopicSummaryList';
 import QuestionDetailView from './QuestionDetailView';
 

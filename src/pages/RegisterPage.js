@@ -1,6 +1,6 @@
 // src/pages/RegisterPage.js
 import { useState } from 'react';
-import { Box, Grid, Typography, useTheme, Alert, TextField, Button, Link as MuiLink, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material'; // <-- Add FormControl etc.
+import { Box, Grid, Typography, Alert, TextField, Button, Link as MuiLink, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
@@ -9,7 +9,7 @@ import { useNotifications } from '../contexts/NotificationsContext';
 const CLASS_OPTIONS = ['6', '7', '8', '9', '10', '11', '12']; // Define options
 
 function RegisterPage() {
-    const theme = useTheme();
+    // Removed unused theme
     const navigate = useNavigate();
     const { signUp } = useAuth();
 
@@ -23,7 +23,7 @@ function RegisterPage() {
     const [userClass, setUserClass] = useState(''); // Default to empty
     // --- END OF CHANGES ---
     const { addNotification } = useNotifications();
-    const [error, setError] = useState(''); // Keep for local form errors
+    const [error] = useState(''); // Keep for local form errors
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleRegister = async (event) => {

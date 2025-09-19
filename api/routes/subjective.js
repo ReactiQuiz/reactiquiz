@@ -7,8 +7,12 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// Guard: create model only when key is present to avoid runtime throws
+let gradingModel = null;
+if (process.env.GEMINI_API_KEY) {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+}
 
 // This is the grading prompt template.
 const gradingPrompt = `
@@ -56,6 +60,10 @@ router.post('/submit', verifyToken, async (req, res) => {
     const { topicId, answers } = req.body;
     const userId = req.user.id;
     const resultId = uuidv4();
+
+    if (!gradingModel) {
+        return res.status(503).json({ message: 'AI grading is temporarily unavailable. Please try again later.' });
+    }
 
     const tx = await turso.transaction('write');
     try {

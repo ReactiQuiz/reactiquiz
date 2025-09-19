@@ -31,7 +31,8 @@ const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, difficultyR
             sql: `
                 SELECT q.* FROM questions q
                 JOIN quiz_topics t ON q.topicId = t.id
-                WHERE t.subject = ? 
+                JOIN subjects s ON t.subject_id = s.id
+                WHERE s.subjectKey = ? 
                 AND t.class = ?
                 AND q.difficulty BETWEEN ? AND ?;
             `,

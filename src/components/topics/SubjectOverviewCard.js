@@ -1,5 +1,5 @@
 // src/components/topics/SubjectOverviewCard.js
-import { Card, CardContent, Typography, CardActions, Button, Box, useTheme } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button, useTheme } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { getIconComponent } from '../../utils/getIconComponent';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';

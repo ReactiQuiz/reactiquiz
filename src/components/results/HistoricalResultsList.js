@@ -2,7 +2,6 @@
 import React from 'react';
 import { Box, Typography, Paper, Button, Divider, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import HistoricalResultItem from './HistoricalResultItem';
 // --- START OF CHANGE: Import the EmptyState component ---

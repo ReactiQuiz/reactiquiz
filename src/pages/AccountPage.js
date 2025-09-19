@@ -5,7 +5,6 @@ import { useAccount } from '../hooks/useAccount';
 import ChangeDetailsModal from '../components/auth/ChangeDetailsModal';
 import UserProfileCard from '../components/account/UserProfileCard';
 import AccountManagementActions from '../components/account/AccountManagementActions';
-import AccountPageSkeleton from '../components/account/AccountPageSkeleton';
 
 function AccountPage({ onOpenChangePasswordModal }) {
   const theme = useTheme();

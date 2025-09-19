@@ -1,5 +1,5 @@
 // src/components/results/QuizResultSummary.js
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Typography, Paper, Divider, Chip, Box, useTheme, Grid, LinearProgress,
 } from '@mui/material';
@@ -18,34 +18,37 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
 
   const [animatedScore, setAnimatedScore] = useState(0);
   const [animatedPercentage, setAnimatedPercentage] = useState(0);
-  const scoreAnimationRef = useRef();
-  const percentageAnimationRef = useRef();
+  // Local animation cancel handlers returned by the animator
+  let cancelScoreAnimation = () => {};
+  let cancelPercentageAnimation = () => {};
 
   useEffect(() => {
     if (score === undefined || percentage === undefined) return;
     const scoreTarget = Math.max(0, score);
     const percentageTarget = Math.max(0, Math.min(100, percentage));
     const animationDuration = 1200;
-    const animateValue = (start, end, duration, setter, ref) => {
+    const animateValue = (start, end, duration, setter) => {
         let startTime = null;
+        let rafId = null;
         const step = (timestamp) => {
             if (!startTime) startTime = timestamp;
             const progress = Math.min((timestamp - startTime) / duration, 1);
             setter(Math.floor(progress * (end - start) + start));
-            if (progress < 1) ref.current = requestAnimationFrame(step);
+            if (progress < 1) rafId = requestAnimationFrame(step);
             else setter(end);
         };
-        ref.current = requestAnimationFrame(step);
+        rafId = requestAnimationFrame(step);
+        return () => { if (rafId) cancelAnimationFrame(rafId); };
     };
-    
-    cancelAnimationFrame(scoreAnimationRef.current);
-    cancelAnimationFrame(percentageAnimationRef.current);
-    animateValue(0, scoreTarget, animationDuration, setAnimatedScore, scoreAnimationRef);
-    animateValue(0, percentageTarget, animationDuration, setAnimatedPercentage, percentageAnimationRef);
+
+    cancelScoreAnimation();
+    cancelPercentageAnimation();
+    cancelScoreAnimation = animateValue(0, scoreTarget, animationDuration, setAnimatedScore);
+    cancelPercentageAnimation = animateValue(0, percentageTarget, animationDuration, setAnimatedPercentage);
 
     return () => {
-        cancelAnimationFrame(scoreAnimationRef.current);
-        cancelAnimationFrame(percentageAnimationRef.current);
+        cancelScoreAnimation();
+        cancelPercentageAnimation();
     };
   }, [score, percentage]);
 

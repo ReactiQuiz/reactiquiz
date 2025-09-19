@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box, Typography, Button, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Skeleton, TextField, IconButton, Tooltip, CircularProgress,
-  TablePagination, Alert
+  TableHead, TableRow, Skeleton, TextField, IconButton, CircularProgress,
+  TablePagination
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
@@ -27,7 +27,6 @@ function QuestionDetailView({ topic, onBack }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5); // Start with fewer rows for questions
   const { addNotification } = useNotifications();
@@ -48,11 +47,12 @@ function QuestionDetailView({ topic, onBack }) {
       setQuestions(parsedQuestions);
       setTotalQuestions(response.data.total);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to fetch questions.');
+      // Non-fatal: show a generic notification
+      addNotification(err.response?.data?.message || 'Failed to fetch questions.', 'error');
     } finally {
       setIsLoading(false);
     }
-  }, [topic.id, page, rowsPerPage]);
+  }, [topic.id, page, rowsPerPage, addNotification]);
 
   useEffect(() => {
     fetchQuestions();

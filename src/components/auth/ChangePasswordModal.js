@@ -1,13 +1,12 @@
 // src/components/auth/ChangePasswordModal.js
 import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, useTheme, CircularProgress } from '@mui/material';
-import { darken } from '@mui/material/styles';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, CircularProgress } from '@mui/material';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import apiClient from '../../api/axiosInstance';
 import { useNotifications } from '../../contexts/NotificationsContext';
 
 function ChangePasswordModal({ open, onClose }) {
-  const theme = useTheme();
+  // Removed unused theme
   const { addNotification } = useNotifications();
 
   // --- START OF FIX: Re-added the missing state and handlers ---

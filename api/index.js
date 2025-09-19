@@ -1,6 +1,15 @@
 // api/index.js
 const path = require('path'); // <-- Import the 'path' module
 
+// Load env vars from .env early in non-production so checks below see them
+if (process.env.NODE_ENV !== 'production') {
+    try {
+        require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+    } catch (e) {
+        // noop: dotenv is a dev dependency; absence should not crash prod builds
+    }
+}
+
 if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process.env.JWT_SECRET) {
     console.error("\n\n\x1b[31m%s\x1b[0m", "==================== FATAL ERROR ====================");
     console.error("\x1b[33m%s\x1b[0m", "Missing essential environment variables (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, JWT_SECRET).");
@@ -9,12 +18,6 @@ if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process
     console.error("\x1b[31m%s\x1b[0m", "=====================================================\n\n");
     // Prevent the server from starting if critical variables are missing in any environment
     process.exit(1);
-}
-
-// This line is for local development only, to load environment variables
-if (process.env.NODE_ENV !== 'production') {
-    // Use path.resolve to ensure the .env file is found correctly from the project root
-    require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 }
 
 const express = require('express');

@@ -7,11 +7,7 @@ import { useSubjects } from './useSubjects'; // We will use this to get subject 
 import { useTopics } from '../contexts/TopicsContext'; // <-- Import the new hook
 import { useNotifications } from '../contexts/NotificationsContext';
 
-const fetchQuizBySessionId = async (sessionId) => {
-  if (!sessionId) return null;
-  const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
-  return data;
-};
+// Removed unused fetchQuizBySessionId helper
 
 export const useSubjectTopics = () => {
   const { subjectKey } = useParams();

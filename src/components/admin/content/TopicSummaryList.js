@@ -1,8 +1,8 @@
 // src/components/admin/content/TopicSummaryList.js
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box, Typography, Button, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Skeleton, LinearProgress, Tooltip
+  TableHead, TableRow, Skeleton, Tooltip
 } from '@mui/material';
 import apiClient from '../../../api/axiosInstance';
 import { useNotifications } from '../../../contexts/NotificationsContext';

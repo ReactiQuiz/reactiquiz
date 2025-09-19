@@ -1,5 +1,5 @@
 // src/pages/DashboardPage.js
-import { Box, Typography, Paper, Alert, Grid, Skeleton, Stack, Button } from '@mui/material';
+import { Box, Typography, Paper, Alert, Grid, Skeleton, Button } from '@mui/material';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { useAuth } from '../contexts/AuthContext';

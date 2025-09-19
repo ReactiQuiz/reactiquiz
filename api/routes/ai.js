@@ -7,8 +7,11 @@ const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MISSING_KEY');
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+let model = null;
+if (process.env.GEMINI_API_KEY) {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+}
 
 const summarizeResults = (results) => {
     if (!results || results.length === 0) return "The user has not taken any quizzes yet.";
@@ -21,8 +24,12 @@ const summarizeResults = (results) => {
 
 router.post('/chat', verifyToken, async (req, res) => {
     const user = req.user;
-    const { history, message } = req.body;
+    const { history = [], message } = req.body;
     logApi('POST', '/api/ai/chat', `User: ${user.username}`);
+
+    if (!model) {
+        return res.status(503).json({ error: 'AI service is not configured.' });
+    }
 
     let tx;
     try {

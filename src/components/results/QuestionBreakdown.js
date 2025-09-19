@@ -1,5 +1,5 @@
 // src/components/results/QuestionBreakdown.js
-import { Typography, Paper, List, ListItem, ListItemText, ListItemIcon, Divider, useTheme, alpha, Chip, Box } from '@mui/material';
+import { Typography, Paper, List, ListItem, ListItemText, ListItemIcon, useTheme, alpha, Chip, Box } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';

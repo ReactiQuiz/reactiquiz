@@ -2,7 +2,7 @@
 import React, { forwardRef } from 'react';
 import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { Line } from 'react-chartjs-2';
-import { parseISO, format, isValid } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 import { alpha } from '@mui/material/styles';
 
 const AverageScoreTrendChart = forwardRef(({ trendData, title }, ref) => {

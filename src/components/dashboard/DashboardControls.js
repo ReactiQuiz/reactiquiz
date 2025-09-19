@@ -1,6 +1,6 @@
 // src/components/dashboard/DashboardControls.js
 import React from 'react';
-import { Paper, Box, Typography, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
+import { Paper, Typography, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 
 const timeFrequencyOptions = [
     { value: 7, label: 'Last 7 Days' },

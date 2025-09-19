@@ -1,6 +1,6 @@
 // src/components/results/HistoricalResultDetailView.js
 import React from 'react';
-import { Box, Button, Paper, Alert } from '@mui/material';
+import { Button, Paper, Alert } from '@mui/material';
 import QuizResultSummary from './QuizResultSummary';
 import QuestionBreakdown from './QuestionBreakdown';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';

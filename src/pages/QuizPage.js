@@ -3,7 +3,6 @@ import { Box, Typography, Button, CircularProgress, Alert, Paper } from '@mui/ma
 import { useNavigate } from 'react-router-dom';
 import { darken, useTheme } from '@mui/material/styles';
 import { useQuiz } from '../hooks/useQuiz';
-import { useAuth } from '../contexts/AuthContext';
 import { useSubjectColors } from '../contexts/SubjectColorsContext';
 import QuizHeader from '../components/quiz/QuizHeader';
 import QuizQuestionList from '../components/quiz/QuizQuestionList';
@@ -11,7 +10,6 @@ import QuizQuestionList from '../components/quiz/QuizQuestionList';
 function QuizPage() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
   const { getColor } = useSubjectColors();
   
   const {

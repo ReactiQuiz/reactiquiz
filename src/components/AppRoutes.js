@@ -42,8 +42,7 @@ const SubjectiveResultPage = React.lazy(() => import('../pages/SubjectiveResultP
 const GeneralSettingsPage = React.lazy(() => import('../pages/admin/GeneralSettingsPage'));
 const UserManagementPage = React.lazy(() => import('../pages/admin/UserManagementPage'));
 const ContentManagementPage = React.lazy(() => import('../pages/admin/ContentManagementPage'));
-const ContentOverview = React.lazy(() => import('../components/admin/ContentOverview'));
-const SubjectsTable = React.lazy(() => import('../components/admin/SubjectsTable'));
+// Removed unused lazy imports
 
 // Helper for passing context to AccountPage
 const AccountPageWithContext = ({ context }) => {
