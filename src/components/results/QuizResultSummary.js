@@ -18,9 +18,7 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
 
   const [animatedScore, setAnimatedScore] = useState(0);
   const [animatedPercentage, setAnimatedPercentage] = useState(0);
-  // Local animation cancel handlers returned by the animator
-  let cancelScoreAnimation = () => {};
-  let cancelPercentageAnimation = () => {};
+  // Animation runs are managed entirely inside the effect
 
   useEffect(() => {
     if (score === undefined || percentage === undefined) return;
@@ -41,10 +39,8 @@ function QuizResultSummary({ quizResult, quizTitle, accentColor }) {
         return () => { if (rafId) cancelAnimationFrame(rafId); };
     };
 
-    cancelScoreAnimation();
-    cancelPercentageAnimation();
-    cancelScoreAnimation = animateValue(0, scoreTarget, animationDuration, setAnimatedScore);
-    cancelPercentageAnimation = animateValue(0, percentageTarget, animationDuration, setAnimatedPercentage);
+    const cancelScoreAnimation = animateValue(0, scoreTarget, animationDuration, setAnimatedScore);
+    const cancelPercentageAnimation = animateValue(0, percentageTarget, animationDuration, setAnimatedPercentage);
 
     return () => {
         cancelScoreAnimation();
