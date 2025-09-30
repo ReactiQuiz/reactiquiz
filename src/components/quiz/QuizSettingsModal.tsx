@@ -1,0 +1,128 @@
+// src/components/quiz/QuizSettingsModal.tsx
+import React, { useState, useEffect } from 'react';
+import {
+  Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl,
+  InputLabel, Select, MenuItem, TextField, useTheme, CircularProgress, Box, Divider
+} from '@mui/material';
+import { darken } from '@mui/material/styles';
+import { Topic } from '../../types';
+
+interface QuizSettingsModalProps {
+  open: boolean;
+  onClose: () => void;
+  onStartQuiz: (settings: { difficulty: string; timeLimit: number }) => void;
+  topic: Topic | null;
+  accentColor: string;
+}
+
+const QuizSettingsModal: React.FC<QuizSettingsModalProps> = ({ 
+  open, 
+  onClose, 
+  onStartQuiz, 
+  topic, 
+  accentColor 
+}) => {
+  const theme = useTheme();
+  const [difficulty, setDifficulty] = useState<string>('medium');
+  const [timeLimit, setTimeLimit] = useState<number>(30);
+  const [timeLimitError, setTimeLimitError] = useState<string>('');
+  
+  const effectiveAccentColor = accentColor || theme.palette.primary.main;
+
+  useEffect(() => {
+    if (open) {
+      setDifficulty('medium');
+      setTimeLimit(30);
+      setTimeLimitError('');
+    }
+  }, [open]);
+
+  const handleTimeLimitChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = event.target.value;
+    const maxTime = 180;
+    if (value === '' || (/^\d+$/.test(value) && Number(value) >= 5 && Number(value) <= maxTime)) {
+      setTimeLimit(value === '' ? 0 : Number(value));
+      setTimeLimitError('');
+    } else {
+      setTimeLimitError(`Time limit must be between 5 and ${maxTime} minutes`);
+    }
+  };
+
+  const handleSubmit = (): void => {
+    if (timeLimit >= 5 && timeLimit <= 180) {
+      onStartQuiz({ difficulty, timeLimit });
+    }
+  };
+
+  const isFormValid = timeLimit >= 5 && timeLimit <= 180;
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
+        <Box sx={{ fontWeight: 'bold', fontSize: '1.5rem', color: effectiveAccentColor }}>
+          Quiz Settings
+        </Box>
+        {topic && (
+          <Box sx={{ mt: 1, color: 'text.secondary' }}>
+            {topic.name}
+          </Box>
+        )}
+      </DialogTitle>
+      
+      <Divider />
+      
+      <DialogContent sx={{ pt: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <FormControl fullWidth>
+            <InputLabel>Difficulty Level</InputLabel>
+            <Select
+              value={difficulty}
+              label="Difficulty Level"
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
+              <MenuItem value="easy">Easy</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="hard">Hard</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            fullWidth
+            label="Time Limit (minutes)"
+            type="number"
+            value={timeLimit}
+            onChange={handleTimeLimitChange}
+            error={!!timeLimitError}
+            helperText={timeLimitError || 'Enter time limit between 5-180 minutes'}
+            inputProps={{ min: 5, max: 180 }}
+          />
+        </Box>
+      </DialogContent>
+
+      <Divider />
+
+      <DialogActions sx={{ p: 3, gap: 2 }}>
+        <Button onClick={onClose} variant="outlined" sx={{ minWidth: 100 }}>
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          disabled={!isFormValid}
+          sx={{
+            backgroundColor: effectiveAccentColor,
+            color: theme.palette.getContrastText(effectiveAccentColor),
+            '&:hover': {
+              backgroundColor: darken(effectiveAccentColor, 0.1),
+            },
+            minWidth: 120,
+          }}
+        >
+          Start Quiz
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default QuizSettingsModal;
