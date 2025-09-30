@@ -16,7 +16,7 @@ function NotificationManager() {
     }
   }, [notifications, currentNotification]);
 
-  const handleClose = (event, reason) => {
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }

@@ -10,7 +10,7 @@ const ScrollToTop: React.FC = () => {
     document.documentElement.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'instant', // or 'smooth'
+      behavior: 'auto' as ScrollBehavior, // or 'smooth'
     });
   }, [pathname]); // This effect will run every time the route changes
 

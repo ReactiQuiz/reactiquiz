@@ -1,11 +1,11 @@
 // src/contexts/AppProviders.js
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './AuthContext';
-import { AppThemeProvider } from './ThemeContext';
-import { SubjectColorsProvider } from './SubjectColorsContext';
-import { TopicsProvider } from './TopicsContext';
-import { NotificationsProvider } from './NotificationsContext'; // Import our new provider
+import { AuthProvider } from '../../contexts/AuthContext';
+import { AppThemeProvider } from '../../contexts/ThemeContext';
+import { SubjectColorsProvider } from '../../contexts/SubjectColorsContext';
+import { TopicsProvider } from '../../contexts/TopicsContext';
+import { NotificationsProvider } from '../../contexts/NotificationsContext'; // Import our new provider
 
 /**
  * This component composes all the global context providers for the application.
