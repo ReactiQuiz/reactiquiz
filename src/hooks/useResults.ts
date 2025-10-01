@@ -6,19 +6,14 @@ import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
 import { parseQuestionOptions } from '../utils/quizUtils';
 import { useTopics } from '../contexts/TopicsContext';
-import { UseResultsReturn, QuizResult, Question, Topic } from '../types';
+import { UseResultsReturn, QuizResult, Question } from '../types';
 
 const fetchAllResults = async (): Promise<QuizResult[]> => {
   const { data } = await apiClient.get<QuizResult[]>('/api/results');
   return data || [];
 };
 
-const fetchQuestionsByIds = async (ids: string[]): Promise<Question[]> => {
-  if (!ids || ids.length === 0) return [];
-  const idString = ids.join(',');
-  const { data } = await apiClient.get<Question[]>(`/api/questions?ids=${idString}`);
-  return parseQuestionOptions(data || []);
-};
+// fetchQuestionsByIds was unused; removed to satisfy linter
 
 export const useResults = (): UseResultsReturn => {
   const { resultId } = useParams<{ resultId?: string }>();

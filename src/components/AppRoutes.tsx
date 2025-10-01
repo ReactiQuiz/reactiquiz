@@ -1,7 +1,6 @@
 // src/components/AppRoutes.tsx
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Box } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 
 // Core Route & Layout Components

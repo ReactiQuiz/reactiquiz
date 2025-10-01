@@ -92,9 +92,7 @@ export const useFlashcards = (): UseFlashcardsReturn => {
     }
   };
 
-  const currentCardData = useMemo(() => {
-    return flashcards.length > 0 ? flashcards[currentCardIndex] : null;
-  }, [flashcards, currentCardIndex]);
+  // currentCardData was unused; removed to satisfy linter
 
   return {
     topicId: topicId || '',

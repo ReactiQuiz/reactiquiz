@@ -1,6 +1,6 @@
 // src/components/quiz/QuizHeader.tsx
 import React from 'react';
-import { Box, Typography, useTheme, alpha, Alert, Button } from '@mui/material';
+import { Box, Typography, useTheme, alpha, Button } from '@mui/material';
 import { formatTime } from '../../utils/formatTime';
 import ReplayIcon from '@mui/icons-material/Replay';
 

@@ -18,7 +18,7 @@ const SubjectTopicsPage: React.FC = () => {
     selectedGenre, setSelectedGenre, availableClasses, availableGenres,
     filteredTopics, handleOpenQuizModal, handleCloseQuizModal,
     handleStartQuizWithSettings, handleStudyFlashcards, handleOpenPdfModal, handleClosePdfModal,
-    createSessionMutation, handleStartTheoryPaper
+    handleStartTheoryPaper
   } = useSubjectTopics();
 
   const { getColor } = useSubjectColors();

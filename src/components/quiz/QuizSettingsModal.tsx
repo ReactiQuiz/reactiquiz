@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl,
-  InputLabel, Select, MenuItem, TextField, useTheme, CircularProgress, Box, Divider
+  InputLabel, Select, MenuItem, TextField, useTheme, Box, Divider
 } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import { Topic } from '../../types';

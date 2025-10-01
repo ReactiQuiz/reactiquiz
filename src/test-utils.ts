@@ -32,7 +32,7 @@ export const mockAdminUser: User = {
 };
 
 interface TestProvidersProps {
-  children: ReactNode;
+  children?: ReactNode;
   queryClient?: QueryClient;
   initialEntries?: string[];
 }
@@ -41,19 +41,16 @@ const createTestQueryClient = () => new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
-      cacheTime: 0,
+      gcTime: 0,
       staleTime: 0,
     },
     mutations: {
       retry: false,
     },
   },
-  logger: {
-    log: () => {},
-    warn: () => {},
-    error: () => {},
-  },
 });
+
+// Silence logs in tests by overriding console methods if needed
 
 const TestProviders: React.FC<TestProvidersProps> = ({ 
   children, 

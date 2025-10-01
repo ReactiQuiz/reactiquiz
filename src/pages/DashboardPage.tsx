@@ -69,11 +69,8 @@ const DashboardPage: React.FC = () => {
         {/* --- Left Column: KPI Cards --- */}
         <Grid item xs={12} md={5}>
           <KpiCards
-            totalQuizzes={processedStats!.totalQuizzes}
-            averageScore={processedStats!.overallAverageScore}
-            subjectBreakdowns={processedStats!.subjectBreakdowns}
-            isFiltered={selectedSubject !== 'all'}
-            overallQuestionStats={processedStats!.overallQuestionStats}
+            stats={processedStats!}
+            isLoading={false}
           />
         </Grid>
 

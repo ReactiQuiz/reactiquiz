@@ -1,10 +1,14 @@
-// src/components/dashboard/SubjectAveragesChart.js
+// src/components/dashboard/SubjectAveragesChart.tsx
 import React, { forwardRef } from 'react'; // <-- 1. Import forwardRef
 import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 
+type ChartData = { labels: string[]; datasets: Array<{ label: string; data: number[]; backgroundColor?: string[]; borderColor?: string; borderWidth?: number; }> };
+type ChartOptions = any;
+
 // 2. Wrap the component definition in forwardRef
-const SubjectAveragesChart = forwardRef(({ chartData, chartOptions }, ref) => {
+const SubjectAveragesChart = forwardRef<HTMLDivElement, { chartData?: ChartData; chartOptions?: ChartOptions }>(
+  ({ chartData, chartOptions }, ref) => {
   const theme = useTheme();
 
   return (

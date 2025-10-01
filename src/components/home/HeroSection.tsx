@@ -1,5 +1,5 @@
 // src/components/home/HeroSection.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography, Container, useTheme, useMediaQuery } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { motion, useAnimation } from 'framer-motion';

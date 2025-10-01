@@ -1,10 +1,7 @@
 // src/components/results/HistoricalResultDetailView.tsx
 import React from 'react';
 import { Button, Paper, Alert } from '@mui/material';
-import QuizResultSummary from './QuizResultSummary';
-import QuestionBreakdown from './QuestionBreakdown';
-import { useSubjectColors } from '../../contexts/SubjectColorsContext';
-import { QuizResult } from '../../types';
+// Unused imports removed
 
 interface HistoricalResultDetailViewProps {
   resultId: string;
@@ -17,7 +14,7 @@ const HistoricalResultDetailView: React.FC<HistoricalResultDetailViewProps> = ({
   onBack, 
   accentColor 
 }) => {
-  const { getColor } = useSubjectColors();
+  // No subject color usage currently
   
   // For now, we'll show a placeholder since we need to fetch the data
   // This should be updated to use the resultId to fetch the data

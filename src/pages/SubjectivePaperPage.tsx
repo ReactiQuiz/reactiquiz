@@ -94,6 +94,7 @@ function SubjectivePaperPage() {
             <Box sx={{ p: 2 }}>
                 <Typography sx={{ mb: 2 }}>{q.question_text}</Typography>
                 <RichTextEditor
+                    content={userAnswers[q.id]}
                     onUpdate={(content) => handleAnswerUpdate(q.id, content)}
                 />
             </Box>

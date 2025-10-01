@@ -142,12 +142,15 @@ export const generateQuestionsPdf = async (topic: Topic, settings: {
         doc.setFontSize(16); doc.setFont('helvetica', 'bold');
         doc.text("Answer Key", 15, 20);
         const answerKey = questions.map((q, index) => {
-            const correctAnswer = Array.isArray(q.options) ? 
-                q.options.find((opt, optIndex) => (typeof opt === 'object' ? opt.id : String.fromCharCode(65 + optIndex)) === q.correctOptionId) : 
-                null;
-            const answerText = correctAnswer ? 
-                `(${typeof correctAnswer === 'object' ? correctAnswer.id : String.fromCharCode(65 + q.options.findIndex(opt => opt === correctAnswer))}) ${typeof correctAnswer === 'object' ? correctAnswer.text : correctAnswer}` : 
-                'Answer not found.';
+            const correctAnswer = Array.isArray(q.options)
+                ? (q.options as Array<string | { id: string; text: string }>).find((opt: string | { id: string; text: string }, optIndex: number) => {
+                    const optId = typeof opt === 'object' ? opt.id : String.fromCharCode(65 + optIndex);
+                    return optId === (q as any).correctOptionId;
+                  })
+                : null;
+            const answerText = correctAnswer
+                ? `(${typeof correctAnswer === 'object' ? correctAnswer.id : String.fromCharCode(65 + (q.options as Array<string | { id: string; text: string }>).findIndex((opt) => opt === correctAnswer))}) ${typeof correctAnswer === 'object' ? correctAnswer.text : correctAnswer}`
+                : 'Answer not found.';
             return {
                 q: `Q${index + 1}`,
                 ans: sanitizeKatexForPdfText(answerText),

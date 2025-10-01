@@ -99,21 +99,18 @@ describe('useDashboard Hook', () => {
   beforeEach(() => {
     queryClient = new QueryClient({
       defaultOptions: {
-        queries: {
+    queries: {
           retry: false,
-          cacheTime: 0,
+          gcTime: 0,
           staleTime: 0,
         },
         mutations: {
           retry: false,
         },
       },
-      logger: {
-        log: () => {},
-        warn: () => {},
-        error: () => {},
-      },
     });
+
+    // logger silenced in tests via test-utils if necessary
 
     // Setup default mock responses
     mockApiClient.get.mockImplementation((url: string) => {

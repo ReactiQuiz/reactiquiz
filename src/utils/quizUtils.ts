@@ -94,3 +94,18 @@ export const isQuizSessionActive = (startTime: string, timeLimit: number): boole
   const elapsedMinutes = (now - start) / (1000 * 60);
   return elapsedMinutes < timeLimit;
 };
+
+/**
+ * Formats display topic name depending on context (challenge vs normal quiz).
+ */
+export const formatDisplayTopicName = (
+  topicId?: string | number | null,
+  fallbackTopicName?: string | null,
+  isChallenge?: boolean,
+  challengeDetails?: any
+): string => {
+  if (isChallenge && challengeDetails) {
+    return challengeDetails.topic_name || fallbackTopicName || String(topicId || 'Unknown Topic');
+  }
+  return fallbackTopicName || String(topicId || 'Unknown Topic');
+};

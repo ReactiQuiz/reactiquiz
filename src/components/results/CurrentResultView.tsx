@@ -125,18 +125,19 @@ const navigate = useNavigate();
         </Paper>
       )}
 
-      {detailedResults && detailedResults.length > 0 &&
-        <QuestionBreakdown detailedQuestionsToDisplay={detailedResults} />
-      }
+      {detailedResults && detailedResults.length > 0 && (
+        <QuestionBreakdown detailedQuestions={detailedResults} />
+      )}
       <ResultsActionButtons
+        onBackToList={undefined}
         onNavigateHome={onNavigateHome}
         onViewHistory={onViewHistory}
-        showBackToListButton={false} // Not applicable for current result view
+        showBackToListButton={false}
         showViewHistoryButton={true}
         accentColor={effectiveAccentColor}
-        onChallengeFriend={() => onOpenChallengeSetup('current')} // Pass 'current' identifier
-        showChallengeButton={currentUser && !isChallenge && originalQuestionsForDisplay && originalQuestionsForDisplay.length > 0}
-        // Delete button not typically shown for current result immediately after quiz
+        showDeleteButton={false}
+        onDeleteClick={undefined}
+        deleteDisabled={true}
       />
     </Box>
   );

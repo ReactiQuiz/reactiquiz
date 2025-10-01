@@ -68,14 +68,14 @@ function SubjectiveResultsList() {
   }).sort((a, b) => {
     switch (sortOrder) {
       case 'date_asc':
-        return new Date(a.timestamp) - new Date(b.timestamp);
+        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       case 'score_desc':
         return b.total_marks_awarded - a.total_marks_awarded;
       case 'score_asc':
         return a.total_marks_awarded - b.total_marks_awarded;
       case 'date_desc':
       default:
-        return new Date(b.timestamp) - new Date(a.timestamp);
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
     }
   });
 

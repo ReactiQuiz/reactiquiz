@@ -1,10 +1,28 @@
-// src/components/dashboard/KpiCards.js
+// src/components/dashboard/KpiCards.tsx
 import React from 'react';
 import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, alpha } from '@mui/material';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
-const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats }) => {
+type SubjectBreakdown = {
+    name: string;
+    count: number;
+    average: number;
+    totalCorrect: number;
+    totalQuestions: number;
+};
+
+type DashboardStats = {
+    totalQuizzes: number;
+    overallAverageScore: number;
+    subjectBreakdowns: Record<string, SubjectBreakdown>;
+    overallQuestionStats: { total: number; correct: number; accuracy: number };
+};
+
+type ChartBreakdown = { name: string; count: number };
+type ListBreakdown = { name: string; average: number; totalQuestions: number; totalCorrect: number };
+
+const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats }: { value: string; caption: string; breakdownData: Record<string, any>; overallQuestionStats?: { total: number; correct: number; accuracy: number } }) => {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
 
@@ -77,27 +95,50 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
     );
 };
 
-function KpiCards({ totalQuizzes, averageScore, subjectBreakdowns, isFiltered, overallQuestionStats }) {
+function KpiCards({ stats, isLoading }: { stats: DashboardStats | null; isLoading: boolean }) {
     const { getColor } = useSubjectColors();
 
-    // Handle null/undefined subjectBreakdowns
-    const safeSubjectBreakdowns = subjectBreakdowns || {};
+    // Loading or empty state handling
+    if (isLoading) {
+        return (
+            <Stack spacing={2}>
+                <Paper data-testid="kpi-card-loading" elevation={3} sx={{ p: 2 }} />
+                <Paper data-testid="kpi-card-loading" elevation={3} sx={{ p: 2 }} />
+                <Paper data-testid="kpi-card-loading" elevation={3} sx={{ p: 2 }} />
+                <Paper data-testid="kpi-card-loading" elevation={3} sx={{ p: 2 }} />
+            </Stack>
+        );
+    }
 
-    const quizzesBreakdownForChart = Object.entries(safeSubjectBreakdowns).reduce((acc, [key, value]) => {
-        acc[key] = { name: value.name, count: value.count };
-        return acc;
-    }, {});
+    const totalQuizzes = stats?.totalQuizzes ?? 0;
+    const averageScore = stats?.overallAverageScore ?? 0;
+    const isFiltered = false;
+    const overallQuestionStats = stats?.overallQuestionStats ?? { total: 0, correct: 0, accuracy: 0 };
+
+    // Handle null/undefined subjectBreakdowns
+    const safeSubjectBreakdowns: Record<string, SubjectBreakdown> = stats?.subjectBreakdowns ?? {} as Record<string, SubjectBreakdown>;
+
+    const quizzesBreakdownForChart: Record<string, ChartBreakdown> = Object.entries(safeSubjectBreakdowns).reduce(
+        (acc: Record<string, ChartBreakdown>, [key, value]) => {
+            acc[key] = { name: value.name, count: value.count };
+            return acc;
+        },
+        {}
+    );
     
     // Pass all necessary data points through to the card component
-    const scoresBreakdownForList = Object.entries(safeSubjectBreakdowns).reduce((acc, [key, value]) => {
-        acc[key] = { 
-            name: value.name, 
-            average: value.average,
-            totalQuestions: value.totalQuestions,
-            totalCorrect: value.totalCorrect // <-- Pass the new data point
-        };
-        return acc;
-    }, {});
+    const scoresBreakdownForList: Record<string, ListBreakdown> = Object.entries(safeSubjectBreakdowns).reduce(
+        (acc: Record<string, ListBreakdown>, [key, value]) => {
+            acc[key] = {
+                name: value.name,
+                average: value.average,
+                totalQuestions: value.totalQuestions,
+                totalCorrect: value.totalCorrect
+            };
+            return acc;
+        },
+        {}
+    );
 
     return (
         <Stack spacing={2}>
