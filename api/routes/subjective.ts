@@ -10,7 +10,19 @@ const router: Router = Router();
 let gradingModel: any = null;
 if (process.env.GEMINI_API_KEY) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    try {
+        gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    } catch (e) {
+        try {
+            gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        } catch (e2) {
+            try {
+                gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+            } catch (e3) {
+                gradingModel = null;
+            }
+        }
+    }
 }
 
 // This is the grading prompt template.
@@ -121,7 +133,8 @@ router.post('/submit', verifyToken, async (req: AuthenticatedRequest, res: Respo
                     score = aiResponse.score_awarded;
                     feedback = aiResponse;
                 } catch (e) {
-                    logError('GEMINI ERROR', `Grading failed for Q:${ans.questionId}`, (e as Error).message);
+                    const msg = (e as Error).message || '';
+                    logError('GEMINI ERROR', `Grading failed for Q:${ans.questionId}`, msg);
                     feedback = { error: "AI grader failed for this question." };
                 }
                 

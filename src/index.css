@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* App-level helpers */
+.fade-in {
+	@apply opacity-0 animate-[fadeIn_0.5s_ease-out_forwards];
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}

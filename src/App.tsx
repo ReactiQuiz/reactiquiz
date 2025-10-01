@@ -1,4 +1,5 @@
 // src/App.tsx
+import './index.css';
 import React from 'react';
 import { AppProviders } from './contexts/AppProviders';
 import AppRoutes from './components/AppRoutes';

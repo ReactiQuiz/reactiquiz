@@ -18,11 +18,13 @@ const AdminLayout: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)' }}>
       {/* The Sidebar component */}
-      <AdminSidebar 
-        drawerWidth={drawerWidth} 
-        open={open} 
-        toggleDrawer={handleToggleDrawer} 
-      />
+      <div className="transition-transform duration-300">
+        <AdminSidebar 
+          drawerWidth={drawerWidth} 
+          open={open} 
+          toggleDrawer={handleToggleDrawer} 
+        />
+      </div>
       
       {/* The Main Content Area */}
       <Box
@@ -31,6 +33,7 @@ const AdminLayout: React.FC = () => {
           flexGrow: 1, // This makes the content area take up all remaining space
           p: 3,        // Standard padding
         }}
+        className="animate-[fadeIn_0.4s_ease-out]"
       >
         <Outlet /> {/* Renders the active admin page (e.g., General, Content, Users) */}
       </Box>

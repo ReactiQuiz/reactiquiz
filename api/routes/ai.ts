@@ -9,7 +9,20 @@ const router: Router = Router();
 let model: any = null;
 if (process.env.GEMINI_API_KEY) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    try {
+        // Prefer latest alias; fall back to a stable model if not available
+        model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    } catch (e) {
+        try {
+            model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        } catch (e2) {
+            try {
+                model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+            } catch (e3) {
+                model = null;
+            }
+        }
+    }
 }
 
 interface QuizResult {
@@ -72,7 +85,12 @@ router.post('/chat', verifyToken, async (req: AuthenticatedRequest, res: Respons
 
         // --- START OF FIX: Specific Error Handling ---
         // Check if the error message from the Google API indicates an overload.
-        if ((error as Error).message && ((error as Error).message.includes('503') || (error as Error).message.toLowerCase().includes('overloaded'))) {
+        const msg = (error as Error).message || '';
+        if (msg.includes('404') || msg.toLowerCase().includes('not found')) {
+            res.status(503).json({ error: 'The configured Gemini model is unavailable. Please try again shortly.' });
+            return;
+        }
+        if (msg.includes('503') || msg.toLowerCase().includes('overloaded')) {
             // Send a specific status and error message to the frontend.
             res.status(503).json({ error: 'The AI model is currently overloaded.' });
             return;
