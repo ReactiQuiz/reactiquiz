@@ -4,9 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
 import { useAuth } from '../contexts/AuthContext';
-import { parseQuestionOptions } from '../utils/quizUtils';
 import { useTopics } from '../contexts/TopicsContext';
-import { UseResultsReturn, QuizResult, Question } from '../types';
+import { UseResultsReturn, QuizResult } from '../types';
 
 const fetchAllResults = async (): Promise<QuizResult[]> => {
   const { data } = await apiClient.get<QuizResult[]>('/api/results');

@@ -14,7 +14,7 @@ const ResultsPage: React.FC = () => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   const {
-    historicalList, detailData, isLoading, error,
+    historicalList, isLoading, error,
     filters, setFilters, sortOrder, setSortOrder, availableClasses, availableGenres, clearFilters
   } = useResults();
   
