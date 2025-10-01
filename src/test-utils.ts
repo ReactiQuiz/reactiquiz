@@ -57,15 +57,16 @@ const TestProviders: React.FC<TestProvidersProps> = ({
   queryClient = createTestQueryClient(),
   initialEntries = ['/'],
 }) => {
-  const Router = initialEntries.length > 1 || initialEntries[0] !== '/' ? MemoryRouter : BrowserRouter;
-  const routerProps = initialEntries.length > 1 || initialEntries[0] !== '/' ? { initialEntries } : {};
+  const isMemory = initialEntries.length > 1 || initialEntries[0] !== '/';
+  const Router = isMemory ? MemoryRouter : BrowserRouter;
 
   return React.createElement(
     QueryClientProvider,
     { client: queryClient },
     React.createElement(
-      Router,
-      routerProps,
+      Router as any,
+      // Only pass initialEntries when using MemoryRouter
+      isMemory ? { initialEntries } : undefined,
       React.createElement(
         AppThemeProvider,
         null,
