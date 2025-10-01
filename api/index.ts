@@ -13,28 +13,33 @@ if (process.env.NODE_ENV !== 'production') {
     }
 }
 
+// During Vercel builds, environment variables may be unavailable. Do not exit during build.
+const isVercelBuild = process.env.VERCEL === '1' && process.env.NPM_CONFIG_USER_AGENT?.includes('vercel');
 if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process.env.JWT_SECRET) {
-    console.error("\n\n\x1b[31m%s\x1b[0m", "==================== FATAL ERROR ====================");
-    console.error("\x1b[33m%s\x1b[0m", "Missing essential environment variables (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, JWT_SECRET).");
-    console.error("\x1b[33m%s\x1b[0m", "The backend server cannot start without these credentials.");
-    console.error("\x1b[36m%s\x1b[0m", "This project requires official access. Please refer to the documentation or contact the owner.");
-    console.error("\x1b[31m%s\x1b[0m", "=====================================================\n\n");
-    // Prevent the server from starting if critical variables are missing in any environment
-    process.exit(1);
+    if (isVercelBuild) {
+        console.warn('[WARN] Missing env vars during Vercel build (skipping fatal exit).');
+    } else {
+        console.error("\n\n\x1b[31m%s\x1b[0m", "==================== FATAL ERROR ====================");
+        console.error("\x1b[33m%s\x1b[0m", "Missing essential environment variables (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, JWT_SECRET).");
+        console.error("\x1b[33m%s\x1b[0m", "The backend server cannot start without these credentials.");
+        console.error("\x1b[36m%s\x1b[0m", "This project requires official access. Please refer to the documentation or contact the owner.");
+        console.error("\x1b[31m%s\x1b[0m", "=====================================================\n\n");
+        // Prevent the server from starting only outside of Vercel build environments
+        process.exit(1);
+    }
 }
 
-// Use a try-catch block for robustness during the Vercel build
+// Prefer TypeScript import for the logger; fall back to console on failure
 let logApi: (...args: any[]) => void;
 let logInfo: (...args: any[]) => void;
 let logError: (...args: any[]) => void;
 try {
-    // --- START OF DEFINITIVE FIX: Use absolute paths for requires ---
-    const logger = require(path.resolve(__dirname, './_utils/logger.js'));
+    const logger = require('./_utils/logger');
     logApi = logger.logApi;
     logInfo = logger.logInfo;
     logError = logger.logError;
 } catch (e) {
-    console.log("Logger failed to initialize, falling back to console.log");
+    console.log('Logger failed to initialize, falling back to console.log');
     logApi = (...args: any[]) => console.log('[API]', ...args);
     logInfo = (...args: any[]) => console.log('[INFO]', ...args);
     logError = (...args: any[]) => console.error('[ERROR]', ...args);
