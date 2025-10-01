@@ -1,4 +1,4 @@
-// src/components/dashboard/KpiBreakdownPieChart.js
+// src/components/dashboard/KpiBreakdownPieChart.tsx
 import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
@@ -7,15 +7,18 @@ import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function KpiBreakdownPieChart({ breakdownData }) {
+type BreakdownEntry = { name: string; count: number };
+type BreakdownData = Record<string, BreakdownEntry>;
+
+function KpiBreakdownPieChart({ breakdownData }: { breakdownData: BreakdownData }) {
     const theme = useTheme();
     const { getColor } = useSubjectColors();
 
     const data = {
-        labels: Object.values(breakdownData).map(item => item.name),
+        labels: Object.values(breakdownData).map((item) => item.name),
         datasets: [
             {
-                data: Object.values(breakdownData).map(item => item.count),
+                data: Object.values(breakdownData).map((item) => item.count),
                 backgroundColor: Object.keys(breakdownData).map(key => getColor(key)),
                 borderColor: theme.palette.background.paper,
                 borderWidth: 2,

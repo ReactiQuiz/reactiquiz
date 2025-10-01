@@ -13,20 +13,9 @@ if (process.env.NODE_ENV !== 'production') {
     }
 }
 
-// During Vercel builds, environment variables may be unavailable. Do not exit during build.
-const isVercelBuild = process.env.VERCEL === '1' && process.env.NPM_CONFIG_USER_AGENT?.includes('vercel');
+// Environment variables may be unavailable during Vercel build/bundling. Never exit here.
 if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process.env.JWT_SECRET) {
-    if (isVercelBuild) {
-        console.warn('[WARN] Missing env vars during Vercel build (skipping fatal exit).');
-    } else {
-        console.error("\n\n\x1b[31m%s\x1b[0m", "==================== FATAL ERROR ====================");
-        console.error("\x1b[33m%s\x1b[0m", "Missing essential environment variables (TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, JWT_SECRET).");
-        console.error("\x1b[33m%s\x1b[0m", "The backend server cannot start without these credentials.");
-        console.error("\x1b[36m%s\x1b[0m", "This project requires official access. Please refer to the documentation or contact the owner.");
-        console.error("\x1b[31m%s\x1b[0m", "=====================================================\n\n");
-        // Prevent the server from starting only outside of Vercel build environments
-        process.exit(1);
-    }
+    console.warn('[WARN] Missing env vars (TURSO_DATABASE_URL/TURSO_AUTH_TOKEN/JWT_SECRET). Server will log errors if accessed without proper config.');
 }
 
 // Prefer TypeScript import for the logger; fall back to console on failure
