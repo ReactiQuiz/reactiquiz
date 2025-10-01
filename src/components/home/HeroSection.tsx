@@ -63,23 +63,14 @@ function HeroSection() {
 
   return (
     <Box
-      component={motion.div}
-      variants={containerVariants}
-      initial="initial"
-      animate={controls}
       sx={{
         position: 'relative',
-        minHeight: { xs: '100vh', sm: '90vh' },
+        minHeight: '90vh',
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
-        background: `linear-gradient(135deg, 
-          ${alpha(theme.palette.primary.dark, 0.95)} 0%, 
-          ${alpha(theme.palette.secondary.dark, 0.9)} 35%,
-          ${alpha(theme.palette.primary.main, 0.85)} 70%,
-          ${alpha(theme.palette.secondary.main, 0.8)} 100%
-        )`,
-        color: theme.palette.common.white,
+        background: 'linear-gradient(135deg, #1e3a8a 0%, #9333ea 35%, #3b82f6 70%, #8b5cf6 100%)',
+        color: 'white',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -92,59 +83,34 @@ function HeroSection() {
           zIndex: 1
         }
       }}
+      className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-purple-700 text-white before:absolute before:inset-0 before:bg-radial-gradient before:pointer-events-none before:z-10"
     >
       {/* Animated Background Particles */}
       <ParticleField count={isMobile ? 15 : 30} />
 
       {/* Floating geometric shapes */}
-      <motion.div
-        variants={floatingAnimation}
-        animate="animate"
-        style={{
-          position: 'absolute',
-          top: '20%',
-          right: '10%',
-          width: isMobile ? 80 : 120,
-          height: isMobile ? 80 : 120,
-          background: `linear-gradient(45deg, ${alpha(theme.palette.secondary.light, 0.3)}, ${alpha(theme.palette.primary.light, 0.2)})`,
-          borderRadius: '50%',
-          filter: 'blur(1px)',
-          zIndex: 1
-        }}
+      <div
+        className="absolute top-[20%] right-[10%] w-20 h-20 rounded-full blur-sm z-20 bg-gradient-to-br from-purple-500/20 to-blue-400/10"
       />
       
-      <motion.div
-        variants={floatingAnimation}
-        animate="animate"
-        transition={{ delay: 1, duration: 5 }}
-        style={{
-          position: 'absolute',
-          bottom: '30%',
-          left: '5%',
-          width: isMobile ? 60 : 90,
-          height: isMobile ? 60 : 90,
-          background: `linear-gradient(45deg, ${alpha(theme.palette.primary.light, 0.25)}, ${alpha(theme.palette.secondary.light, 0.15)})`,
-          borderRadius: '30%',
-          filter: 'blur(2px)',
-          zIndex: 1
-        }}
+      <div
+        className="absolute bottom-[30%] left-[5%] w-16 h-16 rounded-[30%] blur-md z-20 bg-gradient-to-br from-blue-400/10 to-purple-500/05"
       />
 
       <Container 
         maxWidth="lg" 
         sx={{ 
           position: 'relative', 
-          zIndex: 2,
+          zIndex: 30,
           textAlign: 'center',
           px: { xs: 2, sm: 3 }
         }}
+        className="relative z-30 text-center px-4 sm:px-6"
       >
         {/* Main Hero Content */}
-        <motion.div variants={fadeInUp}>
+        <div className="animate-fadeInUp">
           <Typography
-            component={motion.h1}
-            variants={glowingVariants}
-            animate="animate"
+            component="h1"
             variant="h1"
             sx={{ 
               fontWeight: 800, 
@@ -152,25 +118,26 @@ function HeroSection() {
               letterSpacing: '-0.02em',
               lineHeight: { xs: 1.2, sm: 1.1 },
               mb: 2,
-              background: `linear-gradient(135deg, #fff 0%, ${theme.palette.secondary.light} 100%)`,
+              background: 'linear-gradient(135deg, #fff 0%, #a78bfa 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}
+            className="font-extrabold text-5xl sm:text-7xl md:text-8xl mb-2 bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent"
           >
             Welcome to{' '}
-            <Box component="span" sx={{ display: { xs: 'block', sm: 'inline' } }}>
+            <span className="block sm:inline">
               ReactiQuiz!
-            </Box>
+            </span>
           </Typography>
-        </motion.div>
+        </div>
 
-        <motion.div variants={fadeInUp}>
+        <div className="animate-fadeInUp delay-200">
           <Typography
             variant="h5"
             component="h2"
             sx={{ 
-              color: alpha(theme.palette.common.white, 0.9),
+              color: 'rgba(255, 255, 255, 0.9)',
               fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.5rem' },
               fontWeight: 400,
               lineHeight: 1.6,
@@ -178,61 +145,25 @@ function HeroSection() {
               maxWidth: '600px',
               mx: 'auto'
             }}
+            className="text-white/90 text-lg sm:text-xl max-w-xl mx-auto mb-6"
           >
             Sharpen Your Mind, One Quiz at a Time.
-            <Box component="span" sx={{ display: 'block', mt: 1 }}>
+            <span className="block mt-1">
               Explore, Learn, and Challenge Yourself.
-            </Box>
+            </span>
           </Typography>
-        </motion.div>
+        </div>
 
         {/* Interactive Feature Icons */}
-        <motion.div
-          variants={{
-            initial: { opacity: 0, y: 30 },
-            animate: {
-              opacity: 1,
-              y: 0,
-              transition: {
-                duration: 0.6,
-                staggerChildren: 0.1,
-                delayChildren: 0.8
-              }
-            }
-          }}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: isMobile ? 20 : 40,
-            marginBottom: '2rem',
-            flexWrap: 'wrap'
-          }}
+        <div
+          className="flex justify-center gap-10 mb-8 flex-wrap"
         >
           {iconFeatures.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
-              <motion.div
+              <div
                 key={index}
-                variants={{
-                  initial: { opacity: 0, scale: 0.5, y: 20 },
-                  animate: {
-                    opacity: 1,
-                    scale: 1,
-                    y: 0,
-                    transition: { delay: feature.delay, duration: 0.5 }
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.1,
-                  y: -5,
-                  transition: { duration: 0.2 }
-                }}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  cursor: 'pointer'
-                }}
+                className="flex flex-col items-center cursor-pointer transform transition-transform duration-200 hover:scale-110 hover:-translate-y-1"
               >
                 <Box
                   sx={{
@@ -247,6 +178,7 @@ function HeroSection() {
                     border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
                     mb: 1
                   }}
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-purple-400/20 to-blue-400/30 backdrop-blur border border-white/20 mb-1 flex items-center justify-center"
                 >
                   <IconComponent sx={{ fontSize: { xs: 28, sm: 36 }, color: 'white' }} />
                 </Box>
@@ -257,19 +189,17 @@ function HeroSection() {
                     fontWeight: 500,
                     fontSize: { xs: '0.8rem', sm: '0.9rem' }
                   }}
+                  className="text-white/80 font-medium text-sm sm:text-base"
                 >
                   {feature.text}
                 </Typography>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Call to Action Button */}
-        <motion.div
-          variants={fadeInUp}
-          {...hoverScale}
-        >
+        <div className="animate-fadeInUp hover:scale-105 transition-transform duration-300 inline-block">
           <GlowButton
             size="large"
             onClick={() => navigate('/login')}
@@ -290,44 +220,20 @@ function HeroSection() {
           >
             Start Your Journey
           </GlowButton>
-        </motion.div>
+        </div>
 
         {/* Scroll Indicator */}
-        <motion.div
-          variants={{
-            initial: { opacity: 0, y: -20 },
-            animate: {
-              opacity: 1,
-              y: 0,
-              transition: { delay: 1.5, duration: 0.8 }
-            }
-          }}
-          animate={{
-            y: [0, 10, 0],
-            transition: {
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }
-          }}
+        <div
+          className="animate-fadeInUp animate-bounce absolute bottom-8 left-1/2 transform -translate-x-1/2 block"
           style={{
-            position: 'absolute',
-            bottom: 30,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: isMobile ? 'block' : 'block'
+            width: 2,
+            height: 40,
+            background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.6))',
+            borderRadius: 4,
+            marginLeft: 'auto',
+            marginRight: 'auto'
           }}
-        >
-          <Box
-            sx={{
-              width: 2,
-              height: 40,
-              background: `linear-gradient(to bottom, transparent, ${alpha(theme.palette.common.white, 0.6)})`,
-              borderRadius: 1,
-              mx: 'auto'
-            }}
-          />
-        </motion.div>
+        />
       </Container>
     </Box>
   );

@@ -32,183 +32,61 @@ function AboutSummarySection() {
   };
 
   return (
-    <Box sx={{ 
-      py: { xs: 6, sm: 8 },
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <Box
+      sx={{ 
+        py: { xs: 24, sm: 32 },
+        relative: 'relative',
+        overflow: 'hidden'
+      }}
+      className="relative py-24 sm:py-32 overflow-hidden"
+    >
       {/* Background Elements */}
-      <motion.div
-        animate={{
-          x: [-20, 20, -20],
-          y: [-10, 10, -10],
-          transition: {
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }
-        }}
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '5%',
-          width: isMobile ? 100 : 150,
-          height: isMobile ? 100 : 150,
-          background: `radial-gradient(circle, ${alpha(theme.palette.secondary.main, 0.08)} 0%, transparent 70%)`,
-          borderRadius: '50%',
-          zIndex: 0
-        }}
+      <div
+        className="absolute top-[20%] left-[5%] w-24 h-24 rounded-full bg-gradient-radial from-purple-500/10 to-transparent animate-xy-oscillate z-0"
       />
       
-      <motion.div
-        animate={{
-          x: [20, -20, 20],
-          y: [10, -10, 10],
-          rotate: [0, 180, 360],
-          transition: {
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }
-        }}
-        style={{
-          position: 'absolute',
-          bottom: '20%',
-          right: '8%',
-          width: isMobile ? 80 : 120,
-          height: isMobile ? 80 : 120,
-          background: `linear-gradient(45deg, ${alpha(theme.palette.primary.main, 0.06)}, ${alpha(theme.palette.secondary.main, 0.04)})`,
-          borderRadius: '30%',
-          zIndex: 0
-        }}
+      <div
+        className="absolute bottom-[20%] right-[8%] w-20 h-20 rounded-[30%] bg-gradient-to-br from-purple-500/5 to-blue-400/5 animate-rotate-360 z-0"
       />
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <AnimatedSection variants={cardVariants}>
-          <TiltCard 
-            elevation={0}
-            sx={{ 
-              textAlign: 'center',
-              background: `linear-gradient(135deg, 
-                ${alpha(theme.palette.background.paper, 0.95)} 0%, 
-                ${alpha(theme.palette.primary.main, 0.02)} 100%
-              )`,
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-              borderRadius: 4,
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 4,
-                background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              }
-            }}
-            >
-            <CardContent sx={{ p: { xs: 4, sm: 5, md: 6 } }}>
+      <Container maxWidth="lg" className="relative z-10">
+        <div className="animate-fadeInUp">
+          <div 
+            className="text-center bg-gradient-to-br from-white/95 to-purple-100/5 backdrop-blur border border-purple-200/10 rounded-lg relative overflow-hidden"
+            style={{ borderImageSlice: 1, borderImageSource: 'linear-gradient(90deg, #7c3aed, #8b5cf6)' }}
+          >
+            <div className="p-10 sm:p-12 md:p-16">
               {/* Question mark decoration */}
-              <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                style={{
-                  position: 'absolute',
-                  top: 20,
-                  right: 20,
-                  fontSize: isMobile ? '2rem' : '3rem',
-                  color: alpha(theme.palette.primary.main, 0.1),
-                  fontWeight: 'bold'
-                }}
-              >
+              <div className="absolute top-5 right-5 text-3xl font-bold text-purple-500/10 scale-100 rotate-0 animate-scale-rotate">
                 ?
-              </motion.div>
+              </div>
               
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-              >
-                <Typography 
-                  variant="h3" 
-                  component="h2" 
-                  gutterBottom 
-                  sx={{ 
-                    fontWeight: 700, 
-                    fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
-                    background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    mb: 3
-                  }}
-                >
-                  What is ReactiQuiz?
-                </Typography>
-              </motion.div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+                What is ReactiQuiz?
+              </h2>
               
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-              >
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' }, 
-                    lineHeight: 1.8, 
-                    maxWidth: '700px', 
-                    margin: '0 auto', 
-                    color: theme.palette.text.secondary,
-                    mb: 4,
-                    fontWeight: 400
-                  }}
-                >
-                  ReactiQuiz is a <Box component="span" sx={{ fontWeight: 600, color: theme.palette.primary.main }}>dynamic and engaging</Box> quiz application designed to help users test and improve their knowledge across various subjects. Whether you're preparing for exams, looking to learn something new, or just want to challenge yourself, ReactiQuiz offers a <Box component="span" sx={{ fontWeight: 600, color: theme.palette.secondary.main }}>rich and interactive experience</Box>.
-                </Typography>
-              </motion.div>
+              <p className="text-lg sm:text-xl max-w-3xl mx-auto text-gray-300 mb-10 font-normal">
+                ReactiQuiz is a <span className="font-semibold text-purple-600">dynamic and engaging</span> quiz application designed to help users test and improve their knowledge across various subjects. Whether you're preparing for exams, looking to learn something new, or just want to challenge yourself, ReactiQuiz offers a <span className="font-semibold text-indigo-600">rich and interactive experience</span>.
+              </p>
               
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6, duration: 0.5 }}
-              >
+              <div className="text-center">
                 <PrimaryAnimatedButton
                   animationType="glow"
                   size="large"
                   endIcon={
-                    <motion.div
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
+                    <div className="animate-x-oscillate">
                       <ArrowForwardIcon />
-                    </motion.div>
+                    </div>
                   }
                   onClick={() => navigate('/about')}
-                  sx={{
-                    py: { xs: 1.5, sm: 2 },
-                    px: { xs: 3, sm: 4 },
-                    fontSize: { xs: '1rem', sm: '1.1rem' },
-                    fontWeight: 600,
-                    borderRadius: 3,
-                    background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                    textTransform: 'none',
-                    '&:hover': {
-                      background: `linear-gradient(135deg, ${darken(theme.palette.primary.main, 0.1)} 0%, ${darken(theme.palette.secondary.main, 0.1)} 100%)`,
-                      boxShadow: '0 12px 32px rgba(0,0,0,0.2)'
-                    }
-                  }}
+                  className="py-3 px-6 text-lg font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:from-purple-700 hover:to-indigo-700 transition-colors"
                 >
                   Learn More About Us
                 </PrimaryAnimatedButton>
-              </motion.div>
-            </CardContent>
-          </TiltCard>
-        </AnimatedSection>
+              </div>
+            </div>
+          </div>
+        </div>
       </Container>
     </Box>
   );
