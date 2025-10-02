@@ -1,35 +1,14 @@
-la// src/components/home/AboutSummarySection.tsx
+// src/components/home/AboutSummarySection.tsx
 import React from 'react';
-import { Container, Typography, useTheme, Box, useMediaQuery, CardContent } from '@mui/material';
-import { motion } from 'framer-motion';
-import { AnimatedSection } from '../animations/AnimationUtils';
-import { TiltCard } from '../animations/AnimatedCard';
+import { Container, useTheme, Box, useMediaQuery } from '@mui/material';
 import { PrimaryAnimatedButton } from '../animations/AnimatedButton';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
-import { darken, alpha } from '@mui/material/styles';
 
 function AboutSummarySection() {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const cardVariants = {
-    initial: { 
-      opacity: 0, 
-      y: 60,
-      scale: 0.95
-    },
-    animate: { 
-      opacity: 1, 
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut" as const
-      }
-    }
-  };
 
   return (
     <Box

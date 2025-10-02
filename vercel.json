@@ -1,22 +1,18 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/index.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm ci --production=false",
+  "framework": "create-react-app",
+  "functions": {
+    "api/index.ts": {
+      "runtime": "nodejs18.x"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/index.ts"
+      "dest": "/api/index.ts"
     },
     {
       "src": "/static/(.*)",
@@ -38,5 +34,10 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_OPTIONS": "--max_old_space_size=4096",
+    "GENERATE_SOURCEMAP": "false",
+    "CI": "false"
+  }
 }
