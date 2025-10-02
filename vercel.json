@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "api/index.ts",
-      "use": "@vercel/node@3.0.0"
+      "use": "@vercel/node@3.0.0",
+      "config": {
+        "runtime": "nodejs20.x"
+      }
     },
     {
       "src": "package.json",
@@ -38,5 +41,10 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_OPTIONS": "--max_old_space_size=4096",
+    "GENERATE_SOURCEMAP": "false",
+    "NPM_CONFIG_AUDIT": "false"
+  }
 }

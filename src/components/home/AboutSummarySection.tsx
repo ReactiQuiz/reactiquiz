@@ -1,14 +1,12 @@
 // src/components/home/AboutSummarySection.tsx
 import React from 'react';
-import { Container, useTheme, Box, useMediaQuery } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import { PrimaryAnimatedButton } from '../animations/AnimatedButton';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 
 function AboutSummarySection() {
-  const theme = useTheme();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box

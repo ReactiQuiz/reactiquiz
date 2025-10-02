@@ -1,18 +1,13 @@
 // src/components/home/CallToActionSection.tsx
 import React from 'react';
-import { Container, Typography, useTheme, Box, useMediaQuery } from '@mui/material';
-import { motion } from 'framer-motion';
-import { AnimatedSection, fadeInUp } from '../animations/AnimationUtils';
+import { Container, Box } from '@mui/material';
 import { PulseButton } from '../animations/AnimatedButton';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useNavigate } from 'react-router-dom';
-import { darken, alpha } from '@mui/material/styles';
 
 function CallToActionSection() {
-  const theme = useTheme();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box

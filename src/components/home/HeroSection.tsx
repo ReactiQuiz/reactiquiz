@@ -1,10 +1,9 @@
 // src/components/home/HeroSection.tsx
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Typography, Container, useTheme, useMediaQuery } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { motion, useAnimation } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ParticleField, floatingAnimation, fadeInUp, hoverScale } from '../animations/AnimationUtils';
+import { ParticleField } from '../animations/AnimationUtils';
 import { GlowButton } from '../animations/AnimatedButton';
 import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -14,46 +13,6 @@ function HeroSection() {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const controls = useAnimation();
-  useEffect(() => {
-    controls.start('animate');
-  }, [controls]);
-
-  const containerVariants = {
-    initial: { opacity: 0 },
-    animate: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const glowingVariants = {
-    initial: { 
-      boxShadow: '0 0 0 rgba(79, 172, 254, 0)',
-      textShadow: '0 0 0 rgba(255, 255, 255, 0)'
-    },
-    animate: {
-      boxShadow: [
-        '0 0 20px rgba(79, 172, 254, 0.3)',
-        '0 0 40px rgba(79, 172, 254, 0.5)',
-        '0 0 20px rgba(79, 172, 254, 0.3)'
-      ],
-      textShadow: [
-        '0 0 10px rgba(255, 255, 255, 0.5)',
-        '0 0 20px rgba(255, 255, 255, 0.8)',
-        '0 0 10px rgba(255, 255, 255, 0.5)'
-      ],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut" as const
-      }
-    }
-  };
 
   const iconFeatures = [
     { icon: SchoolIcon, text: 'Learn', delay: 0.1 },
