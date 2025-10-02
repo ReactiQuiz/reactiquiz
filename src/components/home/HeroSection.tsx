@@ -4,7 +4,7 @@ import { Box, Typography, Container, useTheme, useMediaQuery } from '@mui/materi
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { ParticleField } from '../animations/AnimationUtils';
-import AnimatedGradientBackground from '../animations/AnimatedGradientBackground';
+import SpaceBackground from '../animations/SpaceBackground';
 import LiquidGlassButton from '../animations/LiquidGlassButton';
 import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -22,7 +22,7 @@ function HeroSection() {
   ];
 
   return (
-    <AnimatedGradientBackground>
+    <SpaceBackground>
       <Box
         sx={{
           position: 'relative',
@@ -180,7 +180,7 @@ function HeroSection() {
         />
         </Container>
       </Box>
-    </AnimatedGradientBackground>
+    </SpaceBackground>
   );
 }
 
