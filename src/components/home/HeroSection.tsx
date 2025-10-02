@@ -5,6 +5,7 @@ import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { ParticleField } from '../animations/AnimationUtils';
 import { GlowButton } from '../animations/AnimatedButton';
+import ShaderAnimation from '../animations/ShaderAnimation';
 import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
@@ -28,7 +29,7 @@ function HeroSection() {
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #1e3a8a 0%, #9333ea 35%, #3b82f6 70%, #8b5cf6 100%)',
+        backgroundColor: '#1a1a2e', // Fallback dark background
         color: 'white',
         '&::before': {
           content: '""',
@@ -37,13 +38,16 @@ function HeroSection() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0%, transparent 70%)',
           pointerEvents: 'none',
-          zIndex: 1
+          zIndex: 2
         }
       }}
-      className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-purple-700 text-white before:absolute before:inset-0 before:bg-radial-gradient before:pointer-events-none before:z-10"
+      className="relative min-h-[90vh] flex items-center overflow-hidden text-white before:absolute before:inset-0 before:pointer-events-none before:z-20"
     >
+      {/* Shader Animation Background */}
+      <ShaderAnimation />
+      
       {/* Animated Background Particles */}
       <ParticleField count={isMobile ? 15 : 30} />
 
@@ -60,11 +64,24 @@ function HeroSection() {
         maxWidth="lg" 
         sx={{ 
           position: 'relative', 
-          zIndex: 30,
+          zIndex: 40,
           textAlign: 'center',
-          px: { xs: 2, sm: 3 }
+          px: { xs: 2, sm: 3 },
+          // Add backdrop blur and semi-transparent background for better text readability
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: '-2rem',
+            left: '-2rem',
+            right: '-2rem',
+            bottom: '-2rem',
+            background: 'rgba(0,0,0,0.2)',
+            backdropFilter: 'blur(2px)',
+            borderRadius: '2rem',
+            zIndex: -1
+          }
         }}
-        className="relative z-30 text-center px-4 sm:px-6"
+        className="relative z-40 text-center px-4 sm:px-6"
       >
         {/* Main Hero Content */}
         <div className="animate-fadeInUp scroll-animate-fadeInUp">
