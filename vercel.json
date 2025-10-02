@@ -5,7 +5,7 @@
       "src": "api/index.ts",
       "use": "@vercel/node@3.0.0",
       "config": {
-        "runtime": "nodejs20.x"
+        "runtime": "nodejs18.x"
       }
     },
     {
