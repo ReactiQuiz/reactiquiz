@@ -11,6 +11,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { motion } from 'framer-motion';
 import { RegisterFormProps } from '../../types';
 import LiquidGlassButton from '../animations/LiquidGlassButton';
+import ShaderAnimationAuth from '../animations/ShaderAnimationAuth';
 
 const CLASS_OPTIONS: string[] = ['6', '7', '8', '9', '10', '11', '12'];
 
@@ -34,38 +35,35 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
         minHeight: '100vh',
         display: 'flex', 
         flexDirection: 'column', 
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%)',
         position: 'relative',
-        py: 4,
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at center, rgba(34, 197, 94, 0.1) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }
+        py: { xs: 2, sm: 3, md: 4 },
+        overflow: 'auto',
       }}
     >
+      {/* Animated Shader Background */}
+      <ShaderAnimationAuth />
+      
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-md px-8 relative z-10"
+        className="w-full max-w-lg px-6 relative z-10 my-4"
+        style={{ maxWidth: '480px' }}
       >
         {/* Glass morphism container */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl" style={{ padding: '2rem' }}>
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-center mb-6"
+            className="text-center mb-4"
           >
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center shadow-lg">
-                <PersonAddIcon sx={{ fontSize: 32, color: 'white' }} />
+            <div className="flex justify-center mb-3">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center shadow-lg">
+                <PersonAddIcon sx={{ fontSize: 28, color: 'white' }} />
               </div>
             </div>
             <Typography 
@@ -74,8 +72,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
               sx={{ 
                 fontWeight: 700,
                 color: 'white',
-                mb: 1,
-                fontSize: { xs: '1.75rem', sm: '2rem' }
+                mb: 0.5,
+                fontSize: { xs: '1.5rem', sm: '1.75rem' }
               }}
             >
               Create Your Account
@@ -84,7 +82,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
               variant="body1" 
               sx={{ 
                 color: 'rgba(255, 255, 255, 0.7)',
-                fontSize: '0.95rem'
+                fontSize: '0.85rem'
               }}
             >
               Join ReactiQuiz and start your learning journey
@@ -113,13 +111,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1rem' },
                 }}
               />
             </motion.div>
@@ -146,13 +146,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1rem' },
                 }}
               />
             </motion.div>
@@ -178,13 +180,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1rem' },
                 }}
               />
             </motion.div>
@@ -211,13 +215,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1rem' },
                 }}
               />
             </motion.div>
@@ -244,13 +250,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1rem' },
                 }}
               />
             </motion.div>
@@ -276,13 +284,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1rem' },
                 }}
               />
             </motion.div>
@@ -302,13 +312,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '48px',
+                    fontSize: '1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#10b981' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiSelect-select': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' },
+                  '& .MuiSelect-select': { color: 'white', fontSize: '1rem' },
                   '& .MuiSelect-icon': { color: 'rgba(255, 255, 255, 0.7)' },
                 }}
               >
@@ -377,13 +389,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
               >
                 <Alert 
                   severity="error" 
-                  sx={{ 
-                    mb: 2,
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid rgba(239, 68, 68, 0.2)',
-                    color: '#f87171',
-                    '& .MuiAlert-icon': { color: '#f87171' }
-                  }}
+                sx={{ 
+                  mb: 1.5,
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                  color: '#f87171',
+                  '& .MuiAlert-icon': { color: '#f87171' }
+                }}
                 >
                   {error}
                 </Alert>
@@ -408,6 +420,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
                   fontSize: '1rem',
                   fontWeight: 600,
                   mb: 3,
+                  height: '48px',
                 }}
               >
                 {isSubmitting ? 'Creating Account...' : 'Sign Up'}

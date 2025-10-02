@@ -8,6 +8,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import { motion } from 'framer-motion';
 import { LoginFormProps } from '../../types';
 import LiquidGlassButton from '../animations/LiquidGlassButton';
+import ShaderAnimationAuth from '../animations/ShaderAnimationAuth';
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isSubmitting, infoMessage }) => {
   const [username, setUsername] = useState<string>('');
@@ -26,25 +27,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isSubmitting, infoMessa
         flexDirection: 'column', 
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%)',
         position: 'relative',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }
+        overflow: 'hidden',
       }}
     >
+      {/* Animated Shader Background */}
+      <ShaderAnimationAuth />
+      
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-md px-8 relative z-10"
+        className="w-full max-w-lg px-8 relative z-10"
+        style={{ maxWidth: '500px' }}
       >
         {/* Glass morphism container */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 shadow-2xl" style={{ padding: '3rem' }}>
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -120,17 +118,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isSubmitting, infoMessa
                   startAdornment: <PersonIcon sx={{ color: 'rgba(255, 255, 255, 0.5)', mr: 1 }} />,
                 }}
                 sx={{
-                  mb: 2,
+                  mb: 3,
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '56px',
+                    fontSize: '1.1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#3b82f6' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1.1rem' },
                 }}
               />
             </motion.div>
@@ -153,17 +153,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isSubmitting, infoMessa
                   startAdornment: <LockIcon sx={{ color: 'rgba(255, 255, 255, 0.5)', mr: 1 }} />,
                 }}
                 sx={{
-                  mb: 3,
+                  mb: 4,
                   '& .MuiOutlinedInput-root': {
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    height: '56px',
+                    fontSize: '1.1rem',
                     '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
                     '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                     '&.Mui-focused fieldset': { borderColor: '#3b82f6' },
                   },
-                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-                  '& .MuiOutlinedInput-input': { color: 'white' },
+                  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.1rem' },
+                  '& .MuiOutlinedInput-input': { color: 'white', fontSize: '1.1rem' },
                 }}
               />
             </motion.div>
@@ -181,10 +183,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isSubmitting, infoMessa
                 startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <LoginIcon />}
                 sx={{
                   width: '100%',
-                  py: 2,
-                  fontSize: '1rem',
+                  py: 2.5,
+                  fontSize: '1.1rem',
                   fontWeight: 600,
-                  mb: 3,
+                  mb: 4,
+                  height: '56px',
                 }}
               >
                 {isSubmitting ? 'Signing In...' : 'Sign In'}

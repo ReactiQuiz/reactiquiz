@@ -38,9 +38,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" sx={{ minHeight: '100vh' }}>
       <AuthBrandingPanel variant="login" />
-      <Grid item xs={12} sm={8} md={5} sx={{ position: 'relative' }}>
+      <Grid item xs={12} sm={12} md={5} sx={{ position: 'relative' }}>
         <LoginForm 
           onSubmit={handleLogin}
           isSubmitting={isSubmitting}

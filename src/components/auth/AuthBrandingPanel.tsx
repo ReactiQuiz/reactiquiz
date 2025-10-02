@@ -20,11 +20,11 @@ function AuthBrandingPanel({ variant = 'login' }: AuthBrandingPanelProps) {
     <Grid
       item
       xs={false}
-      sm={4}
+      sm={false}
       md={7}
       sx={{
         position: 'relative',
-        display: 'flex',
+        display: { xs: 'none', sm: 'none', md: 'flex' },
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
