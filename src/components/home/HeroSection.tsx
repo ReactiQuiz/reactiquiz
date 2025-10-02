@@ -4,7 +4,7 @@ import { Box, Typography, Container, useTheme, useMediaQuery } from '@mui/materi
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { ParticleField } from '../animations/AnimationUtils';
-import ShaderAnimation from '../animations/ShaderAnimation';
+import AnimatedGradientBackground from '../animations/AnimatedGradientBackground';
 import LiquidGlassButton from '../animations/LiquidGlassButton';
 import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -22,32 +22,7 @@ function HeroSection() {
   ];
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        minHeight: '90vh',
-        display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden',
-        backgroundColor: '#1a1a2e', // Fallback dark background
-        color: 'white',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: 2
-        }
-      }}
-      className="relative min-h-[90vh] flex items-center overflow-hidden text-white before:absolute before:inset-0 before:pointer-events-none before:z-20"
-    >
-      {/* Shader Animation Background */}
-      <ShaderAnimation />
-      
+    <AnimatedGradientBackground className="relative min-h-[90vh] flex items-center overflow-hidden text-white">
       {/* Animated Background Particles */}
       <ParticleField count={isMobile ? 15 : 30} />
 
@@ -204,7 +179,7 @@ function HeroSection() {
           }}
         />
       </Container>
-    </Box>
+    </AnimatedGradientBackground>
   );
 }
 

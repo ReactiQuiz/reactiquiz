@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, ButtonProps, alpha } from '@mui/material';
 import { cva, type VariantProps } from 'class-variance-authority';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 
 const liquidGlassVariants = cva(
   "relative overflow-hidden transition-all duration-300 ease-out",
@@ -81,12 +82,27 @@ const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
   };
 
   return (
-    <Button
-      {...props}
-      onClick={handleClick}
-      disabled={disabled}
-      startIcon={startIcon}
-      endIcon={endIcon}
+    <motion.div
+      whileHover={{ 
+        scale: 1.05,
+        y: -2,
+      }}
+      whileTap={{ 
+        scale: 0.98,
+        y: 0,
+      }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 20 
+      }}
+    >
+      <Button
+        {...props}
+        onClick={handleClick}
+        disabled={disabled}
+        startIcon={startIcon}
+        endIcon={endIcon}
       sx={{
         ...props.sx,
         position: 'relative',
@@ -98,24 +114,28 @@ const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
         border: '1px solid',
         borderColor: alpha('#ffffff', 0.2),
         background: variant === 'accent' 
-          ? 'linear-gradient(135deg, rgba(147, 51, 234, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)'
+          ? 'linear-gradient(-45deg, rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.3), rgba(168, 85, 247, 0.3), rgba(249, 115, 22, 0.3))'
           : variant === 'primary'
-          ? alpha('#3b82f6', 0.2)
+          ? 'linear-gradient(-45deg, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3))'
           : variant === 'secondary'
-          ? alpha('#8b5cf6', 0.2)
+          ? 'linear-gradient(-45deg, rgba(139, 92, 246, 0.3), rgba(168, 85, 247, 0.3), rgba(192, 132, 252, 0.3), rgba(139, 92, 246, 0.3))'
           : alpha('#ffffff', 0.1),
+        backgroundSize: '400% 400%',
+        animation: variant !== 'default' ? 'gradientFlow 3s ease infinite' : 'none',
         color: 'white',
         '&:hover': {
           background: variant === 'accent'
-            ? 'linear-gradient(135deg, rgba(147, 51, 234, 0.3) 0%, rgba(59, 130, 246, 0.3) 100%)'
+            ? 'linear-gradient(-45deg, rgba(147, 51, 234, 0.4), rgba(59, 130, 246, 0.4), rgba(168, 85, 247, 0.4), rgba(249, 115, 22, 0.4))'
             : variant === 'primary'
-            ? alpha('#3b82f6', 0.3)
+            ? 'linear-gradient(-45deg, rgba(59, 130, 246, 0.4), rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.4), rgba(59, 130, 246, 0.4))'
             : variant === 'secondary'
-            ? alpha('#8b5cf6', 0.3)
+            ? 'linear-gradient(-45deg, rgba(139, 92, 246, 0.4), rgba(168, 85, 247, 0.4), rgba(192, 132, 252, 0.4), rgba(139, 92, 246, 0.4))'
             : alpha('#ffffff', 0.2),
-          borderColor: alpha('#ffffff', 0.3),
-          transform: 'translateY(-1px)',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)',
+          backgroundSize: '400% 400%',
+          animation: variant !== 'default' ? 'gradientFlow 2s ease infinite' : 'none',
+          borderColor: alpha('#ffffff', 0.4),
+          transform: 'translateY(-2px) scale(1.02)',
+          boxShadow: '0 15px 50px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4)',
         },
         '&:active': {
           transform: 'translateY(0px)',
@@ -156,13 +176,26 @@ const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
             opacity: 0,
           },
         },
+        // Flowing gradient animation
+        '@keyframes gradientFlow': {
+          '0%': {
+            backgroundPosition: '0% 50%',
+          },
+          '50%': {
+            backgroundPosition: '100% 50%',
+          },
+          '100%': {
+            backgroundPosition: '0% 50%',
+          },
+        },
       }}
       className={clsx(liquidGlassVariants({ variant, size }), className)}
     >
-      <span style={{ position: 'relative', zIndex: 2 }}>
-        {children}
-      </span>
-    </Button>
+        <span style={{ position: 'relative', zIndex: 2 }}>
+          {children}
+        </span>
+      </Button>
+    </motion.div>
   );
 };
 
