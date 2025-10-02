@@ -1,7 +1,7 @@
 // src/components/home/CallToActionSection.tsx
 import React from 'react';
 import { Container, Box } from '@mui/material';
-import { PulseButton } from '../animations/AnimatedButton';
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useNavigate } from 'react-router-dom';
@@ -84,7 +84,8 @@ function CallToActionSection() {
 
           {/* Call to Action Button */}
           <div className="inline-block animate-fadeInUp animate-scale-up">
-            <PulseButton
+            <LiquidGlassButton
+              variant="accent"
               size="large"
               startIcon={
                 <div className="animate-spin">
@@ -92,10 +93,15 @@ function CallToActionSection() {
                 </div>
               }
               onClick={() => navigate('/login')}
-              className="py-3 px-6 text-lg font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:from-purple-700 hover:to-indigo-700 transition-colors"
+              sx={{
+                py: 3,
+                px: 6,
+                fontSize: '1.125rem',
+                fontWeight: 600,
+              }}
             >
               Get Started Now
-            </PulseButton>
+            </LiquidGlassButton>
           </div>
 
           {/* Additional encouragement text */}

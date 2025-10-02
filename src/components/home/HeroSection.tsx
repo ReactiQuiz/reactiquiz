@@ -4,8 +4,8 @@ import { Box, Typography, Container, useTheme, useMediaQuery } from '@mui/materi
 import { alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { ParticleField } from '../animations/AnimationUtils';
-import { GlowButton } from '../animations/AnimatedButton';
 import ShaderAnimation from '../animations/ShaderAnimation';
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
@@ -176,26 +176,19 @@ function HeroSection() {
 
         {/* Call to Action Button */}
         <div className="animate-fadeInUp hover:scale-105 transition-transform duration-300 inline-block">
-          <GlowButton
+          <LiquidGlassButton
+            variant="accent"
             size="large"
             onClick={() => navigate('/login')}
-            glowColor={theme.palette.secondary.light}
             sx={{
               py: { xs: 1.5, sm: 2 },
               px: { xs: 3, sm: 4 },
               fontSize: { xs: '1rem', sm: '1.1rem' },
               fontWeight: 600,
-              borderRadius: 3,
-              background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
-              boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-              textTransform: 'none',
-              '&:hover': {
-                background: `linear-gradient(135deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.primary.dark} 100%)`
-              }
             }}
           >
             Start Your Journey
-          </GlowButton>
+          </LiquidGlassButton>
         </div>
 
         {/* Scroll Indicator */}

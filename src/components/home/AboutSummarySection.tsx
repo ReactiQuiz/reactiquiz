@@ -1,7 +1,7 @@
 // src/components/home/AboutSummarySection.tsx
 import React from 'react';
 import { Container, Box } from '@mui/material';
-import { PrimaryAnimatedButton } from '../animations/AnimatedButton';
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,8 +47,8 @@ function AboutSummarySection() {
               </p>
               
               <div className="text-center">
-                <PrimaryAnimatedButton
-                  animationType="glow"
+                <LiquidGlassButton
+                  variant="primary"
                   size="large"
                   endIcon={
                     <div className="animate-x-oscillate">
@@ -56,10 +56,15 @@ function AboutSummarySection() {
                     </div>
                   }
                   onClick={() => navigate('/about')}
-                  className="py-3 px-6 text-lg font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:from-purple-700 hover:to-indigo-700 transition-colors"
+                  sx={{
+                    py: 3,
+                    px: 6,
+                    fontSize: '1.125rem',
+                    fontWeight: 600,
+                  }}
                 >
                   Learn More About Us
-                </PrimaryAnimatedButton>
+                </LiquidGlassButton>
               </div>
             </div>
           </div>

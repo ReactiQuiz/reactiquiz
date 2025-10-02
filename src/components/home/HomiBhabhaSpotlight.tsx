@@ -1,6 +1,7 @@
 // src/components/home/HomiBhabhaSpotlight.js
 import React from 'react';
 import { Box, Card, CardContent, Typography, Button, Container, useTheme, alpha } from '@mui/material';
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 import { useNavigate } from 'react-router-dom';
 import SchoolIcon from '@mui/icons-material/School';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -54,26 +55,20 @@ function HomiBhabhaSpotlight() {
               </Typography>
             </CardContent>
             <Box sx={{ ml: { sm: 2 }, mt: { xs: 2, sm: 0 }, width: {xs: '100%', sm: 'auto'} }}>
-              <Button
-                variant="contained"
+              <LiquidGlassButton
+                variant="secondary"
+                size="medium"
                 onClick={(e) => { e.stopPropagation(); navigate('/homibhabha'); }}
                 endIcon={<ArrowForwardIcon />}
-                size="medium"
-                fullWidth // Make button full width on xs
                 sx={{
                   fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                  py: { xs: 1.2, sm: 1.2 }, // Consistent padding
+                  py: { xs: 1.2, sm: 1.2 },
                   px: { xs: 2, sm: 3 },
-                  backgroundColor: theme.palette.secondary.main,
-                  color: theme.palette.getContrastText(theme.palette.secondary.main),
-                  '&:hover': { backgroundColor: darken(theme.palette.secondary.main, 0.2) },
-                  [theme.breakpoints.up('sm')]: { // Apply only on sm and up
-                        width: 'auto', // Revert to auto width on sm+
-                  },
+                  width: { xs: '100%', sm: 'auto' },
                 }}
               >
                 Explore Resources
-              </Button>
+              </LiquidGlassButton>
             </Box>
           </Box>
         </Card>
