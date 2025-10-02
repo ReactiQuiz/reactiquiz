@@ -108,7 +108,7 @@ function HeroSection() {
         className="relative z-30 text-center px-4 sm:px-6"
       >
         {/* Main Hero Content */}
-        <div className="animate-fadeInUp">
+        <div className="animate-fadeInUp scroll-animate-fadeInUp">
           <Typography
             component="h1"
             variant="h1"
@@ -132,7 +132,7 @@ function HeroSection() {
           </Typography>
         </div>
 
-        <div className="animate-fadeInUp delay-200">
+        <div className="animate-fadeInUp delay-200 scroll-animate-fadeInUp delay-scroll-200">
           <Typography
             variant="h5"
             component="h2"

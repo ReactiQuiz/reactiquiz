@@ -1,4 +1,4 @@
-// src/components/home/AboutSummarySection.tsx
+la// src/components/home/AboutSummarySection.tsx
 import React from 'react';
 import { Container, Typography, useTheme, Box, useMediaQuery, CardContent } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -42,17 +42,17 @@ function AboutSummarySection() {
     >
       {/* Background Elements */}
       <div
-        className="absolute top-[20%] left-[5%] w-24 h-24 rounded-full bg-gradient-radial from-purple-500/10 to-transparent animate-xy-oscillate z-0"
+        className="absolute top-[20%] left-[5%] w-24 h-24 rounded-full bg-gradient-radial from-purple-600/30 to-transparent animate-xy-oscillate z-0"
       />
       
       <div
-        className="absolute bottom-[20%] right-[8%] w-20 h-20 rounded-[30%] bg-gradient-to-br from-purple-500/5 to-blue-400/5 animate-rotate-360 z-0"
+        className="absolute bottom-[20%] right-[8%] w-20 h-20 rounded-[30%] bg-gradient-to-br from-purple-600/20 to-blue-500/20 animate-rotate-360 z-0"
       />
 
       <Container maxWidth="lg" className="relative z-10">
-        <div className="animate-fadeInUp">
+        <div className="animate-fadeInUp scroll-animate-fadeInUp">
           <div 
-            className="text-center bg-gradient-to-br from-white/95 to-purple-100/5 backdrop-blur border border-purple-200/10 rounded-lg relative overflow-hidden"
+            className="text-center bg-gradient-to-br from-white/95 to-purple-200/20 backdrop-blur-lg border border-purple-300/30 rounded-lg relative overflow-hidden shadow-lg"
             style={{ borderImageSlice: 1, borderImageSource: 'linear-gradient(90deg, #7c3aed, #8b5cf6)' }}
           >
             <div className="p-10 sm:p-12 md:p-16">
