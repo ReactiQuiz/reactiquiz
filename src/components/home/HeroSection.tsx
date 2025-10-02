@@ -22,42 +22,42 @@ function HeroSection() {
   ];
 
   return (
-    <AnimatedGradientBackground className="relative min-h-[90vh] flex items-center overflow-hidden text-white">
-      {/* Animated Background Particles */}
-      <ParticleField count={isMobile ? 15 : 30} />
-
-      {/* Floating geometric shapes */}
-      <div
-        className="absolute top-[20%] right-[10%] w-20 h-20 rounded-full blur-sm z-20 bg-gradient-to-br from-purple-500/20 to-blue-400/10"
-      />
-      
-      <div
-        className="absolute bottom-[30%] left-[5%] w-16 h-16 rounded-[30%] blur-md z-20 bg-gradient-to-br from-blue-400/10 to-purple-500/05"
-      />
-
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
-          position: 'relative', 
-          zIndex: 40,
-          textAlign: 'center',
-          px: { xs: 2, sm: 3 },
-          // Add backdrop blur and semi-transparent background for better text readability
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: '-2rem',
-            left: '-2rem',
-            right: '-2rem',
-            bottom: '-2rem',
-            background: 'rgba(0,0,0,0.2)',
-            backdropFilter: 'blur(2px)',
-            borderRadius: '2rem',
-            zIndex: -1
-          }
+    <AnimatedGradientBackground>
+      <Box
+        sx={{
+          position: 'relative',
+          minHeight: '90vh',
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
+          color: 'white',
+          width: '100%',
         }}
-        className="relative z-40 text-center px-4 sm:px-6"
+        className="relative min-h-[90vh] flex items-center overflow-hidden text-white w-full"
       >
+        {/* Animated Background Particles */}
+        <ParticleField count={isMobile ? 15 : 30} />
+
+        {/* Floating geometric shapes */}
+        <div
+          className="absolute top-[20%] right-[10%] w-20 h-20 rounded-full blur-sm z-20 bg-gradient-to-br from-purple-500/20 to-blue-400/10"
+        />
+        
+        <div
+          className="absolute bottom-[30%] left-[5%] w-16 h-16 rounded-[30%] blur-md z-20 bg-gradient-to-br from-blue-400/10 to-purple-500/05"
+        />
+
+        <Container 
+          maxWidth="lg" 
+          sx={{ 
+            position: 'relative', 
+            zIndex: 30,
+            textAlign: 'center',
+            px: { xs: 2, sm: 3 },
+            width: '100%',
+          }}
+          className="relative z-30 text-center px-4 sm:px-6 w-full"
+        >
         {/* Main Hero Content */}
         <div className="animate-fadeInUp scroll-animate-fadeInUp">
           <Typography
@@ -178,7 +178,8 @@ function HeroSection() {
             marginRight: 'auto'
           }}
         />
-      </Container>
+        </Container>
+      </Box>
     </AnimatedGradientBackground>
   );
 }

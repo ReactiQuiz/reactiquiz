@@ -13,37 +13,35 @@ const DemoVariant1: React.FC<AnimatedGradientBackgroundProps> = ({ className, ch
   const isInView = useInView(ref);
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden ${className || ''}`}>
-      {/* Gradient Background */}
+    <div className={`relative w-full min-h-[90vh] overflow-hidden ${className || ''}`}>
+      {/* Static Gradient Background as fallback */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900 via-purple-900 to-orange-500" />
       
-      {/* Animated Gradient Background */}
+      {/* Animated Lottie Background */}
+      <div className="absolute inset-0 z-0">
+        <DotLottieReact
+          src="https://lottie.host/8cf4ba71-e5fb-44f3-8134-178c4d389417/0CCdoiCqQE.lottie"
+          loop
+          autoplay
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      {/* Content Container */}
       <div 
         ref={ref}
-        className="relative z-10 flex flex-col items-center justify-start h-full"
+        className="relative z-10 w-full min-h-[90vh]"
       >
         <AnimatePresence>
           {isInView && (
             <motion.div
-              className="relative z-10 flex flex-col items-center justify-start h-full"
+              className="w-full h-full"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.9 }}
             >
-              <div className="relative w-full h-full">
-                <DotLottieReact
-                  src="https://lottie.host/8cf4ba71-e5fb-44f3-8134-178c4d389417/0CCdoiCqQE.lottie"
-                  loop
-                  autoplay
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                
-                {/* Content overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  {children}
-                </div>
-              </div>
+              {children}
             </motion.div>
           )}
         </AnimatePresence>
