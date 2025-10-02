@@ -58,7 +58,7 @@ router.get('/:sessionId', verifyToken, async (req: AuthenticatedRequest, res: Re
         }
 
         const session = sessionResult.rows[0] as any;
-        const sessionAge = new Date() - new Date(session.created_at);
+        const sessionAge = new Date().getTime() - new Date(session.created_at).getTime();
 
         if (sessionAge > FIVE_MINUTES_IN_MS) {
             await tx.execute({ sql: "DELETE FROM quiz_sessions WHERE id = ?", args: [sessionId] });

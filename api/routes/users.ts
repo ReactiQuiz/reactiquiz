@@ -157,7 +157,7 @@ router.get('/stats', verifyToken, async (req: Request, res: Response) => {
 
         res.json({
             totalQuizzesSolved: stats.totalQuizzesSolved || 0,
-            overallAveragePercentage: stats.overallAveragePercentage ? Math.round(stats.overallAveragePercentage) : 0,
+            overallAveragePercentage: stats.overallAveragePercentage ? Math.round(Number(stats.overallAveragePercentage)) : 0,
             activityData: activityData
         });
     } catch (e: any) {

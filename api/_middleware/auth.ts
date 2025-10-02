@@ -6,7 +6,7 @@ interface AuthenticatedRequest extends Request {
     user?: {
         id: string;
         username: string;
-        isAdmin?: boolean;
+        isAdmin: boolean;
     };
 }
 
@@ -25,7 +25,7 @@ const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunctio
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string; username: string; isAdmin?: boolean };
+        const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string; username: string; isAdmin: boolean };
         req.user = decoded; // Adds { id, username } to the request object
         next();
     } catch (error) {

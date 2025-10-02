@@ -1,4 +1,5 @@
 import { shuffleArray } from './arrayUtils';
+import { Transaction, ResultSet, Row } from '@libsql/client';
 
 interface DifficultyRange {
     min: number;
@@ -12,9 +13,7 @@ interface Question {
     [key: string]: any;
 }
 
-interface Tx {
-    execute: (query: { sql: string; args: any[] }) => Promise<{ rows: Question[] }>;
-}
+type Tx = Transaction;
 
 const getDifficultyRange = (difficulty: string): DifficultyRange => {
     switch (difficulty) {
@@ -47,10 +46,10 @@ const fetchQuestionsForSubject = async (tx: Tx, subjectKey: string, totalNeeded:
             args: [subjectKey, grade, difficultyRange.min, difficultyRange.max]
         });
 
-        const newQuestions = rows.filter(q => !gatheredQuestionIds.has(q.id));
+        const newQuestions = (rows as any[]).filter((q: any) => !gatheredQuestionIds.has(q.id));
         const questionsToAdd = shuffleArray(newQuestions).slice(0, needed);
         subjectQuestions.push(...questionsToAdd);
-        questionsToAdd.forEach(q => gatheredQuestionIds.add(q.id));
+        questionsToAdd.forEach((q: any) => gatheredQuestionIds.add(q.id));
     }
     return subjectQuestions;
 };
