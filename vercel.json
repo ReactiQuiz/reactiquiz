@@ -3,14 +3,11 @@
   "builds": [
     {
       "src": "api/index.ts",
-      "use": "@vercel/node@5.3.24",
-      "config": {
-        "runtime": "nodejs20.x"
-      }
+      "use": "@vercel/node"
     },
     {
       "src": "package.json",
-      "use": "@vercel/static-build@2.0.0",
+      "use": "@vercel/static-build",
       "config": {
         "distDir": "build"
       }
