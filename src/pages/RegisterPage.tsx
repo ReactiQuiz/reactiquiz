@@ -1,6 +1,6 @@
 // src/pages/RegisterPage.tsx
 import React, { useState } from 'react';
-import { Grid, Paper } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
@@ -42,7 +42,7 @@ const RegisterPage: React.FC = () => {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <AuthBrandingPanel variant="register" />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} sx={{ position: 'relative' }}>
         <RegisterForm 
           onSubmit={handleRegister}
           isSubmitting={isSubmitting}

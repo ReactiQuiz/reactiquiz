@@ -1,6 +1,6 @@
 // src/pages/LoginPage.tsx
 import React, { useState, useEffect } from 'react';
-import { Grid, Paper } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationsContext';
@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <AuthBrandingPanel variant="login" />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} sx={{ position: 'relative' }}>
         <LoginForm 
           onSubmit={handleLogin}
           isSubmitting={isSubmitting}
