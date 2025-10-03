@@ -12,6 +12,8 @@ if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process
 // Route modules (ESM)
 import usersRouter from './routes/users.mjs';
 import questionsRouter from './routes/questions.mjs';
+import subjectsRouter from './routes/subjects.mjs';
+import topicsRouter from './routes/topics.mjs';
 
 // Optional routes (converted later); guard missing modules
 async function tryImport(path) {
@@ -50,11 +52,12 @@ app.use('/api', apiLimiter);
 
 app.use('/api/users', authLimiter, usersRouter);
 app.use('/api/questions', questionsRouter);
+app.use('/api/subjects', subjectsRouter);
+app.use('/api/topics', topicsRouter);
 
 // Attach optional routers if present (subjects, topics, etc.)
 const optionalRouters = [
-  ['subjects', './routes/subjects.mjs'],
-  ['topics', './routes/topics.mjs'],
+  // already mounted above
   ['results', './routes/results.mjs'],
   ['friends', './routes/friends.mjs'],
   ['challenges', './routes/challenges.mjs'],
