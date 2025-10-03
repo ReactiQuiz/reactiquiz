@@ -2,7 +2,7 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
-import SpaceBackground from '../animations/SpaceBackground';
+import ShaderAnimationAuth from '../animations/ShaderAnimationAuth';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
@@ -32,8 +32,10 @@ function AuthBrandingPanel({ variant = 'login' }: AuthBrandingPanelProps) {
         overflow: 'hidden',
       }}
     >
-      <SpaceBackground>
-        <div className="flex flex-col items-center justify-center h-full px-8 relative z-10">
+      {/* Shader background layer */}
+      <ShaderAnimationAuth />
+      {/* Foreground content */}
+      <div className="flex flex-col items-center justify-center h-full px-8 relative z-10">
           {/* Animated Icon */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
@@ -162,8 +164,7 @@ function AuthBrandingPanel({ variant = 'login' }: AuthBrandingPanelProps) {
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </SpaceBackground>
+      </div>
     </Grid>
   );
 }

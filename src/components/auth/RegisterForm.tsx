@@ -35,11 +35,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
         minHeight: '100vh',
         display: 'flex', 
         flexDirection: 'column', 
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        py: { xs: 2, sm: 3, md: 4 },
-        overflow: 'auto',
+        overflow: 'hidden',
       }}
     >
       {/* Animated Shader Background */}
@@ -49,11 +48,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isSubmitting, err
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-lg px-6 relative z-10 my-4"
-        style={{ maxWidth: '480px' }}
+        className="w-full max-w-lg px-8 relative z-10"
+        style={{ maxWidth: '500px' }}
       >
         {/* Glass morphism container */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl" style={{ padding: '2rem' }}>
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 shadow-2xl" style={{ padding: '3rem' }}>
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -41,16 +41,14 @@ const RegisterPage: React.FC = () => {
 
   return (
     <Grid container component="main" sx={{ minHeight: '100vh' }}>
-      <Grid item xs={12} sm={12} md={5} sx={{ position: 'relative', order: { xs: 1, md: 2 } }}>
+      <Grid item xs={12} sm={12} md={5} sx={{ position: 'relative' }}>
         <RegisterForm 
           onSubmit={handleRegister}
           isSubmitting={isSubmitting}
           error={error}
         />
       </Grid>
-      <Grid item xs={false} sm={false} md={7} sx={{ order: { xs: 2, md: 1 } }}>
-        <AuthBrandingPanel variant="register" />
-      </Grid>
+      <AuthBrandingPanel variant="register" />
     </Grid>
   );
 };
