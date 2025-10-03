@@ -34,19 +34,20 @@ try {
     logError = (...args: any[]) => console.error('[ERROR]', ...args);
 }
 
-import userRoutes from './routes/users';
-import subjectRoutes from './routes/subjects';
-import topicRoutes from './routes/topics';
-import questionRoutes from './routes/questions';
-import resultRoutes from './routes/results';
-import friendRoutes from './routes/friends';
-import challengeRoutes from './routes/challenges';
-import contactRoutes from './routes/contact';
-import aiRoutes from './routes/ai';
-import homiBhabhaRoutes from './routes/homibhabha';
-import quizSessionRoutes from './routes/quizSessions';
-import subjectiveRoutes from './routes/subjective';
-import adminRoutes from './routes/admin';
+// Use CommonJS requires to avoid ESM extension issues on Vercel
+const userRoutes = require('./routes/users').default;
+const subjectRoutes = require('./routes/subjects').default;
+const topicRoutes = require('./routes/topics').default;
+const questionRoutes = require('./routes/questions').default;
+const resultRoutes = require('./routes/results').default;
+const friendRoutes = require('./routes/friends').default;
+const challengeRoutes = require('./routes/challenges').default;
+const contactRoutes = require('./routes/contact').default;
+const aiRoutes = require('./routes/ai').default;
+const homiBhabhaRoutes = require('./routes/homibhabha').default;
+const quizSessionRoutes = require('./routes/quizSessions').default;
+const subjectiveRoutes = require('./routes/subjective').default;
+const adminRoutes = require('./routes/admin').default;
 // --- END OF DEFINITIVE FIX ---
 
 const app = express();
