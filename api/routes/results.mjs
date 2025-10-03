@@ -75,7 +75,20 @@ router.get('/', verifyToken, async (req, res) => {
       args: [userId],
     });
     await tx.commit();
-    res.json(result.rows);
+    const mapped = (result.rows || []).map((r) => {
+      const totalQuestions = Number(r.totalQuestions) || 0;
+      const percentage = Number(r.percentage) || 0;
+      const correctFromPct = Math.round((percentage / 100) * totalQuestions);
+      return {
+        ...r,
+        createdAt: r.timestamp || r.createdAt || null,
+        correctAnswers: r.correctAnswers != null ? Number(r.correctAnswers) : correctFromPct,
+        score: r.score != null ? Number(r.score) : correctFromPct,
+        totalQuestions,
+        percentage,
+      };
+    });
+    res.json(mapped);
   } catch (e) {
     await tx.rollback();
     logError('DB ERROR', 'Fetching results failed', e && e.message);
