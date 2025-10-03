@@ -1,7 +1,7 @@
 // Use CommonJS requires to avoid ESM mismatches on Vercel
-import type express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 const path = require('path');
-const expressLib = require('express');
+const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 
@@ -52,7 +52,7 @@ const subjectiveRoutes = require('./routes/subjective').default;
 const adminRoutes = require('./routes/admin').default;
 // --- END OF DEFINITIVE FIX ---
 
-const app = expressLib();
+const app = express();
 
 // This setting tells Express to trust the headers set by Vercel's proxy.
 // It's essential for correct IP address identification, which is needed by
@@ -103,17 +103,17 @@ app.use('/api/subjective', subjectiveRoutes);
 app.use('/api/admin', adminRoutes);
 
 // --- Health Check Endpoint ---
-app.get('/api/health', (req: expressLib.Request, res: expressLib.Response) => {
+app.get('/api/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'ok', message: 'ReactiQuiz API is healthy.' });
 });
 
 // --- Final 404 Catcher for API routes ---
-app.use('/api/*', (req: expressLib.Request, res: expressLib.Response) => {
+app.use('/api/*', (req: Request, res: Response) => {
     res.status(404).json({ message: `API endpoint not found at ${req.originalUrl}` });
 });
 
 // A global error handler
-app.use((err: Error, req: expressLib.Request, res: expressLib.Response, next: expressLib.NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     logError('FATAL', 'An unhandled server error occurred', err.stack);
     res.status(500).json({ message: 'Internal Server Error' });
 });
