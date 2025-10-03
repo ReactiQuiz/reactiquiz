@@ -14,6 +14,7 @@ import usersRouter from './routes/users.mjs';
 import questionsRouter from './routes/questions.mjs';
 import subjectsRouter from './routes/subjects.mjs';
 import topicsRouter from './routes/topics.mjs';
+import resultsRouter from './routes/results.mjs';
 
 // Optional routes (converted later); guard missing modules
 async function tryImport(path) {
@@ -54,6 +55,7 @@ app.use('/api/users', authLimiter, usersRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/subjects', subjectsRouter);
 app.use('/api/topics', topicsRouter);
+app.use('/api/results', resultsRouter);
 
 // Attach optional routers if present (subjects, topics, etc.)
 const optionalRouters = [
