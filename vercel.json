@@ -3,11 +3,11 @@
   "builds": [
     {
       "src": "api/index.mjs",
-      "use": "@vercel/node"
+      "use": "@vercel/node@3"
     },
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
+      "use": "@vercel/static-build@1",
       "config": {
         "distDir": "build"
       }
