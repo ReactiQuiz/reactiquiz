@@ -231,7 +231,7 @@ export const generateDashboardPdfReport = async ({
         head: [['Metric', 'Value']],
         body: [
             ['Total Quizzes Solved', processedStats.totalQuizzes],
-            ['Overall Average Score', `${processedStats.overallAverageScore.toFixed(1)}%`],
+            ['Overall Average Score', `${(Number(processedStats.overallAverageScore) || 0).toFixed(1)}%`],
             ['Total Questions Answered', processedStats.overallQuestionStats.total],
             ['Total Correct Answers', processedStats.overallQuestionStats.correct],
         ],
@@ -258,10 +258,10 @@ export const generateDashboardPdfReport = async ({
         pdf.setFontSize(16); pdf.setFont('helvetica', 'bold');
         pdf.text('Performance by Subject', margin, currentY); currentY += 8;
         
-        const subjectBody = Object.entries(processedStats.subjectBreakdowns).map(([key, data]) => [
+        const subjectBody = Object.entries(processedStats.subjectBreakdowns || {}).map(([key, data]: any) => [
             data.name,
             data.count,
-            `${data.average.toFixed(1)}%`,
+            `${(Number(data.average) || 0).toFixed(1)}%`,
             `${data.totalCorrect} / ${data.totalQuestions}`
         ]);
 

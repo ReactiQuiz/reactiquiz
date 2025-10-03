@@ -13,11 +13,11 @@ const DifficultyBar = ({ label, value, color, count }) => (
         />
         <Box sx={{ width: '100%', flexBasis: '75%' }}>
             <Typography variant="body2" sx={{ textAlign: 'right', fontWeight: 'bold' }}>
-                {value.toFixed(0)}%
+                {Number.isFinite(value) ? value.toFixed(0) : '0'}%
             </Typography>
             <LinearProgress
                 variant="determinate"
-                value={value}
+                value={Number.isFinite(value) ? value : 0}
                 sx={{
                     height: 8, borderRadius: 4,
                     backgroundColor: alpha(color, 0.2),
@@ -35,7 +35,14 @@ function SubjectDifficultyCard({ subjectKey, title, data }) {
 
     if (!data) return null;
     
-    const { easy, medium, hard } = data;
+    const safe = (d: any) => ({
+        average: typeof d?.average === 'number' ? d.average : (typeof d?.percentage === 'number' ? d.percentage : 0),
+        count: typeof d?.count === 'number' ? d.count : (typeof d?.total === 'number' ? d.total : 0),
+    });
+
+    const easy = safe(data?.easy);
+    const medium = safe(data?.medium);
+    const hard = safe(data?.hard);
 
     return (
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', width: '100%', borderTop: `4px solid ${accentColor}` }}>
