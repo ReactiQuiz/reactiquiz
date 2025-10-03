@@ -1,7 +1,9 @@
-import path from 'path';
-import express, { Application } from 'express';
-import cors from 'cors';
-import rateLimit from 'express-rate-limit';
+// Use CommonJS requires to avoid ESM mismatches on Vercel
+import type express from 'express';
+const path = require('path');
+const expressLib = require('express');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 // Load env vars from .env early in non-production so checks below see them
 if (process.env.NODE_ENV !== 'production') {
@@ -50,7 +52,7 @@ const subjectiveRoutes = require('./routes/subjective').default;
 const adminRoutes = require('./routes/admin').default;
 // --- END OF DEFINITIVE FIX ---
 
-const app = express();
+const app = expressLib();
 
 // This setting tells Express to trust the headers set by Vercel's proxy.
 // It's essential for correct IP address identification, which is needed by
@@ -101,20 +103,20 @@ app.use('/api/subjective', subjectiveRoutes);
 app.use('/api/admin', adminRoutes);
 
 // --- Health Check Endpoint ---
-app.get('/api/health', (req: express.Request, res: express.Response) => {
+app.get('/api/health', (req: expressLib.Request, res: expressLib.Response) => {
     res.status(200).json({ status: 'ok', message: 'ReactiQuiz API is healthy.' });
 });
 
 // --- Final 404 Catcher for API routes ---
-app.use('/api/*', (req: express.Request, res: express.Response) => {
+app.use('/api/*', (req: expressLib.Request, res: expressLib.Response) => {
     res.status(404).json({ message: `API endpoint not found at ${req.originalUrl}` });
 });
 
 // A global error handler
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: Error, req: expressLib.Request, res: expressLib.Response, next: expressLib.NextFunction) => {
     logError('FATAL', 'An unhandled server error occurred', err.stack);
     res.status(500).json({ message: 'Internal Server Error' });
 });
 
 // Export the configured app for Vercel
-export default app;
+module.exports = app;
