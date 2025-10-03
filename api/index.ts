@@ -1,58 +1,36 @@
-// Use CommonJS requires to avoid ESM mismatches on Vercel
-import type { Request, Response, NextFunction } from 'express';
-const path = require('path');
-const express = require('express');
-const cors = require('cors');
-const rateLimit = require('express-rate-limit');
+import path from 'path';
+import express, { Request, Response, NextFunction } from 'express';
+import type { Express } from 'express';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 
-// Load env vars from .env early in non-production so checks below see them
-if (process.env.NODE_ENV !== 'production') {
-    try {
-        const dotenv = require('dotenv');
-        dotenv.config({ path: path.resolve(__dirname, '../.env') });
-    } catch (e) {
-        // noop: dotenv is a dev dependency; absence should not crash prod builds
-    }
-}
+// Load env vars from .env in development if available (optional)
+// Note: Vercel provides env at runtime; local dev may use .env
+// We avoid dynamic require to keep ESM compatibility
 
 // Environment variables may be unavailable during Vercel build/bundling. Never exit here.
 if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process.env.JWT_SECRET) {
     console.warn('[WARN] Missing env vars (TURSO_DATABASE_URL/TURSO_AUTH_TOKEN/JWT_SECRET). Server will log errors if accessed without proper config.');
 }
 
-// Prefer TypeScript import for the logger; fall back to console on failure
-let logApi: (...args: any[]) => void;
-let logInfo: (...args: any[]) => void;
-let logError: (...args: any[]) => void;
-try {
-    const logger = require('./_utils/logger');
-    logApi = logger.logApi;
-    logInfo = logger.logInfo;
-    logError = logger.logError;
-} catch (e) {
-    console.log('Logger failed to initialize, falling back to console.log');
-    logApi = (...args: any[]) => console.log('[API]', ...args);
-    logInfo = (...args: any[]) => console.log('[INFO]', ...args);
-    logError = (...args: any[]) => console.error('[ERROR]', ...args);
-}
+import { logApi, logInfo, logError } from './_utils/logger';
 
-// Use CommonJS requires to avoid ESM extension issues on Vercel
-const userRoutes = require('./routes/users').default;
-const subjectRoutes = require('./routes/subjects').default;
-const topicRoutes = require('./routes/topics').default;
-const questionRoutes = require('./routes/questions').default;
-const resultRoutes = require('./routes/results').default;
-const friendRoutes = require('./routes/friends').default;
-const challengeRoutes = require('./routes/challenges').default;
-const contactRoutes = require('./routes/contact').default;
-const aiRoutes = require('./routes/ai').default;
-const homiBhabhaRoutes = require('./routes/homibhabha').default;
-const quizSessionRoutes = require('./routes/quizSessions').default;
-const subjectiveRoutes = require('./routes/subjective').default;
-const adminRoutes = require('./routes/admin').default;
+import userRoutes from './routes/users';
+import subjectRoutes from './routes/subjects';
+import topicRoutes from './routes/topics';
+import questionRoutes from './routes/questions';
+import resultRoutes from './routes/results';
+import friendRoutes from './routes/friends';
+import challengeRoutes from './routes/challenges';
+import contactRoutes from './routes/contact';
+import aiRoutes from './routes/ai';
+import homiBhabhaRoutes from './routes/homibhabha';
+import quizSessionRoutes from './routes/quizSessions';
+import subjectiveRoutes from './routes/subjective';
+import adminRoutes from './routes/admin';
 // --- END OF DEFINITIVE FIX ---
 
-const app = express();
+const app: Express = express();
 
 // This setting tells Express to trust the headers set by Vercel's proxy.
 // It's essential for correct IP address identification, which is needed by
@@ -119,4 +97,4 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // Export the configured app for Vercel
-module.exports = app;
+export default app;
