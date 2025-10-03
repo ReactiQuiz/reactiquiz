@@ -1,7 +1,7 @@
 // src/components/animations/AnimatedCard.tsx
 import React from 'react';
 import { Card, CardProps, useTheme, useMediaQuery } from '@mui/material';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, type MotionProps } from 'framer-motion';
 import { alpha } from '@mui/material/styles';
 
 interface AnimatedCardProps extends CardProps {
@@ -45,11 +45,11 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
     y.set(0);
   };
 
-  const getAnimationProps = () => {
+  const getAnimationProps = (): MotionProps => {
     const baseProps = {
       initial: { opacity: 0, y: 20 },
       animate: { opacity: 1, y: 0 }
-    };
+    } as MotionProps;
 
     switch (animationType) {
       case 'hover':
@@ -61,7 +61,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
             boxShadow: '0 30px 60px rgba(0,0,0,0.25)'
           },
           whileTap: isMobile ? { scale: 0.98 } : {}
-        };
+        } as MotionProps;
 
       case 'tilt':
         return {
@@ -75,7 +75,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
             scale: 1.02
           },
           whileTap: isMobile ? { scale: 0.98 } : {}
-        };
+        } as MotionProps;
 
       case 'float':
         return {
@@ -87,7 +87,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
           whileHover: {
             scale: 1.06
           }
-        };
+        } as MotionProps;
 
       case 'glow':
         const color = glowColor || theme.palette.primary.main;
@@ -97,7 +97,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
             boxShadow: `0 0 42px ${alpha(color, 0.55)}, 0 18px 46px rgba(0,0,0,0.25)`,
             scale: 1.05
           }
-        };
+        } as MotionProps;
 
       case 'reveal':
         return {
@@ -106,14 +106,14 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
             whileHover: {
               scale: 1.04
             }
-        };
+        } as MotionProps;
 
       default:
         return baseProps;
     }
   };
 
-  const animationProps = getAnimationProps();
+  const animationProps: MotionProps = getAnimationProps();
 
   return (
     <motion.div
