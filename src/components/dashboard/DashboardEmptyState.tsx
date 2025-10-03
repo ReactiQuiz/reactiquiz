@@ -1,6 +1,7 @@
 // src/components/dashboard/DashboardEmptyState.tsx
 import React from 'react';
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useNavigate } from 'react-router-dom';
 import DashboardControls from './DashboardControls';
@@ -34,9 +35,9 @@ const DashboardEmptyState: React.FC<DashboardEmptyStateProps> = ({
         <Typography sx={{ my: 2, color: 'text.secondary' }}>
           Your dashboard is ready. Complete a quiz to start seeing your performance analytics here.
         </Typography>
-        <Button variant="contained" onClick={() => navigate('/subjects')}>
+        <LiquidGlassButton variant="accent" size="large" onClick={() => navigate('/subjects')} sx={{ width: { xs: '100%', sm: 'auto' } }}>
           Explore Quizzes
-        </Button>
+        </LiquidGlassButton>
       </Paper>
     </Box>
   );

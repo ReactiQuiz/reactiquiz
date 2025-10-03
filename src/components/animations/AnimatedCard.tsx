@@ -56,9 +56,9 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
         return {
           ...baseProps,
           whileHover: {
-            y: -8,
-            scale: 1.02,
-            boxShadow: '0 20px 40px rgba(0,0,0,0.15)'
+            y: -14,
+            scale: 1.04,
+            boxShadow: '0 30px 60px rgba(0,0,0,0.25)'
           },
           whileTap: isMobile ? { scale: 0.98 } : {}
         };
@@ -81,10 +81,11 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
         return {
           ...baseProps,
           animate: {
-            y: [-5 * floatIntensity, 5 * floatIntensity, -5 * floatIntensity]
+            y: [-8 * floatIntensity, 8 * floatIntensity, -8 * floatIntensity],
+            transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
           },
           whileHover: {
-            scale: 1.05
+            scale: 1.06
           }
         };
 
@@ -93,17 +94,17 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
         return {
           ...baseProps,
           whileHover: {
-            boxShadow: `0 0 30px ${alpha(color, 0.4)}, 0 10px 30px rgba(0,0,0,0.1)`,
-            scale: 1.03
+            boxShadow: `0 0 42px ${alpha(color, 0.55)}, 0 18px 46px rgba(0,0,0,0.25)`,
+            scale: 1.05
           }
         };
 
       case 'reveal':
         return {
           initial: { opacity: 0, scale: 0.8, rotateY: -90 },
-          animate: { opacity: 1, scale: 1, rotateY: 0 },
+          animate: { opacity: 1, scale: 1, rotateY: 0, transition: { type: 'spring', stiffness: 180, damping: 18 } },
             whileHover: {
-              scale: 1.02
+              scale: 1.04
             }
         };
 

@@ -1,11 +1,12 @@
 // src/components/ResultsActionButtons.js
 import {
-    Box, Button, useTheme, alpha, darken
+    Box, useTheme, alpha, darken
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HistoryIcon from '@mui/icons-material/History'; 
+import LiquidGlassButton from './animations/LiquidGlassButton';
 // import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Removed
 
 function ResultsActionButtons({
@@ -26,47 +27,33 @@ function ResultsActionButtons({
     const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
     return (
-        <Box sx={{ mt: 4, py: 2, display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ mt: 4, py: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
             {showBackToListButton && onBackToList && (
-                <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={onBackToList}
-                    sx={{ borderColor: effectiveAccentColor, color: effectiveAccentColor, '&:hover': { borderColor: darken(effectiveAccentColor, 0.15), backgroundColor: alpha(effectiveAccentColor, 0.08) }, minWidth: {xs: '100%', sm:'180px'} }}
-                > Back to List </Button>
+                <LiquidGlassButton variant="secondary" size="medium" startIcon={<ArrowBackIcon />} onClick={onBackToList} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'200px'} }}>
+                    Back to List
+                </LiquidGlassButton>
             )}
              {showViewHistoryButton && onViewHistory && (
-                <Button variant="outlined" startIcon={<HistoryIcon />} onClick={onViewHistory}
-                    sx={{ 
-                        borderColor: theme.palette.info.main, 
-                        color: theme.palette.info.main, 
-                        '&:hover': { borderColor: darken(theme.palette.info.main, 0.15), backgroundColor: alpha(theme.palette.info.main, 0.08) }, 
-                        minWidth: {xs: '100%', sm:'180px'}
-                    }}
-                > View Full History </Button>
+                <LiquidGlassButton variant="primary" size="medium" startIcon={<HistoryIcon />} onClick={onViewHistory} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'200px'} }}>
+                    View Full History
+                </LiquidGlassButton>
             )}
             {/* Challenge Friend Button Removed */}
-            <Button variant="outlined" startIcon={<HomeIcon />} onClick={onNavigateHome}
-                sx={{
-                    borderColor: (showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main,
-                    color: (showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main,
-                    '&:hover': {
-                        borderColor: darken((showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main, 0.15),
-                        backgroundColor: alpha((showBackToListButton || showViewHistoryButton) ? effectiveAccentColor : theme.palette.primary.main, 0.08)
-                    },
-                    minWidth: { xs: '100%', sm: '180px' }
-                }}
-            >
-                { (showBackToListButton || showViewHistoryButton /*|| showChallengeButton removed*/) ? "Home" : "Back to Home"}
-            </Button>
+            <LiquidGlassButton variant="accent" size="medium" startIcon={<HomeIcon />} onClick={onNavigateHome} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: '100%', sm: '220px' } }}>
+                { (showBackToListButton || showViewHistoryButton) ? "Home" : "Back to Home"}
+            </LiquidGlassButton>
             {showDeleteButton && onDeleteClick && (
-                <Button
-                    variant="outlined"
-                    color="error"
+                <LiquidGlassButton
+                    variant="default"
+                    size="medium"
                     startIcon={<DeleteIcon />}
                     onClick={onDeleteClick}
                     disabled={deleteDisabled}
-                    sx={{ minWidth: {xs: '100%', sm:'180px'} }}
+                    sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'220px'} }}
+                    color="error"
                 >
                     Delete This Result
-                </Button>
+                </LiquidGlassButton>
             )}
         </Box>
     );

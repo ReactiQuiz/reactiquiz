@@ -1,8 +1,9 @@
 // src/components/dashboard/GenerateReportButton.js
 import React from 'react';
-import { Button, Box, useTheme } from '@mui/material'; // <-- Import useTheme
+import { Box, useTheme } from '@mui/material'; // <-- Import useTheme
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { darken } from '@mui/material/styles'; // <-- Import darken utility
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 
 function GenerateReportButton({ onGenerate, isLoading }) { // <-- Removed accentColor prop
   const theme = useTheme();
@@ -12,22 +13,16 @@ function GenerateReportButton({ onGenerate, isLoading }) { // <-- Removed accent
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-      <Button
-        variant="contained"
+      <LiquidGlassButton
+        variant="primary"
+        size="large"
         startIcon={<PictureAsPdfIcon />}
         onClick={onGenerate}
         disabled={isLoading}
-        sx={{
-          backgroundColor: buttonColor,
-          '&:hover': {
-            backgroundColor: darken(buttonColor, 0.2) // Use the robust darken utility
-          },
-          minWidth: '200px',
-          py: 1.5
-        }}
+        sx={{ minWidth: '220px' }}
       >
         {isLoading ? 'Generating PDF...' : 'Download Report PDF'}
-      </Button>
+      </LiquidGlassButton>
     </Box>
   );
   // --- END OF FIX ---

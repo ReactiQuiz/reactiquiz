@@ -1,6 +1,7 @@
 // src/pages/DashboardPage.tsx
 import React from 'react';
 import { Box, Alert, Grid } from '@mui/material';
+import AnimatedGradientBackground from '../components/animations/AnimatedGradientBackground';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, TimeScale, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { useAuth } from '../contexts/AuthContext';
@@ -56,6 +57,7 @@ const DashboardPage: React.FC = () => {
 
   // Render the full dashboard layout with all the data
   return (
+    <AnimatedGradientBackground>
     <Box sx={{ py: { xs: 1, sm: 2 }, px: { xs: 1, sm: 2 }, width: '100%' }}>
       <DashboardControls
         timeFrequency={timeFrequency}
@@ -145,6 +147,7 @@ const DashboardPage: React.FC = () => {
 
       <GenerateReportButton onGenerate={handleGenerateReport} isLoading={isGeneratingPdf} />
     </Box>
+    </AnimatedGradientBackground>
   );
 };
 

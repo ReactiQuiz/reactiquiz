@@ -1,6 +1,7 @@
 // src/components/dashboard/OverallDifficultyCard.js
 import React from 'react';
 import { Paper, Typography, Grid, LinearProgress, useTheme } from '@mui/material';
+import { TiltCard } from '../animations/AnimatedCard';
 import { alpha } from '@mui/material/styles';
 
 const StatItem = ({ title, value, total, color }) => (
@@ -31,6 +32,7 @@ function OverallDifficultyCard({ data }) {
     if (!data) return null;
 
     return (
+        <TiltCard>
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', border: `1px solid ${theme.palette.divider}` }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'medium' }}>
                 Correct Answers by Difficulty
@@ -41,6 +43,7 @@ function OverallDifficultyCard({ data }) {
                 <StatItem title="Hard" value={data.hard.correct} total={data.hard.total} color={theme.palette.error.main} />
             </Grid>
         </Paper>
+        </TiltCard>
     );
 }
 

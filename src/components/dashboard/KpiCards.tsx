@@ -1,6 +1,7 @@
 // src/components/dashboard/KpiCards.tsx
 import React from 'react';
 import { Paper, Typography, Box, List, ListItem, ListItemText, Divider, useTheme, Stack, Grid, LinearProgress, alpha } from '@mui/material';
+import { TiltCard } from '../animations/AnimatedCard';
 import { useSubjectColors } from '../../contexts/SubjectColorsContext';
 import KpiBreakdownPieChart from './KpiBreakdownPieChart';
 
@@ -27,6 +28,7 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
     const { getColor } = useSubjectColors();
 
     return (
+        <TiltCard>
         <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid ${theme.palette.divider}`, height: '100%' }}>
             <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' } }}>
@@ -92,6 +94,7 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 )) : <Typography variant="caption" color="text.secondary">No subject data.</Typography>}
             </List>
         </Paper>
+        </TiltCard>
     );
 };
 
@@ -143,6 +146,7 @@ function KpiCards({ stats, isLoading }: { stats: DashboardStats | null; isLoadin
     return (
         <Stack spacing={2}>
             {/* Top Card: Total Quizzes Solved */}
+            <TiltCard>
             <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid theme.palette.divider` }}>
                 <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' }, textAlign: 'center', mb: 2 }}>
                     Total Quizzes Solved
@@ -174,6 +178,7 @@ function KpiCards({ stats, isLoading }: { stats: DashboardStats | null; isLoadin
                     </Grid>
                 </Grid>
             </Paper>
+            </TiltCard>
             
             {/* Bottom Card: Overall Average Score */}
             <AverageScoreCard
