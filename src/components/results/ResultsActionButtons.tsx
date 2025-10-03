@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HistoryIcon from '@mui/icons-material/History'; 
-import LiquidGlassButton from './animations/LiquidGlassButton';
+import LiquidGlassButton from '../animations/LiquidGlassButton';
 // import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Removed
 
 function ResultsActionButtons({
