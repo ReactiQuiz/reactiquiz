@@ -69,46 +69,31 @@ export const darkTheme: Theme = createTheme({
         '*::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(255,255,255,0.16)', borderRadius: 8 },
       },
     },
-    // Glassmorphism surfaces
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          border: `1px solid ${QuantumDark.border}`,
-          backgroundImage: 'linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))',
-          backgroundColor: 'rgba(15,15,15,0.6)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-          transition: 'transform .2s ease, box-shadow .2s ease, border-color .2s ease',
-        }
-      }
+    MuiPaper: { 
+      styleOverrides: { 
+        root: { 
+          border: `1px solid ${QuantumDark.border}`, 
+          boxShadow: '0 1px 2px rgba(0,0,0,0.08)', 
+          backgroundColor: QuantumDark.surface 
+        } 
+      } 
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          border: `1px solid ${QuantumDark.border}`,
-          backgroundImage: 'linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))',
-          backgroundColor: 'rgba(16,16,16,0.55)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-          transition: 'transform .2s ease, box-shadow .2s ease, border-color .2s ease',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.45)',
-            borderColor: 'rgba(255,255,255,0.24)'
-          }
-        }
-      }
+    MuiCard: { 
+      styleOverrides: { 
+        root: { 
+          border: `1px solid ${QuantumDark.border}`, 
+          backgroundColor: QuantumDark.surface, 
+          boxShadow: '0 1px 2px rgba(0,0,0,0.06)' 
+        } 
+      } 
     },
     MuiAppBar: { 
       styleOverrides: { 
         root: { 
-          backgroundColor: 'rgba(10,10,10,0.6)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          boxShadow: '0 6px 16px rgba(0,0,0,0.25)',
-          borderBottom: `1px solid ${QuantumDark.border}` 
+          backgroundColor: QuantumDark.surface, 
+          boxShadow: 'none', 
+          borderBottom: `1px solid ${QuantumDark.border}`, 
+          color: QuantumDark.primaryText 
         } 
       } 
     },
@@ -117,32 +102,8 @@ export const darkTheme: Theme = createTheme({
         root: { 
           textTransform: 'none', 
           fontWeight: 700, 
-          borderRadius: '12px',
-          position: 'relative',
-          overflow: 'hidden',
-          backgroundImage: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
-          backgroundColor: 'rgba(20,20,20,0.5)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          border: `1px solid ${QuantumDark.border}`,
-          boxShadow: '0 6px 20px rgba(0,0,0,0.35)',
-          transition: 'transform .15s ease, box-shadow .15s ease',
-          '&:hover': {
-            transform: 'translateY(-1px)',
-            boxShadow: '0 10px 26px rgba(0,0,0,0.45)'
-          },
-          '&:active': {
-            transform: 'translateY(0) scale(0.98)'
-          }
-        } 
-      } 
-    },
-    MuiInputBase: { 
-      styleOverrides: { 
-        root: { 
-          backgroundColor: 'rgba(12,12,12,0.6)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)'
+          borderRadius: '10px', 
+          boxShadow: 'none' 
         } 
       } 
     },

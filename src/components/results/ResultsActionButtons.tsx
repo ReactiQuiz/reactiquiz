@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HistoryIcon from '@mui/icons-material/History'; 
-import LiquidGlassButton from '../animations/LiquidGlassButton';
+import { Button } from '@mui/material';
 // import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi'; // Removed
 
 function ResultsActionButtons({
@@ -29,22 +29,22 @@ function ResultsActionButtons({
     return (
         <Box sx={{ mt: 4, py: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
             {showBackToListButton && onBackToList && (
-                <LiquidGlassButton variant="secondary" size="medium" startIcon={<ArrowBackIcon />} onClick={onBackToList} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'200px'} }}>
+                <Button variant="outlined" size="medium" startIcon={<ArrowBackIcon />} onClick={onBackToList} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'200px'} }}>
                     Back to List
-                </LiquidGlassButton>
+                </Button>
             )}
              {showViewHistoryButton && onViewHistory && (
-                <LiquidGlassButton variant="primary" size="medium" startIcon={<HistoryIcon />} onClick={onViewHistory} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'200px'} }}>
+                <Button variant="contained" size="medium" startIcon={<HistoryIcon />} onClick={onViewHistory} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: {xs: '100%', sm:'200px'} }}>
                     View Full History
-                </LiquidGlassButton>
+                </Button>
             )}
             {/* Challenge Friend Button Removed */}
-            <LiquidGlassButton variant="accent" size="medium" startIcon={<HomeIcon />} onClick={onNavigateHome} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: '100%', sm: '220px' } }}>
+            <Button variant="contained" color="primary" size="medium" startIcon={<HomeIcon />} onClick={onNavigateHome} sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: '100%', sm: '220px' } }}>
                 { (showBackToListButton || showViewHistoryButton) ? "Home" : "Back to Home"}
-            </LiquidGlassButton>
+            </Button>
             {showDeleteButton && onDeleteClick && (
-                <LiquidGlassButton
-                    variant="default"
+                <Button
+                    variant="outlined"
                     size="medium"
                     startIcon={<DeleteIcon />}
                     onClick={onDeleteClick}
@@ -53,7 +53,7 @@ function ResultsActionButtons({
                     color="error"
                 >
                     Delete This Result
-                </LiquidGlassButton>
+                </Button>
             )}
         </Box>
     );

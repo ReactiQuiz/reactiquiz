@@ -1,8 +1,7 @@
 // src/components/dashboard/SubjectPerformanceGrid.js
 import React, { useState } from 'react';
 import { Box, Typography, Paper, Grid, useTheme, Chip, Divider, Collapse } from '@mui/material';
-import LiquidGlassButton from '../animations/LiquidGlassButton';
-import { TiltCard, GlowCard } from '../animations/AnimatedCard';
+import { Button } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -41,33 +40,31 @@ function SubjectPerformanceGrid({ subjectStats, subjectsToShow }) {
 
   const renderCard = (stats) => (
     <Grid item key={stats.subjectKey} sx={{ width: { xs: '100%', sm: '48%' } }}>
-      <GlowCard glowColor={stats.color}>
-        <Paper
-          elevation={2}
-          sx={{
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 1,
-            minHeight: '160px',
-            borderTop: `4px solid ${stats.color || theme.palette.grey[500]}`,
-            justifyContent: 'center',
-            backgroundColor: alpha(stats.color || theme.palette.grey[500], 0.12),
-            height: '100%'
-          }}
-        >
-          <Typography variant="h6" sx={{ color: stats.color || theme.palette.text.primary, fontWeight: 'medium', textAlign: 'center' }}>
-            {stats.name}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Quizzes Solved: <Typography component="span" sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>{stats.count}</Typography>
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Average Score: <Typography component="span" sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>{stats.average}%</Typography>
-          </Typography>
-        </Paper>
-      </GlowCard>
+      <Paper
+        elevation={2}
+        sx={{
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 1,
+          minHeight: '160px',
+          borderTop: `4px solid ${stats.color || theme.palette.grey[500]}`,
+          justifyContent: 'center',
+          backgroundColor: alpha(stats.color || theme.palette.grey[500], 0.12),
+          height: '100%'
+        }}
+      >
+        <Typography variant="h6" sx={{ color: stats.color || theme.palette.text.primary, fontWeight: 'medium', textAlign: 'center' }}>
+          {stats.name}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Quizzes Solved: <Typography component="span" sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>{stats.count}</Typography>
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Average Score: <Typography component="span" sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>{stats.average}%</Typography>
+        </Typography>
+      </Paper>
     </Grid>
   );
 
@@ -98,14 +95,14 @@ function SubjectPerformanceGrid({ subjectStats, subjectsToShow }) {
 
       {statsToDisplay.length > INITIAL_SUBJECT_CARDS_TO_SHOW && (
         <Box sx={{ textAlign: 'center', mt: 2.5 }}>
-          <LiquidGlassButton
-            variant="secondary"
+          <Button
+            variant="outlined"
             size="medium"
             startIcon={showAllSubjectCards ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             onClick={handleToggleSubjectCards}
           >
             {showAllSubjectCards ? 'Show Less Subjects' : 'Show More Subjects'}
-          </LiquidGlassButton>
+          </Button>
         </Box>
       )}
       
