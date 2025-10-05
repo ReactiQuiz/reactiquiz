@@ -4,13 +4,19 @@
 
 ## Issues Fixed
 
-### 1. Quiz Session Creation Error
+### 1. Quiz Session Creation Error - CRITICAL FIX
 **Problem**: "Failed to create quiz session" error when trying to start a quiz
-- **Root Cause**: Backend expected quiz parameters wrapped in `quizParams` object, but frontend was sending them directly
-- **Solution**: Modified `api/routes/quizSessions.mjs` and `api/routes/quizSessions.ts` to accept both formats
+- **Root Cause 1**: Backend expected quiz parameters wrapped in `quizParams` object, but frontend was sending them directly
+- **Root Cause 2**: Frontend was not sending required `numQuestions` field that backend needs to query database
+- **Solution**: 
+  1. Modified backend to accept both wrapped and direct data formats
+  2. Added `numQuestions` field to frontend quiz settings modal and session data
+  3. Backend now properly receives all required fields: `topicId`, `difficulty`, `timeLimit`, `numQuestions`
 - **Files Changed**:
-  - `api/routes/quizSessions.mjs` (line 24)
-  - `api/routes/quizSessions.ts` (line 24)
+  - `api/routes/quizSessions.mjs` (line 24) - flexible data structure handling
+  - `api/routes/quizSessions.ts` (line 24) - kept TypeScript in sync
+  - `src/hooks/useSubjectTopics.ts` (line 91) - added numQuestions to session data
+  - `src/components/quiz/QuizSettingsModal.tsx` - added numQuestions input field
 
 ### 2. Missing .mjs Route Files for Vercel Deployment
 **Problem**: API 404 errors in production because Vercel's ESM entry point (`api/index.mjs`) couldn't find route handlers
