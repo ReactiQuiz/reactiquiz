@@ -88,6 +88,7 @@ export const useSubjectTopics = (): UseSubjectTopicsReturn => {
       topicId: selectedTopicForQuiz.id,
       difficulty: settings.difficulty,
       timeLimit: settings.timeLimit,
+      numQuestions: settings.numQuestions || 10, // Default to 10 questions
       subject: currentSubject?.subjectKey,
       topicName: selectedTopicForQuiz.name,
       accentColor: currentSubject?.accentColorDark

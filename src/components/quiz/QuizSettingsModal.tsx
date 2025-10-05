@@ -10,7 +10,7 @@ import { Topic } from '../../types';
 interface QuizSettingsModalProps {
   open: boolean;
   onClose: () => void;
-  onStartQuiz: (settings: { difficulty: string; timeLimit: number }) => void;
+  onStartQuiz: (settings: { difficulty: string; timeLimit: number; numQuestions: number }) => void;
   topic: Topic | null;
   accentColor: string;
 }
@@ -25,7 +25,9 @@ const QuizSettingsModal: React.FC<QuizSettingsModalProps> = ({
   const theme = useTheme();
   const [difficulty, setDifficulty] = useState<string>('medium');
   const [timeLimit, setTimeLimit] = useState<number>(30);
+  const [numQuestions, setNumQuestions] = useState<number>(10);
   const [timeLimitError, setTimeLimitError] = useState<string>('');
+  const [numQuestionsError, setNumQuestionsError] = useState<string>('');
   
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
@@ -33,7 +35,9 @@ const QuizSettingsModal: React.FC<QuizSettingsModalProps> = ({
     if (open) {
       setDifficulty('medium');
       setTimeLimit(30);
+      setNumQuestions(10);
       setTimeLimitError('');
+      setNumQuestionsError('');
     }
   }, [open]);
 
@@ -48,13 +52,24 @@ const QuizSettingsModal: React.FC<QuizSettingsModalProps> = ({
     }
   };
 
-  const handleSubmit = (): void => {
-    if (timeLimit >= 5 && timeLimit <= 180) {
-      onStartQuiz({ difficulty, timeLimit });
+  const handleNumQuestionsChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = event.target.value;
+    const maxQuestions = 50;
+    if (value === '' || (/^\d+$/.test(value) && Number(value) >= 1 && Number(value) <= maxQuestions)) {
+      setNumQuestions(value === '' ? 0 : Number(value));
+      setNumQuestionsError('');
+    } else {
+      setNumQuestionsError(`Number of questions must be between 1 and ${maxQuestions}`);
     }
   };
 
-  const isFormValid = timeLimit >= 5 && timeLimit <= 180;
+  const handleSubmit = (): void => {
+    if (timeLimit >= 5 && timeLimit <= 180 && numQuestions >= 1 && numQuestions <= 50) {
+      onStartQuiz({ difficulty, timeLimit, numQuestions });
+    }
+  };
+
+  const isFormValid = timeLimit >= 5 && timeLimit <= 180 && numQuestions >= 1 && numQuestions <= 50;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -95,6 +110,17 @@ const QuizSettingsModal: React.FC<QuizSettingsModalProps> = ({
             error={!!timeLimitError}
             helperText={timeLimitError || 'Enter time limit between 5-180 minutes'}
             inputProps={{ min: 5, max: 180 }}
+          />
+
+          <TextField
+            fullWidth
+            label="Number of Questions"
+            type="number"
+            value={numQuestions}
+            onChange={handleNumQuestionsChange}
+            error={!!numQuestionsError}
+            helperText={numQuestionsError || 'Enter number of questions between 1-50'}
+            inputProps={{ min: 1, max: 50 }}
           />
         </Box>
       </DialogContent>
