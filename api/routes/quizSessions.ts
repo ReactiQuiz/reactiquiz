@@ -20,7 +20,8 @@ const getDifficultyRange = (difficulty: string) => {
 
 router.post('/', verifyToken, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const userId = req.user!.id;
-    const { quizParams } = req.body;
+    // Accept either wrapped in quizParams or direct body
+    const quizParams = req.body.quizParams || req.body;
     logApi('POST', '/api/quiz-sessions', `User: ${userId}`);
 
     if (!quizParams || !quizParams.topicId) {
