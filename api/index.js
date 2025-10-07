@@ -7,7 +7,16 @@ if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process
   console.warn('[WARN] Missing env vars (TURSO_DATABASE_URL/TURSO_AUTH_TOKEN/JWT_SECRET).');
 }
 
-const { logError } = require('./_utils/logger');
+let logError = (...args) => console.error('Logger not initialized, fallback logging:', ...args); // Fallback
+
+// Dynamically import the ES module
+import('./_utils/logger.mjs')
+  .then(module => {
+    logError = module.logError;
+  })
+  .catch(err => {
+    console.error('Failed to load logger.mjs dynamically:', err);
+  });
 
 function safeRequire(p) {
   try {
