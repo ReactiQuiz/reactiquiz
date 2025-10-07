@@ -1,13 +1,13 @@
-import { Router, Request, Response } from 'express';
-import { turso } from '../_utils/tursoClient';
-import { logApi, logError } from '../_utils/logger';
-import { verifyToken, AuthenticatedRequest } from '../_middleware/auth';
-import { body, validationResult } from 'express-validator';
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
+const { verifyToken } = require('../_middleware/auth');
+const { body, validationResult } = require('express-validator');
 
-const router: Router = Router();
+const router = Router();
 
 // --- Admin-Only Verification Middleware (Unchanged) ---
-const verifyAdmin = (req: AuthenticatedRequest, res: Response, next: () => void): void => {
+const verifyAdmin = (req, res, next) => {
     const adminId = process.env.ADMIN_USER_ID;
 
     if (!adminId) {
@@ -16,8 +16,8 @@ const verifyAdmin = (req: AuthenticatedRequest, res: Response, next: () => void)
         return;
     }
 
-    if (req.user!.id !== adminId) {
-        logApi('FORBIDDEN', req.path, `User ${req.user!.username} is not admin.`);
+    if (req.user.id !== adminId) {
+        logApi('FORBIDDEN', req.path, `User ${req.user.username} is not admin.`);
         res.status(403).json({ message: 'Forbidden: You do not have administrator privileges.' });
         return;
     }
@@ -29,8 +29,8 @@ router.use(verifyToken, verifyAdmin);
 
 // --- API Endpoints ---
 
-router.get('/status', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    logApi('GET', '/api/admin/status', `Admin: ${req.user!.username}`);
+router.get('/status', async (req, res) => {
+    logApi('GET', '/api/admin/status', `Admin: ${req.user.username}`);
     
     const tx = await turso.transaction('read');
     try {
@@ -43,9 +43,9 @@ router.get('/status', async (req: AuthenticatedRequest, res: Response): Promise<
         await tx.commit();
 
         res.json({
-            userCount: (usersResult.rows[0] as any).total || 0,
-            topicCount: (topicsResult.rows[0] as any).total || 0,
-            questionCount: (questionsResult.rows[0] as any).total || 0,
+            userCount: usersResult.rows[0].total || 0,
+            topicCount: topicsResult.rows[0].total || 0,
+            questionCount: questionsResult.rows[0].total || 0,
         });
 
     } catch (e) {
@@ -55,13 +55,13 @@ router.get('/status', async (req: AuthenticatedRequest, res: Response): Promise<
             await tx.rollback();
         }
         // --- END OF FIX 1 ---
-        logError('DB ERROR', 'Fetching admin status failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching admin status failed', e.message);
         res.status(500).json({ message: 'Could not fetch admin status.' });
     }
 });
 
-router.get('/users', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    logApi('GET', '/api/admin/users', `Admin: ${req.user!.username}`);
+router.get('/users', async (req, res) => {
+    logApi('GET', '/api/admin/users', `Admin: ${req.user.username}`);
     
     const tx = await turso.transaction('read');
     try {
@@ -81,7 +81,7 @@ router.get('/users', async (req: AuthenticatedRequest, res: Response): Promise<v
         if (tx) {
             await tx.rollback();
         }
-        logError('DB ERROR', 'Fetching all users failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching all users failed', e.message);
         res.status(500).json({ message: 'Could not fetch user list.' });
     }
 });
@@ -92,8 +92,8 @@ router.get('/users', async (req: AuthenticatedRequest, res: Response): Promise<v
  * @desc    Fetches aggregated stats for the content overview dashboard.
  * @access  Private (Admin Only)
  */
-router.get('/overview-stats', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    logApi('GET', '/api/admin/overview-stats', `Admin: ${req.user!.username}`);
+router.get('/overview-stats', async (req, res) => {
+    logApi('GET', '/api/admin/overview-stats', `Admin: ${req.user.username}`);
     const tx = await turso.transaction('read');
     try {
         const [subjectsResult, topicsBySubjectResult, questionsBySubjectResult] = await Promise.all([
@@ -115,10 +115,10 @@ router.get('/overview-stats', async (req: AuthenticatedRequest, res: Response): 
 
         await tx.commit();
 
-        const topicsMap = new Map(topicsBySubjectResult.rows.map((r: any) => [r.subjectKey, r.count]));
-        const questionsMap = new Map(questionsBySubjectResult.rows.map((r: any) => [r.subjectKey, r.count]));
+        const topicsMap = new Map(topicsBySubjectResult.rows.map((r) => [r.subjectKey, r.count]));
+        const questionsMap = new Map(questionsBySubjectResult.rows.map((r) => [r.subjectKey, r.count]));
 
-        const subjectBreakdown = subjectsResult.rows.map((subject: any) => ({
+        const subjectBreakdown = subjectsResult.rows.map((subject) => ({
             name: subject.name,
             subjectKey: subject.subjectKey,
             color: subject.accentColorDark,
@@ -126,8 +126,8 @@ router.get('/overview-stats', async (req: AuthenticatedRequest, res: Response): 
             questionCount: questionsMap.get(subject.subjectKey) || 0,
         }));
 
-        const totalTopics = Array.from(topicsMap.values()).reduce((sum: number, count: number) => sum + count, 0);
-        const totalQuestions = Array.from(questionsMap.values()).reduce((sum: number, count: number) => sum + count, 0);
+        const totalTopics = Array.from(topicsMap.values()).reduce((sum, count) => sum + count, 0);
+        const totalQuestions = Array.from(questionsMap.values()).reduce((sum, count) => sum + count, 0);
 
         res.json({
             totalSubjects: subjectsResult.rows.length,
@@ -138,7 +138,7 @@ router.get('/overview-stats', async (req: AuthenticatedRequest, res: Response): 
 
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', 'Fetching admin overview stats failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching admin overview stats failed', e.message);
         res.status(500).json({ message: 'Could not fetch overview stats.' });
     }
 });
@@ -148,8 +148,8 @@ router.get('/overview-stats', async (req: AuthenticatedRequest, res: Response): 
  * @desc    Fetches all subjects for the admin panel.
  * @access  Private (Admin Only)
  */
-router.get('/subjects', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    logApi('GET', '/api/admin/subjects', `Admin: ${req.user!.username}`);
+router.get('/subjects', async (req, res) => {
+    logApi('GET', '/api/admin/subjects', `Admin: ${req.user.username}`);
     const tx = await turso.transaction('read');
     try {
         const result = await tx.execute("SELECT * FROM subjects ORDER BY displayOrder ASC");
@@ -157,7 +157,7 @@ router.get('/subjects', async (req: AuthenticatedRequest, res: Response): Promis
         res.json(result.rows);
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', 'Fetching subjects for admin failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching subjects for admin failed', e.message);
         res.status(500).json({ message: 'Could not fetch subjects.' });
     }
 });
@@ -173,7 +173,7 @@ router.post('/subjects',
         body('subjectKey').notEmpty().withMessage('Subject Key is required.'),
         body('displayOrder').isInt({ min: 1 }).withMessage('Display Order must be a positive number.'),
     ],
-    async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const firstError = errors.array()[0];
@@ -181,7 +181,7 @@ router.post('/subjects',
             return;
         }
         
-        logApi('POST', '/api/admin/subjects', `Admin: ${req.user!.username}`);
+        logApi('POST', '/api/admin/subjects', `Admin: ${req.user.username}`);
         const { name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight } = req.body;
         const tx = await turso.transaction('write');
         try {
@@ -199,9 +199,9 @@ router.post('/subjects',
             res.status(201).json({ message: 'Subject created successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
-            logError('DB ERROR', 'Creating subject failed', (e as Error).message);
+            logError('DB ERROR', 'Creating subject failed', e.message);
             // Add a more specific error message for UNIQUE constraint violation
-            if ((e as Error).message.includes('UNIQUE constraint failed: subjects.id') || (e as Error).message.includes('UNIQUE constraint failed: subjects.subjectKey')) {
+            if (e.message.includes('UNIQUE constraint failed: subjects.id') || e.message.includes('UNIQUE constraint failed: subjects.subjectKey')) {
                 res.status(409).json({ message: 'A subject with this ID or Subject Key already exists.' });
                 return;
             }
@@ -221,7 +221,7 @@ router.put('/subjects/:id',
         body('subjectKey').notEmpty().withMessage('Subject Key is required.'),
         body('displayOrder').isInt({ min: 1 }).withMessage('Display Order must be a positive number.'),
     ],
-    async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const firstError = errors.array()[0];
@@ -230,14 +230,14 @@ router.put('/subjects/:id',
         }
 
         const { id } = req.params;
-        logApi('PUT', `/api/admin/subjects/${id}`, `Admin: ${req.user!.username}`);
+        logApi('PUT', `/api/admin/subjects/${id}`, `Admin: ${req.user.username}`);
         const { name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight } = req.body;
         const tx = await turso.transaction('write');
         try {
             const result = await tx.execute({
                 sql: `UPDATE subjects SET name = ?, subjectKey = ?, description = ?, displayOrder = ?, iconName = ?, accentColorDark = ?, accentColorLight = ?
                       WHERE id = ?;`,
-                args: [name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight, id as string]
+                args: [name, subjectKey, description, displayOrder, iconName, accentColorDark, accentColorLight, id]
             });
 
             if (result.rowsAffected === 0) {
@@ -250,7 +250,7 @@ router.put('/subjects/:id',
             res.status(200).json({ message: 'Subject updated successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
-            logError('DB ERROR', `Updating subject ${id} failed`, (e as Error).message);
+            logError('DB ERROR', `Updating subject ${id} failed`, e.message);
             res.status(500).json({ message: 'Failed to update subject.' });
         }
     }
@@ -261,9 +261,9 @@ router.put('/subjects/:id',
  * @desc    Deletes a subject.
  * @access  Private (Admin Only)
  */
-router.delete('/subjects/:id', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+router.delete('/subjects/:id', async (req, res) => {
     const { id } = req.params;
-    logApi('DELETE', `/api/admin/subjects/${id}`, `Admin: ${req.user!.username}`);
+    logApi('DELETE', `/api/admin/subjects/${id}`, `Admin: ${req.user.username}`);
     const tx = await turso.transaction('write');
     try {
         // TODO: In a real app, you must first check if any topics are linked to this subject.
@@ -283,7 +283,7 @@ router.delete('/subjects/:id', async (req: AuthenticatedRequest, res: Response):
         res.status(200).json({ message: 'Subject deleted successfully.' });
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', `Deleting subject ${id} failed`, (e as Error).message);
+        logError('DB ERROR', `Deleting subject ${id} failed`, e.message);
         res.status(500).json({ message: 'Failed to delete subject.' });
     }
 });
@@ -293,8 +293,8 @@ router.delete('/subjects/:id', async (req: AuthenticatedRequest, res: Response):
  * @desc    Fetches all topics for the admin panel, joined with subject names.
  * @access  Private (Admin Only)
  */
-router.get('/topics', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    logApi('GET', '/api/admin/topics', `Admin: ${req.user!.username}`);
+router.get('/topics', async (req, res) => {
+    logApi('GET', '/api/admin/topics', `Admin: ${req.user.username}`);
     const tx = await turso.transaction('read');
     try {
         const result = await tx.execute({
@@ -307,7 +307,7 @@ router.get('/topics', async (req: AuthenticatedRequest, res: Response): Promise<
         res.json(result.rows);
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', 'Fetching topics for admin failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching topics for admin failed', e.message);
         res.status(500).json({ message: 'Could not fetch topics.' });
     }
 });
@@ -323,14 +323,14 @@ router.post('/topics',
         body('id').notEmpty().withMessage('ID (slug) is required.'),
         body('subject_id').notEmpty().withMessage('Subject is required.'),
     ],
-    async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).json({ message: errors.array()[0].msg });
             return;
         }
         
-        logApi('POST', '/api/admin/topics', `Admin: ${req.user!.username}`);
+        logApi('POST', '/api/admin/topics', `Admin: ${req.user.username}`);
         const { id, name, description, class: topicClass, genre, subject_id } = req.body;
         const tx = await turso.transaction('write');
         try {
@@ -343,8 +343,8 @@ router.post('/topics',
             res.status(201).json({ message: 'Topic created successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
-            logError('DB ERROR', 'Creating topic failed', (e as Error).message);
-            if ((e as Error).message.includes('UNIQUE constraint failed')) {
+            logError('DB ERROR', 'Creating topic failed', e.message);
+            if (e.message.includes('UNIQUE constraint failed')) {
                 res.status(409).json({ message: 'A topic with this ID already exists.' });
                 return;
             }
@@ -363,7 +363,7 @@ router.put('/topics/:id',
         body('name').notEmpty().withMessage('Name is required.'),
         body('subject_id').notEmpty().withMessage('Subject is required.'),
     ],
-    async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const firstError = errors.array()[0];
@@ -372,14 +372,14 @@ router.put('/topics/:id',
         }
 
         const { id } = req.params;
-        logApi('PUT', `/api/admin/topics/${id}`, `Admin: ${req.user!.username}`);
+        logApi('PUT', `/api/admin/topics/${id}`, `Admin: ${req.user.username}`);
         const { name, description, class: topicClass, genre, subject_id } = req.body;
         const tx = await turso.transaction('write');
         try {
             const result = await tx.execute({
                 sql: `UPDATE quiz_topics SET name = ?, description = ?, class = ?, genre = ?, subject_id = ?
                       WHERE id = ?;`,
-                args: [name, description, topicClass, genre, subject_id, id as string]
+                args: [name, description, topicClass, genre, subject_id, id]
             });
 
             if (result.rowsAffected === 0) {
@@ -392,7 +392,7 @@ router.put('/topics/:id',
             res.status(200).json({ message: 'Topic updated successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
-            logError('DB ERROR', `Updating topic ${id} failed`, (e as Error).message);
+            logError('DB ERROR', `Updating topic ${id} failed`, e.message);
             res.status(500).json({ message: 'Failed to update topic.' });
         }
     }
@@ -403,16 +403,16 @@ router.put('/topics/:id',
  * @desc    Deletes a topic.
  * @access  Private (Admin Only)
  */
-router.delete('/topics/:id', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+router.delete('/topics/:id', async (req, res) => {
     const { id } = req.params;
-    logApi('DELETE', `/api/admin/topics/${id}`, `Admin: ${req.user!.username}`);
+    logApi('DELETE', `/api/admin/topics/${id}`, `Admin: ${req.user.username}`);
     const tx = await turso.transaction('write');
     try {
         // In a real app, you might also want to delete all questions associated with this topic.
         // For now, we will just delete the topic itself.
         const result = await tx.execute({
             sql: "DELETE FROM quiz_topics WHERE id = ?;",
-            args: [id as string]
+            args: [id]
         });
 
         if (result.rowsAffected === 0) {
@@ -425,7 +425,7 @@ router.delete('/topics/:id', async (req: AuthenticatedRequest, res: Response): P
         res.status(200).json({ message: 'Topic deleted successfully.' });
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', `Deleting topic ${id} failed`, (e as Error).message);
+        logError('DB ERROR', `Deleting topic ${id} failed`, e.message);
         res.status(500).json({ message: 'Failed to delete topic.' });
     }
 });
@@ -435,8 +435,8 @@ router.delete('/topics/:id', async (req: AuthenticatedRequest, res: Response): P
  * @desc    Fetches all topics with a count of their questions and difficulty breakdown.
  * @access  Private (Admin Only)
  */
-router.get('/topics/summary', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    logApi('GET', '/api/admin/topics/summary', `Admin: ${req.user!.username}`);
+router.get('/topics/summary', async (req, res) => {
+    logApi('GET', '/api/admin/topics/summary', `Admin: ${req.user.username}`);
     const tx = await turso.transaction('read');
     try {
         const result = await tx.execute(`
@@ -460,7 +460,7 @@ router.get('/topics/summary', async (req: AuthenticatedRequest, res: Response): 
         res.json(result.rows);
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', 'Fetching topics summary failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching topics summary failed', e.message);
         res.status(500).json({ message: 'Could not fetch topics summary.' });
     }
 });
@@ -470,7 +470,7 @@ router.get('/topics/summary', async (req: AuthenticatedRequest, res: Response): 
  * @desc    Fetches a paginated list of questions for a specific topic.
  * @access  Private (Admin Only)
  */
-router.get('/questions-by-topic', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+router.get('/questions-by-topic', async (req, res) => {
     const { topicId, page = 1, limit = 10 } = req.query;
     if (!topicId) {
         res.status(400).json({ message: 'A topicId is required.' });
@@ -479,21 +479,21 @@ router.get('/questions-by-topic', async (req: AuthenticatedRequest, res: Respons
 
     const tx = await turso.transaction('read');
     try {
-        const offset = (page as number - 1) * (limit as number);
+        const offset = (page - 1) * limit;
         const [questionsRes, totalRes] = await Promise.all([
             tx.execute({
                 sql: "SELECT * FROM questions WHERE topicId = ? ORDER BY id ASC LIMIT ? OFFSET ?",
-                args: [topicId as string, limit as number, offset]
+                args: [topicId, limit, offset]
             }),
             tx.execute({
                 sql: "SELECT COUNT(*) as total FROM questions WHERE topicId = ?",
-                args: [topicId as string]
+                args: [topicId]
             })
         ]);
         await tx.commit();
         res.json({
             questions: questionsRes.rows,
-            total: (totalRes.rows[0] as any).total
+            total: totalRes.rows[0].total
         });
     } catch (e) {
         if (tx) await tx.rollback();
@@ -506,7 +506,7 @@ router.get('/questions-by-topic', async (req: AuthenticatedRequest, res: Respons
  * @desc    Imports an array of questions from JSON.
  * @access  Private (Admin Only)
  */
-router.post('/questions/batch-import', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+router.post('/questions/batch-import', async (req, res) => {
     const questions = req.body;
     if (!Array.isArray(questions) || questions.length === 0) {
         res.status(400).json({ message: 'Request body must be a non-empty array of questions.' });
@@ -525,8 +525,8 @@ router.post('/questions/batch-import', async (req: AuthenticatedRequest, res: Re
         res.status(201).json({ message: `Successfully imported ${questions.length} questions.` });
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', 'Batch import failed', (e as Error).message);
-        res.status(500).json({ message: `Failed to import questions: ${(e as Error).message}` });
+        logError('DB ERROR', 'Batch import failed', e.message);
+        res.status(500).json({ message: `Failed to import questions: ${e.message}` });
     }
 });
 
@@ -544,7 +544,7 @@ router.post('/questions',
         body('correctOptionId').isIn(['a', 'b', 'c', 'd']).withMessage('Correct Option ID must be a, b, c, or d.'),
         body('difficulty').isInt({ min: 10, max: 20 }).withMessage('Difficulty must be a number between 10 and 20.'),
     ],
-    async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const firstError = errors.array()[0];
@@ -564,8 +564,8 @@ router.post('/questions',
             res.status(201).json({ message: 'Question created successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
-            logError('DB ERROR', 'Creating question failed', (e as Error).message);
-            if ((e as Error).message.includes('UNIQUE constraint failed')) {
+            logError('DB ERROR', 'Creating question failed', e.message);
+            if (e.message.includes('UNIQUE constraint failed')) {
                 res.status(409).json({ message: 'A question with this ID already exists.' });
                 return;
             }
@@ -586,7 +586,7 @@ router.put('/questions/:id',
         body('correctOptionId').isIn(['a', 'b', 'c', 'd']).withMessage('Correct Option ID must be a, b, c, or d.'),
         body('difficulty').isInt({ min: 10, max: 20 }).withMessage('Difficulty must be a number between 10 and 20.'),
     ],
-    async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const firstError = errors.array()[0];
@@ -614,7 +614,7 @@ router.put('/questions/:id',
             res.status(200).json({ message: 'Question updated successfully.' });
         } catch (e) {
             if (tx) await tx.rollback();
-            logError('DB ERROR', `Updating question ${id} failed`, (e as Error).message);
+            logError('DB ERROR', `Updating question ${id} failed`, e.message);
             res.status(500).json({ message: 'Failed to update question.' });
         }
     }
@@ -625,13 +625,13 @@ router.put('/questions/:id',
  * @desc    Deletes a question.
  * @access  Private (Admin Only)
  */
-router.delete('/questions/:id', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+router.delete('/questions/:id', async (req, res) => {
     const { id } = req.params;
     const tx = await turso.transaction('write');
     try {
         const result = await tx.execute({
             sql: "DELETE FROM questions WHERE id = ?;",
-            args: [id as string]
+            args: [id]
         });
 
         if (result.rowsAffected === 0) {
@@ -644,9 +644,9 @@ router.delete('/questions/:id', async (req: AuthenticatedRequest, res: Response)
         res.status(200).json({ message: 'Question deleted successfully.' });
     } catch (e) {
         if (tx) await tx.rollback();
-        logError('DB ERROR', `Deleting question ${id} failed`, (e as Error).message);
+        logError('DB ERROR', `Deleting question ${id} failed`, e.message);
         res.status(500).json({ message: 'Failed to delete question.' });
     }
 });
 
-export default router;
+module.exports = router;

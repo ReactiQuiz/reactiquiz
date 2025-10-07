@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import crypto from 'crypto';
-import { turso } from '../_utils/tursoClient.mjs';
-import { verifyToken } from '../_middleware/auth.mjs';
-import { logApi, logError } from '../_utils/logger.mjs';
-import { assembleHomiBhabhaPracticeTest } from '../_utils/quizAssembler.mjs';
-import { shuffleArray } from '../_utils/arrayUtils.mjs';
+const { Router } = require('express');
+const crypto = require('crypto');
+const { turso } = require('../_utils/tursoClient');
+const { verifyToken } = require('../_middleware/auth');
+const { logApi, logError } = require('../_utils/logger');
+const { assembleHomiBhabhaPracticeTest } = require('../_utils/quizAssembler');
+const { shuffleArray } = require('../_utils/arrayUtils');
 
 const router = Router();
 const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
@@ -19,7 +19,7 @@ const getDifficultyRange = (difficulty) => {
 };
 
 router.post('/', verifyToken, async (req, res) => {
-    const userId = req.user && req.user.id;
+    const userId = req.user.id;
     // Accept either wrapped in quizParams or direct body
     const quizParams = req.body.quizParams || req.body;
     logApi('POST', '/api/quiz-sessions', `User: ${userId}`);
@@ -38,14 +38,14 @@ router.post('/', verifyToken, async (req, res) => {
         res.status(201).json({ sessionId });
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', 'Failed to create quiz session', e && e.message);
+        logError('DB ERROR', 'Failed to create quiz session', e.message);
         res.status(500).json({ message: 'Could not create quiz session.' });
     }
 });
 
 router.get('/:sessionId', verifyToken, async (req, res) => {
     const { sessionId } = req.params;
-    const userId = req.user && req.user.id;
+    const userId = req.user.id;
     logApi('GET', `/api/quiz-sessions/${sessionId}`, `User: ${userId}`);
 
     const tx = await turso.transaction("write");
@@ -71,9 +71,11 @@ router.get('/:sessionId', verifyToken, async (req, res) => {
         const quizParams = JSON.parse(session.quiz_params_json);
         let questions = [];
 
+        // --- START OF FIX: Use the new, efficient backend assembler ---
         if (quizParams.quizType === 'homibhabha-practice') {
             questions = await assembleHomiBhabhaPracticeTest(tx, quizParams);
         } else {
+            // Standard topic quiz logic is now also handled robustly on the backend
             const difficultyRange = getDifficultyRange(quizParams.difficulty);
             const { rows } = await tx.execute({
                 sql: `SELECT * FROM questions WHERE topicId = ? AND difficulty BETWEEN ? AND ?;`,
@@ -87,6 +89,7 @@ router.get('/:sessionId', verifyToken, async (req, res) => {
             }
             questions = shuffleArray(rows).slice(0, quizParams.numQuestions);
         }
+        // --- END OF FIX ---
 
         await tx.execute({ sql: "DELETE FROM quiz_sessions WHERE id = ?", args: [sessionId] });
         await tx.commit();
@@ -95,9 +98,10 @@ router.get('/:sessionId', verifyToken, async (req, res) => {
 
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', `Failed to fetch quiz for session ${sessionId}`, e && e.message);
-        res.status(500).json({ message: (e && e.message) || 'Could not retrieve quiz data.' });
+        logError('DB ERROR', `Failed to fetch quiz for session ${sessionId}`, e.message);
+        // Forward the specific error message from the assembler
+        res.status(500).json({ message: e.message || 'Could not retrieve quiz data.' });
     }
 });
 
-export default router;
+module.exports = router;

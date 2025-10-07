@@ -1,27 +1,27 @@
-// api/routes/topics.ts
-import { Router, Request, Response } from 'express';
-import { turso } from '../_utils/tursoClient';
-import { logApi, logError } from '../_utils/logger';
+// api/routes/topics.js
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
 // --- START OF FIX: ALL DB CALLS NOW USE TRANSACTIONS ---
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (req, res) => {
     logApi('GET', '/api/topics (all)');
     const tx = await turso.transaction("read");
     try {
         const result = await tx.execute("SELECT * FROM quiz_topics");
         await tx.commit();
         res.json(result.rows);
-    } catch (e: any) {
+    } catch (e) {
         await tx.rollback();
         logError('DB ERROR', 'Fetching all topics failed', e.message);
         res.status(500).json({ message: 'Could not fetch topics.' });
     }
 });
 
-router.get('/:subjectKey', async (req: Request, res: Response) => {
+router.get('/:subjectKey', async (req, res) => {
     const { subjectKey } = req.params;
     logApi('GET', `/api/topics/${subjectKey}`);
     const tx = await turso.transaction("read");
@@ -44,7 +44,7 @@ router.get('/:subjectKey', async (req: Request, res: Response) => {
         
         await tx.commit();
         res.json(topicsResult.rows);
-    } catch (e: any) {
+    } catch (e) {
         await tx.rollback();
         logError('DB ERROR', `Fetching topics for ${subjectKey} failed`, e.message);
         res.status(500).json({ message: 'Could not fetch topics.' });
@@ -53,4 +53,4 @@ router.get('/:subjectKey', async (req: Request, res: Response) => {
 
 // --- END OF FIX ---
 
-export default router;
+module.exports = router;

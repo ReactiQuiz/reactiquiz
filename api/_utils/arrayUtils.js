@@ -1,6 +1,6 @@
-const shuffleArray = <T>(array: T[] | undefined): T[] => {
+const shuffleArray = (array) => {
   if (!array || !Array.isArray(array)) return [];
-  const shuffled = [...(array as T[])];
+  const shuffled = [...array];
   let currentIndex = shuffled.length;
   while (currentIndex !== 0) {
     const randomIndex = Math.floor(Math.random() * currentIndex);
@@ -10,4 +10,4 @@ const shuffleArray = <T>(array: T[] | undefined): T[] => {
   return shuffled;
 };
 
-export { shuffleArray };
+module.exports = { shuffleArray };

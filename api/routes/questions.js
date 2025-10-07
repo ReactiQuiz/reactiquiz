@@ -1,11 +1,11 @@
-import { Router, Request, Response } from 'express';
-import { turso } from '../_utils/tursoClient';
-import { logApi, logError } from '../_utils/logger';
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
 
-const router: Router = Router();
+const router = Router();
 
-router.get('/', async (req: Request, res: Response): Promise<void> => {
-    const { topicId, ids } = req.query as { topicId?: string; ids?: string };
+router.get('/', async (req, res) => {
+    const { topicId, ids } = req.query;
 
     if (!topicId && !ids) {
         res.status(400).json({ message: 'A topicId or a list of ids is required.' });
@@ -14,7 +14,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 
     const tx = await turso.transaction("read");
     try {
-        let result: any = { rows: [] };
+        let result = { rows: [] };
 
         // --- START OF THE DEFINITIVE FIX ---
         // Prioritize fetching by specific IDs if they are provided.
@@ -45,16 +45,16 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
         // --- END OF THE DEFINITIVE FIX ---
 
         await tx.commit();
-        const parsedRows = result.rows.map((row: any) => ({
+        const parsedRows = result.rows.map((row) => ({
             ...row,
             options: JSON.parse(row.options || '[]')
         }));
         res.json(parsedRows);
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', `Fetching questions failed`, (e as Error).message);
+        logError('DB ERROR', `Fetching questions failed`, e.message);
         res.status(500).json({ message: 'Could not fetch questions.' });
     }
 });
 
-export default router;
+module.exports = router;

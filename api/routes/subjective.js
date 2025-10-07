@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import { turso } from '../_utils/tursoClient.mjs';
-import { verifyToken } from '../_middleware/auth.mjs';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { logApi, logError } from '../_utils/logger.mjs';
+const { Router } = require('express');
+const { v4: uuidv4 } = require('uuid');
+const { turso } = require('../_utils/tursoClient');
+const { verifyToken } = require('../_middleware/auth');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
-
+// Guard: create model only when key is present to avoid runtime throws
 let gradingModel = null;
 if (process.env.GEMINI_API_KEY) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -25,6 +25,7 @@ if (process.env.GEMINI_API_KEY) {
     }
 }
 
+// This is the grading prompt template.
 const gradingPrompt = `
 # --- ReactiQuiz AI Answer Grading Prompt ---
 ## AI Persona & Role
@@ -44,6 +45,7 @@ You are "Q Grader," a fair, encouraging, and precise teaching assistant. Your ta
 - Adhere to the max_marks.
 `;
 
+// GET /api/subjective/paper/:topicId - Fetches questions for a subjective paper
 router.get('/paper/:topicId', verifyToken, async (req, res) => {
     const { topicId } = req.params;
     const tx = await turso.transaction('read');
@@ -65,9 +67,10 @@ router.get('/paper/:topicId', verifyToken, async (req, res) => {
     }
 });
 
+// POST /api/subjective/submit - Submits a paper and starts the grading process
 router.post('/submit', verifyToken, async (req, res) => {
     const { topicId, answers } = req.body;
-    const userId = req.user && req.user.id;
+    const userId = req.user.id;
     const resultId = uuidv4();
 
     if (!gradingModel) {
@@ -101,8 +104,10 @@ router.post('/submit', verifyToken, async (req, res) => {
         });
         await tx.commit();
 
+        // Respond to the user immediately
         res.status(202).json({ resultId });
 
+        // --- Start Asynchronous Grading Process ---
         (async () => {
             let totalMarksAwarded = 0;
             const gradedResults = [];
@@ -112,9 +117,9 @@ router.post('/submit', verifyToken, async (req, res) => {
                 if (!questionDetails) continue;
 
                 const promptPayload = {
-                    question_text: `Question for topic ${topicId}`,
+                    question_text: `Question for topic ${topicId}`, // You can enrich this later
                     expected_answer: questionDetails.expected_answer,
-                    user_answer: JSON.stringify(ans.userAnswer),
+                    user_answer: JSON.stringify(ans.userAnswer), // The rich text JSON
                     max_marks: questionDetails.marks,
                 };
 
@@ -128,7 +133,7 @@ router.post('/submit', verifyToken, async (req, res) => {
                     score = aiResponse.score_awarded;
                     feedback = aiResponse;
                 } catch (e) {
-                    const msg = (e && e.message) || '';
+                    const msg = e.message || '';
                     logError('GEMINI ERROR', `Grading failed for Q:${ans.questionId}`, msg);
                     feedback = { error: "AI grader failed for this question." };
                 }
@@ -147,9 +152,10 @@ router.post('/submit', verifyToken, async (req, res) => {
                 logApi('INFO', 'Grading completed', `Result ID: ${resultId}`);
             } catch (e) {
                 if (finalTx) await finalTx.rollback();
-                logError('DB ERROR', 'Failed to save final grades', e && e.message);
+                logError('DB ERROR', 'Failed to save final grades', e.message);
             }
         })();
+        // --- End Asynchronous Grading Process ---
 
     } catch (e) {
         if (tx) await tx.rollback();
@@ -157,8 +163,9 @@ router.post('/submit', verifyToken, async (req, res) => {
     }
 });
 
+// GET /api/subjective/results - Fetches all subjective results for a user
 router.get('/results', verifyToken, async (req, res) => {
-    const userId = req.user && req.user.id;
+    const userId = req.user.id;
     const tx = await turso.transaction('read');
     try {
         const resultsRes = await tx.execute({
@@ -178,9 +185,10 @@ router.get('/results', verifyToken, async (req, res) => {
     }
 });
 
+// GET /api/subjective/results/:resultId - Fetches a graded paper
 router.get('/results/:resultId', verifyToken, async (req, res) => {
     const { resultId } = req.params;
-    const userId = req.user && req.user.id;
+    const userId = req.user.id;
     const tx = await turso.transaction('read');
     try {
         const resultRes = await tx.execute({
@@ -202,4 +210,4 @@ router.get('/results/:resultId', verifyToken, async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;

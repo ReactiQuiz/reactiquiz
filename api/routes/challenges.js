@@ -1,12 +1,14 @@
-import { Router } from 'express';
-import { turso } from '../_utils/tursoClient.mjs';
-import { verifyToken } from '../_middleware/auth.mjs';
-import { logApi, logError } from '../_utils/logger.mjs';
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { verifyToken } = require('../_middleware/auth');
+const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
+// --- START OF FIX: ALL DB CALLS NOW USE TRANSACTIONS ---
+
 router.post('/', verifyToken, async (req, res) => {
-    const challenger_id = req.user && req.user.id;
+    const challenger_id = req.user.id;
     const { challenged_id, topic_id, topic_name, difficulty, num_questions, question_ids_json } = req.body;
     logApi('POST', '/api/challenges', `From ${challenger_id} to ${challenged_id}`);
 
@@ -21,13 +23,13 @@ router.post('/', verifyToken, async (req, res) => {
         res.status(201).json({ message: 'Challenge sent!' });
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', 'Creating challenge failed', e && e.message);
+        logError('DB ERROR', 'Creating challenge failed', e.message);
         res.status(500).json({ message: 'Failed to create challenge.' });
     }
 });
 
 router.get('/pending', verifyToken, async (req, res) => {
-    const userId = req.user && req.user.id;
+    const userId = req.user.id;
     logApi('GET', '/api/challenges/pending', `User: ${userId}`);
     const tx = await turso.transaction("read");
     try {
@@ -41,9 +43,11 @@ router.get('/pending', verifyToken, async (req, res) => {
         res.json(result.rows);
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', 'Fetching pending challenges failed', e && e.message);
+        logError('DB ERROR', 'Fetching pending challenges failed', e.message);
         res.status(500).json({ message: 'Could not fetch challenges.' });
     }
 });
 
-export default router;
+// --- END OF FIX ---
+
+module.exports = router;

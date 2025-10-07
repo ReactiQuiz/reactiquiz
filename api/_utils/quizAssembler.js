@@ -1,4 +1,4 @@
-import { shuffleArray } from './arrayUtils.mjs';
+const { shuffleArray } = require('./arrayUtils');
 
 const getDifficultyRange = (difficulty) => {
     switch (difficulty) {
@@ -52,16 +52,21 @@ const assembleHomiBhabhaPracticeTest = async (tx, params) => {
     
     const finalQuestionList = [...physicsQs, ...chemistryQs, ...biologyQs, ...gkQs];
     
+    // --- START OF THE DEFINITIVE FIX ---
+    // The error-throwing block has been removed.
+    // We now simply log a warning to the server if the count is low, but proceed with the quiz.
     const totalRequired = Object.values(questionComposition).reduce((acc, rule) => acc + rule.total, 0);
     if (finalQuestionList.length < totalRequired) {
         console.warn(`[Quiz Assembly Warning]: Could only find ${finalQuestionList.length} of ${totalRequired} required questions for Homi Bhabha test. Proceeding with the available questions.`);
     }
     
+    // If for some reason NO questions are found at all, we should still fail gracefully.
     if (finalQuestionList.length === 0) {
         throw new Error(`Could not assemble the practice test. No questions were found for any of the required subjects.`);
     }
+    // --- END OF THE DEFINITIVE FIX ---
     
     return shuffleArray(finalQuestionList);
 };
 
-export { assembleHomiBhabhaPracticeTest };
+module.exports = { assembleHomiBhabhaPracticeTest };

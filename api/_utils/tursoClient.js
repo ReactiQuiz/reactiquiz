@@ -1,4 +1,4 @@
-import { createClient } from '@libsql/client';
+const { createClient } = require('@libsql/client');
 
 const tursoConfig = {
   url: process.env.TURSO_DATABASE_URL,
@@ -10,8 +10,8 @@ if (!tursoConfig.url || !tursoConfig.authToken) {
 }
 
 const turso = createClient({
-  url: tursoConfig.url as string,
-  authToken: tursoConfig.authToken as string,
+  url: tursoConfig.url,
+  authToken: tursoConfig.authToken,
 });
 
-export { turso };
+module.exports = { turso };

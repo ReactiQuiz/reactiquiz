@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
-import nodemailer from 'nodemailer';
-import { logApi, logError, logInfo } from '../_utils/logger';
+const { Router } = require('express');
+const nodemailer = require('nodemailer');
+const { logApi, logError, logInfo } = require('../_utils/logger');
 
-const router: Router = Router();
+const router = Router();
 
-let transporter: any;
+let transporter;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -15,7 +15,7 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     logInfo('WARN', 'Email credentials not set. Contact form will not work.');
 }
 
-router.post('/', async (req: Request, res: Response): Promise<void> => {
+router.post('/', async (req, res) => {
     const { name, email, message } = req.body;
     logApi('POST', '/api/contact', `From: ${name}`);
 
@@ -38,9 +38,9 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
         });
         res.status(200).json({ message: 'Message sent successfully!' });
     } catch (error) {
-        logError('EMAIL FAIL', 'Sending contact email failed', (error as Error).message);
+        logError('EMAIL FAIL', 'Sending contact email failed', error.message);
         res.status(500).json({ message: 'Failed to send message.' });
     }
 });
 
-export default router;
+module.exports = router;

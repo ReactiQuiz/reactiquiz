@@ -1,14 +1,14 @@
-import { Router, Response } from 'express';
-import { turso } from '../_utils/tursoClient';
-import { verifyToken, AuthenticatedRequest } from '../_middleware/auth';
-import { logApi, logError } from '../_utils/logger';
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { verifyToken } = require('../_middleware/auth');
+const { logApi, logError } = require('../_utils/logger');
 
-const router: Router = Router();
+const router = Router();
 
 // --- START OF FIX: ALL DB CALLS NOW USE TRANSACTIONS ---
 
-router.post('/', verifyToken, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    const userId = req.user!.id;
+router.post('/', verifyToken, async (req, res) => {
+    const userId = req.user.id;
     // --- START OF CHANGE 1: Receive raw data from the client ---
     const { quizContext, timeTaken, questionsActuallyAttemptedIds, userAnswersSnapshot } = req.body;
     const { topicId, subject, difficulty, quizClass } = quizContext;
@@ -29,7 +29,7 @@ router.post('/', verifyToken, async (req: AuthenticatedRequest, res: Response): 
             args: questionsActuallyAttemptedIds
         });
 
-        const correctAnswersMap = new Map(questionsResult.rows.map((q: any) => [q.id, q.correctOptionId]));
+        const correctAnswersMap = new Map(questionsResult.rows.map((q) => [q.id, q.correctOptionId]));
         
         let score = 0;
         for (const qId of questionsActuallyAttemptedIds) {
@@ -74,13 +74,13 @@ router.post('/', verifyToken, async (req: AuthenticatedRequest, res: Response): 
         // --- END OF CHANGE 3 ---
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', 'Saving result failed', (e as Error).message);
+        logError('DB ERROR', 'Saving result failed', e.message);
         res.status(500).json({ message: 'Could not save quiz result.' });
     }
 });
 
-router.get('/', verifyToken, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    const userId = req.user!.id;
+router.get('/', verifyToken, async (req, res) => {
+    const userId = req.user.id;
     logApi('GET', '/api/results', `User: ${userId}`);
     const tx = await turso.transaction("read");
     try {
@@ -92,11 +92,11 @@ router.get('/', verifyToken, async (req: AuthenticatedRequest, res: Response): P
         res.json(result.rows);
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', 'Fetching results failed', (e as Error).message);
+        logError('DB ERROR', 'Fetching results failed', e.message);
         res.status(500).json({ message: 'Could not fetch results.' });
     }
 });
 
 // --- END OF FIX ---
 
-export default router;
+module.exports = router;

@@ -1,16 +1,7 @@
-import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import { logError } from '../_utils/logger';
+const jwt = require('jsonwebtoken');
+const { logError } = require('../_utils/logger');
 
-interface AuthenticatedRequest extends Request {
-    user?: {
-        id: string;
-        username: string;
-        isAdmin: boolean;
-    };
-}
-
-const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         res.status(401).json({ message: 'Authentication token is required.' });
@@ -25,14 +16,13 @@ const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunctio
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string; username: string; isAdmin: boolean };
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded; // Adds { id, username } to the request object
         next();
     } catch (error) {
-        logError('AUTH FAIL', 'Token verification failed', (error as Error).message);
+        logError('AUTH FAIL', 'Token verification failed', error.message);
         res.status(401).json({ message: 'Invalid or expired token.' });
     }
 };
 
-export { verifyToken };
-export type { AuthenticatedRequest };
+module.exports = { verifyToken };

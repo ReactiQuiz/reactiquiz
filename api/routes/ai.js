@@ -1,12 +1,12 @@
-import { Router, Request, Response } from 'express';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { verifyToken, AuthenticatedRequest } from '../_middleware/auth';
-import { turso } from '../_utils/tursoClient';
-import { logApi, logError } from '../_utils/logger';
+const { Router } = require('express');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { verifyToken } = require('../_middleware/auth');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
 
-const router: Router = Router();
+const router = Router();
 
-let model: any = null;
+let model = null;
 if (process.env.GEMINI_API_KEY) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     try {
@@ -25,12 +25,7 @@ if (process.env.GEMINI_API_KEY) {
     }
 }
 
-interface QuizResult {
-    topicId: string;
-    percentage: number;
-}
-
-const summarizeResults = (results: QuizResult[]): string => {
+const summarizeResults = (results) => {
     if (!results || results.length === 0) return "The user has not taken any quizzes yet.";
     let summary = "Here is a summary of the user's performance:\n";
     for (const r of results) {
@@ -39,8 +34,8 @@ const summarizeResults = (results: QuizResult[]): string => {
     return summary;
 };
 
-router.post('/chat', verifyToken, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    const user = req.user!;
+router.post('/chat', verifyToken, async (req, res) => {
+    const user = req.user;
     const { history = [], message } = req.body;
     logApi('POST', '/api/ai/chat', `User: ${user.username}`);
 
@@ -51,14 +46,14 @@ router.post('/chat', verifyToken, async (req: AuthenticatedRequest, res: Respons
 
     let tx;
     try {
-        let userResults: QuizResult[];
+        let userResults;
         tx = await turso.transaction("read");
         try {
             const result = await tx.execute({
                 sql: "SELECT topicId, percentage FROM quiz_results WHERE user_id = ? ORDER BY timestamp DESC LIMIT 10",
                 args: [user.id]
             });
-            userResults = result.rows as QuizResult[];
+            userResults = result.rows;
             await tx.commit();
         } catch (dbError) {
             await tx.rollback();
@@ -81,11 +76,11 @@ router.post('/chat', verifyToken, async (req: AuthenticatedRequest, res: Respons
         res.json({ response: response.text() });
 
     } catch (error) {
-        logError('GEMINI ERROR', 'Gemini API call failed', (error as Error).message);
+        logError('GEMINI ERROR', 'Gemini API call failed', error.message);
 
         // --- START OF FIX: Specific Error Handling ---
         // Check if the error message from the Google API indicates an overload.
-        const msg = (error as Error).message || '';
+        const msg = error.message || '';
         if (msg.includes('404') || msg.toLowerCase().includes('not found')) {
             res.status(503).json({ error: 'The configured Gemini model is unavailable. Please try again shortly.' });
             return;
@@ -102,4 +97,4 @@ router.post('/chat', verifyToken, async (req: AuthenticatedRequest, res: Respons
     }
 });
 
-export default router;
+module.exports = router;

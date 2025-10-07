@@ -1,19 +1,21 @@
-import { Router } from 'express';
-import { turso } from '../_utils/tursoClient.mjs';
-import { logApi, logError } from '../_utils/logger.mjs';
-import { shuffleArray } from '../_utils/arrayUtils.mjs';
+const { Router } = require('express');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
+const { shuffleArray } = require('../_utils/arrayUtils');
 
 const router = Router();
 
+// A helper to get the difficulty score range
 const getDifficultyRange = (difficulty) => {
     switch (difficulty) {
         case 'easy': return { min: 10, max: 13 };
         case 'medium': return { min: 14, max: 17 };
         case 'hard': return { min: 18, max: 20 };
-        default: return { min: 0, max: 100 };
+        default: return { min: 0, max: 100 }; // 'mixed'
     }
 };
 
+// This powerful helper fetches questions for a single subject based on the 9th -> 8th -> 7th priority
 const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, difficultyRange) => {
     let subjectQuestions = [];
     const gatheredQuestionIds = new Set();
@@ -87,9 +89,9 @@ router.get('/practice', async (req, res) => {
 
     } catch (e) {
         await tx.rollback();
-        logError('DB ERROR', 'Failed to assemble Homi Bhabha test', e && e.message);
+        logError('DB ERROR', 'Failed to assemble Homi Bhabha test', e.message);
         res.status(500).json({ message: 'A server error occurred while assembling the quiz.' });
     }
 });
 
-export default router;
+module.exports = router;

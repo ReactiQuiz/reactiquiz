@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyToken, AuthenticatedRequest } from './auth';
+const { verifyToken } = require('./auth');
 
-const verifyAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+const verifyAdmin = (req, res, next) => {
     // First, verify the token is valid
     verifyToken(req, res, () => {
         // Then, check if the isAdmin flag is true in the token's payload
@@ -13,4 +12,4 @@ const verifyAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunctio
     });
 };
 
-export { verifyAdmin };
+module.exports = { verifyAdmin };

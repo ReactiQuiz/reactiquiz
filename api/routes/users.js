@@ -1,30 +1,17 @@
-// api/routes/users.ts
-import { Router, Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
-import { turso } from '../_utils/tursoClient';
-import { logApi, logError } from '../_utils/logger';
-import { verifyToken } from '../_middleware/auth';
-import { body, validationResult, ValidationChain } from 'express-validator';
+// api/routes/users.js
+const { Router } = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
+const { turso } = require('../_utils/tursoClient');
+const { logApi, logError } = require('../_utils/logger');
+const { verifyToken } = require('../_middleware/auth');
+const { body, validationResult } = require('express-validator');
 
 const router = Router();
 
-// Extend Request interface to include user property
-declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                id: string;
-                username: string;
-                isAdmin: boolean;
-            };
-        }
-    }
-}
-
 // --- Reusable Validation Chains ---
-const registerValidation: ValidationChain[] = [
+const registerValidation = [
     body('username', 'Username must be at least 3 characters long').isLength({ min: 3 }).trim().escape(),
     body('email', 'Please provide a valid email').isEmail().normalizeEmail(),
     body('password', 'Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, and a number')
@@ -34,23 +21,23 @@ const registerValidation: ValidationChain[] = [
     body('class', 'Class must be a valid number').isNumeric(),
 ];
 
-const loginValidation: ValidationChain[] = [
+const loginValidation = [
     body('username', 'Username is required').notEmpty().trim(),
     body('password', 'Password is required').notEmpty(),
 ];
 
-const changePasswordValidation: ValidationChain[] = [
+const changePasswordValidation = [
     body('oldPassword', 'Old password is required').notEmpty(),
     body('newPassword', 'New password must be at least 6 characters').isLength({ min: 6 }),
 ];
 
-const updateDetailsValidation: ValidationChain[] = [
+const updateDetailsValidation = [
     body('address', 'Address is required').notEmpty().trim().escape(),
     body('class', 'Class must be a valid number').isNumeric(),
 ];
 
 // A helper function to handle validation errors
-const handleValidationErrors = (req: Request, res: Response, next: NextFunction) => {
+const handleValidationErrors = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ message: 'Validation Error', errors: errors.array() });
@@ -66,13 +53,13 @@ router.put('/update-details',
     body('address', 'Address is required').notEmpty().trim().escape(),
     body('class', 'Class is required').notEmpty(),
     body('phone', 'Phone number is optional').optional({ checkFalsy: true }).trim().escape(),
-    async (req: Request, res: Response) => {
+    async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ message: errors.array()[0].msg });
         }
 
-        const userId = req.user!.id;
+        const userId = req.user.id;
         const { address, class: userClass, phone } = req.body;
         logApi('PUT', '/api/users/update-details', `User: ${userId}`);
 
@@ -84,7 +71,7 @@ router.put('/update-details',
             });
             await tx.commit();
             res.status(200).json({ message: 'Profile updated successfully!' });
-        } catch (e: any) {
+        } catch (e) {
             await tx.rollback();
             logError('DB ERROR', `Updating details for user ${userId} failed`, e.message);
             res.status(500).json({ message: 'Could not update profile.' });
@@ -92,8 +79,8 @@ router.put('/update-details',
     }
 );
 
-router.post('/change-password', verifyToken, changePasswordValidation, handleValidationErrors, async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+router.post('/change-password', verifyToken, changePasswordValidation, handleValidationErrors, async (req, res) => {
+    const userId = req.user.id;
     const { oldPassword, newPassword } = req.body;
     logApi('POST', '/api/users/change-password', `User: ${userId}`);
     
@@ -120,15 +107,15 @@ router.post('/change-password', verifyToken, changePasswordValidation, handleVal
         });
         await tx.commit();
         res.status(200).json({ message: 'Password changed successfully.' });
-    } catch (e: any) {
+    } catch (e) {
         await tx.rollback();
         logError('DB ERROR', `Changing password for user ${userId} failed`, e.message);
         res.status(500).json({ message: 'Could not change password.' });
     }
 });
 
-router.get('/stats', verifyToken, async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+router.get('/stats', verifyToken, async (req, res) => {
+    const userId = req.user.id;
     logApi('GET', '/api/users/stats', `User: ${userId}`);
     const tx = await turso.transaction("read");
     try {
@@ -144,9 +131,9 @@ router.get('/stats', verifyToken, async (req: Request, res: Response) => {
 
         const stats = statsResult.rows[0];
         const activity = activityResult.rows;
-        const countsByDay: Record<string, number> = {};
+        const countsByDay = {};
         if (activity) {
-            activity.forEach((r: any) => {
+            activity.forEach((r) => {
                 try {
                     const datePart = r.timestamp.substring(0, 10);
                     countsByDay[datePart] = (countsByDay[datePart] || 0) + 1;
@@ -160,7 +147,7 @@ router.get('/stats', verifyToken, async (req: Request, res: Response) => {
             overallAveragePercentage: stats.overallAveragePercentage ? Math.round(Number(stats.overallAveragePercentage)) : 0,
             activityData: activityData
         });
-    } catch (e: any) {
+    } catch (e) {
         await tx.rollback();
         logError('DB ERROR', `Fetching stats for user ${userId} failed`, e.message);
         res.status(500).json({ message: 'Could not fetch user stats.' });
@@ -177,7 +164,7 @@ router.post('/register',
     body('class', 'Class selection is required').notEmpty(),
 
     // 2. The main route handler now runs *after* the validation.
-    async (req: Request, res: Response) => {
+    async (req, res) => {
         // 3. Check for validation errors.
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -198,7 +185,7 @@ router.post('/register',
             });
             await tx.commit();
             res.status(201).json({ message: 'User registered successfully!' });
-        } catch (e: any) {
+        } catch (e) {
             await tx.rollback();
             if (e.message && e.message.includes('UNIQUE constraint failed')) {
                 return res.status(409).json({ message: 'Username or email already exists.' });
@@ -209,7 +196,7 @@ router.post('/register',
     }
 );
 
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     logApi('POST', '/api/users/login', `User: ${username}`);
     if (!username || !password) return res.status(400).json({ message: 'Username and password are required.' });
@@ -238,7 +225,7 @@ router.post('/login', async (req: Request, res: Response) => {
             isAdmin: !!user.isAdmin 
         };
 
-        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET!, { expiresIn: '1d' });
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         res.json({
             token,
@@ -252,15 +239,15 @@ router.post('/login', async (req: Request, res: Response) => {
                 isAdmin: !!user.isAdmin 
             }
         });
-    } catch (e: any) {
+    } catch (e) {
         await tx.rollback();
         logError('DB ERROR', 'User login failed', e.message);
         res.status(500).json({ message: 'An error occurred during login.' });
     }
 });
 
-router.get('/me', verifyToken, async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+router.get('/me', verifyToken, async (req, res) => {
+    const userId = req.user.id;
     logApi('GET', '/api/users/me', `User: ${userId}`);
     const tx = await turso.transaction("read");
     try {
@@ -274,12 +261,11 @@ router.get('/me', verifyToken, async (req: Request, res: Response) => {
         }
         const userProfile = { ...result.rows[0], name: result.rows[0].username };
         res.json(userProfile);
-    } catch (e: any) {
+    } catch (e) {
         await tx.rollback();
         logError('DB ERROR', 'Fetching profile for /me failed', e.message);
         res.status(500).json({ message: 'Could not fetch user profile.' });
     }
 });
 
-export default router;
-
+module.exports = router;
