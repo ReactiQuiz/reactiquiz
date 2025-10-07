@@ -70,7 +70,7 @@ app.use('/api/challenges', challengeRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/homibhabha', homiBhabhaRoutes);
-app.use('/api/quiz-sessions', quizSessionRoutes);
+app.use('/api/quizSessions', quizSessionRoutes);
 app.use('/api/subjective', subjectiveRoutes);
 app.use('/api/admin', adminRoutes);
 
