@@ -32,7 +32,7 @@ export const useHomibhabha = (): UseHomibhabhaReturn => {
 
   // --- START OF FIX: Use a single mutation for starting any quiz ---
   const createSessionMutation = useMutation({
-    mutationFn: (quizParams: QuizParams) => apiClient.post('/api/quiz-sessions', { quizParams }),
+    mutationFn: (quizParams: QuizParams) => apiClient.post('/api/quizSessions', { quizParams }),
     onSuccess: (response: any) => {
       const { sessionId } = response.data;
       localStorage.setItem('activeQuizSessionId', sessionId);

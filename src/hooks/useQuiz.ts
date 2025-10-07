@@ -10,7 +10,7 @@ import { UseQuizReturn, Question, QuizSession } from '../types';
 
 const fetchQuizBySessionId = async (sessionId: string): Promise<QuizSession | null> => {
   if (!sessionId) return null;
-  const { data } = await apiClient.get<QuizSession>(`/api/quiz-sessions/${sessionId}`);
+  const { data } = await apiClient.get<QuizSession>(`/api/quizSessions/${sessionId}`);
   return data;
 };
 

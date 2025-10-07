@@ -59,7 +59,7 @@ export const useSubjectTopics = (): UseSubjectTopicsReturn => {
 
   const createSessionMutation = useMutation({
     mutationFn: async (sessionData: any) => {
-      const { data } = await apiClient.post('/api/quiz-sessions', sessionData);
+      const { data } = await apiClient.post('/api/quizSessions', sessionData);
       return data;
     },
     onSuccess: (session) => {

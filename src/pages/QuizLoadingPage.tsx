@@ -8,7 +8,7 @@ import apiClient from '../api/axiosInstance';
 // This is the same fetcher function from useQuiz, now used for pre-fetching
 const fetchQuizBySessionId = async (sessionId) => {
     if (!sessionId) return null;
-    const { data } = await apiClient.get(`/api/quiz-sessions/${sessionId}`);
+    const { data } = await apiClient.get(`/api/quizSessions/${sessionId}`);
     return data;
 };
 
