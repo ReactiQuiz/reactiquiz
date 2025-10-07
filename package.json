@@ -64,7 +64,8 @@
     "node": "22.x"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PORT=3001 REACT_APP_API_BASE_URL=http://localhost:3000 react-scripts start",
+    "start-api": "cross-env TURSO_DATABASE_URL=http://localhost:8080 TURSO_AUTH_TOKEN=dummy_auth_token JWT_SECRET=dummy_jwt_secret PORT=3000 node api/index.mjs",
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
@@ -102,6 +103,7 @@
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^10.1.0",
     "msw": "^2.11.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.13",
