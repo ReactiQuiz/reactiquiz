@@ -7,7 +7,7 @@ if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process
   console.warn('[WARN] Missing env vars (TURSO_DATABASE_URL/TURSO_AUTH_TOKEN/JWT_SECRET).');
 }
 
-const { logError } = require('./_utils/logger.mjs');
+const { logError } = require('./_utils/logger');
 
 function safeRequire(p) {
   try {
