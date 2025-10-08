@@ -94,6 +94,8 @@ const HistoricalResultDetailView: React.FC<HistoricalResultDetailViewProps> = ({
         showDeleteButton={false}
         onDeleteClick={() => {}}
         deleteDisabled={true}
+        onViewHistory={() => {}}
+        showViewHistoryButton={false}
       />
     </Box>
   );
