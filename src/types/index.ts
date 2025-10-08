@@ -83,7 +83,7 @@ export interface QuizResult {
   score: number;
   percentage: number;
   timeSpent: number;
-  createdAt: string;
+  timestamp: string; 
   userAnswers: Record<string, number>;
   questions: Question[];
 }

@@ -12,8 +12,6 @@ const fetchAllResults = async (): Promise<QuizResult[]> => {
   return data || [];
 };
 
-// fetchQuestionsByIds was unused; removed to satisfy linter
-
 export const useResults = (): UseResultsReturn => {
   const { resultId } = useParams<{ resultId?: string }>();
   const { currentUser } = useAuth();
@@ -55,8 +53,8 @@ export const useResults = (): UseResultsReturn => {
       const topic = allTopics.find(t => t.id === result.topicId);
       return {
         ...result,
-        topicName: topic?.name || 'Unknown Topic',
-        subject: topic?.subject_id || 'Unknown Subject',
+        topicName: topic?.name || result.topicName || 'Unknown Topic',
+        subject: topic?.subject_id || result.subject || 'Unknown Subject',
         class: topic?.class || 'Unknown Class',
         genre: topic?.genre || 'Unknown Genre',
       };
@@ -76,11 +74,12 @@ export const useResults = (): UseResultsReturn => {
   const sortedResults = useMemo(() => {
     const sorted = [...filteredResults];
     
+    // --- THIS IS THE FIX: Sort by 'timestamp' instead of 'createdAt' ---
     switch (sortOrder) {
       case 'newest':
-        return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        return sorted.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       case 'oldest':
-        return sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        return sorted.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
       case 'score-high':
         return sorted.sort((a, b) => (b.score || 0) - (a.score || 0));
       case 'score-low':

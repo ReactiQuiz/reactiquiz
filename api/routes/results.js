@@ -7,6 +7,7 @@ const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
+// POST a new quiz result
 router.post('/', verifyToken, async (req, res) => {
     const userId = req.user.id;
     const { quizContext, timeTaken, questionsActuallyAttemptedIds, userAnswersSnapshot } = req.body;
@@ -19,42 +20,45 @@ router.post('/', verifyToken, async (req, res) => {
 
     const tx = await turso.transaction("write");
     try {
-        // Fetch correct answers from DB for server-side validation
+        // --- THIS IS THE FIX (Part 1): Fetch options along with the correct answer ID ---
         const placeholders = questionsActuallyAttemptedIds.map(() => '?').join(',');
         const questionsResult = await tx.execute({
-            sql: `SELECT id, correctOptionId FROM questions WHERE id IN (${placeholders})`,
+            sql: `SELECT id, correctOptionId, options FROM questions WHERE id IN (${placeholders})`,
             args: questionsActuallyAttemptedIds
         });
 
-        const correctAnswersMap = new Map(questionsResult.rows.map((q) => [q.id, q.correctOptionId]));
-        
-        // Calculate score on the server to prevent cheating
+        // --- THIS IS THE FIX (Part 2): Implement correct scoring logic ---
         let score = 0;
-        for (const qId of questionsActuallyAttemptedIds) {
-            if (userAnswersSnapshot[qId] === correctAnswersMap.get(qId)) {
-                score++;
+        for (const question of questionsResult.rows) {
+            const questionId = question.id;
+            const userAnswerIndex = userAnswersSnapshot[questionId]; // This is the index (0, 1, 2, etc.)
+
+            // Check if the user actually answered this question
+            if (userAnswerIndex !== undefined && userAnswerIndex !== null) {
+                const options = JSON.parse(question.options); // Options are a JSON string in the DB
+                if (options && options[userAnswerIndex]) {
+                    // Get the ID ('a', 'b', etc.) from the option object at the user's selected index
+                    const selectedOptionId = options[userAnswerIndex].id; 
+                    if (selectedOptionId === question.correctOptionId) {
+                        score++; // Increment score only if the IDs match
+                    }
+                }
             }
         }
         
         const totalQuestions = questionsActuallyAttemptedIds.length;
         const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+        // --- END OF FIX ---
 
-        // Save the SERVER-CALCULATED score
         const insertResult = await tx.execute({
             sql: `INSERT INTO quiz_results (user_id, subject, topicId, score, totalQuestions, percentage, timeTaken, questionsActuallyAttemptedIds, userAnswersSnapshot, difficulty, class)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
             args: [
-                userId,
-                subject,
-                topicId,
-                score,
-                totalQuestions,
-                percentage,
-                timeTaken,
+                userId, subject, topicId, score, totalQuestions, percentage, timeTaken,
                 JSON.stringify(questionsActuallyAttemptedIds || []),
                 JSON.stringify(userAnswersSnapshot || {}),
                 difficulty,
-                quizClass || null // --- THIS IS THE FIX: Convert undefined to null ---
+                quizClass || null
             ]
         });
         
@@ -64,14 +68,9 @@ router.post('/', verifyToken, async (req, res) => {
             throw new Error("Insert operation did not return a valid row ID.");
         }
         
-        const { rows } = await tx.execute({
-            sql: "SELECT * FROM quiz_results WHERE id = ?",
-            args: [resultId]
-        });
-
+        const { rows } = await tx.execute({ sql: "SELECT * FROM quiz_results WHERE id = ?", args: [resultId] });
         await tx.commit();
         
-        // Return the newly created result ID and the full saved object
         res.status(201).json({ 
             message: 'Result saved successfully!', 
             resultId: resultId,
@@ -86,6 +85,7 @@ router.post('/', verifyToken, async (req, res) => {
     }
 });
 
+// GET all results for the logged-in user
 router.get('/', verifyToken, async (req, res) => {
     const userId = req.user.id;
     logApi('GET', '/api/results', `User: ${userId}`);
@@ -98,9 +98,7 @@ router.get('/', verifyToken, async (req, res) => {
         await tx.commit();
         res.json(result.rows);
     } catch (e) {
-        if (tx && !tx.isClosed()) {
-            await tx.rollback();
-        }
+        if (tx && !tx.isClosed()) { await tx.rollback(); }
         logError('DB ERROR', 'Fetching results failed', e.message);
         res.status(500).json({ message: 'Could not fetch results.' });
     }
@@ -126,9 +124,7 @@ router.get('/:resultId', verifyToken, async (req, res) => {
         await tx.commit();
         res.json(result.rows[0]);
     } catch (e) {
-        if (tx && !tx.isClosed()) {
-            await tx.rollback();
-        }
+        if (tx && !tx.isClosed()) { await tx.rollback(); }
         logError('DB ERROR', `Fetching result ${resultId} failed`, e.message);
         res.status(500).json({ message: 'Could not fetch result details.' });
     }
