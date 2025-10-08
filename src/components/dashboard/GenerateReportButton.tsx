@@ -3,8 +3,6 @@ import React from 'react';
 import { Box, useTheme, Button } from '@mui/material'; // <-- Import useTheme
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 function GenerateReportButton({ onGenerate, isLoading }) { // <-- Removed accentColor prop
-  const theme = useTheme();
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
       <Button
