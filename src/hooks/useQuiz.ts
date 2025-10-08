@@ -8,6 +8,7 @@ import { parseQuestionOptions } from '../utils/quizUtils';
 import { useNotifications } from '../contexts/NotificationsContext';
 import { UseQuizReturn, Question, QuizSession } from '../types';
 
+// The fetcher function now expects the flattened API response
 const fetchQuizBySessionId = async (sessionId: string): Promise<QuizSession | null> => {
   if (!sessionId) return null;
   const { data } = await apiClient.get<QuizSession>(`/api/quizSessions/${sessionId}`);
@@ -47,28 +48,32 @@ export const useQuiz = (): UseQuizReturn => {
     queryKey: ['quiz', quizId],
     queryFn: () => fetchQuizBySessionId(quizId!),
     enabled: !!quizId,
+    retry: false, // Don't retry if the session is invalid
   });
 
   const saveResultMutation = useMutation({
     mutationFn: saveQuizResult,
-    onSuccess: (result) => {
+    onSuccess: (response: any) => {
+      // Invalidate queries that show user history
       queryClient.invalidateQueries({ queryKey: ['userResults'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      navigate(`/results/${result.id}`);
+      queryClient.invalidateQueries({ queryKey: ['dashboardData'] });
+      // Navigate to the results page using the ID from the API response
+      navigate(`/results/${response.resultId}`);
     },
-    onError: (error: any) => {
-      addNotification('Failed to save quiz result', 'error');
-      console.error('Error saving quiz result:', error);
+    onError: (err: any) => {
+      addNotification(err.response?.data?.message || 'Failed to save quiz result.', 'error');
+      console.error('Error saving quiz result:', err);
     },
   });
 
   useEffect(() => {
+    // --- THIS IS THE FIX ---
     if (sessionData && sessionData.questions) {
-      const parsedQuestions: Question[] = sessionData.questions.map(q => ({
-        ...q,
-        options: parseQuestionOptions(q.options)
-      }));
+      // 1. Call the utility function on the ENTIRE array of questions.
+      const parsedQuestions: Question[] = parseQuestionOptions(sessionData.questions);
       setQuestions(parsedQuestions);
+      
+      // 2. Access context properties from the root of sessionData (due to the backend fix).
       setQuizContext({
         subject: sessionData.subject,
         topicName: sessionData.topicName,
@@ -76,12 +81,14 @@ export const useQuiz = (): UseQuizReturn => {
         timeLimit: sessionData.timeLimit,
         accentColor: sessionData.accentColor
       });
+      
       setTimerActive(true);
     }
+    // --- END OF FIX ---
   }, [sessionData]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: NodeJS.Timeout | null = null;
     if (timerActive) {
       interval = setInterval(() => {
         setElapsedTime(prev => prev + 1);
@@ -103,11 +110,20 @@ export const useQuiz = (): UseQuizReturn => {
     if (!sessionData || !currentUser) return;
 
     setTimerActive(false);
+    
+    // --- FIX: Pass all required data to the mutation ---
     saveResultMutation.mutate({
-      sessionId: sessionData.id,
-      userAnswers,
-      timeSpent: elapsedTime
+      quizContext: {
+          topicId: sessionData.topicId,
+          subject: sessionData.subject,
+          difficulty: sessionData.difficulty,
+          quizClass: sessionData.class,
+      },
+      timeTaken: elapsedTime,
+      questionsActuallyAttemptedIds: questions.map(q => q.id),
+      userAnswersSnapshot: userAnswers,
     });
+    // --- END OF FIX ---
   };
 
   const handleAbandonQuiz = (): void => {
@@ -116,12 +132,15 @@ export const useQuiz = (): UseQuizReturn => {
     }
   };
 
+  // Provide a more user-friendly error from the query
+  const displayError = isError ? (error as any)?.response?.data?.message || (error as Error).message : null;
+
   return {
     questions,
     userAnswers,
     isLoading,
-    error: isError ? (error as Error).message : null,
-    infoMessage: null,
+    error: displayError,
+    infoMessage: null, // This can be used for other states if needed
     elapsedTime,
     timerActive,
     isSubmitting: saveResultMutation.isPending,

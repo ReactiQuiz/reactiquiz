@@ -1,61 +1,55 @@
 // src/utils/quizUtils.ts
+import { Question } from '../types';
 
 /**
- * Parses the 'options' field of question objects within an array.
- * If 'options' is a JSON string, it's parsed into an array.
- * If it's already an array, it's returned as is.
- * Handles potential parsing errors.
- * @param input - Can be an array of question objects, or a pre-parsed array of options.
- * @returns The processed array.
+ * A robust function to parse the 'options' field of question objects within an array.
+ * It handles cases where 'options' is a JSON string or already an array.
+ * @param questionsArray - An array of question objects.
+ * @returns The array of question objects with 'options' guaranteed to be arrays.
  */
-export const parseQuestionOptions = (input: any): any[] => {
-  // 1. Handle non-array inputs first (e.g., JSON strings or null/undefined)
-  if (typeof input === 'string') {
-    try {
-      const parsed = JSON.parse(input);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-      console.warn("[quizUtils] Failed to parse options JSON string:", error);
-      return [];
-    }
-  }
-
-  if (!Array.isArray(input)) {
-    // Return empty array for any other non-array types like null, undefined, or single objects.
+export const parseQuestionOptions = (questionsArray: Question[]): Question[] => {
+  if (!Array.isArray(questionsArray)) {
+    console.warn("[quizUtils] Invalid input: expected an array of questions.", questionsArray);
     return [];
   }
 
-  // 2. Handle array inputs
-  // Heuristic: If the first element has a topicId, we assume it's an array of questions.
-  const isQuestionArray = input.length > 0 && input[0] && typeof input[0] === 'object' && input[0].topicId !== undefined;
+  return questionsArray.map(q => {
+    // Pass through any invalid items in the array to avoid crashes
+    if (!q || typeof q !== 'object') {
+      console.warn("[quizUtils] Encountered invalid item in questionsArray:", q);
+      return q;
+    }
 
-  if (isQuestionArray) {
-    // Process an array of questions, parsing the 'options' field of each.
-    return input.map(q => {
-      if (!q || typeof q !== 'object') {
-        return q; // Should not happen in a valid question array but good for safety
-      }
-      let parsedOptions: any[] = [];
-      if (Array.isArray(q.options)) {
-        parsedOptions = q.options;
-      } else if (typeof q.options === 'string') {
-        try {
-          const parsed = JSON.parse(q.options);
-          if (Array.isArray(parsed)) {
-            parsedOptions = parsed;
-          }
-        } catch (e) {
-          console.error(`[quizUtils] Failed to parse options for question ${q.id}`);
+    // If options are already a valid array, do nothing.
+    if (Array.isArray(q.options)) {
+      return q;
+    }
+
+    // If options are a string, attempt to parse them.
+    if (typeof q.options === 'string') {
+      try {
+        const parsedOptions = JSON.parse(q.options);
+        if (Array.isArray(parsedOptions)) {
+          // Success: return the question with the parsed options array.
+          return { ...q, options: parsedOptions };
+        } else {
+          // The string was valid JSON but not an array.
+          console.warn(`[quizUtils] Parsed 'options' for question ${q.id} is not an array.`, parsedOptions);
+          return { ...q, options: [] };
         }
+      } catch (error) {
+        // The string was invalid JSON.
+        console.error(`[quizUtils] Failed to parse 'options' JSON string for question ${q.id}:`, q.options, error);
+        return { ...q, options: [] };
       }
-      return { ...q, options: parsedOptions };
-    });
-  } else {
-    // Otherwise, assume it's already a parsed array of options (or an empty/malformed array) and return it as-is.
-    // This correctly handles the case from useQuiz.ts.
-    return input;
-  }
+    }
+
+    // Handle cases where options are missing, null, or another invalid type.
+    console.warn(`[quizUtils] 'options' field for question ${q.id} is invalid or missing.`, q);
+    return { ...q, options: [] };
+  });
 };
+
 
 /**
  * Shuffles an array using the Fisher-Yates algorithm.
