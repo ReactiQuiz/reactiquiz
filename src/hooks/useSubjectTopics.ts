@@ -63,10 +63,9 @@ export const useSubjectTopics = (): UseSubjectTopicsReturn => {
       return data;
     },
     onSuccess: (session) => {
-      if (session?.id) {
-        console.log('Storing sessionId in localStorage:', session.id);
-        localStorage.setItem('activeQuizSessionId', session.id);
-        navigate(`/quiz/${session.id}`);
+      if (session?.sessionId) {
+        localStorage.setItem('activeQuizSessionId', session.sessionId);
+        navigate(`/quiz/${session.sessionId}`);
       } else {
         addNotification('Failed to create quiz session: Session ID is missing', 'error');
         console.error('Error creating quiz session: Session ID is undefined in API response', session);
