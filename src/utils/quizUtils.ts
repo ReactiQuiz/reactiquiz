@@ -8,40 +8,58 @@
  * @param questionsArray - An array of question objects.
  * @returns The array of question objects with 'options' as arrays.
  */
-export const parseQuestionOptions = (questionsArray: any[]): any[] => {
-  if (!Array.isArray(questionsArray)) {
-    console.warn("[quizUtils] parseQuestionOptions received non-array input:", questionsArray);
-    return [];
-  }
-  return questionsArray.map(q => {
-    if (!q || typeof q !== 'object') {
+export const parseQuestionOptions = (input: any): any[] => {
+  // If input is already an array, process it
+  if (Array.isArray(input)) {
+    return input.map(q => {
+      if (!q || typeof q !== 'object') {
         console.warn("[quizUtils] Encountered invalid item in questionsArray:", q);
         return q;
-    }
-    if (q.options === undefined || q.options === null) {
+      }
+      if (q.options === undefined || q.options === null) {
         console.warn("[quizUtils] Question missing 'options' field:", q);
         return q;
-    }
-    if (Array.isArray(q.options)) {
+      }
+      if (Array.isArray(q.options)) {
         return { ...q, options: q.options };
-    }
-    if (typeof q.options === 'string') {
+      }
+      if (typeof q.options === 'string') {
         try {
-            const parsed = JSON.parse(q.options);
-            if (Array.isArray(parsed)) {
-                return { ...q, options: parsed };
-            } else {
-                console.warn("[quizUtils] Parsed 'options' is not an array:", parsed);
-                return { ...q, options: [] };
-            }
-        } catch (error) {
-            console.warn("[quizUtils] Failed to parse 'options' JSON string:", error);
+          const parsed = JSON.parse(q.options);
+          if (Array.isArray(parsed)) {
+            return { ...q, options: parsed };
+          } else {
+            console.warn("[quizUtils] Parsed 'options' is not an array:", parsed);
             return { ...q, options: [] };
+          }
+        } catch (error) {
+          console.warn("[quizUtils] Failed to parse 'options' JSON string:", error);
+          return { ...q, options: [] };
         }
+      }
+      console.warn("[quizUtils] 'options' field is neither array nor string:", q.options);
+      return { ...q, options: [] };
+    });
+  }
+
+  // If input is a single object or string, try to parse it
+  if (typeof input === 'string') {
+    try {
+      const parsed = JSON.parse(input);
+      return Array.isArray(parsed) ? parsed : [parsed];
+    } catch (error) {
+      console.warn("[quizUtils] Failed to parse input string:", error);
+      return [];
     }
-    console.warn("[quizUtils] 'options' field is neither array nor string:", q.options);
-    return { ...q, options: [] };
-  });
+  }
+
+  // If input is a single object, wrap it in an array
+  if (input && typeof input === 'object') {
+    return [input];
+  }
+
+  console.warn("[quizUtils] Invalid input type:", typeof input);
+  return [];
 };
 
 /**

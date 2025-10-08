@@ -72,6 +72,7 @@ const PrintableContent: React.FC<PrintableContentProps> = ({ questions, topic, s
 async function fetchQuestionsForPdf(topicId: string, difficulty: string, numQuestions: number): Promise<Question[]> {
   try {
     const response = await apiClient.get(`/api/questions?topicId=${topicId}`);
+    // console.log("API response data for questions:", response.data); // Add this line
     let allQuestions = parseQuestionOptions(response.data);
     if (difficulty !== 'mixed') {
       let minScore = 0, maxScore = Infinity;
