@@ -20,6 +20,7 @@ function QuizLoadingPage() {
         const startQuiz = async () => {
             // 1. Get the session ID from localStorage
             const sessionId = localStorage.getItem('activeQuizSessionId');
+            console.log('Retrieved sessionId from localStorage:', sessionId);
             
             if (!sessionId) {
                 navigate('/subjects', { state: { error: 'No active quiz session found.' } });

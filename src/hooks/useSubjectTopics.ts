@@ -63,6 +63,7 @@ export const useSubjectTopics = (): UseSubjectTopicsReturn => {
       return data;
     },
     onSuccess: (session) => {
+      console.log('Storing sessionId in localStorage:', session.id);
       localStorage.setItem('activeQuizSessionId', session.id);
       navigate(`/quiz/${session.id}`);
     },
