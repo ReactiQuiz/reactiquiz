@@ -20,9 +20,11 @@ const buildModel = (modelName) => {
 
 const PREFERRED_MODELS = [
     process.env.GEMINI_MODEL,
-    'gemini-1.5-flash-latest',
+    gemini-2.0-flash
     'gemini-1.5-flash',
     'gemini-1.5-pro',
+    'gemini-1.5-flash-8b',
+    'gemini-1.5-flash-latest',
 ].filter(Boolean);
 
 let model = null;
