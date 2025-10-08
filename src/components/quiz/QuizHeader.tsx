@@ -42,8 +42,11 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
             {topicName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {console.log('Difficulty:', difficulty)}
-            {subject} • {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+            {/* We now check if difficulty is a valid string before trying to format it. */}
+            {subject}
+            {difficulty && typeof difficulty === 'string'
+              ? ` • ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`
+              : ''}
           </Typography>
         </Box>
         
