@@ -9,6 +9,9 @@
  * @returns The array of question objects with 'options' as arrays.
  */
 export const parseQuestionOptions = (input: any): any[] => {
+  if (input === undefined || input === null) {
+    return [];
+  }
   // If input is already an array, process it
   if (Array.isArray(input)) {
     return input.map(q => {
@@ -17,8 +20,8 @@ export const parseQuestionOptions = (input: any): any[] => {
         return q;
       }
       if (q.options === undefined || q.options === null) {
-        console.warn("[quizUtils] Question missing 'options' field:", q);
-        return q;
+        console.warn("[quizUtils] Question missing 'options' field or it is null:", q);
+        return { ...q, options: [] };
       }
       if (Array.isArray(q.options)) {
         return { ...q, options: q.options };
