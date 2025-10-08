@@ -67,13 +67,12 @@ export const useQuiz = (): UseQuizReturn => {
   });
 
   useEffect(() => {
-    // --- THIS IS THE FIX ---
     if (sessionData && sessionData.questions) {
       // 1. Call the utility function on the ENTIRE array of questions.
       const parsedQuestions: Question[] = parseQuestionOptions(sessionData.questions);
       setQuestions(parsedQuestions);
       
-      // 2. Access context properties from the root of sessionData (due to the backend fix).
+      // 2. Access context properties from the root of sessionData.
       setQuizContext({
         subject: sessionData.subject,
         topicName: sessionData.topicName,
@@ -84,7 +83,6 @@ export const useQuiz = (): UseQuizReturn => {
       
       setTimerActive(true);
     }
-    // --- END OF FIX ---
   }, [sessionData]);
 
   useEffect(() => {
@@ -111,19 +109,17 @@ export const useQuiz = (): UseQuizReturn => {
 
     setTimerActive(false);
     
-    // --- FIX: Pass all required data to the mutation ---
     saveResultMutation.mutate({
       quizContext: {
           topicId: sessionData.topicId,
           subject: sessionData.subject,
           difficulty: sessionData.difficulty,
-          quizClass: sessionData.class,
+          quizClass: sessionData.class, // This line is now valid
       },
       timeTaken: elapsedTime,
       questionsActuallyAttemptedIds: questions.map(q => q.id),
       userAnswersSnapshot: userAnswers,
     });
-    // --- END OF FIX ---
   };
 
   const handleAbandonQuiz = (): void => {

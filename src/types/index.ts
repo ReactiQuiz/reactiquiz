@@ -1,3 +1,5 @@
+// src/types/index.ts
+
 // Core data types for ReactiQuiz
 
 export interface User {
@@ -66,6 +68,7 @@ export interface QuizSession {
   percentage?: number;
   timeSpent?: number;
   accentColor?: string;
+  class?: string; // --- THIS IS THE FIX ---
 }
 
 export interface QuizResult {
