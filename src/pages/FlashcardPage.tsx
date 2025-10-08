@@ -91,7 +91,7 @@ const FlashcardPage: React.FC = () => {
       <Stack direction="row" spacing={2} justifyContent="center" sx={{ width: '100%', mt: 1 }}>
         <Button
           variant="outlined"
-          onClick={() => navigate(subject ? `/subjects/${subject.toLowerCase()}` : '/subjects')}
+          onClick={() => navigate('/subjects')}
           sx={{ borderColor: accentColor, color: accentColor, width: { xs: '100%', sm: 'auto' } }}
         >
           Back to Topics

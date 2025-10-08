@@ -63,6 +63,7 @@ export const useSubjectTopics = (): UseSubjectTopicsReturn => {
       return data;
     },
     onSuccess: (session) => {
+      localStorage.setItem('activeQuizSessionId', session.id);
       navigate(`/quiz/${session.id}`);
     },
     onError: (error: any) => {
