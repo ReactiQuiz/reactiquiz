@@ -8,22 +8,30 @@ const { logApi, logError } = require('../_utils/logger');
 const router = Router();
 // Guard: create model only when key is present to avoid runtime throws
 let gradingModel = null;
-if (process.env.GEMINI_API_KEY) {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    try {
-        gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-    } catch (e) {
-        try {
-            gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        } catch (e2) {
-            try {
-                gradingModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-            } catch (e3) {
-                gradingModel = null;
-            }
-        }
+const getGenAI = () => {
+    if (!process.env.GEMINI_API_KEY) return null;
+    try { return new GoogleGenerativeAI(process.env.GEMINI_API_KEY); } catch { return null; }
+};
+const buildModel = (name) => {
+    const genAI = getGenAI();
+    if (!genAI) return null;
+    try { return genAI.getGenerativeModel({ model: name }); } catch { return null; }
+};
+const PREFERRED_MODELS = [
+    process.env.GEMINI_MODEL,
+    'gemini-1.5-flash-latest',
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+].filter(Boolean);
+const resolveGradingModel = () => {
+    for (const name of PREFERRED_MODELS) {
+        const candidate = buildModel(name);
+        if (candidate) { gradingModel = candidate; return name; }
     }
-}
+    gradingModel = null;
+    return null;
+};
+resolveGradingModel();
 
 // This is the grading prompt template.
 const gradingPrompt = `
@@ -127,7 +135,20 @@ router.post('/submit', verifyToken, async (req, res) => {
                 let feedback = {};
                 try {
                     const fullPrompt = `${gradingPrompt}\n${JSON.stringify(promptPayload)}`;
-                    const result = await gradingModel.generateContent(fullPrompt);
+                    let result;
+                    try {
+                        result = await gradingModel.generateContent(fullPrompt);
+                    } catch (primaryError) {
+                        const msg = (primaryError && primaryError.message) || '';
+                        const shouldRetry = msg.includes('404') || /not found|unavailable/i.test(msg);
+                        if (shouldRetry) {
+                            resolveGradingModel();
+                            if (!gradingModel) throw primaryError;
+                            result = await gradingModel.generateContent(fullPrompt);
+                        } else {
+                            throw primaryError;
+                        }
+                    }
                     const responseText = result.response.text().replace(/```json|```/g, '').trim();
                     const aiResponse = JSON.parse(responseText);
                     score = aiResponse.score_awarded;

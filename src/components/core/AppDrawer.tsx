@@ -33,15 +33,16 @@ const AppDrawer: React.FC<AppDrawerProps> = ({ open, onClose }) => {
     icon?: React.ReactNode;
     path?: string;
     type?: 'divider';
+    color?: string;
   }> = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'All Subjects', icon: <CategoryIcon />, path: '/subjects' },
-    { text: 'Results', icon: <PollIcon />, path: '/results' },
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard', color: '#7aa2f7' },
+    { text: 'All Subjects', icon: <CategoryIcon />, path: '/subjects', color: '#7dcfff' },
+    { text: 'Results', icon: <PollIcon />, path: '/results', color: '#a6e3a1' },
     { type: 'divider' },
-    { text: 'AI Center', icon: <SmartToyIcon />, path: '/ai-center' },
-    { text: 'My Account', icon: <AccountCircleIcon />, path: '/account' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
-    { text: 'About Us', icon: <InfoIcon />, path: '/about' },
+    { text: 'AI Center', icon: <SmartToyIcon />, path: '/ai-center', color: '#f7768e' },
+    { text: 'My Account', icon: <AccountCircleIcon />, path: '/account', color: '#bb9af7' },
+    { text: 'Settings', icon: <SettingsIcon />, path: '/settings', color: '#e0af68' },
+    { text: 'About Us', icon: <InfoIcon />, path: '/about', color: '#f7c06a' },
   ];
 
   const drawerItems = [...baseDrawerItems];
@@ -55,7 +56,8 @@ const AppDrawer: React.FC<AppDrawerProps> = ({ open, onClose }) => {
 
   const drawerContent = (
     <Box
-      sx={{ width: drawerWidth, height: '100%' }}
+      sx={{ width: drawerWidth, height: '100%',
+        background: `linear-gradient(180deg, ${alpha(theme.palette.background.paper, 1)} 0%, ${alpha(theme.palette.background.default, 1)} 60%)` }}
       role="presentation"
       onClick={onClose}
       onKeyDown={onClose}
@@ -74,12 +76,19 @@ const AppDrawer: React.FC<AppDrawerProps> = ({ open, onClose }) => {
                 component={NavLink}
                 to={item.path}
                 sx={{
+                  borderRadius: 1,
+                  '& .MuiListItemIcon-root': { color: alpha(item.color || theme.palette.text.secondary, 0.9) },
+                  '& .MuiListItemText-primary': { color: alpha(item.color || theme.palette.text.primary, 0.95) },
+                  '&:hover': {
+                    backgroundColor: alpha(item.color || theme.palette.primary.main, 0.08),
+                  },
                   '&.active': {
-                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                    borderRight: `3px solid ${theme.palette.primary.main}`,
+                    backgroundColor: alpha(item.color || theme.palette.primary.main, 0.15),
+                    borderRight: `3px solid ${item.color || theme.palette.primary.main}`,
                     '& .MuiListItemIcon-root': {
-                      color: theme.palette.primary.main
-                    }
+                      color: item.color || theme.palette.primary.main
+                    },
+                    '& .MuiListItemText-primary': { fontWeight: 700 }
                   }
                 }}
               >
@@ -105,6 +114,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({ open, onClose }) => {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          background: `linear-gradient(180deg, ${alpha(theme.palette.background.paper, 1)} 0%, ${alpha(theme.palette.background.default, 1)} 60%)`,
         },
       }}
     >

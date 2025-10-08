@@ -6,24 +6,40 @@ const { logApi, logError } = require('../_utils/logger');
 
 const router = Router();
 
+// --- Model resolution helpers ---
+const getGenAI = () => {
+    if (!process.env.GEMINI_API_KEY) return null;
+    try { return new GoogleGenerativeAI(process.env.GEMINI_API_KEY); } catch { return null; }
+};
+
+const buildModel = (modelName) => {
+    const genAI = getGenAI();
+    if (!genAI) return null;
+    try { return genAI.getGenerativeModel({ model: modelName }); } catch { return null; }
+};
+
+const PREFERRED_MODELS = [
+    process.env.GEMINI_MODEL,
+    'gemini-1.5-flash-latest',
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+].filter(Boolean);
+
 let model = null;
-if (process.env.GEMINI_API_KEY) {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    try {
-        // Prefer latest alias; fall back to a stable model if not available
-        model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-    } catch (e) {
-        try {
-            model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        } catch (e2) {
-            try {
-                model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-            } catch (e3) {
-                model = null;
-            }
+const resolveModel = () => {
+    for (const name of PREFERRED_MODELS) {
+        const candidate = buildModel(name);
+        if (candidate) {
+            model = candidate;
+            return name;
         }
     }
-}
+    model = null;
+    return null;
+};
+
+// Initialize once at cold start
+resolveModel();
 
 const summarizeResults = (results) => {
     if (!results || results.length === 0) return "The user has not taken any quizzes yet.";
@@ -71,9 +87,29 @@ router.post('/chat', verifyToken, async (req, res) => {
             ]
         });
 
-        const result = await chat.sendMessage(message);
-        const response = await result.response;
-        res.json({ response: response.text() });
+        // Try sending once; if the model is invalid/unavailable, resolve and retry with a fallback.
+        try {
+            const result = await chat.sendMessage(message);
+            const response = await result.response;
+            res.json({ response: response.text() });
+        } catch (primaryError) {
+            const msg = (primaryError && primaryError.message) || '';
+            const shouldRetry = msg.includes('404') || /not found|unavailable/i.test(msg);
+            if (shouldRetry) {
+                resolveModel();
+                if (!model) throw primaryError;
+                const retryChat = model.startChat({ history: [
+                    { role: "user", parts: [{ text: systemInstruction }] },
+                    { role: "model", parts: [{ text: `Hello ${user.username}! I'm Q. How can I help you today?` }] },
+                    ...history
+                ]});
+                const retryResult = await retryChat.sendMessage(message);
+                const retryResponse = await retryResult.response;
+                res.json({ response: retryResponse.text(), fallbackUsed: true });
+                return;
+            }
+            throw primaryError;
+        }
 
     } catch (error) {
         logError('GEMINI ERROR', 'Gemini API call failed', error.message);
@@ -94,6 +130,27 @@ router.post('/chat', verifyToken, async (req, res) => {
 
         // For all other types of errors, send a generic message.
         res.status(500).json({ error: 'An error occurred with the AI service.' });
+    }
+});
+
+// GET /api/ai/models - list available Gemini models from public endpoint
+router.get('/models', async (_req, res) => {
+    try {
+        if (!process.env.GEMINI_API_KEY) {
+            res.json({ models: [], error: 'No API key configured' });
+            return;
+        }
+        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`;
+        const resp = await fetch(url);
+        if (!resp.ok) {
+            res.status(resp.status).json({ models: [], error: `Upstream error ${resp.status}` });
+            return;
+        }
+        const data = await resp.json();
+        const models = (data.models || []).map(m => ({ name: m.name, displayName: m.displayName, description: m.description }));
+        res.json({ models });
+    } catch (e) {
+        res.status(500).json({ models: [], error: e.message || 'Failed to list models' });
     }
 });
 
