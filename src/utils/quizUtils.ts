@@ -5,64 +5,56 @@
  * If 'options' is a JSON string, it's parsed into an array.
  * If it's already an array, it's returned as is.
  * Handles potential parsing errors.
- * @param questionsArray - An array of question objects.
- * @returns The array of question objects with 'options' as arrays.
+ * @param input - Can be an array of question objects, or a pre-parsed array of options.
+ * @returns The processed array.
  */
 export const parseQuestionOptions = (input: any): any[] => {
-  if (input === undefined || input === null) {
-    return [];
-  }
-  // If input is already an array, process it
-  if (Array.isArray(input)) {
-    return input.map(q => {
-      if (!q || typeof q !== 'object') {
-        console.warn("[quizUtils] Encountered invalid item in questionsArray:", q);
-        return q;
-      }
-      if (q.options === undefined || q.options === null) {
-        console.warn("[quizUtils] Question missing 'options' field or it is null:", q);
-        return { ...q, options: [] };
-      }
-      if (Array.isArray(q.options)) {
-        return { ...q, options: q.options };
-      }
-      if (typeof q.options === 'string') {
-        try {
-          const parsed = JSON.parse(q.options);
-          if (Array.isArray(parsed)) {
-            return { ...q, options: parsed };
-          } else {
-            console.warn("[quizUtils] Parsed 'options' is not an array:", parsed);
-            return { ...q, options: [] };
-          }
-        } catch (error) {
-          console.warn("[quizUtils] Failed to parse 'options' JSON string:", error);
-          return { ...q, options: [] };
-        }
-      }
-      console.warn("[quizUtils] 'options' field is neither array nor string:", q.options);
-      return { ...q, options: [] };
-    });
-  }
-
-  // If input is a single object or string, try to parse it
+  // 1. Handle non-array inputs first (e.g., JSON strings or null/undefined)
   if (typeof input === 'string') {
     try {
       const parsed = JSON.parse(input);
-      return Array.isArray(parsed) ? parsed : [parsed];
+      return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
-      console.warn("[quizUtils] Failed to parse input string:", error);
+      console.warn("[quizUtils] Failed to parse options JSON string:", error);
       return [];
     }
   }
 
-  // If input is a single object, wrap it in an array
-  if (input && typeof input === 'object') {
-    return [input];
+  if (!Array.isArray(input)) {
+    // Return empty array for any other non-array types like null, undefined, or single objects.
+    return [];
   }
 
-  console.warn("[quizUtils] Invalid input type:", typeof input);
-  return [];
+  // 2. Handle array inputs
+  // Heuristic: If the first element has a topicId, we assume it's an array of questions.
+  const isQuestionArray = input.length > 0 && input[0] && typeof input[0] === 'object' && input[0].topicId !== undefined;
+
+  if (isQuestionArray) {
+    // Process an array of questions, parsing the 'options' field of each.
+    return input.map(q => {
+      if (!q || typeof q !== 'object') {
+        return q; // Should not happen in a valid question array but good for safety
+      }
+      let parsedOptions: any[] = [];
+      if (Array.isArray(q.options)) {
+        parsedOptions = q.options;
+      } else if (typeof q.options === 'string') {
+        try {
+          const parsed = JSON.parse(q.options);
+          if (Array.isArray(parsed)) {
+            parsedOptions = parsed;
+          }
+        } catch (e) {
+          console.error(`[quizUtils] Failed to parse options for question ${q.id}`);
+        }
+      }
+      return { ...q, options: parsedOptions };
+    });
+  } else {
+    // Otherwise, assume it's already a parsed array of options (or an empty/malformed array) and return it as-is.
+    // This correctly handles the case from useQuiz.ts.
+    return input;
+  }
 };
 
 /**

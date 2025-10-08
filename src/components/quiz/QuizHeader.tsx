@@ -42,6 +42,7 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
             {topicName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
+            {console.log('Difficulty:', difficulty)}
             {subject} • {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
           </Typography>
         </Box>
