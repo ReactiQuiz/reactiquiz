@@ -69,19 +69,19 @@ export const useDashboard = (): UseDashboardReturn => {
     if (timeFrequency === 'week') {
       const weekAgo = subDays(now, 7);
       filteredResults = userResults.filter(result => {
-        const resultDate = parseISO(result.createdAt);
+        const resultDate = parseISO(result.timestamp);
         return isValid(resultDate) && resultDate >= weekAgo;
       });
     } else if (timeFrequency === 'month') {
       const monthAgo = subDays(now, 30);
       filteredResults = userResults.filter(result => {
-        const resultDate = parseISO(result.createdAt);
+        const resultDate = parseISO(result.timestamp);
         return isValid(resultDate) && resultDate >= monthAgo;
       });
     } else if (timeFrequency === 'year') {
       const yearAgo = subDays(now, 365);
       filteredResults = userResults.filter(result => {
-        const resultDate = parseISO(result.createdAt);
+        const resultDate = parseISO(result.timestamp);
         return isValid(resultDate) && resultDate >= yearAgo;
       });
     } else {
@@ -164,7 +164,7 @@ export const useDashboard = (): UseDashboardReturn => {
     
     last30Days.forEach(day => {
       const dayResults = filteredResults.filter(result => {
-        const resultDate = parseISO(result.createdAt);
+        const resultDate = parseISO(result.timestamp);
         return isValid(resultDate) && format(resultDate, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd');
       });
       
@@ -182,7 +182,7 @@ export const useDashboard = (): UseDashboardReturn => {
     const activityMap: Record<string, { quizzes: number; totalScore: number }> = {};
     
     filteredResults.forEach(result => {
-      const date = format(parseISO(result.createdAt), 'yyyy-MM-dd');
+      const date = format(parseISO(result.timestamp), 'yyyy-MM-dd');
       if (!activityMap[date]) {
         activityMap[date] = { quizzes: 0, totalScore: 0 };
       }
