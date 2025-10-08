@@ -109,7 +109,9 @@ export const useDashboard = (): UseDashboardReturn => {
 
     // Calculate overall stats
     const totalQuizzes = filteredResults.length;
-    const overallAverageScore = filteredResults.reduce((sum, result) => sum + result.score, 0) / totalQuizzes;
+    const overallAverageScore = totalQuizzes > 0
+      ? Number(((filteredResults.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / totalQuizzes)).toFixed(1))
+      : 0;
 
     // Calculate subject breakdowns
     const subjectBreakdowns: Record<string, { name: string; count: number; average: number; totalCorrect: number; totalQuestions: number }> = {};
@@ -120,8 +122,8 @@ export const useDashboard = (): UseDashboardReturn => {
       const breakdown = subjectBreakdowns[result.subject];
       if (breakdown) {
         breakdown.count++;
-        breakdown.totalQuestions += result.totalQuestions;
-        breakdown.totalCorrect += result.correctAnswers;
+        breakdown.totalQuestions += Number(result.totalQuestions) || 0;
+        breakdown.totalCorrect += Number(result.correctAnswers) || 0;
       }
     });
 
@@ -130,14 +132,17 @@ export const useDashboard = (): UseDashboardReturn => {
       const subjectResults = filteredResults.filter(r => r.subject === subject);
       const breakdown = subjectBreakdowns[subject];
       if (breakdown) {
-        breakdown.average = subjectResults.reduce((sum, result) => sum + result.score, 0) / subjectResults.length;
+        const avg = subjectResults.length > 0
+          ? subjectResults.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / subjectResults.length
+          : 0;
+        breakdown.average = Number(avg.toFixed(1));
       }
     });
 
     // Calculate overall question stats
-    const totalQuestions = filteredResults.reduce((sum, result) => sum + result.totalQuestions, 0);
-    const correctAnswers = filteredResults.reduce((sum, result) => sum + result.correctAnswers, 0);
-    const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
+    const totalQuestions = filteredResults.reduce((sum, result) => sum + (Number(result.totalQuestions) || 0), 0);
+    const correctAnswers = filteredResults.reduce((sum, result) => sum + (Number(result.correctAnswers) || 0), 0);
+    const accuracy = totalQuestions > 0 ? Number(((correctAnswers / totalQuestions) * 100).toFixed(1)) : 0;
 
     // Calculate difficulty performance
     const subjectDifficultyPerformance: Record<string, { easy: { correct: number; total: number; percentage: number }; medium: { correct: number; total: number; percentage: number }; hard: { correct: number; total: number; percentage: number } }> = {};
@@ -220,9 +225,11 @@ export const useDashboard = (): UseDashboardReturn => {
       const topic = allTopics.find(t => t.id === topicId);
       if (topic) {
         const totalQuizzes = results.length;
-        const averageScore = results.reduce((sum, result) => sum + result.score, 0) / totalQuizzes;
-        const totalQuestions = results.reduce((sum, result) => sum + result.totalQuestions, 0);
-        const correctAnswers = results.reduce((sum, result) => sum + result.correctAnswers, 0);
+        const averageScore = totalQuizzes > 0
+          ? Number((results.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / totalQuizzes).toFixed(1))
+          : 0;
+        const totalQuestions = results.reduce((sum, result) => sum + (Number(result.totalQuestions) || 0), 0);
+        const correctAnswers = results.reduce((sum, result) => sum + (Number(result.correctAnswers) || 0), 0);
         
         topicPerformance.push({
           topicId,

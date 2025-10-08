@@ -20,9 +20,14 @@ export const parseQuestionOptions = (questionsArray: Question[]): Question[] => 
       return q;
     }
 
-    // If options are already a valid array, do nothing.
+    // If options are already a valid array, coerce each option into { id, text } shape.
     if (Array.isArray(q.options)) {
-      return q;
+      const normalized = q.options.map((opt: any, idx: number) => {
+        if (opt && typeof opt === 'object' && 'id' in opt && 'text' in opt) return opt;
+        if (typeof opt === 'string') return { id: String.fromCharCode(65 + idx), text: opt };
+        return { id: String.fromCharCode(65 + idx), text: String(opt ?? '') };
+      });
+      return { ...q, options: normalized } as Question;
     }
 
     // If options are a string, attempt to parse them.
@@ -30,8 +35,13 @@ export const parseQuestionOptions = (questionsArray: Question[]): Question[] => 
       try {
         const parsedOptions = JSON.parse(q.options);
         if (Array.isArray(parsedOptions)) {
-          // Success: return the question with the parsed options array.
-          return { ...q, options: parsedOptions };
+          // Success: return the question with the parsed and normalized options array.
+          const normalized = parsedOptions.map((opt: any, idx: number) => {
+            if (opt && typeof opt === 'object' && 'id' in opt && 'text' in opt) return opt;
+            if (typeof opt === 'string') return { id: String.fromCharCode(65 + idx), text: opt };
+            return { id: String.fromCharCode(65 + idx), text: String(opt ?? '') };
+          });
+          return { ...q, options: normalized } as Question;
         } else {
           // The string was valid JSON but not an array.
           console.warn(`[quizUtils] Parsed 'options' for question ${q.id} is not an array.`, parsedOptions);
@@ -46,7 +56,7 @@ export const parseQuestionOptions = (questionsArray: Question[]): Question[] => 
 
     // Handle cases where options are missing, null, or another invalid type.
     console.warn(`[quizUtils] 'options' field for question ${q.id} is invalid or missing.`, q);
-    return { ...q, options: [] };
+    return { ...q, options: [] } as Question;
   });
 };
 

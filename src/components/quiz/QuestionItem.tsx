@@ -23,8 +23,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const theme = useTheme();
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
-  // Pre-process the text to replace LaTeX newlines with standard newlines.
-  const processedText = question.question_text ? question.question_text.replace(/\\newline/g, '\n') : '';
+  // Pre-process the text to replace LaTeX newlines with standard newlines and fallback to `text` if needed.
+  const rawText = (question.question_text && question.question_text.trim().length > 0)
+    ? question.question_text
+    : (question as any).text || '';
+  const processedText = rawText ? rawText.replace(/\\newline/g, '\n') : '';
 
   return (
     <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, mb: 3, width: '100%', borderRadius: 2 }}>

@@ -122,18 +122,6 @@ function ChangeDetailsModal({ open, onClose, currentUser, onUpdateSuccess }) {
             onChange={handleInputChange}
             InputLabelProps={{ shrink: true }}
           />
-        <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Address"
-            name="address"
-            multiline
-            rows={2}
-            value={formData.address}
-            onChange={handleInputChange}
-            InputLabelProps={{ shrink: true }}
-          />
           <FormControl fullWidth margin="normal" required error={!!error && error.toLowerCase().includes("class")}>
             <InputLabel id="class-select-label">Class</InputLabel>
             <Select
