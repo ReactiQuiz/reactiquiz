@@ -68,7 +68,7 @@ export interface QuizSession {
   percentage?: number;
   timeSpent?: number;
   accentColor?: string;
-  class?: string; // --- THIS IS THE FIX ---
+  class?: string;
 }
 
 export interface QuizResult {
@@ -83,9 +83,10 @@ export interface QuizResult {
   score: number;
   percentage: number;
   timeSpent: number;
-  timestamp: string; 
-  userAnswers: Record<string, number>;
-  questions: Question[];
+  timestamp: string;
+  questionsActuallyAttemptedIds: string[];
+  userAnswersSnapshot: Record<string, number>;
+  questions?: Question[]; 
 }
 
 export interface SubjectiveQuestion {

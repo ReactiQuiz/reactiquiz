@@ -29,7 +29,6 @@ const fetchResultById = async (resultId: string): Promise<QuizResult | null> => 
 const fetchQuestionsByIds = async (questionIds: string[]): Promise<Question[]> => {
   if (!questionIds || questionIds.length === 0) return [];
   const { data } = await apiClient.get(`/api/questions?ids=${questionIds.join(',')}`);
-  // The backend already parses options, but we can double-check here
   return parseQuestionOptions(data || []);
 };
 
@@ -52,8 +51,10 @@ const HistoricalResultDetailView: React.FC<HistoricalResultDetailViewProps> = ({
     return <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}><CircularProgress /></Box>;
   }
 
-  if (resultError || questionsError) {
-    return <Alert severity="error">{(resultError || questionsError)?.message || 'Failed to load result details.'}</Alert>;
+  const combinedError = resultError || questionsError;
+  if (combinedError) {
+    const errorMessage = (combinedError as any)?.response?.data?.message || (combinedError as Error).message || 'Failed to load result details.';
+    return <Alert severity="error">{errorMessage}</Alert>;
   }
 
   if (!result || !questions) {
@@ -62,9 +63,13 @@ const HistoricalResultDetailView: React.FC<HistoricalResultDetailViewProps> = ({
 
   // 3. Combine the data to create the detailed breakdown for the component
   const detailedQuestions = questions.map(question => {
-    const userAnswerId = result.userAnswersSnapshot[question.id];
+    const userAnswerIndex = result.userAnswersSnapshot[question.id];
+    let userAnswerId = null;
+    if (userAnswerIndex !== undefined && Array.isArray(question.options) && question.options[userAnswerIndex]) {
+        userAnswerId = (question.options[userAnswerIndex] as { id: string }).id;
+    }
     const isCorrect = userAnswerId === question.correctOptionId;
-    return { ...question, userAnswerId, isCorrect, isAnswered: userAnswerId !== undefined };
+    return { ...question, userAnswerId, isCorrect, isAnswered: userAnswerIndex !== undefined };
   });
 
   return (
@@ -86,6 +91,9 @@ const HistoricalResultDetailView: React.FC<HistoricalResultDetailViewProps> = ({
         showBackToListButton={true}
         onNavigateHome={() => window.location.href = '/'}
         accentColor={accentColor}
+        showDeleteButton={false}
+        onDeleteClick={() => {}}
+        deleteDisabled={true}
       />
     </Box>
   );
