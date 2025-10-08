@@ -63,7 +63,7 @@ export const useQuiz = (): UseQuizReturn => {
   });
 
   useEffect(() => {
-    if (sessionData) {
+    if (sessionData && sessionData.questions) {
       const parsedQuestions: Question[] = sessionData.questions.map(q => ({
         ...q,
         options: parseQuestionOptions(q.options)
