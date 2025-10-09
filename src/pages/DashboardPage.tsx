@@ -1,12 +1,13 @@
 // src/pages/DashboardPage.tsx
-import React from 'react';
-import { Box, Grid, Paper, Typography, Select, MenuItem, FormControl, InputLabel, IconButton, Tooltip } from '@mui/material';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Box, Grid, Paper, Typography, Select, MenuItem, FormControl, InputLabel, IconButton, Tooltip, CircularProgress } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, Title } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { useDashboard } from '../hooks/useDashboard';
+import apiClient from '../api/axiosInstance';
+import { subDays, parseISO, isValid, eachDayOfInterval, format } from 'date-fns';
 
 const Glass = styled(Paper)(({ theme }) => ({
   backdropFilter: 'blur(8px)',
@@ -28,11 +29,157 @@ const Gauge = ({ value, label }: { value: number; label: string }) => (
   </Box>
 );
 
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend, CategoryScale, LinearScale, Title);
+
+type TimeFilter = 'week' | 'month' | 'quarter' | 'year' | 'all';
+
 export default function DashboardPage() {
-  const { data, isLoading, timeFilter, setTimeFilter, subjectFilter, setSubjectFilter, availableSubjects } = useDashboard();
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>('month');
+  const [subjectFilter, setSubjectFilter] = useState<string>('all');
+  const [results, setResults] = useState<any[]>([]);
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [topics, setTopics] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend, CategoryScale, LinearScale, Title);
+  useEffect(() => {
+    let canceled = false;
+    (async () => {
+      try {
+        setIsLoading(true);
+        const [resRes, subRes, topRes] = await Promise.all([
+          apiClient.get('/api/results'),
+          apiClient.get('/api/subjects'),
+          apiClient.get('/api/topics'),
+        ]);
+        if (canceled) return;
+        const mapped = (resRes.data || []).map((r: any) => ({
+          ...r,
+          percentage: Number(r.percentage) || 0,
+          totalQuestions: Number(r.totalQuestions) || 0,
+          correctAnswers: Number(r.correctAnswers) || 0,
+        }));
+        setResults(mapped);
+        setSubjects(subRes.data || []);
+        setTopics(topRes.data || []);
+        // Debug raw
+        console.log('[Dashboard] fetched results', mapped);
+        console.log('[Dashboard] fetched subjects', subRes.data);
+        console.log('[Dashboard] fetched topics', topRes.data);
+      } catch (e) {
+        console.error('[Dashboard] fetch error', e);
+      } finally {
+        if (!canceled) setIsLoading(false);
+      }
+    })();
+    return () => { canceled = true; };
+  }, []);
 
+  const data = useMemo(() => {
+    if (!results.length || !subjects.length) return null;
+    const now = new Date();
+    let start: Date | null = null;
+    if (timeFilter === 'week') start = subDays(now, 7);
+    else if (timeFilter === 'month') start = subDays(now, 30);
+    else if (timeFilter === 'quarter') start = subDays(now, 90);
+    else if (timeFilter === 'year') start = subDays(now, 365);
+
+    let filtered = results.filter(r => {
+      const d = parseISO(r.timestamp);
+      if (!isValid(d)) return false;
+      return start ? d >= start : true;
+    });
+    if (subjectFilter !== 'all') filtered = filtered.filter(r => r.subject === subjectFilter);
+
+    const totalQuizzes = filtered.length;
+    const overallAverageScore = totalQuizzes ? Number((filtered.reduce((s, r) => s + (r.percentage || 0), 0) / totalQuizzes).toFixed(1)) : 0;
+    const totalQuestions = filtered.reduce((s, r) => s + (r.totalQuestions || 0), 0);
+    const correctAnswers = filtered.reduce((s, r) => s + (r.correctAnswers || 0), 0);
+    const accuracy = totalQuestions ? Number(((correctAnswers / totalQuestions) * 100).toFixed(1)) : 0;
+
+    const subjectBreakdowns: Record<string, { name: string; count: number; average: number; totalQuestions: number; totalCorrect: number }> = {};
+    filtered.forEach(r => {
+      const key = r.subject;
+      if (!subjectBreakdowns[key]) subjectBreakdowns[key] = { name: key, count: 0, average: 0, totalQuestions: 0, totalCorrect: 0 };
+      subjectBreakdowns[key].count += 1;
+      subjectBreakdowns[key].totalQuestions += r.totalQuestions || 0;
+      subjectBreakdowns[key].totalCorrect += r.correctAnswers || 0;
+    });
+    Object.keys(subjectBreakdowns).forEach(key => {
+      const arr = filtered.filter(r => r.subject === key);
+      subjectBreakdowns[key].average = arr.length ? Number((arr.reduce((s, r) => s + (r.percentage || 0), 0) / arr.length).toFixed(1)) : 0;
+    });
+
+    const buckets = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
+    filtered.forEach(r => {
+      const d = (r as any).difficulty ? String((r as any).difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : r.percentage < 80 ? 'medium' : 'hard');
+      if (d === 'easy') { buckets.easy.total += r.totalQuestions || 0; buckets.easy.correct += r.correctAnswers || 0; }
+      else if (d === 'medium') { buckets.medium.total += r.totalQuestions || 0; buckets.medium.correct += r.correctAnswers || 0; }
+      else { buckets.hard.total += r.totalQuestions || 0; buckets.hard.correct += r.correctAnswers || 0; }
+    });
+    const pct = (c: number, t: number) => (t ? Number(((c / t) * 100).toFixed(1)) : 0);
+    const overallDifficultyPerformance = {
+      easy: { correct: buckets.easy.correct, total: buckets.easy.total, percentage: pct(buckets.easy.correct, buckets.easy.total) },
+      medium: { correct: buckets.medium.correct, total: buckets.medium.total, percentage: pct(buckets.medium.correct, buckets.medium.total) },
+      hard: { correct: buckets.hard.correct, total: buckets.hard.total, percentage: pct(buckets.hard.correct, buckets.hard.total) },
+    };
+
+    const chartDifficultyBySubject: Array<{ subject: string; easyPercent: number; mediumPercent: number; hardPercent: number; easyCount: number; mediumCount: number; hardCount: number; total: number; avg: number }> = [];
+    const subjectDifficultyPerformance: any = {};
+    Object.keys(subjectBreakdowns).forEach(key => {
+      const arr = filtered.filter(r => r.subject === key);
+      const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
+      arr.forEach(r => {
+        const d = (r as any).difficulty ? String((r as any).difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : r.percentage < 80 ? 'medium' : 'hard');
+        if (d === 'easy') { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
+        else if (d === 'medium') { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
+        else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
+      });
+      const easyP = pct(b.easy.c, b.easy.t);
+      const medP = pct(b.medium.c, b.medium.t);
+      const hardP = pct(b.hard.c, b.hard.t);
+      subjectDifficultyPerformance[key] = {
+        easy: { correct: b.easy.c, total: b.easy.t, percentage: easyP },
+        medium: { correct: b.medium.c, total: b.medium.t, percentage: medP },
+        hard: { correct: b.hard.c, total: b.hard.t, percentage: hardP },
+      };
+      chartDifficultyBySubject.push({
+        subject: key,
+        easyPercent: easyP,
+        mediumPercent: medP,
+        hardPercent: hardP,
+        easyCount: b.easy.c,
+        mediumCount: b.medium.c,
+        hardCount: b.hard.c,
+        total: b.easy.t + b.medium.t + b.hard.t,
+        avg: subjectBreakdowns[key].average,
+      });
+    });
+
+    const days = eachDayOfInterval({ start: subDays(new Date(), 30), end: new Date() });
+    const rollingAverageData = days.map(d => {
+      const day = format(d, 'yyyy-MM-dd');
+      const dayArr = filtered.filter(r => format(parseISO(r.timestamp), 'yyyy-MM-dd') === day);
+      const avg = dayArr.length ? Number((dayArr.reduce((s, r) => s + (r.percentage || 0), 0) / dayArr.length).toFixed(1)) : 0;
+      return { date: day, averageScore: avg };
+    });
+
+    const computed = {
+      totalQuizzes,
+      overallAverageScore,
+      overallQuestionStats: { total: totalQuestions, correct: correctAnswers, accuracy },
+      subjectBreakdowns,
+      subjectDifficultyPerformance,
+      overallDifficultyPerformance,
+      rollingAverageData,
+      chartDifficultyBySubject,
+      availableSubjects: ['all', ...Array.from(new Set(results.map(r => r.subject)))],
+    };
+    // Debug computed
+    console.log('[Dashboard] computed', computed);
+    return computed;
+  }, [results, subjects, topics, timeFilter, subjectFilter]);
+
+  const availableSubjects = data?.availableSubjects || ['all'];
   const subjectKeys = data ? Object.keys(data.subjectBreakdowns) : [];
 
   const lineData = data ? {
@@ -49,6 +196,11 @@ export default function DashboardPage() {
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2 }, width: '100%' }}>
+      {isLoading && (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+          <CircularProgress />
+        </Box>
+      )}
       {/* Filters Bar */}
       <Glass elevation={0} sx={{ p: 2, mb: 2, display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
         <Typography variant="h6" sx={{ fontWeight: 700 }}>📊 Dashboard Summary</Typography>
@@ -91,7 +243,7 @@ export default function DashboardPage() {
             <Gauge value={data?.overallAverageScore ?? 0} label={data ? `${data.overallQuestionStats.correct} correct of ${data.overallQuestionStats.total}` : ''} />
             </Card>
           </Box>
-        </Grid>
+              </Grid>
         <Grid item xs={12} md={4}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Card>
@@ -110,7 +262,7 @@ export default function DashboardPage() {
             </Card>
           </Box>
         </Grid>
-      </Grid>
+        </Grid>
 
       {/* Subject tiles carousel */}
       {data && (
@@ -148,7 +300,7 @@ export default function DashboardPage() {
               );
             })}
           </Box>
-        </Box>
+            </Box>
       )}
 
       {/* Bottom charts */}
