@@ -52,12 +52,18 @@ export default function DashboardPage() {
           apiClient.get('/api/topics'),
         ]);
         if (canceled) return;
-        const mapped = (resRes.data || []).map((r: any) => ({
-          ...r,
-          percentage: Number(r.percentage) || 0,
-          totalQuestions: Number(r.totalQuestions) || 0,
-          correctAnswers: Number(r.correctAnswers) || 0,
-        }));
+        const mapped = (resRes.data || []).map((r: any) => {
+          const pct = Number(r.percentage) || 0;
+          const tq = Number(r.totalQuestions) || 0;
+          const fallbackCorrect = Math.max(0, Math.min(tq, Math.round((pct / 100) * tq)));
+          const corr = r.correctAnswers != null ? Number(r.correctAnswers) : (r.score != null ? Number(r.score) : fallbackCorrect);
+          return {
+            ...r,
+            percentage: pct,
+            totalQuestions: tq,
+            correctAnswers: corr,
+          };
+        });
         setResults(mapped);
         setSubjects(subRes.data || []);
         setTopics(topRes.data || []);
@@ -111,7 +117,8 @@ export default function DashboardPage() {
 
     const buckets = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
     filtered.forEach(r => {
-      const d = (r as any).difficulty ? String((r as any).difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : r.percentage < 80 ? 'medium' : 'hard');
+      // Classify by performance tier (not quiz difficulty), ensures consistent bins
+      const d = r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard');
       if (d === 'easy') { buckets.easy.total += r.totalQuestions || 0; buckets.easy.correct += r.correctAnswers || 0; }
       else if (d === 'medium') { buckets.medium.total += r.totalQuestions || 0; buckets.medium.correct += r.correctAnswers || 0; }
       else { buckets.hard.total += r.totalQuestions || 0; buckets.hard.correct += r.correctAnswers || 0; }
@@ -129,7 +136,7 @@ export default function DashboardPage() {
       const arr = filtered.filter(r => r.subject === key);
       const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
       arr.forEach(r => {
-        const d = (r as any).difficulty ? String((r as any).difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : r.percentage < 80 ? 'medium' : 'hard');
+        const d = r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard');
         if (d === 'easy') { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
         else if (d === 'medium') { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
         else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
@@ -261,7 +268,7 @@ export default function DashboardPage() {
             </Box>
             </Card>
           </Box>
-        </Grid>
+            </Grid>
         </Grid>
 
       {/* Subject tiles carousel */}
