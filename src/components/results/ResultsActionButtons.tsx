@@ -1,7 +1,5 @@
 // src/components/ResultsActionButtons.js
-import {
-    Box, useTheme, alpha, darken
-} from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,7 +22,6 @@ function ResultsActionButtons({
     // currentUser // Removed
 }) {
     const theme = useTheme();
-    const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
     return (
         <Box sx={{ mt: 4, py: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>

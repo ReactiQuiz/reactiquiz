@@ -1,6 +1,6 @@
 // src/components/dashboard/GenerateReportButton.js
 import React from 'react';
-import { Box, useTheme, Button } from '@mui/material'; // <-- Import useTheme
+import { Box, Button } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 function GenerateReportButton({ onGenerate, isLoading }) { // <-- Removed accentColor prop
   return (

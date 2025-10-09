@@ -110,7 +110,7 @@ export const useQuiz = (): UseQuizReturn => {
         handleAbandonQuiz();
       }
     }
-  }, [elapsedTime, timerActive, sessionData]);
+  }, [elapsedTime, timerActive, sessionData, submitAndNavigate, handleAbandonQuiz]);
 
   const handleOptionSelect = (questionId: string, optionIndex: number): void => {
     setUserAnswers(prev => ({
