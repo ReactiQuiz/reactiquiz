@@ -5,9 +5,10 @@ import { styled, alpha } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, Title } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line, Doughnut } from 'react-chartjs-2';
 import apiClient from '../api/axiosInstance';
 import { subDays, parseISO, isValid, eachDayOfInterval, format } from 'date-fns';
+import ExpandedCardPortal from '../components/dashboard/ExpandedCardPortal';
 
 const Glass = styled(Paper)(({ theme }) => ({
   backdropFilter: 'blur(8px)',
@@ -18,16 +19,32 @@ const Glass = styled(Paper)(({ theme }) => ({
 
 const Card = styled(Paper)(({ theme }) => ({
   borderRadius: 16,
-  padding: theme.spacing(2),
+  padding: theme.spacing(2.5),
   background: theme.palette.background.paper,
+  transition: 'transform 180ms ease, box-shadow 180ms ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: `0 8px 30px ${alpha('#000', 0.22)}`,
+  }
 }));
 
-const Gauge = ({ value, label }: { value: number; label: string }) => (
-  <Box sx={{ textAlign: 'center' }}>
-    <Typography variant="h3" sx={{ fontWeight: 'bold' }}>{Math.round(value)}%</Typography>
-    <Typography variant="caption" color="text.secondary">{label}</Typography>
-  </Box>
-);
+const CountUpNumber: React.FC<{ end: number; duration?: number; sx?: any; variant?: any }> = ({ end, duration = 1200, sx, variant = 'h2' }) => {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    let raf: number | null = null;
+    let start: number | null = null;
+    const step = (t: number) => {
+      if (start == null) start = t;
+      const p = Math.min(1, (t - start) / duration);
+      setVal(Math.round(p * end));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => { if (raf) cancelAnimationFrame(raf); };
+  }, [end, duration]);
+  // @ts-ignore - variant typed any for brevity
+  return <Typography variant={variant} sx={sx}>{val}</Typography>;
+};
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend, CategoryScale, LinearScale, Title);
 
@@ -40,6 +57,7 @@ export default function DashboardPage() {
   const [subjects, setSubjects] = useState<any[]>([]);
   const [topics, setTopics] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [expandedSubject, setExpandedSubject] = useState<string | null>(null);
 
   useEffect(() => {
     let canceled = false;
@@ -198,6 +216,18 @@ export default function DashboardPage() {
       borderColor: '#7aa2f7',
       backgroundColor: '#7aa2f722',
       tension: 0.35,
+      pointRadius: 2,
+      pointHoverRadius: 5,
+    }]
+  } : { labels: [], datasets: [] };
+
+  const donutData = data ? {
+    labels: ['Score', 'Remaining'],
+    datasets: [{
+      data: [Math.max(0, Math.min(100, data.overallAverageScore)), Math.max(0, 100 - data.overallAverageScore)],
+      backgroundColor: ['#7dcfff', alpha('#7dcfff', 0.12)],
+      borderWidth: 0,
+      cutout: '72%',
     }]
   } : { labels: [], datasets: [] };
 
@@ -248,9 +278,9 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>Total Quizzes Solved</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant="h2" sx={{ fontWeight: 800 }}>{data?.totalQuizzes ?? 0}</Typography>
-            </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <CountUpNumber end={data?.totalQuizzes ?? 0} variant="h2" sx={{ fontWeight: 800 }} />
+              </Box>
             </Card>
           </Box>
         </Grid>
@@ -258,7 +288,15 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>Overall Average Score</Typography>
-            <Gauge value={data?.overallAverageScore ?? 0} label={data ? `${data.overallQuestionStats.correct} correct of ${data.overallQuestionStats.total}` : ''} />
+              <Box sx={{ position: 'relative', height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Box sx={{ width: 140, height: 140 }}>
+                  <Doughnut data={donutData} options={{ plugins: { legend: { display: false }, tooltip: { enabled: false } } }} />
+                </Box>
+                <Box sx={{ position: 'absolute', textAlign: 'center' }}>
+                  <CountUpNumber end={Math.round(data?.overallAverageScore || 0)} variant="h3" sx={{ fontWeight: 800 }} />
+                  <Typography variant="caption" color="text.secondary">{data ? `${data.overallQuestionStats.correct} correct of ${data.overallQuestionStats.total}` : ''}</Typography>
+                </Box>
+              </Box>
             </Card>
           </Box>
               </Grid>
@@ -298,6 +336,10 @@ export default function DashboardPage() {
                   whileHover={{ scale: 1.03, boxShadow: `0 0 16px ${c}55` }}
                   transition={{ type: 'spring', stiffness: 220, damping: 18 }}
                   sx={{ minWidth: 240 }}
+                  onClick={() => setExpandedSubject(sb.name)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e: any) => { if (e.key === 'Enter' || e.key === ' ') setExpandedSubject(sb.name); }}
                 >
                   <Card sx={{ borderTop: `3px solid ${c}` }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700, color: c, mb: 1 }}>{sb.name}</Typography>
@@ -327,7 +369,7 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card sx={{ p: { xs: 2, sm: 2.5 } }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
-              {data && subjectKeys.length > 0 ? (
+            {data && subjectKeys.length > 0 ? (
                 <Box sx={{ width: '100%', overflowX: 'auto' }}>
                   <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '140px 1fr 100px' }, rowGap: 2, alignItems: 'center' }}>
                     {/* Header Row */}
@@ -341,13 +383,13 @@ export default function DashboardPage() {
                       <Typography variant="caption" color="text.secondary">Hard</Typography>
                     </Box>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }} />
-                    {data.chartDifficultyBySubject.map((row) => (
+                    {data.chartDifficultyBySubject.map((row, idx) => (
                       <React.Fragment key={row.subject}>
                         <Typography variant="body2" sx={{ fontWeight: 600, pr: { xs: 0, sm: 2 } }}>{row.subject}</Typography>
                         <Box sx={{ height: 12, borderRadius: 999, display: 'flex', overflow: 'hidden', background: theme => alpha(theme.palette.text.disabled, 0.15) }}>
-                          <Box title={`Easy ${row.easyPercent}%`} sx={{ width: `${row.easyPercent}%`, background: '#22c55e' }} />
-                          <Box title={`Med ${row.mediumPercent}%`} sx={{ width: `${row.mediumPercent}%`, background: '#f59e0b' }} />
-                          <Box title={`Hard ${row.hardPercent}%`} sx={{ width: `${row.hardPercent}%`, background: '#ef4444' }} />
+                          <Box component={motion.div} initial={{ width: 0 }} whileInView={{ width: `${row.easyPercent}%` }} viewport={{ once: true }} transition={{ duration: 0.6, delay: idx * 0.03 }} title={`Easy ${row.easyPercent}%`} sx={{ height: '100%', background: '#22c55e' }} />
+                          <Box component={motion.div} initial={{ width: 0 }} whileInView={{ width: `${row.mediumPercent}%` }} viewport={{ once: true }} transition={{ duration: 0.6, delay: idx * 0.03 + 0.05 }} title={`Med ${row.mediumPercent}%`} sx={{ height: '100%', background: '#f59e0b' }} />
+                          <Box component={motion.div} initial={{ width: 0 }} whileInView={{ width: `${row.hardPercent}%` }} viewport={{ once: true }} transition={{ duration: 0.6, delay: idx * 0.03 + 0.1 }} title={`Hard ${row.hardPercent}%`} sx={{ height: '100%', background: '#ef4444' }} />
                         </Box>
                         <Typography variant="caption" color="text.secondary" sx={{ mt: { xs: 0.5, sm: 0 } }}>Total: {row.total} • Avg: {row.avg}%</Typography>
                       </React.Fragment>
@@ -368,7 +410,34 @@ export default function DashboardPage() {
             </Card>
           </Box>
         </Grid>
-      </Grid>
+        </Grid>
+
+      {/* Expanded Subject Portal */}
+      <ExpandedCardPortal open={!!expandedSubject} onClose={() => setExpandedSubject(null)}>
+        {expandedSubject && data && (
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>{expandedSubject} — Details</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {data.subjectBreakdowns[expandedSubject]?.count || 0} quizzes • {data.subjectBreakdowns[expandedSubject]?.average || 0}% average
+            </Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '120px 1fr 100px', rowGap: 1.5, alignItems: 'center' }}>
+              {(['easy','medium','hard'] as const).map(k => {
+                const perf = data.subjectDifficultyPerformance[expandedSubject]?.[k];
+                const color = k === 'easy' ? '#22c55e' : k === 'medium' ? '#f59e0b' : '#ef4444';
+                return (
+                  <React.Fragment key={k}>
+                    <Typography variant="body2" sx={{ textTransform: 'capitalize' }}>{k}</Typography>
+                    <Box sx={{ height: 12, borderRadius: 999, display: 'flex', overflow: 'hidden', background: theme => alpha(theme.palette.text.disabled, 0.15) }}>
+                      <Box sx={{ width: `${perf?.percentage || 0}%`, background: color }} />
+                    </Box>
+                    <Typography variant="caption" color="text.secondary">{perf?.correct || 0} / {perf?.total || 0} • {perf?.percentage || 0}%</Typography>
+                  </React.Fragment>
+                );
+              })}
+            </Box>
+          </Box>
+        )}
+      </ExpandedCardPortal>
 
       {/* Floating settings */}
       <Tooltip title="Settings" placement="left">

@@ -1,14 +1,18 @@
 // src/contexts/ThemeContext.tsx
 import React, { createContext, useState, useMemo, useContext, useEffect, ReactNode } from 'react';
 import { ThemeProvider, Theme } from '@mui/material/styles';
-import { darkTheme, lightTheme } from '../theme';
-import { ThemeMode } from '../types';
+import { darkTheme, lightTheme, neonTheme } from '../theme';
 
-interface ThemeContextType extends ThemeMode {}
+export type ThemeType = 'light' | 'dark' | 'neon';
+
+interface ThemeContextType {
+  themeMode: ThemeType;
+  setTheme: (theme: ThemeType) => void;
+}
 
 const ThemeContext = createContext<ThemeContextType>({
   themeMode: 'dark',
-  toggleTheme: () => {},
+  setTheme: () => {},
 });
 
 // Custom hook to use the context
@@ -22,28 +26,35 @@ interface AppThemeProviderProps {
 
 // The provider component that will wrap your app
 export const AppThemeProvider: React.FC<AppThemeProviderProps> = ({ children }) => {
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('dark');
+  const [themeMode, setThemeMode] = useState<ThemeType>('dark');
 
   // On initial load, check localStorage for a saved theme
   useEffect(() => {
     const savedTheme = localStorage.getItem('reactiquiz-theme-mode');
-    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-      setThemeMode(savedTheme);
+    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'neon')) {
+      setThemeMode(savedTheme as ThemeType);
     }
   }, []);
 
-  const toggleTheme = (): void => {
-    setThemeMode((prevMode) => {
-      const newMode: 'light' | 'dark' = prevMode === 'light' ? 'dark' : 'light';
-      localStorage.setItem('reactiquiz-theme-mode', newMode);
-      return newMode;
-    });
+  const setTheme = (theme: ThemeType): void => {
+    setThemeMode(theme);
+    localStorage.setItem('reactiquiz-theme-mode', theme);
   };
 
   // Select the theme object based on the current mode
-  const theme: Theme = useMemo(() => (themeMode === 'light' ? lightTheme : darkTheme), [themeMode]);
+  const theme: Theme = useMemo(() => {
+    switch(themeMode) {
+      case 'light':
+        return lightTheme;
+      case 'neon':
+        return neonTheme;
+      case 'dark':
+      default:
+        return darkTheme;
+    }
+  }, [themeMode]);
 
-  const value: ThemeContextType = { themeMode, toggleTheme };
+  const value: ThemeContextType = { themeMode, setTheme };
 
   return (
     <ThemeContext.Provider value={value}>

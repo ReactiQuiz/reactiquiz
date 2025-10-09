@@ -41,6 +41,18 @@ const QuantumLight: LightColorPalette = {
   border: '#E4E7EC',
 };
 
+const NeonLight: ColorPalette = {
+  background: '#0F1021',
+  surface: '#171A36',
+  primaryText: '#FFFFFF',
+  secondaryText: '#B4B7C5',
+  border: 'rgba(255, 255, 255, 0.12)',
+  accentBlue: '#4D61FC',
+  accentGreen: '#00F5C0',
+  accentPink: '#FF36AB',
+  accentOrange: '#FFB800',
+};
+
 export const darkTheme: Theme = createTheme({
   palette: {
     mode: 'dark',
@@ -118,6 +130,89 @@ export const darkTheme: Theme = createTheme({
       styleOverrides: { 
         root: { 
           borderColor: QuantumDark.border 
+        } 
+      } 
+    },
+  },
+});
+
+export const neonTheme: Theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: { main: NeonLight.accentBlue },
+    secondary: { main: NeonLight.accentPink },
+    background: { default: NeonLight.background, paper: NeonLight.surface },
+    text: { primary: NeonLight.primaryText, secondary: NeonLight.secondaryText },
+    divider: NeonLight.border,
+    error: { main: '#FF3D71' },
+    success: { main: NeonLight.accentGreen },
+    warning: { main: NeonLight.accentOrange },
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h3: { fontWeight: 800 },
+    h4: { fontWeight: 800 },
+    h5: { fontWeight: 700 },
+    h6: { fontWeight: 700 },
+    button: { fontWeight: 700 },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: { backgroundColor: NeonLight.background, color: NeonLight.primaryText },
+        '*::-webkit-scrollbar': { width: 10, height: 10 },
+        '*::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(255,255,255,0.16)', borderRadius: 8 },
+      },
+    },
+    MuiPaper: { 
+      styleOverrides: { 
+        root: { 
+          border: `1px solid ${NeonLight.border}`, 
+          boxShadow: '0 0 15px rgba(77, 97, 252, 0.15)', 
+          backgroundColor: NeonLight.surface 
+        } 
+      } 
+    },
+    MuiCard: { 
+      styleOverrides: { 
+        root: { 
+          border: `1px solid ${NeonLight.border}`, 
+          backgroundColor: NeonLight.surface, 
+          boxShadow: '0 0 15px rgba(77, 97, 252, 0.1)' 
+        } 
+      } 
+    },
+    MuiAppBar: { 
+      styleOverrides: { 
+        root: { 
+          backgroundColor: NeonLight.surface, 
+          boxShadow: '0 0 15px rgba(77, 97, 252, 0.15)', 
+          borderBottom: `1px solid ${NeonLight.border}`, 
+          color: NeonLight.primaryText 
+        } 
+      } 
+    },
+    MuiButton: { 
+      styleOverrides: { 
+        root: { 
+          textTransform: 'none', 
+          fontWeight: 700, 
+          borderRadius: '10px', 
+          boxShadow: '0 0 10px rgba(77, 97, 252, 0.2)' 
+        } 
+      } 
+    },
+    MuiOutlinedInput: { 
+      styleOverrides: { 
+        notchedOutline: { 
+          borderColor: NeonLight.border 
+        } 
+      } 
+    },
+    MuiDivider: { 
+      styleOverrides: { 
+        root: { 
+          borderColor: NeonLight.border 
         } 
       } 
     },
