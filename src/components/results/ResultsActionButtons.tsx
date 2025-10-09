@@ -1,5 +1,5 @@
 // src/components/ResultsActionButtons.js
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,8 +21,7 @@ function ResultsActionButtons({
     // showChallengeButton,  // Removed
     // currentUser // Removed
 }) {
-    const theme = useTheme();
-
+    
     return (
         <Box sx={{ mt: 4, py: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
             {showBackToListButton && onBackToList && (

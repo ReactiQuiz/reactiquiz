@@ -1,5 +1,5 @@
 // src/hooks/useQuiz.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
@@ -97,6 +97,29 @@ export const useQuiz = (): UseQuizReturn => {
     };
   }, [timerActive]);
 
+  const submitAndNavigate = useCallback((): void => {
+    if (!sessionData || !currentUser) return;
+
+    setTimerActive(false);
+    saveResultMutation.mutate({
+      quizContext: {
+        topicId: sessionData.topicId,
+        subject: sessionData.subject,
+        difficulty: sessionData.difficulty,
+        quizClass: sessionData.class,
+      },
+      timeTaken: elapsedTime,
+      questionsActuallyAttemptedIds: questions.map(q => q.id),
+      userAnswersSnapshot: userAnswers,
+    });
+  }, [sessionData, currentUser, elapsedTime, questions, userAnswers, saveResultMutation]);
+
+  const handleAbandonQuiz = useCallback((): void => {
+    if (window.confirm('Are you sure you want to abandon this quiz? Your progress will be lost.')) {
+      navigate('/subjects');
+    }
+  }, [navigate]);
+
   // When time runs out (timeLimit in seconds), prompt to submit or abandon
   useEffect(() => {
     if (!sessionData || !sessionData.timeLimit) return;
@@ -119,29 +142,7 @@ export const useQuiz = (): UseQuizReturn => {
     }));
   };
 
-  const submitAndNavigate = (): void => {
-    if (!sessionData || !currentUser) return;
-
-    setTimerActive(false);
-    
-    saveResultMutation.mutate({
-      quizContext: {
-          topicId: sessionData.topicId,
-          subject: sessionData.subject,
-          difficulty: sessionData.difficulty,
-          quizClass: sessionData.class, // This line is now valid
-      },
-      timeTaken: elapsedTime,
-      questionsActuallyAttemptedIds: questions.map(q => q.id),
-      userAnswersSnapshot: userAnswers,
-    });
-  };
-
-  const handleAbandonQuiz = (): void => {
-    if (window.confirm('Are you sure you want to abandon this quiz? Your progress will be lost.')) {
-      navigate('/subjects');
-    }
-  };
+  // Handlers are defined above with useCallback
 
   // Provide a more user-friendly error from the query
   const displayError = isError ? (error as any)?.response?.data?.message || (error as Error).message : null;
