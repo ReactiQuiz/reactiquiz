@@ -28,7 +28,14 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
   const theme = useTheme();
   const effectiveAccentColor = accentColor || theme.palette.primary.main;
 
+  // timeLimit in seconds; when it hits 0, header will show 00:00
   const displayTime = timeLimit ? Math.max(0, timeLimit - elapsedTime) : elapsedTime;
+  const formatQuizClock = (totalSeconds: number): string => {
+    if (totalSeconds == null || isNaN(totalSeconds) || totalSeconds < 0) return '0 : 00';
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} : ${seconds.toString().padStart(2, '0')}`;
+  };
 
   const baseTimerColorForAlpha = timeLimit && displayTime < 600
     ? theme.palette.error.main
@@ -69,7 +76,7 @@ const QuizHeader: React.FC<QuizHeaderProps> = ({
                   fontFamily: 'monospace',
                 }}
               >
-                {formatTime(displayTime)}
+                {formatQuizClock(displayTime)}
               </Typography>
             </Box>
           )}

@@ -79,6 +79,7 @@ async function fetchQuestionsForPdf(topicId: string, difficulty: string, numQues
       if (difficulty === 'easy') { minScore = 10; maxScore = 13; }
       else if (difficulty === 'medium') { minScore = 14; maxScore = 17; }
       else if (difficulty === 'hard') { minScore = 18; maxScore = 20; }
+      else if (difficulty === 'maxed') { minScore = 20; maxScore = 20; }
       const filtered = allQuestions.filter(q => q.difficulty >= minScore && q.difficulty <= maxScore);
       if (filtered.length > 0) allQuestions = filtered;
     }

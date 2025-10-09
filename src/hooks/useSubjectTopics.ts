@@ -93,7 +93,8 @@ export const useSubjectTopics = (): UseSubjectTopicsReturn => {
     const sessionData = {
       topicId: selectedTopicForQuiz.id,
       difficulty: settings.difficulty,
-      timeLimit: settings.timeLimit,
+      // Convert minutes (from UI) to seconds for the backend/session usage
+      timeLimit: Number(settings.timeLimit) * 60,
       numQuestions: settings.numQuestions || 10, // Default to 10 questions
       subject: currentSubject?.subjectKey,
       topicName: selectedTopicForQuiz.name,

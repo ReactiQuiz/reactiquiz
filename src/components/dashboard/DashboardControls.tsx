@@ -3,17 +3,17 @@ import React from 'react';
 import { Paper, Typography, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 
 const timeFrequencyOptions = [
-    { value: 7, label: 'Last 7 Days' },
-    { value: 30, label: 'Last 30 Days' },
-    { value: 90, label: 'Last 90 Days' },
-    { value: 365, label: 'Last Year' },
+    { value: 'week', label: 'Last 7 Days' },
+    { value: 'month', label: 'Last 30 Days' },
+    { value: 'quarter', label: 'Last 90 Days' },
+    { value: 'year', label: 'Last Year' },
     { value: 'all', label: 'All Time' },
 ];
 
 function DashboardControls({ timeFrequency, onTimeFrequencyChange, allSubjects, selectedSubject, onSubjectChange }) {
     // --- START OF FIX ---
     // Ensure the value for the Select component is always valid.
-    const validTimeFrequency = timeFrequencyOptions.some(opt => opt.value === timeFrequency) ? timeFrequency : 30;
+    const validTimeFrequency = timeFrequencyOptions.some(opt => opt.value === timeFrequency) ? timeFrequency : 'month';
     // --- END OF FIX ---
 
     return (

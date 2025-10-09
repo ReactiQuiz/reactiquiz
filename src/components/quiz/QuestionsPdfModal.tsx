@@ -110,6 +110,7 @@ const QuestionsPdfModal: React.FC<QuestionsPdfModalProps> = ({ open, onClose, to
               <MenuItem value="easy">Easy</MenuItem>
               <MenuItem value="medium">Medium</MenuItem>
               <MenuItem value="hard">Hard</MenuItem>
+            <MenuItem value="maxed">Maxed</MenuItem>
             </Select>
           </FormControl>
 

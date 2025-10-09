@@ -97,6 +97,21 @@ export const useQuiz = (): UseQuizReturn => {
     };
   }, [timerActive]);
 
+  // When time runs out (timeLimit in seconds), prompt to submit or abandon
+  useEffect(() => {
+    if (!sessionData || !sessionData.timeLimit) return;
+    const remaining = sessionData.timeLimit - elapsedTime;
+    if (timerActive && remaining <= 0) {
+      setTimerActive(false);
+      const shouldSubmit = window.confirm('Time is up! Would you like to submit your quiz? Click OK to submit, or Cancel to abandon.');
+      if (shouldSubmit) {
+        submitAndNavigate();
+      } else {
+        handleAbandonQuiz();
+      }
+    }
+  }, [elapsedTime, timerActive, sessionData]);
+
   const handleOptionSelect = (questionId: string, optionIndex: number): void => {
     setUserAnswers(prev => ({
       ...prev,

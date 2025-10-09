@@ -23,7 +23,7 @@ const AccountManagementActions: React.FC<AccountManagementActionsProps> = ({ onO
         Account Management
       </Typography>
       <Grid container spacing={1.5}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <Button fullWidth variant="contained" startIcon={<VpnKeyIcon />} onClick={onOpenChangePasswordModal} sx={{ backgroundColor: 'primary.main' }}>
             Change Password
           </Button>

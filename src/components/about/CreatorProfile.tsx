@@ -26,7 +26,7 @@ const CreatorProfile: React.FC = () => {
       
       <Avatar
         alt="Sanskar Sontakke"
-        src="/profile-sanskar.png"
+        src={process.env.PUBLIC_URL + '/profile-sanskar.png'}
         sx={{
           width: 150,
           height: 150,

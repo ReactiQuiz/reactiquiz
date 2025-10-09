@@ -35,6 +35,9 @@ const AverageScoreCard = ({ value, caption, breakdownData, overallQuestionStats 
                 <Typography variant="h3" sx={{ color: 'text.primary', fontWeight: 'bold', fontSize: { xs: '2rem', sm: '2.5rem' } }}>
                     {value}
                 </Typography>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                    {`${overallQuestionStats?.correct || 0} correct of ${overallQuestionStats?.total || 0} questions`}
+                </Typography>
                 <Typography variant="caption" color="text.secondary">{caption}</Typography>
             </Box>
 

@@ -109,7 +109,7 @@ const QuizSettingsModal: React.FC<QuizSettingsModalProps> = ({
             onChange={handleTimeLimitChange}
             error={!!timeLimitError}
             helperText={timeLimitError || 'Enter time limit between 5-180 minutes'}
-            inputProps={{ min: 5, max: 180 }}
+            inputProps={{ min: 5, max: 180, step: 1 }}
           />
 
           <TextField
