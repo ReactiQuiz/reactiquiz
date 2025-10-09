@@ -146,7 +146,7 @@ function KpiCards({ stats, isLoading }: { stats: DashboardStats | null; isLoadin
     return (
         <Stack spacing={2}>
             {/* Top Card: Total Quizzes Solved */}
-            <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: `1px solid theme.palette.divider` }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 2.5 }, border: theme => `1px solid ${theme.palette.divider}` }}>
                 <Typography variant="h6" color="text.secondary" sx={{ fontSize: { xs: '1rem', sm: '1.125rem' }, textAlign: 'center', mb: 2 }}>
                     Total Quizzes Solved
                 </Typography>

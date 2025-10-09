@@ -57,8 +57,17 @@ export const useDashboard = (): UseDashboardReturn => {
   const isLoadingData = isLoadingResults || isLoadingSubjects || isLoadingTopics;
 
   // --- Process the data based on selected filters ---
+  const DEBUG_DASHBOARD = (process.env.NODE_ENV !== 'production') || (process.env.REACT_APP_DEBUG_DASHBOARD === 'true');
+
   const processedStats = useMemo((): DashboardStats | null => {
     if (!userResults.length || !allSubjects.length || !allTopics.length) {
+      if (DEBUG_DASHBOARD) {
+        console.groupCollapsed('[Dashboard] Early return - missing data');
+        console.debug('userResults.length', userResults.length);
+        console.debug('allSubjects.length', allSubjects.length);
+        console.debug('allTopics.length', allTopics.length);
+        console.groupEnd();
+      }
       return null;
     }
 
@@ -88,9 +97,24 @@ export const useDashboard = (): UseDashboardReturn => {
       filteredResults = userResults;
     }
 
+    if (DEBUG_DASHBOARD) {
+      console.groupCollapsed('[Dashboard] After time filter');
+      console.debug('timeFrequency', timeFrequency);
+      console.debug('filteredResults.length', filteredResults.length);
+      console.debug('sample', filteredResults.slice(0, 3));
+      console.groupEnd();
+    }
+
     // Filter by subject if not 'all'
     if (selectedSubject !== 'all') {
       filteredResults = filteredResults.filter(result => result.subject === selectedSubject);
+    }
+
+    if (DEBUG_DASHBOARD) {
+      console.groupCollapsed('[Dashboard] After subject filter');
+      console.debug('selectedSubject', selectedSubject);
+      console.debug('filteredResults.length', filteredResults.length);
+      console.groupEnd();
     }
 
     if (filteredResults.length === 0) {
@@ -112,6 +136,13 @@ export const useDashboard = (): UseDashboardReturn => {
     const overallAverageScore = totalQuizzes > 0
       ? Number(((filteredResults.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / totalQuizzes)).toFixed(1))
       : 0;
+
+    if (DEBUG_DASHBOARD) {
+      console.groupCollapsed('[Dashboard] Overall stats');
+      console.debug('totalQuizzes', totalQuizzes);
+      console.debug('overallAverageScore %', overallAverageScore);
+      console.groupEnd();
+    }
 
     // Calculate subject breakdowns
     const subjectBreakdowns: Record<string, { name: string; count: number; average: number; totalCorrect: number; totalQuestions: number }> = {};
@@ -139,10 +170,24 @@ export const useDashboard = (): UseDashboardReturn => {
       }
     });
 
+    if (DEBUG_DASHBOARD) {
+      console.groupCollapsed('[Dashboard] Subject breakdowns');
+      console.debug(subjectBreakdowns);
+      console.groupEnd();
+    }
+
     // Calculate overall question stats
     const totalQuestions = filteredResults.reduce((sum, result) => sum + (Number(result.totalQuestions) || 0), 0);
     const correctAnswers = filteredResults.reduce((sum, result) => sum + (Number(result.correctAnswers) || 0), 0);
     const accuracy = totalQuestions > 0 ? Number(((correctAnswers / totalQuestions) * 100).toFixed(1)) : 0;
+
+    if (DEBUG_DASHBOARD) {
+      console.groupCollapsed('[Dashboard] Question stats');
+      console.debug('totalQuestions', totalQuestions);
+      console.debug('correctAnswers', correctAnswers);
+      console.debug('accuracy %', accuracy);
+      console.groupEnd();
+    }
 
     // Calculate difficulty performance
     const subjectDifficultyPerformance: Record<string, { easy: { correct: number; total: number; percentage: number }; medium: { correct: number; total: number; percentage: number }; hard: { correct: number; total: number; percentage: number } }> = {};
@@ -241,6 +286,12 @@ export const useDashboard = (): UseDashboardReturn => {
         });
       }
     });
+
+    if (DEBUG_DASHBOARD) {
+      console.groupCollapsed('[Dashboard] Topic performance');
+      console.debug(topicPerformance.slice(0, 5));
+      console.groupEnd();
+    }
 
     return {
       totalQuizzes,

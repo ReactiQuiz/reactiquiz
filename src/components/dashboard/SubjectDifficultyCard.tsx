@@ -36,8 +36,8 @@ function SubjectDifficultyCard({ subjectKey, title, data }) {
     if (!data) return null;
     
     const safe = (d: any) => ({
-        average: typeof d?.average === 'number' ? d.average : (typeof d?.percentage === 'number' ? d.percentage : 0),
-        count: typeof d?.count === 'number' ? d.count : (typeof d?.total === 'number' ? d.total : 0),
+        average: Number.isFinite(d?.average) ? d.average : (Number.isFinite(d?.percentage) ? d.percentage : 0),
+        count: Number.isFinite(d?.count) ? d.count : (Number.isFinite(d?.total) ? d.total : 0),
     });
 
     const easy = safe(data?.easy);
