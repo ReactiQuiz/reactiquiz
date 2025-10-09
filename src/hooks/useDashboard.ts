@@ -31,6 +31,7 @@ export interface DashboardData {
   subjectDifficultyPerformance: Record<string, { easy: DifficultyStats; medium: DifficultyStats; hard: DifficultyStats }>;
   overallDifficultyPerformance: { easy: DifficultyStats; medium: DifficultyStats; hard: DifficultyStats };
   rollingAverageData: Array<{ date: string; averageScore: number }>;
+  chartDifficultyBySubject: Array<{ subject: string; easyPercent: number; mediumPercent: number; hardPercent: number; easyCount: number; mediumCount: number; hardCount: number; total: number; avg: number }>;
 }
 
 const fetchResults = async (): Promise<DashboardResult[]> => {
@@ -128,19 +129,31 @@ export function useDashboard() {
     };
 
     const subjectDifficultyPerformance: DashboardData['subjectDifficultyPerformance'] = {};
+    const chartDifficultyBySubject: DashboardData['chartDifficultyBySubject'] = [];
     Object.keys(subjectBreakdowns).forEach(key => {
       const subRes = filtered.filter(r => r.subject === key);
       const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
       subRes.forEach(r => {
-        if (r.percentage < 50) { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
-        else if (r.percentage < 80) { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
+        // If result has difficulty info per-quiz, normalize; else approximate via percentage thresholds
+        const d = (r as any).difficulty ? String((r as any).difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
+        if (d === 'easy') { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
+        else if (d === 'medium') { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
         else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
       });
+      const easyP = pct(b.easy.c, b.easy.t);
+      const medP = pct(b.medium.c, b.medium.t);
+      const hardP = pct(b.hard.c, b.hard.t);
       subjectDifficultyPerformance[key] = {
-        easy: { correct: b.easy.c, total: b.easy.t, percentage: pct(b.easy.c, b.easy.t) },
-        medium: { correct: b.medium.c, total: b.medium.t, percentage: pct(b.medium.c, b.medium.t) },
-        hard: { correct: b.hard.c, total: b.hard.t, percentage: pct(b.hard.c, b.hard.t) },
+        easy: { correct: b.easy.c, total: b.easy.t, percentage: easyP },
+        medium: { correct: b.medium.c, total: b.medium.t, percentage: medP },
+        hard: { correct: b.hard.c, total: b.hard.t, percentage: hardP },
       };
+      chartDifficultyBySubject.push({
+        subject: key, easyPercent: easyP, mediumPercent: medP, hardPercent: hardP,
+        easyCount: b.easy.c, mediumCount: b.medium.c, hardCount: b.hard.c,
+        total: b.easy.t + b.medium.t + b.hard.t,
+        avg: subjectBreakdowns[key].average,
+      });
     });
 
     // rolling average 30 days
@@ -160,6 +173,7 @@ export function useDashboard() {
       subjectDifficultyPerformance,
       overallDifficultyPerformance,
       rollingAverageData,
+      chartDifficultyBySubject,
     };
   }, [results, subjects, topics, timeFilter, subjectFilter]);
 

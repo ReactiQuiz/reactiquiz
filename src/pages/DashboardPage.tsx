@@ -5,7 +5,7 @@ import { styled, alpha } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, Title } from 'chart.js';
-import { Radar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { useDashboard } from '../hooks/useDashboard';
 
 const Glass = styled(Paper)(({ theme }) => ({
@@ -34,22 +34,6 @@ export default function DashboardPage() {
   ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend, CategoryScale, LinearScale, Title);
 
   const subjectKeys = data ? Object.keys(data.subjectBreakdowns) : [];
-  const radarLabels = ['Easy', 'Medium', 'Hard'];
-  const radarData = data ? {
-    labels: radarLabels,
-    datasets: subjectKeys.map((key, idx) => {
-      const perf = data.subjectDifficultyPerformance[key];
-      const colors = ['#7dcfff', '#bb9af7', '#a6e3a1', '#f7768e', '#e0af68', '#7aa2f7'];
-      const c = colors[idx % colors.length];
-      return {
-        label: key,
-        data: [perf?.easy.percentage || 0, perf?.medium.percentage || 0, perf?.hard.percentage || 0],
-        borderColor: c,
-        backgroundColor: `${c}33`,
-        pointBackgroundColor: c,
-      };
-    })
-  } : { labels: [], datasets: [] };
 
   const lineData = data ? {
     labels: data.rollingAverageData.map(d => d.date.slice(5)),
@@ -172,8 +156,37 @@ export default function DashboardPage() {
         <Grid item xs={12} md={7}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
-            {data && subjectKeys.length > 0 ? <Radar data={radarData} /> : <Typography variant="caption" color="text.secondary">No data</Typography>}
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
+              {data && subjectKeys.length > 0 ? (
+                <Box sx={{ width: '100%', overflowX: 'auto' }}>
+                  <Box sx={{ display: 'grid', gridTemplateColumns: '140px 1fr 80px', rowGap: 1.2, alignItems: 'center' }}>
+                    {/* Header Row */}
+                    <Box />
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 0.5 }}>
+                      <Box sx={{ width: 12, height: 6, background: '#22c55e', borderRadius: 999 }} />
+                      <Typography variant="caption" color="text.secondary">Easy</Typography>
+                      <Box sx={{ width: 12, height: 6, background: '#f59e0b', borderRadius: 999, ml: 1 }} />
+                      <Typography variant="caption" color="text.secondary">Medium</Typography>
+                      <Box sx={{ width: 12, height: 6, background: '#ef4444', borderRadius: 999, ml: 1 }} />
+                      <Typography variant="caption" color="text.secondary">Hard</Typography>
+                    </Box>
+                    <Box />
+                    {data.chartDifficultyBySubject.map((row) => (
+                      <React.Fragment key={row.subject}>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>{row.subject}</Typography>
+                        <Box sx={{ height: 12, borderRadius: 999, display: 'flex', overflow: 'hidden', background: theme => alpha(theme.palette.text.disabled, 0.15) }}>
+                          <Box title={`Easy ${row.easyPercent}%`} sx={{ width: `${row.easyPercent}%`, background: '#22c55e' }} />
+                          <Box title={`Med ${row.mediumPercent}%`} sx={{ width: `${row.mediumPercent}%`, background: '#f59e0b' }} />
+                          <Box title={`Hard ${row.hardPercent}%`} sx={{ width: `${row.hardPercent}%`, background: '#ef4444' }} />
+                        </Box>
+                        <Typography variant="caption" color="text.secondary">Total: {row.total} • Avg: {row.avg}%</Typography>
+                      </React.Fragment>
+                    ))}
+                  </Box>
+                </Box>
+              ) : (
+                <Typography variant="caption" color="text.secondary">No data</Typography>
+              )}
             </Card>
           </Box>
         </Grid>
