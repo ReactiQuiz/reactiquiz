@@ -1,359 +1,172 @@
 // src/hooks/useDashboard.ts
-import { useMemo, useRef, useState } from 'react';
-import { subDays, format, parseISO, isValid, eachDayOfInterval } from 'date-fns';
-import { generateDashboardPdfReport } from '../utils/reportGenerator';
-import { useAuth } from '../contexts/AuthContext';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import apiClient from '../api/axiosInstance';
-import { UseDashboardReturn, QuizResult, Subject, Topic, DashboardStats } from '../types';
+import { parseISO, isValid, subDays, eachDayOfInterval, format } from 'date-fns';
 
+export type TimeFilter = 'week' | 'month' | 'quarter' | 'year' | 'all';
 
-// --- Fetcher functions defined outside the hook ---
-const fetchUserResults = async (): Promise<QuizResult[]> => {
-  const { data } = await apiClient.get<QuizResult[]>('/api/results');
+export interface DashboardResult {
+  id: string;
+  subject: string;
+  topicId: string;
+  topicName: string;
+  totalQuestions: number;
+  correctAnswers: number;
+  percentage: number; // 0-100
+  score: number; // raw
+  timestamp: string; // ISO
+}
+
+export interface SubjectMeta { id: string; subjectKey: string; name: string; }
+export interface TopicMeta { id: string; name: string; subject_id: string; class: string; genre: string; }
+
+export interface DifficultyStats { correct: number; total: number; percentage: number; }
+
+export interface DashboardData {
+  totalQuizzes: number;
+  overallAverageScore: number;
+  overallQuestionStats: { total: number; correct: number; accuracy: number };
+  subjectBreakdowns: Record<string, { name: string; count: number; average: number; totalQuestions: number; totalCorrect: number }>;
+  subjectDifficultyPerformance: Record<string, { easy: DifficultyStats; medium: DifficultyStats; hard: DifficultyStats }>;
+  overallDifficultyPerformance: { easy: DifficultyStats; medium: DifficultyStats; hard: DifficultyStats };
+  rollingAverageData: Array<{ date: string; averageScore: number }>;
+}
+
+const fetchResults = async (): Promise<DashboardResult[]> => {
+  const { data } = await apiClient.get<DashboardResult[]>('/api/results');
+  return (data || []).map(r => ({
+    ...r,
+    percentage: Number(r.percentage) || 0,
+    totalQuestions: Number(r.totalQuestions) || 0,
+    correctAnswers: Number(r.correctAnswers) || 0,
+  }));
+};
+
+const fetchSubjects = async (): Promise<SubjectMeta[]> => {
+  const { data } = await apiClient.get<SubjectMeta[]>('/api/subjects');
   return data || [];
 };
 
-const fetchAllSubjects = async (): Promise<Subject[]> => {
-  const { data } = await apiClient.get<Subject[]>('/api/subjects');
+const fetchTopics = async (): Promise<TopicMeta[]> => {
+  const { data } = await apiClient.get<TopicMeta[]>('/api/topics');
   return data || [];
 };
 
-const fetchAllTopics = async (): Promise<Topic[]> => {
-  const { data } = await apiClient.get<Topic[]>('/api/topics');
-  return data || [];
-};
+export function useDashboard() {
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>('month');
+  const [subjectFilter, setSubjectFilter] = useState<string>('all');
 
+  const { data: results = [], isLoading: loadingResults } = useQuery({ queryKey: ['dashResults'], queryFn: fetchResults });
+  const { data: subjects = [], isLoading: loadingSubjects } = useQuery({ queryKey: ['dashSubjects'], queryFn: fetchSubjects });
+  const { data: topics = [], isLoading: loadingTopics } = useQuery({ queryKey: ['dashTopics'], queryFn: fetchTopics });
 
-export const useDashboard = (): UseDashboardReturn => {
-  const { currentUser } = useAuth();
+  const isLoading = loadingResults || loadingSubjects || loadingTopics;
 
-  const [timeFrequency, setTimeFrequency] = useState<'week' | 'month' | 'year'>('month');
-  const [selectedSubject, setSelectedSubject] = useState<string>('all');
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
+  const data = useMemo<DashboardData | null>(() => {
+    if (!results.length || !subjects.length) return null;
 
-  const activityChartRef = useRef<HTMLDivElement>(null);
-  const topicPerformanceRef = useRef<HTMLDivElement>(null);
-  const rollingAverageChartRef = useRef<HTMLDivElement>(null);
-  const difficultyBreakdownChartRef = useRef<HTMLDivElement>(null);
-
-  // --- Data fetching with React Query ---
-  const { data: userResults = [], isLoading: isLoadingResults } = useQuery({
-    queryKey: ['userResults'],
-    queryFn: fetchUserResults,
-    enabled: !!currentUser,
-  });
-
-  const { data: allSubjects = [], isLoading: isLoadingSubjects } = useQuery({
-    queryKey: ['allSubjects'],
-    queryFn: fetchAllSubjects,
-  });
-
-  const { data: allTopics = [], isLoading: isLoadingTopics } = useQuery({
-    queryKey: ['allTopics'],
-    queryFn: fetchAllTopics,
-  });
-
-  const isLoadingData = isLoadingResults || isLoadingSubjects || isLoadingTopics;
-
-  // --- Process the data based on selected filters ---
-  const DEBUG_DASHBOARD = (process.env.NODE_ENV !== 'production') || (process.env.REACT_APP_DEBUG_DASHBOARD === 'true');
-
-  const processedStats = useMemo((): DashboardStats | null => {
-    if (!userResults.length || !allSubjects.length || !allTopics.length) {
-      if (DEBUG_DASHBOARD) {
-        console.groupCollapsed('[Dashboard] Early return - missing data');
-        console.debug('userResults.length', userResults.length);
-        console.debug('allSubjects.length', allSubjects.length);
-        console.debug('allTopics.length', allTopics.length);
-        console.groupEnd();
-      }
-      return null;
-    }
-
-    // Filter results based on time frequency
+    // 1) time window
     const now = new Date();
-    let filteredResults: QuizResult[] = [];
+    let startDate: Date | null = null;
+    if (timeFilter === 'week') startDate = subDays(now, 7);
+    else if (timeFilter === 'month') startDate = subDays(now, 30);
+    else if (timeFilter === 'quarter') startDate = subDays(now, 90);
+    else if (timeFilter === 'year') startDate = subDays(now, 365);
 
-    if (timeFrequency === 'week') {
-      const weekAgo = subDays(now, 7);
-      filteredResults = userResults.filter(result => {
-        const resultDate = parseISO(result.timestamp);
-        return isValid(resultDate) && resultDate >= weekAgo;
-      });
-    } else if (timeFrequency === 'month') {
-      const monthAgo = subDays(now, 30);
-      filteredResults = userResults.filter(result => {
-        const resultDate = parseISO(result.timestamp);
-        return isValid(resultDate) && resultDate >= monthAgo;
-      });
-    } else if (timeFrequency === 'year') {
-      const yearAgo = subDays(now, 365);
-      filteredResults = userResults.filter(result => {
-        const resultDate = parseISO(result.timestamp);
-        return isValid(resultDate) && resultDate >= yearAgo;
-      });
-    } else {
-      filteredResults = userResults;
-    }
-
-    if (DEBUG_DASHBOARD) {
-      console.groupCollapsed('[Dashboard] After time filter');
-      console.debug('timeFrequency', timeFrequency);
-      console.debug('filteredResults.length', filteredResults.length);
-      console.debug('sample', filteredResults.slice(0, 3));
-      console.groupEnd();
-    }
-
-    // Filter by subject if not 'all'
-    if (selectedSubject !== 'all') {
-      filteredResults = filteredResults.filter(result => result.subject === selectedSubject);
-    }
-
-    if (DEBUG_DASHBOARD) {
-      console.groupCollapsed('[Dashboard] After subject filter');
-      console.debug('selectedSubject', selectedSubject);
-      console.debug('filteredResults.length', filteredResults.length);
-      console.groupEnd();
-    }
-
-    if (filteredResults.length === 0) {
-      return {
-        totalQuizzes: 0,
-        overallAverageScore: 0,
-        subjectBreakdowns: {},
-        overallQuestionStats: { total: 0, correct: 0, accuracy: 0 },
-        subjectDifficultyPerformance: {},
-        overallDifficultyPerformance: { easy: { correct: 0, total: 0, percentage: 0 }, medium: { correct: 0, total: 0, percentage: 0 }, hard: { correct: 0, total: 0, percentage: 0 } },
-        rollingAverageData: [],
-        activityData: [],
-        topicPerformance: []
-      };
-    }
-
-    // Calculate overall stats
-    const totalQuizzes = filteredResults.length;
-    const overallAverageScore = totalQuizzes > 0
-      ? Number(((filteredResults.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / totalQuizzes)).toFixed(1))
-      : 0;
-
-    if (DEBUG_DASHBOARD) {
-      console.groupCollapsed('[Dashboard] Overall stats');
-      console.debug('totalQuizzes', totalQuizzes);
-      console.debug('overallAverageScore %', overallAverageScore);
-      console.groupEnd();
-    }
-
-    // Calculate subject breakdowns
-    const subjectBreakdowns: Record<string, { name: string; count: number; average: number; totalCorrect: number; totalQuestions: number }> = {};
-    filteredResults.forEach(result => {
-      if (!subjectBreakdowns[result.subject]) {
-        subjectBreakdowns[result.subject] = { name: result.subject, count: 0, average: 0, totalCorrect: 0, totalQuestions: 0 };
-      }
-      const breakdown = subjectBreakdowns[result.subject];
-      if (breakdown) {
-        breakdown.count++;
-        breakdown.totalQuestions += Number(result.totalQuestions) || 0;
-        breakdown.totalCorrect += Number(result.correctAnswers) || 0;
-      }
+    let filtered = results.filter(r => {
+      const d = parseISO(r.timestamp);
+      if (!isValid(d)) return false;
+      if (startDate) return d >= startDate;
+      return true;
     });
 
-    // Calculate average scores for each subject
-    Object.keys(subjectBreakdowns).forEach(subject => {
-      const subjectResults = filteredResults.filter(r => r.subject === subject);
-      const breakdown = subjectBreakdowns[subject];
-      if (breakdown) {
-        const avg = subjectResults.length > 0
-          ? subjectResults.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / subjectResults.length
-          : 0;
-        breakdown.average = Number(avg.toFixed(1));
-      }
-    });
+    // 2) subject filter
+    if (subjectFilter !== 'all') filtered = filtered.filter(r => r.subject === subjectFilter);
 
-    if (DEBUG_DASHBOARD) {
-      console.groupCollapsed('[Dashboard] Subject breakdowns');
-      console.debug(subjectBreakdowns);
-      console.groupEnd();
-    }
+    const totalQuizzes = filtered.length;
+    const overallAverageScore = totalQuizzes > 0 ? Number((filtered.reduce((s, r) => s + (r.percentage || 0), 0) / totalQuizzes).toFixed(1)) : 0;
 
-    // Calculate overall question stats
-    const totalQuestions = filteredResults.reduce((sum, result) => sum + (Number(result.totalQuestions) || 0), 0);
-    const correctAnswers = filteredResults.reduce((sum, result) => sum + (Number(result.correctAnswers) || 0), 0);
+    const totalQuestions = filtered.reduce((s, r) => s + (r.totalQuestions || 0), 0);
+    const correctAnswers = filtered.reduce((s, r) => s + (r.correctAnswers || 0), 0);
     const accuracy = totalQuestions > 0 ? Number(((correctAnswers / totalQuestions) * 100).toFixed(1)) : 0;
 
-    if (DEBUG_DASHBOARD) {
-      console.groupCollapsed('[Dashboard] Question stats');
-      console.debug('totalQuestions', totalQuestions);
-      console.debug('correctAnswers', correctAnswers);
-      console.debug('accuracy %', accuracy);
-      console.groupEnd();
-    }
+    // subject breakdown
+    const subjectBreakdowns: DashboardData['subjectBreakdowns'] = {};
+    filtered.forEach(r => {
+      const key = r.subject;
+      if (!subjectBreakdowns[key]) subjectBreakdowns[key] = { name: key, count: 0, average: 0, totalQuestions: 0, totalCorrect: 0 };
+      subjectBreakdowns[key].count += 1;
+      subjectBreakdowns[key].totalQuestions += r.totalQuestions || 0;
+      subjectBreakdowns[key].totalCorrect += r.correctAnswers || 0;
+    });
+    Object.keys(subjectBreakdowns).forEach(key => {
+      const sb = subjectBreakdowns[key];
+      const subResults = filtered.filter(r => r.subject === key);
+      sb.average = subResults.length ? Number((subResults.reduce((s, r) => s + (r.percentage || 0), 0) / subResults.length).toFixed(1)) : 0;
+    });
 
-    // Calculate difficulty performance
-    const subjectDifficultyPerformance: Record<string, { easy: { correct: number; total: number; percentage: number }; medium: { correct: number; total: number; percentage: number }; hard: { correct: number; total: number; percentage: number } }> = {};
-    
-    // This would need to be implemented based on your actual question difficulty data
-    // For now, returning empty structure
-    Object.keys(subjectBreakdowns).forEach(subject => {
-      subjectDifficultyPerformance[subject] = {
-        easy: { correct: 0, total: 0, percentage: 0 },
-        medium: { correct: 0, total: 0, percentage: 0 },
-        hard: { correct: 0, total: 0, percentage: 0 }
+    // difficulty – placeholder since difficulty not per-question here; use percentage tiers as proxy
+    const buckets = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
+    filtered.forEach(r => {
+      if (r.percentage >= 0 && r.percentage < 50) buckets.easy.total += r.totalQuestions || 0, buckets.easy.correct += r.correctAnswers || 0;
+      else if (r.percentage < 80) buckets.medium.total += r.totalQuestions || 0, buckets.medium.correct += r.correctAnswers || 0;
+      else buckets.hard.total += r.totalQuestions || 0, buckets.hard.correct += r.correctAnswers || 0;
+    });
+    const pct = (c: number, t: number) => (t > 0 ? Number(((c / t) * 100).toFixed(1)) : 0);
+    const overallDifficultyPerformance = {
+      easy: { correct: buckets.easy.correct, total: buckets.easy.total, percentage: pct(buckets.easy.correct, buckets.easy.total) },
+      medium: { correct: buckets.medium.correct, total: buckets.medium.total, percentage: pct(buckets.medium.correct, buckets.medium.total) },
+      hard: { correct: buckets.hard.correct, total: buckets.hard.total, percentage: pct(buckets.hard.correct, buckets.hard.total) },
+    };
+
+    const subjectDifficultyPerformance: DashboardData['subjectDifficultyPerformance'] = {};
+    Object.keys(subjectBreakdowns).forEach(key => {
+      const subRes = filtered.filter(r => r.subject === key);
+      const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
+      subRes.forEach(r => {
+        if (r.percentage < 50) { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
+        else if (r.percentage < 80) { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
+        else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
+      });
+      subjectDifficultyPerformance[key] = {
+        easy: { correct: b.easy.c, total: b.easy.t, percentage: pct(b.easy.c, b.easy.t) },
+        medium: { correct: b.medium.c, total: b.medium.t, percentage: pct(b.medium.c, b.medium.t) },
+        hard: { correct: b.hard.c, total: b.hard.t, percentage: pct(b.hard.c, b.hard.t) },
       };
     });
 
-    const overallDifficultyPerformance = {
-      easy: { correct: 0, total: 0, percentage: 0 },
-      medium: { correct: 0, total: 0, percentage: 0 },
-      hard: { correct: 0, total: 0, percentage: 0 }
-    };
-
-    // Calculate rolling average data
-    const rollingAverageData: Array<{ date: string; averageScore: number }> = [];
-    const last30Days = eachDayOfInterval({ start: subDays(now, 30), end: now });
-    
-    last30Days.forEach(day => {
-      const dayResults = filteredResults.filter(result => {
-        const resultDate = parseISO(result.timestamp);
-        return isValid(resultDate) && format(resultDate, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd');
-      });
-      
-      if (dayResults.length > 0) {
-        const dayAverage = dayResults.reduce((sum, result) => sum + result.score, 0) / dayResults.length;
-        rollingAverageData.push({
-          date: format(day, 'yyyy-MM-dd'),
-          averageScore: dayAverage
-        });
-      }
+    // rolling average 30 days
+    const days = eachDayOfInterval({ start: subDays(now, 30), end: now });
+    const rollingAverageData = days.map(d => {
+      const dayStr = format(d, 'yyyy-MM-dd');
+      const dayResults = filtered.filter(r => format(parseISO(r.timestamp), 'yyyy-MM-dd') === dayStr);
+      const avg = dayResults.length ? Number((dayResults.reduce((s, r) => s + (r.percentage || 0), 0) / dayResults.length).toFixed(1)) : 0;
+      return { date: dayStr, averageScore: avg };
     });
-
-    // Calculate activity data
-    const activityData: Array<{ date: string; quizzes: number; score: number }> = [];
-    const activityMap: Record<string, { quizzes: number; totalScore: number }> = {};
-    
-    filteredResults.forEach(result => {
-      const date = format(parseISO(result.timestamp), 'yyyy-MM-dd');
-      if (!activityMap[date]) {
-        activityMap[date] = { quizzes: 0, totalScore: 0 };
-      }
-      const activity = activityMap[date];
-      if (activity) {
-        activity.quizzes++;
-        activity.totalScore += result.score;
-      }
-    });
-
-    Object.entries(activityMap).forEach(([date, data]) => {
-      activityData.push({
-        date,
-        quizzes: data.quizzes,
-        score: data.totalScore / data.quizzes
-      });
-    });
-
-    // Calculate topic performance
-    const topicPerformance: Array<{ topicId: string; topicName: string; totalQuizzes: number; averageScore: number; totalQuestions: number; correctAnswers: number }> = [];
-    
-    // Group results by topic
-    const topicMap: Record<string, QuizResult[]> = {};
-    filteredResults.forEach(result => {
-      if (!topicMap[result.topicId]) {
-        topicMap[result.topicId] = [];
-      }
-      const topicResults = topicMap[result.topicId];
-      if (topicResults) {
-        topicResults.push(result);
-      }
-    });
-
-    Object.entries(topicMap).forEach(([topicId, results]) => {
-      const topic = allTopics.find(t => t.id === topicId);
-      if (topic) {
-        const totalQuizzes = results.length;
-        const averageScore = totalQuizzes > 0
-          ? Number((results.reduce((sum, result) => sum + (Number(result.percentage) || 0), 0) / totalQuizzes).toFixed(1))
-          : 0;
-        const totalQuestions = results.reduce((sum, result) => sum + (Number(result.totalQuestions) || 0), 0);
-        const correctAnswers = results.reduce((sum, result) => sum + (Number(result.correctAnswers) || 0), 0);
-        
-        topicPerformance.push({
-          topicId,
-          topicName: topic.name,
-          totalQuizzes,
-          averageScore,
-          totalQuestions,
-          correctAnswers
-        });
-      }
-    });
-
-    if (DEBUG_DASHBOARD) {
-      console.groupCollapsed('[Dashboard] Topic performance');
-      console.debug(topicPerformance.slice(0, 5));
-      console.groupEnd();
-    }
 
     return {
       totalQuizzes,
       overallAverageScore,
-      subjectBreakdowns,
       overallQuestionStats: { total: totalQuestions, correct: correctAnswers, accuracy },
+      subjectBreakdowns,
       subjectDifficultyPerformance,
       overallDifficultyPerformance,
       rollingAverageData,
-      activityData,
-      topicPerformance
     };
-  }, [userResults, allSubjects, allTopics, timeFrequency, selectedSubject]);
+  }, [results, subjects, topics, timeFilter, subjectFilter]);
 
-  // --- Event handlers ---
-  const handleTimeFrequencyChange = (frequency: string): void => {
-    if (frequency === 'week') setTimeFrequency('week');
-    else if (frequency === 'month') setTimeFrequency('month');
-    else if (frequency === 'year') setTimeFrequency('year');
-  };
-
-  const handleSubjectChange = (subject: string): void => {
-    setSelectedSubject(subject);
-  };
-
-  const handleGenerateReport = async (): Promise<void> => {
-    if (!processedStats || !currentUser) return;
-    
-    setIsGeneratingPdf(true);
-    try {
-      await generateDashboardPdfReport({
-        currentUser,
-        processedStats,
-        timeFrequencyLabel: timeFrequency,
-        selectedSubject,
-        allSubjects,
-        activityChartRef: activityChartRef.current,
-        topicPerformanceRef: topicPerformanceRef.current,
-        rollingAverageChartRef: rollingAverageChartRef.current,
-        difficultyBreakdownChartRef: difficultyBreakdownChartRef.current,
-      });
-    } catch (error) {
-      console.error('Failed to generate report:', error);
-    } finally {
-      setIsGeneratingPdf(false);
-    }
-  };
+  const availableSubjects = useMemo(() => ['all', ...Array.from(new Set(results.map(r => r.subject)))], [results]);
 
   return {
-    allSubjects,
-    isLoadingData,
-    error: null, // You might want to implement error handling
-    timeFrequency,
-    selectedSubject,
-    processedStats,
-    activityChartRef,
-    topicPerformanceRef,
-    rollingAverageChartRef,
-    difficultyBreakdownChartRef,
-    handleTimeFrequencyChange,
-    handleSubjectChange,
-    handleGenerateReport,
-    isGeneratingPdf,
+    isLoading,
+    data,
+    timeFilter,
+    setTimeFilter,
+    subjectFilter,
+    setSubjectFilter,
+    availableSubjects,
   };
-};
+}
+
+

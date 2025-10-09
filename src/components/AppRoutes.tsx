@@ -1,4 +1,4 @@
-// src/components/AppRoutes.tsx
+w// src/components/AppRoutes.tsx
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
