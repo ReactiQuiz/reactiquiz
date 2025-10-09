@@ -209,10 +209,21 @@ export default function DashboardPage() {
         </Box>
       )}
       {/* Filters Bar */}
-      <Glass elevation={0} sx={{ p: 2, mb: 2, display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>📊 Dashboard Summary</Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <FormControl size="small" sx={{ minWidth: 140 }}>
+      <Glass
+        elevation={0}
+        sx={{
+          p: 2,
+          mb: 2,
+          display: 'flex',
+          alignItems: { xs: 'stretch', sm: 'center' },
+          justifyContent: 'space-between',
+          gap: 2,
+          flexDirection: { xs: 'column', sm: 'row' },
+        }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 700, flexShrink: 0 }}>📊 Dashboard Summary</Typography>
+        <Box sx={{ display: 'flex', gap: 2, width: { xs: '100%', sm: 'auto' }, flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
+          <FormControl size="small" fullWidth sx={{ minWidth: { xs: 0, sm: 140 }, flex: { xs: '1 1 160px', sm: '0 0 auto' } }}>
             <InputLabel>Time Period</InputLabel>
             <Select label="Time Period" value={timeFilter} onChange={e => setTimeFilter(e.target.value as any)}>
               <MenuItem value="week">Last 7 Days</MenuItem>
@@ -222,7 +233,7 @@ export default function DashboardPage() {
               <MenuItem value="all">All Time</MenuItem>
             </Select>
           </FormControl>
-          <FormControl size="small" sx={{ minWidth: 160 }}>
+          <FormControl size="small" fullWidth sx={{ minWidth: { xs: 0, sm: 160 }, flex: { xs: '1 1 160px', sm: '0 0 auto' } }}>
             <InputLabel>Subject</InputLabel>
             <Select label="Subject" value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)}>
               {availableSubjects.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
@@ -314,31 +325,31 @@ export default function DashboardPage() {
       <Grid container spacing={2} sx={{ mt: 0.5 }}>
         <Grid item xs={12} md={7}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Card>
+            <Card sx={{ p: { xs: 2, sm: 2.5 } }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
               {data && subjectKeys.length > 0 ? (
                 <Box sx={{ width: '100%', overflowX: 'auto' }}>
-                  <Box sx={{ display: 'grid', gridTemplateColumns: '140px 1fr 80px', rowGap: 1.2, alignItems: 'center' }}>
+                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '140px 1fr 100px' }, rowGap: 2, alignItems: 'center' }}>
                     {/* Header Row */}
-                    <Box />
-                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 0.5 }}>
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }} />
+                    <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', mb: 0.5 }}>
                       <Box sx={{ width: 12, height: 6, background: '#22c55e', borderRadius: 999 }} />
                       <Typography variant="caption" color="text.secondary">Easy</Typography>
-                      <Box sx={{ width: 12, height: 6, background: '#f59e0b', borderRadius: 999, ml: 1 }} />
+                      <Box sx={{ width: 12, height: 6, background: '#f59e0b', borderRadius: 999, ml: { xs: 0, sm: 1 } }} />
                       <Typography variant="caption" color="text.secondary">Medium</Typography>
-                      <Box sx={{ width: 12, height: 6, background: '#ef4444', borderRadius: 999, ml: 1 }} />
+                      <Box sx={{ width: 12, height: 6, background: '#ef4444', borderRadius: 999, ml: { xs: 0, sm: 1 } }} />
                       <Typography variant="caption" color="text.secondary">Hard</Typography>
                     </Box>
-                    <Box />
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }} />
                     {data.chartDifficultyBySubject.map((row) => (
                       <React.Fragment key={row.subject}>
-                        <Typography variant="body2" sx={{ fontWeight: 600 }}>{row.subject}</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 600, pr: { xs: 0, sm: 2 } }}>{row.subject}</Typography>
                         <Box sx={{ height: 12, borderRadius: 999, display: 'flex', overflow: 'hidden', background: theme => alpha(theme.palette.text.disabled, 0.15) }}>
                           <Box title={`Easy ${row.easyPercent}%`} sx={{ width: `${row.easyPercent}%`, background: '#22c55e' }} />
                           <Box title={`Med ${row.mediumPercent}%`} sx={{ width: `${row.mediumPercent}%`, background: '#f59e0b' }} />
                           <Box title={`Hard ${row.hardPercent}%`} sx={{ width: `${row.hardPercent}%`, background: '#ef4444' }} />
                         </Box>
-                        <Typography variant="caption" color="text.secondary">Total: {row.total} • Avg: {row.avg}%</Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ mt: { xs: 0.5, sm: 0 } }}>Total: {row.total} • Avg: {row.avg}%</Typography>
                       </React.Fragment>
                     ))}
                   </Box>
