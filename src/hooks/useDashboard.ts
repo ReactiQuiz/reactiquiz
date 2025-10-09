@@ -109,9 +109,16 @@ export function useDashboard() {
     // difficulty – placeholder since difficulty not per-question here; use percentage tiers as proxy
     const buckets = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
     filtered.forEach(r => {
-      if (r.percentage >= 0 && r.percentage < 50) buckets.easy.total += r.totalQuestions || 0, buckets.easy.correct += r.correctAnswers || 0;
-      else if (r.percentage < 80) buckets.medium.total += r.totalQuestions || 0, buckets.medium.correct += r.correctAnswers || 0;
-      else buckets.hard.total += r.totalQuestions || 0, buckets.hard.correct += r.correctAnswers || 0;
+      if (r.percentage >= 0 && r.percentage < 50) {
+        buckets.easy.total += r.totalQuestions || 0;
+        buckets.easy.correct += r.correctAnswers || 0;
+      } else if (r.percentage < 80) {
+        buckets.medium.total += r.totalQuestions || 0;
+        buckets.medium.correct += r.correctAnswers || 0;
+      } else {
+        buckets.hard.total += r.totalQuestions || 0;
+        buckets.hard.correct += r.correctAnswers || 0;
+      }
     });
     const pct = (c: number, t: number) => (t > 0 ? Number(((c / t) * 100).toFixed(1)) : 0);
     const overallDifficultyPerformance = {

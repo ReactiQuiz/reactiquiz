@@ -91,21 +91,26 @@ export default function DashboardPage() {
       {/* Top Row - Overview */}
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <Card component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>Total Quizzes Solved</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant="h2" sx={{ fontWeight: 800 }}>{data?.totalQuizzes ?? 0}</Typography>
             </Box>
-          </Card>
+            </Card>
+          </Box>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>Overall Average Score</Typography>
             <Gauge value={data?.overallAverageScore ?? 0} label={data ? `${data.overallQuestionStats.correct} correct of ${data.overallQuestionStats.total}` : ''} />
-          </Card>
+            </Card>
+          </Box>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>Correct Answers by Difficulty</Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: '80px 1fr 52px', rowGap: 1, alignItems: 'center' }}>
               {(['easy','medium','hard'] as const).map(k => (
@@ -118,7 +123,8 @@ export default function DashboardPage() {
                 </React.Fragment>
               ))}
             </Box>
-          </Card>
+            </Card>
+          </Box>
         </Grid>
       </Grid>
 
@@ -133,13 +139,13 @@ export default function DashboardPage() {
               const colors = ['#7dcfff', '#bb9af7', '#a6e3a1', '#f7768e', '#e0af68', '#7aa2f7'];
               const c = colors[idx % colors.length];
               return (
-                <Card
+                <Box component={motion.div}
                   key={key}
-                  component={motion.div}
                   whileHover={{ scale: 1.03, boxShadow: `0 0 16px ${c}55` }}
                   transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-                  sx={{ minWidth: 240, borderTop: `3px solid ${c}` }}
+                  sx={{ minWidth: 240 }}
                 >
+                  <Card sx={{ borderTop: `3px solid ${c}` }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700, color: c, mb: 1 }}>{sb.name}</Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>{sb.average}% avg • {sb.count} quiz(zes)</Typography>
                   {(['easy','medium','hard'] as const).map((k, i) => (
@@ -153,7 +159,8 @@ export default function DashboardPage() {
                       </Box>
                     </Box>
                   ))}
-                </Card>
+                  </Card>
+                </Box>
               );
             })}
           </Box>
@@ -163,16 +170,20 @@ export default function DashboardPage() {
       {/* Bottom charts */}
       <Grid container spacing={2} sx={{ mt: 0.5 }}>
         <Grid item xs={12} md={7}>
-          <Card component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
             {data && subjectKeys.length > 0 ? <Radar data={radarData} /> : <Typography variant="caption" color="text.secondary">No data</Typography>}
-          </Card>
+            </Card>
+          </Box>
         </Grid>
         <Grid item xs={12} md={5}>
-          <Card component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Card>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>📈 30-Day Performance Trend</Typography>
             {data ? <Line data={lineData} options={{ plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 100 } } }} /> : <Typography variant="caption" color="text.secondary">No data</Typography>}
-          </Card>
+            </Card>
+          </Box>
         </Grid>
       </Grid>
 
