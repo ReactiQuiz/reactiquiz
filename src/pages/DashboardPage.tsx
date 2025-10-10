@@ -4,7 +4,7 @@ import { Box, Grid, Paper, Typography, Select, MenuItem, FormControl, InputLabel
 import { styled, alpha } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { motion } from 'framer-motion';
-import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, Title } from 'chart.js';
+import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, Title, ArcElement } from 'chart.js';
 import { Line, Doughnut } from 'react-chartjs-2';
 import apiClient from '../api/axiosInstance';
 import { subDays, parseISO, isValid, eachDayOfInterval, format } from 'date-fns';
@@ -46,7 +46,7 @@ const CountUpNumber: React.FC<{ end: number; duration?: number; sx?: any; varian
   return <Typography variant={variant} sx={sx}>{val}</Typography>;
 };
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend, CategoryScale, LinearScale, Title);
+ChartJS.register(RadialLinearScale, PointElement, LineElement, ArcElement, Filler, ChartTooltip, Legend, CategoryScale, LinearScale, Title);
 
 type TimeFilter = 'week' | 'month' | 'quarter' | 'year' | 'all';
 
