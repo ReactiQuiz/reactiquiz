@@ -1,6 +1,7 @@
 // src/pages/DashboardPage.tsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Grid, Paper, Typography, Select, MenuItem, FormControl, InputLabel, IconButton, Tooltip, CircularProgress } from '@mui/material';
+import { DashboardResult } from '../hooks/useDashboard';
 import { styled, alpha } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { motion } from 'framer-motion';
@@ -9,6 +10,7 @@ import { Line, Doughnut } from 'react-chartjs-2';
 import apiClient from '../api/axiosInstance';
 import { subDays, parseISO, isValid, eachDayOfInterval, format } from 'date-fns';
 import ExpandedCardPortal from '../components/dashboard/ExpandedCardPortal';
+import {  CardContent, LinearProgress } from '@mui/material';
 
 const Glass = styled(Paper)(({ theme }) => ({
   backdropFilter: 'blur(8px)',
@@ -53,7 +55,7 @@ type TimeFilter = 'week' | 'month' | 'quarter' | 'year' | 'all';
 export default function DashboardPage() {
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('month');
   const [subjectFilter, setSubjectFilter] = useState<string>('all');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<DashboardResult[]>([]);
   const [subjects, setSubjects] = useState<any[]>([]);
   const [topics, setTopics] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -136,7 +138,7 @@ export default function DashboardPage() {
     const buckets = { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } };
     filtered.forEach(r => {
       // Classify by performance tier (not quiz difficulty), ensures consistent bins
-      const d = r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard');
+      const d = r.difficulty ? String(r.difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
       if (d === 'easy') { buckets.easy.total += r.totalQuestions || 0; buckets.easy.correct += r.correctAnswers || 0; }
       else if (d === 'medium') { buckets.medium.total += r.totalQuestions || 0; buckets.medium.correct += r.correctAnswers || 0; }
       else { buckets.hard.total += r.totalQuestions || 0; buckets.hard.correct += r.correctAnswers || 0; }
@@ -154,7 +156,7 @@ export default function DashboardPage() {
       const arr = filtered.filter(r => r.subject === key);
       const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
       arr.forEach(r => {
-        const d = r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard');
+        const d = r.difficulty ? String(r.difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
         if (d === 'easy') { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
         else if (d === 'medium') { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
         else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
@@ -278,7 +280,7 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             <Card>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>Total Quizzes Solved</Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 100 }}>
                 <CountUpNumber end={data?.totalQuizzes ?? 0} variant="h5" sx={{ fontWeight: 800, fontSize: '1.2rem' }} />
               </Box>
             </Card>
@@ -288,13 +290,33 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>Overall Average Score</Typography>
-              <Box sx={{ position: 'relative', height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Box sx={{ width: 80, height: 80 }}>
-                  <Doughnut data={donutData} options={{ maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } }} />
-                </Box>
-                <Box sx={{ position: 'absolute', textAlign: 'center' }}>
-                  <CountUpNumber end={Math.round(data?.overallAverageScore || 0)} variant="h6" sx={{ fontWeight: 800, fontSize: '1rem' }} />
-                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.8rem' }}>{data ? `${data.overallQuestionStats.correct} correct of ${data.overallQuestionStats.total}` : ''}</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100, position: 'relative' }}>
+                <CircularProgress
+                  variant="determinate"
+                  value={data?.overallAverageScore || 0}
+                  size={70}
+                  thickness={4}
+                  sx={{ color: '#7dcfff' }}
+                />
+                <Box
+                  sx={{
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    position: 'absolute',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: 800 }}>
+                    {`${Math.round(data?.overallAverageScore || 0)}%`}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {data ? `${data.overallQuestionStats.correct} of ${data.overallQuestionStats.total}` : ''}
+                  </Typography>
                 </Box>
               </Box>
             </Card>
@@ -304,7 +326,7 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Card>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>Correct Answers by Difficulty</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: '80px 1fr 52px', rowGap: 0.5, alignItems: 'center' }}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: '80px 1fr 52px', rowGap: 0.5, alignItems: 'center', height: 100 }}>
                 {(['easy', 'medium', 'hard'] as const).map(k => (
                   <React.Fragment key={k}>
                     <Typography variant="caption" sx={{ textTransform: 'capitalize', fontSize: '0.8rem' }}>{k}</Typography>
@@ -340,7 +362,7 @@ export default function DashboardPage() {
                   tabIndex={0}
                   onKeyDown={(e: any) => { if (e.key === 'Enter' || e.key === ' ') setExpandedSubject(sb.name); }}
                 >
-                  <Card sx={{ borderTop: `3px solid ${c}` }}>
+                  <Card sx={{ borderTop: `3px solid ${c}`, minHeight: 180 }}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 700, color: c, mb: 1 }}>{sb.name}</Typography>
                     <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>{sb.average}% avg • {sb.count} quiz(zes)</Typography>
                     {(['easy', 'medium', 'hard'] as const).map((k, i) => (
@@ -366,7 +388,7 @@ export default function DashboardPage() {
       <Grid container spacing={1} sx={{ mt: 0.5 }}>
         <Grid item xs={12} md={12} lg={12}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Card sx={{ p: 1 }}>
+            <Card sx={{ p: 1, minHeight: 180 }}>
               <Typography variant="caption" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
               {data && subjectKeys.length > 0 ? (
                 <Box sx={{ width: '100%', overflowX: 'auto' }}>
@@ -403,7 +425,7 @@ export default function DashboardPage() {
         </Grid>
         <Grid item xs={12} md={12} lg={12}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Card sx={{ p: 1 }}>
+            <Card sx={{ p: 1, minHeight: 180 }}>
               <Typography variant="caption" color="text.secondary" gutterBottom>📈 30-Day Performance Trend</Typography>
               {data ? (
                 <Box sx={{ position: 'relative', width: '100%', height: 400, minWidth: 0 }}>

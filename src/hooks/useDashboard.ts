@@ -11,6 +11,7 @@ export interface DashboardResult {
   subject: string;
   topicId: string;
   topicName: string;
+  difficulty: string;
   totalQuestions: number;
   correctAnswers: number;
   percentage: number; // 0-100
@@ -135,7 +136,7 @@ export function useDashboard() {
       const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
       subRes.forEach(r => {
         // If result has difficulty info per-quiz, normalize; else approximate via percentage thresholds
-        const d = (r as any).difficulty ? String((r as any).difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
+        const d = r.difficulty ? String(r.difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
         if (d === 'easy') { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
         else if (d === 'medium') { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
         else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
