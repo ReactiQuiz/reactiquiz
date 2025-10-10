@@ -242,7 +242,7 @@ export default function DashboardPage() {
       <Glass
         elevation={0}
         sx={{
-          p: 2,
+          p: { xs: 1.5, sm: 2 },
           mb: 2,
           display: 'flex',
           alignItems: { xs: 'stretch', sm: 'center' },
@@ -290,7 +290,7 @@ export default function DashboardPage() {
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>Overall Average Score</Typography>
               <Box sx={{ position: 'relative', height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Box sx={{ width: 140, height: 140 }}>
-                  <Doughnut data={donutData} options={{ plugins: { legend: { display: false }, tooltip: { enabled: false } } }} />
+                  <Doughnut data={donutData} options={{ maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } }} />
                 </Box>
                 <Box sx={{ position: 'absolute', textAlign: 'center' }}>
                   <CountUpNumber end={Math.round(data?.overallAverageScore || 0)} variant="h3" sx={{ fontWeight: 800 }} />
@@ -333,9 +333,8 @@ export default function DashboardPage() {
               return (
                 <Box component={motion.div}
                   key={key}
-                  whileHover={{ scale: 1.03, boxShadow: `0 0 16px ${c}55` }}
-                  transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-                  sx={{ minWidth: 240 }}
+                  whileHover={{ scale: 1.03 }}
+                  sx={{ minWidth: { xs: 180, sm: 240 } }}
                   onClick={() => setExpandedSubject(sb.name)}
                   role="button"
                   tabIndex={0}
@@ -365,7 +364,7 @@ export default function DashboardPage() {
 
       {/* Bottom charts */}
       <Grid container spacing={2} sx={{ mt: 0.5 }}>
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={7} lg={8}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card sx={{ p: { xs: 2, sm: 2.5 } }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
@@ -404,9 +403,9 @@ export default function DashboardPage() {
         </Grid>
         <Grid item xs={12} md={5}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Card>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>📈 30-Day Performance Trend</Typography>
-            {data ? <Line data={lineData} options={{ plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 100 } } }} /> : <Typography variant="caption" color="text.secondary">No data</Typography>}
+            <Card sx={{ p: { xs: 1.5, sm: 2.5 }, height: '100%' }}>
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom>📈 30-Day Performance Trend</Typography>
+              {data ? <Line data={lineData} options={{ maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 100 } } }} /> : <Typography variant="caption" color="text.secondary">No data</Typography>}
             </Card>
           </Box>
         </Grid>
