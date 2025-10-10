@@ -364,7 +364,7 @@ export default function DashboardPage() {
 
       {/* Bottom charts */}
       <Grid container spacing={2} sx={{ mt: 0.5 }}>
-        <Grid item xs={12} md={7} lg={8}>
+        <Grid item xs={12} md={12} lg={12}>
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card sx={{ p: { xs: 2, sm: 2.5 } }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>⚡ Difficulty Analysis</Typography>
