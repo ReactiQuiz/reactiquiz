@@ -202,7 +202,7 @@ export default function DashboardPage() {
     // Debug computed
     console.log('[Dashboard] computed', computed);
     return computed;
-  }, [results, subjects, topics, timeFilter, subjectFilter]);
+  }, [results, subjects, timeFilter, subjectFilter]);
 
   const availableSubjects = data?.availableSubjects || ['all'];
   const subjectKeys = data ? Object.keys(data.subjectBreakdowns) : [];
@@ -252,8 +252,8 @@ export default function DashboardPage() {
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: 700, flexShrink: 0 }}>📊 Dashboard Summary</Typography>
-        <Box sx={{ display: 'flex', gap: 2, width: { xs: '100%', sm: 'auto' }, flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
-          <FormControl size="small" fullWidth sx={{ minWidth: { xs: 0, sm: 140 }, flex: { xs: '1 1 160px', sm: '0 0 auto' } }}>
+        <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 }, width: { xs: '100%', sm: 'auto' }, flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
+          <FormControl size="small" fullWidth sx={{ minWidth: { xs: '100%', sm: 140 }, flex: { xs: '1 1 auto', sm: '0 0 auto' } }}>
             <InputLabel>Time Period</InputLabel>
             <Select label="Time Period" value={timeFilter} onChange={e => setTimeFilter(e.target.value as any)}>
               <MenuItem value="week">Last 7 Days</MenuItem>
@@ -263,7 +263,7 @@ export default function DashboardPage() {
               <MenuItem value="all">All Time</MenuItem>
             </Select>
           </FormControl>
-          <FormControl size="small" fullWidth sx={{ minWidth: { xs: 0, sm: 160 }, flex: { xs: '1 1 160px', sm: '0 0 auto' } }}>
+          <FormControl size="small" fullWidth sx={{ minWidth: { xs: '100%', sm: 160 }, flex: { xs: '1 1 auto', sm: '0 0 auto' } }}>
             <InputLabel>Subject</InputLabel>
             <Select label="Subject" value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)}>
               {availableSubjects.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
