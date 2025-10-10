@@ -4,6 +4,7 @@
 /.cert
 
 # environment variables
+.env.txt
 .env
 .env.local
 .env.development.local

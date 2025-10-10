@@ -253,7 +253,7 @@ export default function DashboardPage() {
       >
         <Typography variant="h6" sx={{ fontWeight: 700, flexShrink: 0 }}>📊 Dashboard Summary</Typography>
         <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 }, width: { xs: '100%', sm: 'auto' }, flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
-          <FormControl size="small" fullWidth sx={{ minWidth: { xs: '100%', sm: 140 }, flex: { xs: '1 1 auto', sm: '0 0 auto' } }}>
+          <FormControl size="small" fullWidth sx={{ minWidth: { xs: '100%', sm: 140 }, flex: { xs: '1 1 auto', sm: '0 0 140px' } }}>
             <InputLabel>Time Period</InputLabel>
             <Select label="Time Period" value={timeFilter} onChange={e => setTimeFilter(e.target.value as any)}>
               <MenuItem value="week">Last 7 Days</MenuItem>
@@ -263,7 +263,7 @@ export default function DashboardPage() {
               <MenuItem value="all">All Time</MenuItem>
             </Select>
           </FormControl>
-          <FormControl size="small" fullWidth sx={{ minWidth: { xs: '100%', sm: 160 }, flex: { xs: '1 1 auto', sm: '0 0 auto' } }}>
+          <FormControl size="small" fullWidth sx={{ minWidth: { xs: '100%', sm: 160 }, flex: { xs: '1 1 auto', sm: '0 0 160px' } }}>
             <InputLabel>Subject</InputLabel>
             <Select label="Subject" value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)}>
               {availableSubjects.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
@@ -405,7 +405,21 @@ export default function DashboardPage() {
           <Box component={motion.div} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Card sx={{ p: { xs: 1.5, sm: 2.5 }, height: '100%' }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>📈 30-Day Performance Trend</Typography>
-              {data ? <Line data={lineData} options={{ maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 100 } } }} /> : <Typography variant="caption" color="text.secondary">No data</Typography>}
+              {data ? (
+                <Box sx={{ position: 'relative', width: '100%', height: 260, minWidth: 0 }}>
+                  <Line
+                    data={lineData}
+                    options={{
+                      maintainAspectRatio: false,
+                      responsive: true,
+                      plugins: { legend: { display: false } },
+                      scales: { x: { grid: { display: false } }, y: { beginAtZero: true, max: 100 } },
+                    }}
+                  />
+                </Box>
+              ) : (
+                <Typography variant="caption" color="text.secondary">No data</Typography>
+              )}
             </Card>
           </Box>
         </Grid>
