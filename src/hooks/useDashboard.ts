@@ -24,6 +24,34 @@ export interface TopicMeta { id: string; name: string; subject_id: string; class
 
 export interface DifficultyStats { correct: number; total: number; percentage: number; }
 
+export interface TopicPerformance {
+  id: string;
+  name: string;
+  totalQuizzes: number;
+  averageScore: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  difficultyStats: {
+    easy: DifficultyStats;
+    medium: DifficultyStats;
+    hard: DifficultyStats;
+  };
+}
+
+export interface TopicPerformance {
+  id: string;
+  name: string;
+  totalQuizzes: number;
+  averageScore: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  difficultyStats: {
+    easy: DifficultyStats;
+    medium: DifficultyStats;
+    hard: DifficultyStats;
+  };
+}
+
 export interface DashboardData {
   totalQuizzes: number;
   overallAverageScore: number;
@@ -33,6 +61,7 @@ export interface DashboardData {
   overallDifficultyPerformance: { easy: DifficultyStats; medium: DifficultyStats; hard: DifficultyStats };
   rollingAverageData: Array<{ date: string; averageScore: number }>;
   chartDifficultyBySubject: Array<{ subject: string; easyPercent: number; mediumPercent: number; hardPercent: number; easyCount: number; mediumCount: number; hardCount: number; total: number; avg: number }>;
+  topicPerformance: Record<string, Record<string, TopicPerformance>>;
 }
 
 const fetchResults = async (): Promise<DashboardResult[]> => {
@@ -131,16 +160,71 @@ export function useDashboard() {
 
     const subjectDifficultyPerformance: DashboardData['subjectDifficultyPerformance'] = {};
     const chartDifficultyBySubject: DashboardData['chartDifficultyBySubject'] = [];
+    const topicPerformance: DashboardData['topicPerformance'] = {};
+
     Object.keys(subjectBreakdowns).forEach(key => {
       const subRes = filtered.filter(r => r.subject === key);
       const b = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
-      subRes.forEach(r => {
-        // If result has difficulty info per-quiz, normalize; else approximate via percentage thresholds
+      
+      // Initialize topic performance for this subject
+      topicPerformance[key] = {};
+      
+      // Group results by topic
+      const topicResults = subRes.reduce((acc, r) => {
+        if (!acc[r.topicId]) {
+          acc[r.topicId] = {
+            results: [],
+            buckets: { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } }
+          };
+        }
+        acc[r.topicId].results.push(r);
+        
+        // Calculate difficulty stats for topic
         const d = r.difficulty ? String(r.difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
-        if (d === 'easy') { b.easy.t += r.totalQuestions || 0; b.easy.c += r.correctAnswers || 0; }
-        else if (d === 'medium') { b.medium.t += r.totalQuestions || 0; b.medium.c += r.correctAnswers || 0; }
-        else { b.hard.t += r.totalQuestions || 0; b.hard.c += r.correctAnswers || 0; }
+        if (d === 'easy') {
+          acc[r.topicId].buckets.easy.t += r.totalQuestions || 0;
+          acc[r.topicId].buckets.easy.c += r.correctAnswers || 0;
+        } else if (d === 'medium') {
+          acc[r.topicId].buckets.medium.t += r.totalQuestions || 0;
+          acc[r.topicId].buckets.medium.c += r.correctAnswers || 0;
+        } else {
+          acc[r.topicId].buckets.hard.t += r.totalQuestions || 0;
+          acc[r.topicId].buckets.hard.c += r.correctAnswers || 0;
+        }
+        return acc;
+      }, {} as Record<string, { results: DashboardResult[], buckets: typeof b }>);
+
+      // Calculate topic performance
+      Object.entries(topicResults).forEach(([topicId, data]) => {
+        const { results, buckets: tb } = data;
+        const totalQuizzes = results.length;
+        const averageScore = totalQuizzes > 0 ? Number((results.reduce((s, r) => s + (r.percentage || 0), 0) / totalQuizzes).toFixed(1)) : 0;
+        const totalQuestions = results.reduce((s, r) => s + (r.totalQuestions || 0), 0);
+        const correctAnswers = results.reduce((s, r) => s + (r.correctAnswers || 0), 0);
+
+        topicPerformance[key][topicId] = {
+          id: topicId,
+          name: results[0]?.topicName || '',
+          totalQuizzes,
+          averageScore,
+          totalQuestions,
+          correctAnswers,
+          difficultyStats: {
+            easy: { correct: tb.easy.c, total: tb.easy.t, percentage: pct(tb.easy.c, tb.easy.t) },
+            medium: { correct: tb.medium.c, total: tb.medium.t, percentage: pct(tb.medium.c, tb.medium.t) },
+            hard: { correct: tb.hard.c, total: tb.hard.t, percentage: pct(tb.hard.c, tb.hard.t) }
+          }
+        };
+
+        // Add to subject totals
+        b.easy.t += tb.easy.t;
+        b.easy.c += tb.easy.c;
+        b.medium.t += tb.medium.t;
+        b.medium.c += tb.medium.c;
+        b.hard.t += tb.hard.t;
+        b.hard.c += tb.hard.c;
       });
+
       const easyP = pct(b.easy.c, b.easy.t);
       const medP = pct(b.medium.c, b.medium.t);
       const hardP = pct(b.hard.c, b.hard.t);
@@ -175,6 +259,7 @@ export function useDashboard() {
       overallDifficultyPerformance,
       rollingAverageData,
       chartDifficultyBySubject,
+      topicPerformance,
     };
   }, [results, subjects, topics, timeFilter, subjectFilter]);
 

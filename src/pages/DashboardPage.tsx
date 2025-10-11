@@ -100,6 +100,22 @@ export default function DashboardPage() {
     return () => { canceled = true; };
   }, []);
 
+  interface DifficultyStats {
+    easy: { correct: number; total: number; percentage: number };
+    medium: { correct: number; total: number; percentage: number };
+    hard: { correct: number; total: number; percentage: number };
+  }
+
+  interface TopicPerformance {
+    id: string;
+    name: string;
+    totalQuizzes: number;
+    averageScore: number;
+    totalQuestions: number;
+    correctAnswers: number;
+    difficultyStats: DifficultyStats;
+  }
+
   const data = useMemo(() => {
     if (!results.length || !subjects.length) return null;
     const now = new Date();
@@ -200,6 +216,7 @@ export default function DashboardPage() {
       rollingAverageData,
       chartDifficultyBySubject,
       availableSubjects: ['all', ...Array.from(new Set(results.map(r => r.subject)))],
+      topicPerformance: {} as Record<string, Record<string, TopicPerformance>>,
     };
     // Debug computed
     console.log('[Dashboard] computed', computed);
@@ -451,8 +468,10 @@ export default function DashboardPage() {
         {expandedSubject && data && (
           <Box>
             <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>{expandedSubject} — Details</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}></Typography>
-            <Box sx={{ display: 'grid', gridTemplateColumns: '120px 1fr 100px', rowGap: 1.5, alignItems: 'center' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Overall Performance by Difficulty Level
+            </Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '120px 1fr 100px', rowGap: 1.5, alignItems: 'center', mb: 4 }}>
               {(['easy', 'medium', 'hard'] as const).map(k => {
                 const perf = data.subjectDifficultyPerformance[expandedSubject]?.[k];
                 const color = k === 'easy' ? '#22c55e' : k === 'medium' ? '#f59e0b' : '#ef4444';
@@ -467,16 +486,37 @@ export default function DashboardPage() {
                 );
               })}
             </Box>
+
+            <Typography variant="h6" sx={{ mb: 2 }}>Topic-Wise Performance</Typography>
+            {data.topicPerformance[expandedSubject] && Object.values(data.topicPerformance[expandedSubject]).map(topic => (
+              <Box key={topic.id} sx={{ mb: 3, p: 2, borderRadius: 2, bgcolor: theme => alpha(theme.palette.background.paper, 0.5) }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{topic.name}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {topic.averageScore}% avg • {topic.totalQuizzes} quiz(zes)
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'grid', gridTemplateColumns: '80px 1fr 80px', rowGap: 1, alignItems: 'center' }}>
+                  {(['easy', 'medium', 'hard'] as const).map(k => {
+                    const diffStats = topic.difficultyStats[k];
+                    const color = k === 'easy' ? '#22c55e' : k === 'medium' ? '#f59e0b' : '#ef4444';
+                    return (
+                      <React.Fragment key={k}>
+                        <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>{k}</Typography>
+                        <Box sx={{ height: 8, borderRadius: 999, background: theme => alpha(theme.palette.text.disabled, 0.15), overflow: 'hidden' }}>
+                          <Box sx={{ height: '100%', width: `${diffStats.percentage || 0}%`, background: color }} />
+                        </Box>
+                        <Typography variant="caption" color="text.secondary">{diffStats.percentage}%</Typography>
+                      </React.Fragment>
+                    );
+                  })}
+                </Box>
+              </Box>
+            ))}
           </Box>
         )}
       </ExpandedCardPortal>
 
-      {/* Floating settings */}
-      <Tooltip title="Settings" placement="left">
-        <IconButton color="primary" sx={{ position: 'fixed', right: 16, bottom: 16, backdropFilter: 'blur(6px)', background: theme => alpha(theme.palette.background.paper, 0.6) }}>
-          <SettingsIcon />
-        </IconButton>
-      </Tooltip>
     </Box>
   );
 }
