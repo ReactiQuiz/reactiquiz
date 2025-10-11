@@ -244,11 +244,12 @@ export default function DashboardPage() {
               });
 
               const pct = (c: number, t: number) => (t > 0 ? Number(((c / t) * 100).toFixed(1)) : 0);
+              const topicName = topicResults[0]?.topicName || `Topic ${topicId}`;
               return [
                 topicId,
                 {
                   id: topicId,
-                  name: topicResults[0]?.topicName || '',
+                  name: topicName,
                   totalQuizzes,
                   averageScore,
                   totalQuestions,
