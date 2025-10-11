@@ -216,7 +216,54 @@ export default function DashboardPage() {
       rollingAverageData,
       chartDifficultyBySubject,
       availableSubjects: ['all', ...Array.from(new Set(results.map(r => r.subject)))],
-      topicPerformance: {} as Record<string, Record<string, TopicPerformance>>,
+      topicPerformance: Object.fromEntries(
+        Object.keys(subjectBreakdowns).map(subject => [
+          subject,
+          Object.fromEntries(
+            Array.from(new Set(filtered.filter(r => r.subject === subject).map(r => r.topicId))).map(topicId => {
+              const topicResults = filtered.filter(r => r.topicId === topicId);
+              const totalQuizzes = topicResults.length;
+              const averageScore = totalQuizzes > 0 ? Number((topicResults.reduce((s, r) => s + (r.percentage || 0), 0) / totalQuizzes).toFixed(1)) : 0;
+              const totalQuestions = topicResults.reduce((s, r) => s + (r.totalQuestions || 0), 0);
+              const correctAnswers = topicResults.reduce((s, r) => s + (r.correctAnswers || 0), 0);
+
+              // Calculate difficulty stats
+              const difficultyBuckets = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
+              topicResults.forEach(r => {
+                const d = r.difficulty ? String(r.difficulty).toLowerCase() : (r.percentage < 50 ? 'easy' : (r.percentage < 80 ? 'medium' : 'hard'));
+                if (d === 'easy') {
+                  difficultyBuckets.easy.t += r.totalQuestions || 0;
+                  difficultyBuckets.easy.c += r.correctAnswers || 0;
+                } else if (d === 'medium') {
+                  difficultyBuckets.medium.t += r.totalQuestions || 0;
+                  difficultyBuckets.medium.c += r.correctAnswers || 0;
+                } else {
+                  difficultyBuckets.hard.t += r.totalQuestions || 0;
+                  difficultyBuckets.hard.c += r.correctAnswers || 0;
+                }
+              });
+
+              const pct = (c: number, t: number) => (t > 0 ? Number(((c / t) * 100).toFixed(1)) : 0);
+              return [
+                topicId,
+                {
+                  id: topicId,
+                  name: topicResults[0]?.topicName || '',
+                  totalQuizzes,
+                  averageScore,
+                  totalQuestions,
+                  correctAnswers,
+                  difficultyStats: {
+                    easy: { correct: difficultyBuckets.easy.c, total: difficultyBuckets.easy.t, percentage: pct(difficultyBuckets.easy.c, difficultyBuckets.easy.t) },
+                    medium: { correct: difficultyBuckets.medium.c, total: difficultyBuckets.medium.t, percentage: pct(difficultyBuckets.medium.c, difficultyBuckets.medium.t) },
+                    hard: { correct: difficultyBuckets.hard.c, total: difficultyBuckets.hard.t, percentage: pct(difficultyBuckets.hard.c, difficultyBuckets.hard.t) }
+                  }
+                }
+              ];
+            })
+          )
+        ])
+      )
     };
     // Debug computed
     console.log('[Dashboard] computed', computed);
