@@ -1,72 +1,66 @@
-// api/index.js
-const path = require('path'); // <-- Import the 'path' module
-
-// This line is for local development only, to load environment variables
-if (process.env.NODE_ENV !== 'production') {
-    // Use path.resolve to ensure the .env file is found correctly from the project root
-    require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-}
-
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 
-// Use a try-catch block for robustness during the Vercel build
-let logApi, logInfo, logError;
-try {
-    // --- START OF DEFINITIVE FIX: Use absolute paths for requires ---
-    const logger = require(path.resolve(__dirname, './_utils/logger.js'));
-    logApi = logger.logApi;
-    logInfo = logger.logInfo;
-    logError = logger.logError;
-} catch (e) {
-    console.log("Logger failed to initialize, falling back to console.log");
-    logApi = (...args) => console.log('[API]', ...args);
-    logInfo = (...args) => console.log('[INFO]', ...args);
-    logError = (...args) => console.error('[ERROR]', ...args);
+// Environment variables may be unavailable during Vercel build/bundling. Never exit here.
+if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN || !process.env.JWT_SECRET) {
+    console.warn('[WARN] Missing env vars (TURSO_DATABASE_URL/TURSO_AUTH_TOKEN/JWT_SECRET). Server will log errors if accessed without proper config.');
 }
 
-// Import all individual route handlers using absolute paths
-const userRoutes = require(path.resolve(__dirname, './routes/users.js'));
-const subjectRoutes = require(path.resolve(__dirname, './routes/subjects.js'));
-const topicRoutes = require(path.resolve(__dirname, './routes/topics.js'));
-const questionRoutes = require(path.resolve(__dirname, './routes/questions.js'));
-const resultRoutes = require(path.resolve(__dirname, './routes/results.js'));
-const friendRoutes = require(path.resolve(__dirname, './routes/friends.js'));
-const challengeRoutes = require(path.resolve(__dirname, './routes/challenges.js'));
-const contactRoutes = require(path.resolve(__dirname, './routes/contact.js'));
-const aiRoutes = require(path.resolve(__dirname, './routes/ai.js'));
-const homiBhabhaRoutes = require(path.resolve(__dirname, './routes/homibhabha.js'));
-const quizSessionRoutes = require(path.resolve(__dirname, './routes/quizSessions.js'));
-// --- END OF DEFINITIVE FIX ---
+const { logApi, logInfo, logError } = require('./_utils/logger');
+
+const userRoutes = require('./routes/users');
+const subjectRoutes = require('./routes/subjects');
+const topicRoutes = require('./routes/topics');
+const questionRoutes = require('./routes/questions');
+const resultRoutes = require('./routes/results');
+const friendRoutes = require('./routes/friends');
+const challengeRoutes = require('./routes/challenges');
+const contactRoutes = require('./routes/contact');
+const aiRoutes = require('./routes/ai');
+const homiBhabhaRoutes = require('./routes/homibhabha');
+const quizSessionRoutes = require('./routes/quizSessions');
+const subjectiveRoutes = require('./routes/subjective');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
+// This setting tells Express to trust the headers set by Vercel's proxy.
+// It's essential for correct IP address identification, which is needed by
+// security middleware like rate limiters.
+app.set('trust proxy', 1);
+
 // --- Core Middleware ---
-app.use(cors());
+if (process.env.CORS_ORIGIN) {
+    const origins = process.env.CORS_ORIGIN.split(',').map(s => s.trim());
+    app.use(cors({ origin: origins, credentials: true }));
+} else {
+    app.use(cors());
+}
 app.use(express.json({ limit: '5mb' }));
 
 // --- RATE LIMITING SETUP ---
 const apiLimiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	max: 100,
-	standardHeaders: true,
-	legacyHeaders: false,
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
     message: { message: 'Too many requests, please try again after 15 minutes' },
 });
 
 const authLimiter = rateLimit({
-	windowMs: 30 * 60 * 1000,
-	max: 10,
-	standardHeaders: true,
-	legacyHeaders: false,
+    windowMs: 30 * 60 * 1000,
+    max: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
     message: { message: 'Too many authentication attempts, please try again after 30 minutes' },
 });
 
 app.use('/api', apiLimiter);
 
 // --- API Route Registration ---
-app.use('/api/users', authLimiter, userRoutes); 
+app.use('/api/users', authLimiter, userRoutes);
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/topics', topicRoutes);
 app.use('/api/questions', questionRoutes);
@@ -75,8 +69,10 @@ app.use('/api/friends', friendRoutes);
 app.use('/api/challenges', challengeRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/ai', aiRoutes);
-app.use('/api/homibhabha', homiBhabhaRoutes); 
-app.use('/api/quiz-sessions', quizSessionRoutes);
+app.use('/api/homibhabha', homiBhabhaRoutes);
+app.use('/api/quizSessions', quizSessionRoutes);
+app.use('/api/subjective', subjectiveRoutes);
+app.use('/api/admin', adminRoutes);
 
 // --- Health Check Endpoint ---
 app.get('/api/health', (req, res) => {

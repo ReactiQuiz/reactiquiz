@@ -1,14 +1,13 @@
-// api/_utils/arrayUtils.js
-
 const shuffleArray = (array) => {
   if (!array || !Array.isArray(array)) return [];
-  let currentIndex = array.length, randomIndex;
+  const shuffled = [...array];
+  let currentIndex = shuffled.length;
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    [shuffled[currentIndex], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[currentIndex]];
   }
-  return array;
+  return shuffled;
 };
 
 module.exports = { shuffleArray };

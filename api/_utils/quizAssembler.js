@@ -1,4 +1,3 @@
-// api/_utils/quizAssembler.js
 const { shuffleArray } = require('./arrayUtils');
 
 const getDifficultyRange = (difficulty) => {
@@ -32,10 +31,10 @@ const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, difficultyR
             args: [subjectKey, grade, difficultyRange.min, difficultyRange.max]
         });
 
-        const newQuestions = rows.filter(q => !gatheredQuestionIds.has(q.id));
+        const newQuestions = rows.filter((q) => !gatheredQuestionIds.has(q.id));
         const questionsToAdd = shuffleArray(newQuestions).slice(0, needed);
         subjectQuestions.push(...questionsToAdd);
-        questionsToAdd.forEach(q => gatheredQuestionIds.add(q.id));
+        questionsToAdd.forEach((q) => gatheredQuestionIds.add(q.id));
     }
     return subjectQuestions;
 };

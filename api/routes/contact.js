@@ -1,4 +1,3 @@
-// api/routes/contact.js
 const { Router } = require('express');
 const nodemailer = require('nodemailer');
 const { logApi, logError, logInfo } = require('../_utils/logger');
@@ -21,10 +20,12 @@ router.post('/', async (req, res) => {
     logApi('POST', '/api/contact', `From: ${name}`);
 
     if (!transporter) {
-        return res.status(503).json({ message: 'Email service is not configured on the server.' });
+        res.status(503).json({ message: 'Email service is not configured on the server.' });
+        return;
     }
     if (!name || !email || !message) {
-        return res.status(400).json({ message: 'All fields are required.' });
+        res.status(400).json({ message: 'All fields are required.' });
+        return;
     }
 
     try {

@@ -1,4 +1,3 @@
-// api/routes/friends.js
 const { Router } = require('express');
 const { turso } = require('../_utils/tursoClient');
 const { verifyToken } = require('../_middleware/auth');
@@ -11,6 +10,10 @@ const router = Router();
 router.post('/request', verifyToken, async (req, res) => {
     const requesterId = req.user.id;
     const { receiverUsername } = req.body;
+    if (!receiverUsername) {
+        res.status(400).json({ message: 'Receiver username is required.' });
+        return;
+    }
     logApi('POST', '/api/friends/request', `From ${requesterId} to ${receiverUsername}`);
 
     const tx = await turso.transaction("write");
@@ -19,18 +22,24 @@ router.post('/request', verifyToken, async (req, res) => {
             sql: "SELECT id FROM users WHERE username = ?", args: [receiverUsername]
         });
         if (receiverResult.rows.length === 0) {
-            await tx.rollback(); return res.status(404).json({ message: 'User not found.' });
+            await tx.rollback();
+            res.status(404).json({ message: 'User not found.' });
+            return;
         }
         const receiverId = receiverResult.rows[0].id;
         if (requesterId === receiverId) {
-            await tx.rollback(); return res.status(400).json({ message: "You cannot send a request to yourself." });
+            await tx.rollback();
+            res.status(400).json({ message: "You cannot send a request to yourself." });
+            return;
         }
         const existingResult = await tx.execute({
             sql: "SELECT id FROM friendships WHERE (requester_id = ? AND receiver_id = ?) OR (requester_id = ? AND receiver_id = ?)",
             args: [requesterId, receiverId, receiverId, requesterId]
         });
         if (existingResult.rows.length > 0) {
-            await tx.rollback(); return res.status(400).json({ message: 'A friendship or pending request already exists.' });
+            await tx.rollback();
+            res.status(400).json({ message: 'A friendship or pending request already exists.' });
+            return;
         }
         await tx.execute({
             sql: "INSERT INTO friendships (requester_id, receiver_id, status) VALUES (?, ?, 'pending')",
@@ -71,9 +80,12 @@ router.put('/request/:requestId', verifyToken, async (req, res) => {
     const { action } = req.body;
     logApi('PUT', `/api/friends/request/${requestId}`, `Action: ${action}`);
 
-    if (!['accept', 'decline'].includes(action)) return res.status(400).json({ message: 'Invalid action.' });
+    if (!['accept', 'decline'].includes(action)) {
+        res.status(400).json({ message: 'Invalid action.' });
+        return;
+    }
     const newStatus = action === 'accept' ? 'accepted' : 'declined';
-    
+
     const tx = await turso.transaction("write");
     try {
         const result = await tx.execute({
@@ -82,7 +94,10 @@ router.put('/request/:requestId', verifyToken, async (req, res) => {
         });
         await tx.commit();
 
-        if (result.rowsAffected === 0) return res.status(404).json({ message: 'Pending request not found or you are not the receiver.' });
+        if (result.rowsAffected === 0) {
+            res.status(404).json({ message: 'Pending request not found or you are not the receiver.' });
+            return;
+        }
         res.status(200).json({ message: `Friend request ${action}ed.` });
     } catch (e) {
         await tx.rollback();
