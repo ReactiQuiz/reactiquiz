@@ -64,8 +64,8 @@
     "node": "22.x"
   },
   "scripts": {
-    "start": "cross-env PORT=3001 REACT_APP_API_BASE_URL=http://localhost:3000 react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env PORT=3001 REACT_APP_API_BASE_URL=http://localhost:3000 REACT_APP_VERCEL_API_URL=https://reactiquiz.vercel.app react-scripts start",
+    "build": "cross-env REACT_APP_VERCEL_API_URL=https://reactiquiz.vercel.app react-scripts build",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
     "firebase:login": "firebase login",

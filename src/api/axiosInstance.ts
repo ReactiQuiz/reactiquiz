@@ -1,20 +1,9 @@
 // src/api/axiosInstance.ts
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
-// Resolve a safe baseURL. If a localhost URL was injected at build time, ignore it in production.
+// Always use Vercel backend URL for all API requests
 const resolveBaseURL = (): string => {
-  const envBase = (process.env.REACT_APP_API_BASE_URL || '').trim();
-  const isLocalhostEnv = /^(https?:\/\/)?(localhost|127\.0\.0\.1)/i.test(envBase);
-  if (process.env.NODE_ENV === 'production') {
-    if (isLocalhostEnv) {
-      // Use same-origin in production to hit Vercel serverless functions under /api
-      return '';
-    }
-    // If a non-localhost env base is provided, use it; otherwise same-origin
-    return envBase || '';
-  }
-  // In development, prefer provided env base (e.g., http://localhost:3001), else same-origin
-  return envBase || '';
+  return 'https://reactiquiz.vercel.app';
 };
 
 const apiClient: AxiosInstance = axios.create({
