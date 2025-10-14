@@ -4,12 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReactiQuiz Backend API</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            opacity: 0.9;
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .endpoint {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .link {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .status {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>ReactiQuiz Backend API</h1>
-    <p>This is a backend-only deployment on Vercel.</p>
-    <p>The frontend is hosted separately on Firebase.</p>
-    <p>API endpoints available at: <code>/api/*</code></p>
-    <p><a href="/api/health">Test API Health</a></p>
+    <div class="container">
+        <h1>🚀 ReactiQuiz Backend API</h1>
+        <p class="subtitle">AI-Powered Educational Quiz Platform</p>
+        
+        <div class="info-box">
+            <h3>📡 API Status <span class="status">RUNNING</span></h3>
+            <p>This is the backend API server for ReactiQuiz. The frontend is hosted separately on Firebase.</p>
+        </div>
+
+        <div class="info-box">
+            <h3>🔗 Available Endpoints</h3>
+            <div class="endpoint">GET /api/health - Health check</div>
+            <div class="endpoint">POST /api/users/login - User authentication</div>
+            <div class="endpoint">GET /api/subjects - Get all subjects</div>
+            <div class="endpoint">GET /api/questions - Get quiz questions</div>
+            <div class="endpoint">POST /api/results - Submit quiz results</div>
+            <div class="endpoint">... and many more</div>
+        </div>
+
+        <div class="info-box">
+            <h3>🧪 Test the API</h3>
+            <p><a href="/api/health" class="link">Test API Health</a></p>
+            <p><a href="https://reactiquiz.web.app" class="link" target="_blank">Visit Frontend App</a></p>
+        </div>
+
+        <div class="info-box">
+            <h3>📚 About ReactiQuiz</h3>
+            <p>ReactiQuiz is an AI-powered educational platform that helps students practice quizzes, prepare for competitive exams, and assess their knowledge across multiple subjects.</p>
+        </div>
+    </div>
 </body>
 </html>

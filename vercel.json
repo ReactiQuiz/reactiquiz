@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Backend deployment - skipping frontend build'",
-  "outputDirectory": ".",
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node@3"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api.js"
+      "dest": "/api/index.js"
     },
     {
       "src": "/(.*)",
@@ -14,10 +18,5 @@
   ],
   "env": {
     "NODE_OPTIONS": "--max_old_space_size=4096"
-  },
-  "functions": {
-    "api.js": {
-      "maxDuration": 30
-    }
   }
 }

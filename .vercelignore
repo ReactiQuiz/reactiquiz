@@ -1,14 +1,9 @@
-# Exclude the api directory since we're using api.js
-api/
-
-# Frontend files - not needed for backend deployment
+# Frontend source files - not needed for backend deployment
 src/
 public/
 build/
-node_modules/
 
 # Frontend configuration files
-package-lock.json
 tsconfig.json
 tailwind.config.js
 postcss.config.js
@@ -21,14 +16,14 @@ tree.md
 # Firebase files
 firebase.json
 .firebaserc
-functions/
+.firebase/
 
 # Development files
 debug.log
 config/
 
 # Keep:
-# - api.js (single API function)
+# - api/ (backend API)
 # - data/ (quiz data)
 # - prompts/ (AI prompts)
 # - index.html (simple landing page)
