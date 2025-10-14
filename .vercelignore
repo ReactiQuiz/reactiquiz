@@ -1,3 +1,6 @@
+# Exclude the api directory since we're using api.js
+api/
+
 # Frontend files - not needed for backend deployment
 src/
 public/
@@ -25,7 +28,7 @@ debug.log
 config/
 
 # Keep:
-# - api/ (backend API)
+# - api.js (single API function)
 # - data/ (quiz data)
 # - prompts/ (AI prompts)
 # - index.html (simple landing page)

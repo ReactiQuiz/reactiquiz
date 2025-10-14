@@ -5,7 +5,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/api.js"
     },
     {
       "src": "/(.*)",
@@ -16,7 +16,7 @@
     "NODE_OPTIONS": "--max_old_space_size=4096"
   },
   "functions": {
-    "api/index.js": {
+    "api.js": {
       "maxDuration": 30
     }
   }
