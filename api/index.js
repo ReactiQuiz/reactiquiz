@@ -79,9 +79,29 @@ app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'ok', message: 'ReactiQuiz API is healthy.' });
 });
 
+// --- Handle non-API routes ---
+app.get('/', (req, res) => {
+    res.json({ 
+        message: 'ReactiQuiz API Server', 
+        status: 'running',
+        endpoints: '/api/*',
+        frontend: 'https://reactiquiz.web.app'
+    });
+});
+
 // --- Final 404 Catcher for API routes ---
 app.use('/api/*', (req, res) => {
     res.status(404).json({ message: `API endpoint not found at ${req.originalUrl}` });
+});
+
+// --- Catch-all for non-API routes ---
+app.get('*', (req, res) => {
+    res.json({ 
+        message: 'ReactiQuiz API Server - Frontend not available here', 
+        status: 'running',
+        api_endpoints: '/api/*',
+        frontend_url: 'https://reactiquiz.web.app'
+    });
 });
 
 // A global error handler
