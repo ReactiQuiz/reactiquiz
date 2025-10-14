@@ -6,6 +6,7 @@ import HeroSection from '../components/home/HeroSection';
 import AboutSummarySection from '../components/home/AboutSummarySection';
 import KeyFeaturesSection from '../components/home/KeyFeaturesSection';
 import CallToActionSection from '../components/home/CallToActionSection';
+import AdBanner from '../components/ads/AdBanner';
 
 const HomePage: React.FC = () => {
   return (
@@ -17,6 +18,11 @@ const HomePage: React.FC = () => {
         
         <div className="animate-slideUp delay-200">
           <AboutSummarySection />
+        </div>
+        
+        {/* Ad Banner */}
+        <div className="animate-slideUp delay-300">
+          <AdBanner position="inline" />
         </div>
         
         <div className="animate-slideUp delay-400">

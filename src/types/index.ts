@@ -411,3 +411,30 @@ export interface UseNotificationsReturn {
   addNotification: (message: string, severity?: 'success' | 'error' | 'warning' | 'info') => void;
   removeNotification: (id: number) => void;
 }
+
+// Ad-related types
+export interface AdConfig {
+  enabled: boolean;
+  adSenseClientId: string;
+  adSlots: {
+    topBanner: string;
+    bottomBanner: string;
+    sidebar: string;
+    inline: string;
+    quizInterstitial: string;
+    resultsPage: string;
+  };
+}
+
+export interface AdPlacement {
+  position: 'top' | 'bottom' | 'sidebar' | 'inline' | 'quiz' | 'results';
+  slot: string;
+  format: 'auto' | 'rectangle' | 'vertical' | 'horizontal';
+}
+
+// Extend Window interface for AdSense
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
