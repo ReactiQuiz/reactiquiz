@@ -9,7 +9,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/vercel-index.html"
+      "dest": "/index.html"
     }
   ],
   "env": {

@@ -1,4 +1,4 @@
-# Frontend files - not needed for backend-only deployment
+# Frontend files - not needed for backend deployment
 src/
 public/
 build/
@@ -24,10 +24,10 @@ functions/
 debug.log
 config/
 
-# Keep only essential backend files:
-# - api/ (all backend API code)
-# - data/ (quiz data files)
-# - prompts/ (prompt files)
-# - package-backend.json (backend dependencies)
-# - vercel.json (deployment config)
-# - .vercelignore (this file)
+# Keep:
+# - api/ (backend API)
+# - data/ (quiz data)
+# - prompts/ (AI prompts)
+# - index.html (simple landing page)
+# - vercel.json (config)
+# - package.json (dependencies)
