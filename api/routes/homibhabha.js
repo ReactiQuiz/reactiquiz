@@ -1,8 +1,7 @@
-// api/routes/homibhabha.js
 const { Router } = require('express');
 const { turso } = require('../_utils/tursoClient');
 const { logApi, logError } = require('../_utils/logger');
-const { shuffleArray } = require('../_utils/arrayUtils'); // We'll create this utility
+const { shuffleArray } = require('../_utils/arrayUtils');
 
 const router = Router();
 
@@ -26,22 +25,23 @@ const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, difficultyR
         if (subjectQuestions.length >= totalNeeded) break;
 
         const needed = totalNeeded - subjectQuestions.length;
-        
+
         const { rows } = await tx.execute({
             sql: `
                 SELECT q.* FROM questions q
                 JOIN quiz_topics t ON q.topicId = t.id
-                WHERE t.subject = ? 
+                JOIN subjects s ON t.subject_id = s.id
+                WHERE s.subjectKey = ?
                 AND t.class = ?
                 AND q.difficulty BETWEEN ? AND ?;
             `,
             args: [subjectKey, grade, difficultyRange.min, difficultyRange.max]
         });
 
-        const newQuestions = rows.filter(q => !gatheredQuestionIds.has(q.id));
+        const newQuestions = rows.filter((q) => !gatheredQuestionIds.has(q.id));
         const questionsToAdd = shuffleArray(newQuestions).slice(0, needed);
         subjectQuestions.push(...questionsToAdd);
-        questionsToAdd.forEach(q => gatheredQuestionIds.add(q.id));
+        questionsToAdd.forEach((q) => gatheredQuestionIds.add(q.id));
     }
     return subjectQuestions;
 };
@@ -51,7 +51,8 @@ router.get('/practice', async (req, res) => {
     logApi('GET', '/api/homibhabha/practice', `Class: ${mainClass}, Difficulty: ${difficulty}`);
 
     if (!mainClass || !difficulty) {
-        return res.status(400).json({ message: 'Class and difficulty are required.' });
+        res.status(400).json({ message: 'Class and difficulty are required.' });
+        return;
     }
 
     const composition = {
@@ -71,7 +72,7 @@ router.get('/practice', async (req, res) => {
             fetchQuestionsForSubject(tx, 'biology', composition.biology.total, difficultyRange),
             fetchQuestionsForSubject(tx, 'gk', composition.gk.total, difficultyRange)
         ]);
-        
+
         await tx.commit();
 
         const finalQuestionList = [...physicsQs, ...chemistryQs, ...biologyQs, ...gkQs];
@@ -80,9 +81,10 @@ router.get('/practice', async (req, res) => {
         if (finalQuestionList.length < totalRequired) {
             const message = `Could not assemble the practice test. Only found ${finalQuestionList.length} of ${totalRequired} required questions.`;
             logError('QUIZ ASSEMBLY', message);
-            return res.status(404).json({ message });
+            res.status(404).json({ message });
+            return;
         }
-        
+
         res.json(shuffleArray(finalQuestionList));
 
     } catch (e) {

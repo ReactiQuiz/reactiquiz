@@ -1,4 +1,3 @@
-// api/_utils/tursoClient.js
 const { createClient } = require('@libsql/client');
 
 const tursoConfig = {
@@ -7,9 +6,12 @@ const tursoConfig = {
 };
 
 if (!tursoConfig.url || !tursoConfig.authToken) {
-  console.error("FATAL: Turso database URL or Auth Token is not configured. Check environment variables.");
+  throw new Error('FATAL: Turso database URL or Auth Token is not configured.');
 }
 
-const turso = createClient(tursoConfig);
+const turso = createClient({
+  url: tursoConfig.url,
+  authToken: tursoConfig.authToken,
+});
 
 module.exports = { turso };

@@ -1,4 +1,3 @@
-// api/routes/challenges.js
 const { Router } = require('express');
 const { turso } = require('../_utils/tursoClient');
 const { verifyToken } = require('../_middleware/auth');

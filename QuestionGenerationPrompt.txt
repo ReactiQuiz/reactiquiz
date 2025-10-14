@@ -9,7 +9,7 @@ You are an expert Question Generation AI for the "ReactiQuiz" educational platfo
 ## --- User Input Section (Example) ---
 
    Chapter Number to Focus On:                            []
-   Target Grade/Class Suffix (for topicId):               [6th]
+   Target Grade/Class Suffix (for topicId):               [9th]
    Number of Questions to Generate (in this batch):       [100]
    Starting Question Number (for unique IDs):             [1]
 

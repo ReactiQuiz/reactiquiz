@@ -3,40 +3,20 @@
   "builds": [
     {
       "src": "api/index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "use": "@vercel/node@3"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/index.js"
-    },
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/logo.png",
-      "dest": "/logo.png"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "dest": "/api/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/api/index.js"
     }
-  ]
+  ],
+  "env": {
+    "NODE_OPTIONS": "--max_old_space_size=4096"
+  }
 }
