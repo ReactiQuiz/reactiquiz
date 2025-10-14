@@ -1,0 +1,53 @@
+# Frontend files - not needed for backend-only deployment
+src/
+public/
+build/
+node_modules/
+
+# Frontend configuration files
+package-lock.json
+tsconfig.json
+tailwind.config.js
+postcss.config.js
+
+# Documentation files
+*.md
+ADS_SETUP_GUIDE.md
+FIREBASE_DEPLOYMENT_GUIDE.md
+FRONTEND_API_CONFIG.md
+HYBRID_DEPLOYMENT_GUIDE.md
+README.md
+tree.md
+
+# Firebase files
+firebase.json
+.firebaserc
+functions/
+
+# Development files
+debug.log
+config/
+
+# Keep only essential backend files:
+# - api/ (all backend API code)
+# - *.json (quiz data files)
+# - *.txt (prompt files)
+# - package.json (for dependencies)
+# - vercel.json (deployment config)
+# - .vercelignore (this file)
+
+# Keep these JSON data files:
+# questions.json
+# subjects.json
+# topics.json
+# subjective-questions.json
+# migration_data/
+
+# Keep these prompt files:
+# QuestionGenerationPrompt.txt
+# SubjectiveQuestionGenerationPrompt.txt
+# TopicGenerationPrompt.txt
+# GeminiGradingPrompt.txt
+
+# Keep utility scripts that might be needed:
+# populate-turso-from-json.js

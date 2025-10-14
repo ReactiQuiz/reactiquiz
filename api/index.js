@@ -84,8 +84,7 @@ app.get('/', (req, res) => {
     res.json({ 
         message: 'ReactiQuiz API Server', 
         status: 'running',
-        endpoints: '/api/*',
-        frontend: 'https://reactiquiz.web.app'
+        endpoints: '/api/*'
     });
 });
 
@@ -97,10 +96,9 @@ app.use('/api/*', (req, res) => {
 // --- Catch-all for non-API routes ---
 app.get('*', (req, res) => {
     res.json({ 
-        message: 'ReactiQuiz API Server - Frontend not available here', 
+        message: 'ReactiQuiz API Server', 
         status: 'running',
-        api_endpoints: '/api/*',
-        frontend_url: 'https://reactiquiz.web.app'
+        api_endpoints: '/api/*'
     });
 });
 
