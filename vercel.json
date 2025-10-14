@@ -4,13 +4,6 @@
     {
       "src": "api/index.js",
       "use": "@vercel/node@3"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build@1",
-      "config": {
-        "distDir": "build"
-      }
     }
   ],
   "routes": [
@@ -19,29 +12,11 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/logo.png",
-      "dest": "/logo.png"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/api/index.js"
     }
   ],
   "env": {
-    "NODE_OPTIONS": "--max_old_space_size=4096",
-    "GENERATE_SOURCEMAP": "false",
-    "NPM_CONFIG_AUDIT": "false"
+    "NODE_OPTIONS": "--max_old_space_size=4096"
   }
 }

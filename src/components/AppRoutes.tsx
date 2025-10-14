@@ -31,6 +31,9 @@ const QuizPage = React.lazy(() => import('../pages/QuizPage'));
 const AICenterPage = React.lazy(() => import('../pages/AICenterPage'));
 const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
 const AboutPage = React.lazy(() => import('../pages/AboutPage'));
+const PrivacyPolicyPage = React.lazy(() => import('../pages/PrivacyPolicyPage'));
+const TermsOfServicePage = React.lazy(() => import('../pages/TermsOfServicePage'));
+const ContactPage = React.lazy(() => import('../pages/ContactPage'));
 const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage'));
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage'));
@@ -102,6 +105,9 @@ const AppRoutes: React.FC = () => {
         {/* === Minimal Layout for Guests === */}
         <Route element={<MinimalLayout />}>
           <Route path="/about-guest" element={<AboutPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Route>
 
         {/* === Standalone Auth Pages === */}

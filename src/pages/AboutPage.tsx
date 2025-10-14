@@ -26,7 +26,7 @@ const AboutPage: React.FC = () => {
           <Box sx={{ my: 5 }}>
             <Typography variant="h5" component="h3" sx={{ fontWeight: 'medium', mb: 2 }}>Our Mission</Typography>
             <Typography paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.7, color: 'text.secondary' }}>
-              Our mission is to provide a high-quality, ad-free, and user-friendly platform for learning and self-assessment. We strive to continuously improve ReactiQuiz by adding new features, more topics, and ensuring the accuracy of our content.
+              Our mission is to provide a high-quality, user-friendly platform for learning and self-assessment. We strive to continuously improve ReactiQuiz by adding new features, more topics, and ensuring the accuracy of our content.
             </Typography>
           </Box>
 

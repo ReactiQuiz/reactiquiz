@@ -7,6 +7,7 @@ import { useQuiz } from '../hooks/useQuiz';
 import { useSubjectColors } from '../contexts/SubjectColorsContext';
 import QuizHeader from '../components/quiz/QuizHeader';
 import QuizQuestionList from '../components/quiz/QuizQuestionList';
+import AdBanner from '../components/ads/AdBanner';
 
 const QuizPage: React.FC = () => {
   const theme = useTheme();
