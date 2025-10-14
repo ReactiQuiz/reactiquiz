@@ -84,7 +84,8 @@ app.get('/', (req, res) => {
     res.json({ 
         message: 'ReactiQuiz API Server', 
         status: 'running',
-        endpoints: '/api/*'
+        endpoints: '/api/*',
+        note: 'Frontend hosted separately'
     });
 });
 
@@ -98,7 +99,8 @@ app.get('*', (req, res) => {
     res.json({ 
         message: 'ReactiQuiz API Server', 
         status: 'running',
-        api_endpoints: '/api/*'
+        api_endpoints: '/api/*',
+        note: 'Frontend hosted separately'
     });
 });
 

@@ -12,10 +12,6 @@ postcss.config.js
 
 # Documentation files
 *.md
-ADS_SETUP_GUIDE.md
-FIREBASE_DEPLOYMENT_GUIDE.md
-FRONTEND_API_CONFIG.md
-HYBRID_DEPLOYMENT_GUIDE.md
 README.md
 tree.md
 
@@ -30,24 +26,8 @@ config/
 
 # Keep only essential backend files:
 # - api/ (all backend API code)
-# - *.json (quiz data files)
-# - *.txt (prompt files)
-# - package.json (for dependencies)
+# - data/ (quiz data files)
+# - prompts/ (prompt files)
+# - package-backend.json (backend dependencies)
 # - vercel.json (deployment config)
 # - .vercelignore (this file)
-
-# Keep these JSON data files:
-# questions.json
-# subjects.json
-# topics.json
-# subjective-questions.json
-# migration_data/
-
-# Keep these prompt files:
-# QuestionGenerationPrompt.txt
-# SubjectiveQuestionGenerationPrompt.txt
-# TopicGenerationPrompt.txt
-# GeminiGradingPrompt.txt
-
-# Keep utility scripts that might be needed:
-# populate-turso-from-json.js

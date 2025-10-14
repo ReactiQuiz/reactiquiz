@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "echo 'Backend deployment - skipping frontend build'",
+  "outputDirectory": "public",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -7,7 +9,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/index.html"
     }
   ],
   "env": {
