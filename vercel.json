@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "echo 'Backend deployment - skipping frontend build'",
-  "outputDirectory": "public",
+  "outputDirectory": ".",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -9,7 +9,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/vercel-index.html"
     }
   ],
   "env": {
