@@ -1,0 +1,39 @@
+{
+  "name": "reactiquiz-backend-api",
+  "version": "1.0.0",
+  "description": "Backend API server for ReactiQuiz - deployed on Vercel",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.12.0",
+    "@libsql/client": "^0.6.0",
+    "@supabase/supabase-js": "^2.75.0",
+    "bcryptjs": "^2.4.3",
+    "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.0.1",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "nodemailer": "^6.9.14",
+    "uuid": "^9.0.1"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "keywords": [
+    "reactiquiz",
+    "api",
+    "backend",
+    "vercel"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+
