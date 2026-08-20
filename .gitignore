@@ -1,0 +1,55 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Local development certificates
+/.cert/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+/.pnp
+.pnp.*
+
+# JavaScript build and test output
+/web/build/
+/coverage/
+*.tsbuildinfo
+
+# Flutter and Dart tooling/build output
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub-cache/
+**/build/
+application-flutter/android/.gradle/
+application-flutter/android/local.properties
+application-flutter/ios/Pods/
+application-flutter/ios/.symlinks/
+application-flutter/ios/Flutter/ephemeral/
+application-flutter/macos/Pods/
+application-flutter/macos/Flutter/ephemeral/
+application-flutter/linux/flutter/ephemeral/
+application-flutter/windows/flutter/ephemeral/
+
+# Local databases and runtime files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Logs and package-manager output
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE and operating-system files
+.DS_Store
+Thumbs.db
+*.iml
+.idea/

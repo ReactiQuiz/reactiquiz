@@ -1,0 +1,20 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - prefer_const_declarations
+    - avoid_unnecessary_containers
+    - sized_box_for_whitespace
+    - use_key_in_widget_constructors
+    - prefer_single_quotes
+    - always_use_package_imports
+    - avoid_relative_lib_imports
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+

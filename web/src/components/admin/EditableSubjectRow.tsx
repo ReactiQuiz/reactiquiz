@@ -1,0 +1,112 @@
+// src/components/admin/EditableSubjectRow.tsx
+/**
+ * Editable Subject Row Component
+ * 
+ * This component displays a table row for a subject that can be
+ * edited inline. It switches between view and edit modes with
+ * local state management for form data.
+ */
+import React, { useState, useEffect } from 'react';
+import { TableRow, TableCell, TextField, Chip, Box, IconButton, Tooltip } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+/**
+ * Editable Subject Row Component
+ * 
+ * Displays a table row for a subject with:
+ * - View mode: Display subject data with Edit and Delete buttons
+ * - Edit mode: Form fields for editing subject properties
+ * - Local state management for edit data
+ * - Save, Cancel, and Delete actions
+ * - Action buttons (Edit, Save, Cancel, Delete)
+ * 
+ * This component is used in SubjectsTable to display and edit
+ * individual subject rows.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.subject - Subject data object
+ * @param {boolean} props.isGloballyEditing - Whether global edit mode is enabled
+ * @param {boolean} props.isCurrentlyEditing - Whether this row is being edited
+ * @param {Function} props.onEdit - Callback to start editing this row
+ * @param {Function} props.onCancel - Callback to cancel editing
+ * @param {Function} props.onSave - Callback to save edited data
+ * @param {Function} props.onDelete - Callback to delete the subject
+ * @returns {JSX.Element} Editable subject table row
+ */
+const EditableSubjectRow = ({
+    subject,
+    isGloballyEditing,
+    isCurrentlyEditing,
+    onEdit,
+    onCancel,
+    onSave,
+    onDelete,
+}) => {
+    // --- START OF THE DEFINITIVE FIX: Local state for editing ---
+    // Each row now manages its own form data.
+    const [editData, setEditData] = useState(subject);
+
+    // If the parent cancels the edit (e.g. by clicking "Done"), reset local state.
+    useEffect(() => {
+        setEditData(subject);
+    }, [isCurrentlyEditing, subject]);
+    // --- END OF THE DEFINITIVE FIX ---
+
+    const handleInputChange = (e) => {
+        setEditData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    return (
+        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {isCurrentlyEditing ? (
+                // --- EDIT MODE ---
+                <>
+                    <TableCell><TextField size="small" name="name" value={editData.name} onChange={handleInputChange} fullWidth /></TableCell>
+                    <TableCell><TextField size="small" name="subjectKey" value={editData.subjectKey} onChange={handleInputChange} fullWidth /></TableCell>
+                    <TableCell><TextField size="small" name="description" value={editData.description} onChange={handleInputChange} fullWidth multiline maxRows={2} /></TableCell>
+                    <TableCell><TextField size="small" name="displayOrder" type="number" value={editData.displayOrder} onChange={handleInputChange} sx={{width: 80}} /></TableCell>
+                    <TableCell><TextField size="small" name="iconName" value={editData.iconName} onChange={handleInputChange} fullWidth /></TableCell>
+                    <TableCell>
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                            <TextField size="small" label="Dark" type="color" name="accentColorDark" value={editData.accentColorDark} onChange={handleInputChange} sx={{width: 100}} />
+                            <TextField size="small" label="Light" type="color" name="accentColorLight" value={editData.accentColorLight} onChange={handleInputChange} sx={{width: 100}}/>
+                        </Box>
+                    </TableCell>
+                    <TableCell align="right">
+                        <Tooltip title="Save Changes"><IconButton aria-label="Save changes" onClick={() => onSave(subject.id, editData)} color="primary"><SaveIcon /></IconButton></Tooltip>
+                        <Tooltip title="Cancel Edit"><IconButton aria-label="Cancel edit" onClick={onCancel}><CancelIcon /></IconButton></Tooltip>
+                    </TableCell>
+                </>
+            ) : (
+                // --- VIEW MODE ---
+                <>
+                    <TableCell sx={{ fontWeight: 500 }}>{subject.name}</TableCell>
+                    <TableCell><Chip label={subject.subjectKey} size="small" /></TableCell>
+                    <TableCell>{subject.description}</TableCell>
+                    <TableCell align="center">{subject.displayOrder}</TableCell>
+                    <TableCell>{subject.iconName}</TableCell>
+                    <TableCell>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Box title={subject.accentColorDark} sx={{ width: 20, height: 20, bgcolor: subject.accentColorDark, borderRadius: '4px', border: '1px solid #fff' }} />
+                            <Box title={subject.accentColorLight} sx={{ width: 20, height: 20, bgcolor: subject.accentColorLight, borderRadius: '4px', border: '1px solid #333' }} />
+                        </Box>
+                    </TableCell>
+                    <TableCell align="right">
+                        {/* Show edit/delete buttons only when global edit mode is on */}
+                        {isGloballyEditing && (
+                            <>
+                                <Tooltip title="Edit Row"><IconButton aria-label="Edit row" onClick={() => onEdit(subject.id)}><EditIcon /></IconButton></Tooltip>
+                                <Tooltip title="Delete Subject"><IconButton aria-label="Delete subject" onClick={() => onDelete(subject.id)} color="error"><DeleteIcon /></IconButton></Tooltip>
+                            </>
+                        )}
+                    </TableCell>
+                </>
+            )}
+        </TableRow>
+    );
+};
+
+export default EditableSubjectRow;

@@ -1,0 +1,31 @@
+# Frontend source files - not needed for backend deployment
+src/
+public/
+build/
+
+# Frontend configuration files
+tsconfig.json
+tailwind.config.js
+postcss.config.js
+
+# Documentation files
+*.md
+README.md
+tree.md
+
+# Firebase files
+firebase.json
+.firebaserc
+.firebase/
+
+# Development files
+debug.log
+config/
+
+# Keep:
+# - api/ (backend API)
+# - data/ (quiz data)
+# - prompts/ (AI prompts)
+# - index.html (simple landing page)
+# - vercel.json (config)
+# - package.json (dependencies)
