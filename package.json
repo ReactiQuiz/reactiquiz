@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npm --prefix web run build",
     "start": "npm --prefix web start",
-    "start:api": "node -e \"process.env.NODE_PATH='web/node_modules;node_modules'; process.env.PORT=3000; require('module').Module._initPaths(); require('./api/dev-server.js');\"",
+    "start:api": "node -e \"process.env.NODE_PATH='web/node_modules;node_modules'; process.env.PORT=3000; require('module').Module._initPaths(); require('./api/_dev-server.js');\"",
     "test": "node -e \"process.env.NODE_PATH='web/node_modules;node_modules'; process.env.RUN_TESTS='1'; require('module').Module._initPaths(); require('./tests/run_all_tests.js');\"",
     "test:integration": "node -e \"process.env.NODE_PATH='web/node_modules;node_modules'; require('module').Module._initPaths(); require('./tests/backend_integration.test.js');\""
   },

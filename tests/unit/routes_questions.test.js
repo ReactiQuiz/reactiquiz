@@ -2,7 +2,7 @@
  * tests/unit/routes_questions.test.js
  * 
  * Unit tests for questions route handler:
- * - api/routes/questions.js
+ * - api/_routes/questions.js
  */
 
 const express = require('express');
@@ -54,7 +54,7 @@ function createTestServer(router, mountPath = '/') {
 }
 
 suite.test('GET /api/questions: returns 400 when neither topicId nor ids are provided', async () => {
-  const questionRoutes = require('../../api/routes/questions');
+  const questionRoutes = require('../../api/_routes/questions');
   const server = await createTestServer(questionRoutes, '/api/questions');
 
   try {
@@ -94,7 +94,7 @@ suite.test('GET /api/questions?topicId=...: returns parsed questions for topic',
     async rollback() {}
   });
 
-  const questionRoutes = require('../../api/routes/questions');
+  const questionRoutes = require('../../api/_routes/questions');
   const server = await createTestServer(questionRoutes, '/api/questions');
 
   try {
@@ -143,7 +143,7 @@ suite.test('GET /api/questions?ids=...: fetches specific question IDs with SQL p
     async rollback() {}
   });
 
-  const questionRoutes = require('../../api/routes/questions');
+  const questionRoutes = require('../../api/_routes/questions');
   const server = await createTestServer(questionRoutes, '/api/questions');
 
   try {
@@ -173,7 +173,7 @@ suite.test('GET /api/questions: handles database errors and returns 500', async 
     }
   });
 
-  const questionRoutes = require('../../api/routes/questions');
+  const questionRoutes = require('../../api/_routes/questions');
   const server = await createTestServer(questionRoutes, '/api/questions');
 
   try {

@@ -2,8 +2,8 @@
  * tests/unit/routes_subjects_topics.test.js
  * 
  * Unit tests for subjects and topics route handlers:
- * - api/routes/subjects.js
- * - api/routes/topics.js
+ * - api/_routes/subjects.js
+ * - api/_routes/topics.js
  */
 
 const express = require('express');
@@ -72,7 +72,7 @@ suite.test('GET /api/subjects: successfully returns subjects list with 200 OK', 
     async rollback() {}
   });
 
-  const subjectRoutes = require('../../api/routes/subjects');
+  const subjectRoutes = require('../../api/_routes/subjects');
   const server = await createTestServer(subjectRoutes, '/api/subjects');
 
   try {
@@ -103,7 +103,7 @@ suite.test('GET /api/subjects: handles database failure with 500 Internal Server
     }
   });
 
-  const subjectRoutes = require('../../api/routes/subjects');
+  const subjectRoutes = require('../../api/_routes/subjects');
   const server = await createTestServer(subjectRoutes, '/api/subjects');
 
   try {
@@ -133,7 +133,7 @@ suite.test('GET /api/topics: successfully returns all topics with 200 OK', async
     async rollback() {}
   });
 
-  const topicRoutes = require('../../api/routes/topics');
+  const topicRoutes = require('../../api/_routes/topics');
   const server = await createTestServer(topicRoutes, '/api/topics');
 
   try {
@@ -170,7 +170,7 @@ suite.test('GET /api/topics/:subjectKey: returns topics filtered by subjectKey',
     async rollback() {}
   });
 
-  const topicRoutes = require('../../api/routes/topics');
+  const topicRoutes = require('../../api/_routes/topics');
   const server = await createTestServer(topicRoutes, '/api/topics');
 
   try {
@@ -200,7 +200,7 @@ suite.test('GET /api/topics/:subjectKey: returns 404 when subject does not exist
     }
   });
 
-  const topicRoutes = require('../../api/routes/topics');
+  const topicRoutes = require('../../api/_routes/topics');
   const server = await createTestServer(topicRoutes, '/api/topics');
 
   try {

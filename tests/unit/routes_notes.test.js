@@ -2,7 +2,7 @@
  * tests/unit/routes_notes.test.js
  * 
  * Unit tests for notes routes:
- * - api/routes/notes.js
+ * - api/_routes/notes.js
  */
 
 const express = require('express');
@@ -82,7 +82,7 @@ suite.test('GET /api/notes/topic/:topicId: returns 200 with joined topic & subje
     async rollback() {}
   });
 
-  const noteRoutes = require('../../api/routes/notes');
+  const noteRoutes = require('../../api/_routes/notes');
   const server = await createTestServer(noteRoutes, '/api/notes');
 
   try {
@@ -110,7 +110,7 @@ suite.test('GET /api/notes/topic/:topicId: returns 404 when note is not found', 
     async rollback() {}
   });
 
-  const noteRoutes = require('../../api/routes/notes');
+  const noteRoutes = require('../../api/_routes/notes');
   const server = await createTestServer(noteRoutes, '/api/notes');
 
   try {

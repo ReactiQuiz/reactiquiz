@@ -2,7 +2,7 @@
  * tests/unit/routes_contact.test.js
  * 
  * Unit tests for contact form route handler:
- * - api/routes/contact.js
+ * - api/_routes/contact.js
  */
 
 const express = require('express');
@@ -54,7 +54,7 @@ function createTestServer(router, mountPath = '/') {
 }
 
 suite.test('POST /api/contact: responds with 503 or 400 when missing fields or credentials', async () => {
-  const contactRoutes = require('../../api/routes/contact');
+  const contactRoutes = require('../../api/_routes/contact');
   const server = await createTestServer(contactRoutes, '/api/contact');
 
   try {
@@ -68,7 +68,7 @@ suite.test('POST /api/contact: responds with 503 or 400 when missing fields or c
 });
 
 suite.test('POST /api/contact: validates name, email, and message presence', async () => {
-  const contactRoutes = require('../../api/routes/contact');
+  const contactRoutes = require('../../api/_routes/contact');
   const server = await createTestServer(contactRoutes, '/api/contact');
 
   try {

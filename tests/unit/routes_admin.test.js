@@ -2,7 +2,7 @@
  * tests/unit/routes_admin.test.js
  * 
  * Unit tests for admin management routes:
- * - api/routes/admin.js
+ * - api/_routes/admin.js
  */
 
 const express = require('express');
@@ -63,7 +63,7 @@ const adminToken = jwt.sign({ id: 'usr_admin', username: 'superadmin', isAdmin: 
 const regularToken = jwt.sign({ id: 'usr_regular', username: 'student', isAdmin: false }, process.env.JWT_SECRET);
 
 suite.test('Admin Routes: blocks non-admin requests with 403 Forbidden', async () => {
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -90,7 +90,7 @@ suite.test('GET /api/admin/status: returns userCount, topicCount, and questionCo
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -120,7 +120,7 @@ suite.test('POST /api/admin/subjects/batch-import: batch imports multiple subjec
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -153,7 +153,7 @@ suite.test('POST /api/admin/questions: validates required fields and creates sin
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -199,7 +199,7 @@ suite.test('DELETE /api/admin/subjects/:id: blocks deletion with 400 if child to
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -228,7 +228,7 @@ suite.test('DELETE /api/admin/topics/:id: blocks deletion with 400 if child ques
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -255,7 +255,7 @@ suite.test('POST /api/admin/notes: creates a new topic note document', async () 
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {
@@ -294,7 +294,7 @@ suite.test('POST /api/admin/notes/batch-import: batch imports multiple notes', a
     async rollback() {}
   });
 
-  const adminRoutes = require('../../api/routes/admin');
+  const adminRoutes = require('../../api/_routes/admin');
   const server = await createTestServer(adminRoutes, '/api/admin');
 
   try {

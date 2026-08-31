@@ -2,8 +2,8 @@
  * tests/unit/routes_homibhabha_pdf.test.js
  * 
  * Unit tests for Homi Bhabha test route and PDF generation routes:
- * - api/routes/homibhabha.js
- * - api/routes/pdf.js
+ * - api/_routes/homibhabha.js
+ * - api/_routes/pdf.js
  */
 
 const express = require('express');
@@ -65,7 +65,7 @@ const testUserToken = jwt.sign({ id: 'usr_pdf_user', username: 'student' }, proc
 
 // 1. Homi Bhabha Tests
 suite.test('GET /api/homibhabha/practice: requires class and difficulty query params (400)', async () => {
-  const homiBhabhaRoutes = require('../../api/routes/homibhabha');
+  const homiBhabhaRoutes = require('../../api/_routes/homibhabha');
   const server = await createTestServer(homiBhabhaRoutes, '/api/homibhabha');
 
   try {
@@ -94,7 +94,7 @@ suite.test('GET /api/homibhabha/practice: returns 404 when question count < 100'
     async rollback() {}
   });
 
-  const homiBhabhaRoutes = require('../../api/routes/homibhabha');
+  const homiBhabhaRoutes = require('../../api/_routes/homibhabha');
   const server = await createTestServer(homiBhabhaRoutes, '/api/homibhabha');
 
   try {
@@ -130,7 +130,7 @@ suite.test('GET /api/pdf/questions/:topicId: formats topic and questions metadat
     return [];
   };
 
-  const pdfRoutes = require('../../api/routes/pdf');
+  const pdfRoutes = require('../../api/_routes/pdf');
   const server = await createTestServer(pdfRoutes, '/api/pdf');
 
   try {
@@ -163,7 +163,7 @@ suite.test('POST /api/pdf/generate: prepares PDF payload for custom question IDs
     ];
   };
 
-  const pdfRoutes = require('../../api/routes/pdf');
+  const pdfRoutes = require('../../api/_routes/pdf');
   const server = await createTestServer(pdfRoutes, '/api/pdf');
 
   try {

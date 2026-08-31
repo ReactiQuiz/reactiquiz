@@ -38,19 +38,19 @@ if (!process.env.ADMIN_USER_ID) {
 
 const { logApi, logInfo, logError } = require('./_utils/logger');
 
-const userRoutes = require('./routes/users');
-const subjectRoutes = require('./routes/subjects');
-const topicRoutes = require('./routes/topics');
-const questionRoutes = require('./routes/questions');
-const resultRoutes = require('./routes/results');
-const friendRoutes = require('./routes/friends');
-const challengeRoutes = require('./routes/challenges');
-const contactRoutes = require('./routes/contact');
-const homiBhabhaRoutes = require('./routes/homibhabha');
-const quizSessionRoutes = require('./routes/quizSessions');
-const adminRoutes = require('./routes/admin');
-const pdfRoutes = require('./routes/pdf');
-const noteRoutes = require('./routes/notes');
+const userRoutes = require('./_routes/users');
+const subjectRoutes = require('./_routes/subjects');
+const topicRoutes = require('./_routes/topics');
+const questionRoutes = require('./_routes/questions');
+const resultRoutes = require('./_routes/results');
+const friendRoutes = require('./_routes/friends');
+const challengeRoutes = require('./_routes/challenges');
+const contactRoutes = require('./_routes/contact');
+const homiBhabhaRoutes = require('./_routes/homibhabha');
+const quizSessionRoutes = require('./_routes/quizSessions');
+const adminRoutes = require('./_routes/admin');
+const pdfRoutes = require('./_routes/pdf');
+const noteRoutes = require('./_routes/notes');
 
 const app = express();
 

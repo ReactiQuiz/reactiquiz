@@ -2,7 +2,7 @@
  * tests/unit/routes_quiz_sessions.test.js
  * 
  * Unit tests for quiz session route handlers:
- * - api/routes/quizSessions.js
+ * - api/_routes/quizSessions.js
  */
 
 const express = require('express');
@@ -62,7 +62,7 @@ function createTestServer(router, mountPath = '/') {
 const testUserToken = jwt.sign({ id: 'usr_quiz_session_tester', username: 'tester' }, process.env.JWT_SECRET);
 
 suite.test('POST /api/quizSessions: rejects invalid or missing topicId with 400', async () => {
-  const quizSessionRoutes = require('../../api/routes/quizSessions');
+  const quizSessionRoutes = require('../../api/_routes/quizSessions');
   const server = await createTestServer(quizSessionRoutes, '/api/quizSessions');
 
   try {
@@ -88,7 +88,7 @@ suite.test('POST /api/quizSessions: creates new session and returns 201 with ses
     async rollback() {}
   });
 
-  const quizSessionRoutes = require('../../api/routes/quizSessions');
+  const quizSessionRoutes = require('../../api/_routes/quizSessions');
   const server = await createTestServer(quizSessionRoutes, '/api/quizSessions');
 
   try {
@@ -120,7 +120,7 @@ suite.test('GET /api/quizSessions/:sessionId: returns 404 when session does not 
     async rollback() {}
   });
 
-  const quizSessionRoutes = require('../../api/routes/quizSessions');
+  const quizSessionRoutes = require('../../api/_routes/quizSessions');
   const server = await createTestServer(quizSessionRoutes, '/api/quizSessions');
 
   try {
@@ -157,7 +157,7 @@ suite.test('GET /api/quizSessions/:sessionId: returns 410 when session has expir
     async rollback() {}
   });
 
-  const quizSessionRoutes = require('../../api/routes/quizSessions');
+  const quizSessionRoutes = require('../../api/_routes/quizSessions');
   const server = await createTestServer(quizSessionRoutes, '/api/quizSessions');
 
   try {
@@ -211,7 +211,7 @@ suite.test('GET /api/quizSessions/:sessionId: loads questions and locks selectio
     async rollback() {}
   });
 
-  const quizSessionRoutes = require('../../api/routes/quizSessions');
+  const quizSessionRoutes = require('../../api/_routes/quizSessions');
   const server = await createTestServer(quizSessionRoutes, '/api/quizSessions');
 
   try {

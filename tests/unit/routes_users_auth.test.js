@@ -2,7 +2,7 @@
  * tests/unit/routes_users_auth.test.js
  * 
  * Unit tests for users and authentication route handlers:
- * - api/routes/users.js
+ * - api/_routes/users.js
  */
 
 const express = require('express');
@@ -62,7 +62,7 @@ function createTestServer(router, mountPath = '/') {
 
 // 1. Registration tests
 suite.test('POST /api/users/register: fails validation when required fields are invalid or missing', async () => {
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {
@@ -93,7 +93,7 @@ suite.test('POST /api/users/register: successfully creates user with bcrypt hash
     async rollback() {}
   });
 
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {
@@ -132,7 +132,7 @@ suite.test('POST /api/users/register: returns 409 Conflict when username or emai
     async rollback() {}
   });
 
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {
@@ -165,7 +165,7 @@ suite.test('POST /api/users/login: returns 401 when user not found or password i
     async rollback() {}
   });
 
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {
@@ -208,7 +208,7 @@ suite.test('POST /api/users/login: returns JWT token and user info on valid cred
     async rollback() {}
   });
 
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {
@@ -260,7 +260,7 @@ suite.test('GET /api/users/me: returns authenticated user profile', async () => 
     async rollback() {}
   });
 
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {
@@ -301,7 +301,7 @@ suite.test('GET /api/users/stats: calculates aggregated quizzes and daily activi
     async rollback() {}
   });
 
-  const userRoutes = require('../../api/routes/users');
+  const userRoutes = require('../../api/_routes/users');
   const server = await createTestServer(userRoutes, '/api/users');
 
   try {

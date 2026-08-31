@@ -2,8 +2,8 @@
  * tests/unit/routes_friends_challenges.test.js
  * 
  * Unit tests for social routes:
- * - api/routes/friends.js
- * - api/routes/challenges.js
+ * - api/_routes/friends.js
+ * - api/_routes/challenges.js
  */
 
 const express = require('express');
@@ -64,7 +64,7 @@ const testToken = jwt.sign({ id: 'usr_alice', username: 'alice' }, process.env.J
 
 // 1. Friend Requests
 suite.test('POST /api/friends/request: validates receiverUsername required (400)', async () => {
-  const friendRoutes = require('../../api/routes/friends');
+  const friendRoutes = require('../../api/_routes/friends');
   const server = await createTestServer(friendRoutes, '/api/friends');
 
   try {
@@ -87,7 +87,7 @@ suite.test('POST /api/friends/request: prevents sending friend request to onesel
     async rollback() {}
   });
 
-  const friendRoutes = require('../../api/routes/friends');
+  const friendRoutes = require('../../api/_routes/friends');
   const server = await createTestServer(friendRoutes, '/api/friends');
 
   try {
@@ -124,7 +124,7 @@ suite.test('POST /api/friends/request: successfully creates friendship request (
     async rollback() {}
   });
 
-  const friendRoutes = require('../../api/routes/friends');
+  const friendRoutes = require('../../api/_routes/friends');
   const server = await createTestServer(friendRoutes, '/api/friends');
 
   try {
@@ -156,7 +156,7 @@ suite.test('PUT /api/friends/request/:requestId: accepts or declines request wit
     async rollback() {}
   });
 
-  const friendRoutes = require('../../api/routes/friends');
+  const friendRoutes = require('../../api/_routes/friends');
   const server = await createTestServer(friendRoutes, '/api/friends');
 
   try {
@@ -184,7 +184,7 @@ suite.test('POST /api/challenges: creates quiz challenge and returns 201', async
     async rollback() {}
   });
 
-  const challengeRoutes = require('../../api/routes/challenges');
+  const challengeRoutes = require('../../api/_routes/challenges');
   const server = await createTestServer(challengeRoutes, '/api/challenges');
 
   try {

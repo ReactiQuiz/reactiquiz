@@ -5,7 +5,7 @@
  * - web/src/components/admin/content/BulkImportModal.tsx
  * - web/src/components/admin/content/JsonImportModal.tsx
  * - web/src/components/admin/content/DirectEditModal.tsx
- * - api/routes/admin.js
+ * - api/_routes/admin.js
  */
 
 const { assert, createSuite } = require('../test_helper');

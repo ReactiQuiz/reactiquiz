@@ -2,7 +2,7 @@
  * tests/unit/routes_results.test.js
  * 
  * Unit tests for results route handlers:
- * - api/routes/results.js
+ * - api/_routes/results.js
  */
 
 const express = require('express');
@@ -62,7 +62,7 @@ function createTestServer(router, mountPath = '/') {
 const testUserToken = jwt.sign({ id: 'usr_result_scorer', username: 'scorer' }, process.env.JWT_SECRET);
 
 suite.test('POST /api/results: rejects invalid payload missing topicId or attempted questions (400)', async () => {
-  const resultRoutes = require('../../api/routes/results');
+  const resultRoutes = require('../../api/_routes/results');
   const server = await createTestServer(resultRoutes, '/api/results');
 
   try {
@@ -140,7 +140,7 @@ suite.test('POST /api/results: calculates score accurately from options and snap
     async rollback() {}
   });
 
-  const resultRoutes = require('../../api/routes/results');
+  const resultRoutes = require('../../api/_routes/results');
   const server = await createTestServer(resultRoutes, '/api/results');
 
   try {
@@ -198,7 +198,7 @@ suite.test('GET /api/results: retrieves list of historical results for authentic
     async rollback() {}
   });
 
-  const resultRoutes = require('../../api/routes/results');
+  const resultRoutes = require('../../api/_routes/results');
   const server = await createTestServer(resultRoutes, '/api/results');
 
   try {
@@ -226,7 +226,7 @@ suite.test('GET /api/results/:resultId: returns 404 when result is missing or be
     async rollback() {}
   });
 
-  const resultRoutes = require('../../api/routes/results');
+  const resultRoutes = require('../../api/_routes/results');
   const server = await createTestServer(resultRoutes, '/api/results');
 
   try {
