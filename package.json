@@ -2,9 +2,6 @@
   "name": "reactiquiz-monorepo",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "web"
-  ],
   "scripts": {
     "build": "npm --prefix web run build",
     "start": "npm --prefix web start",
