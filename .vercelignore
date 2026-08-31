@@ -1,31 +1,32 @@
-# Frontend source files - not needed for backend deployment
-src/
-public/
-build/
+# Ignore Flutter mobile application code from Vercel web deployment
+application-flutter/
 
-# Frontend configuration files
-tsconfig.json
-tailwind.config.js
-postcss.config.js
-
-# Documentation files
+# Documentation
 *.md
-README.md
-tree.md
+LICENSE
 
-# Firebase files
+# Testing and development scripts
+tests/
+scripts/
+
+# Firebase configuration
 firebase.json
 .firebaserc
 .firebase/
 
-# Development files
+# Local development files & secrets
+.env
+.env.*
+!.env.example
 debug.log
 config/
+.vscode/
 
-# Keep:
-# - api/ (backend API)
-# - data/ (quiz data)
-# - prompts/ (AI prompts)
-# - index.html (simple landing page)
-# - vercel.json (config)
-# - package.json (dependencies)
+# System & log files
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
