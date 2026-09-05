@@ -68,7 +68,7 @@ function FlashcardItem({
     display: 'flex', flexDirection: 'column',
     p: { xs: 2, sm: 3 }, overflowY: 'auto',
     border: `2px solid ${effectiveAccentColor}`,
-    borderRadius: theme.shape.borderRadius, boxSizing: 'border-box',
+    borderRadius: '12px', boxSizing: 'border-box',
   };
 
   return (
