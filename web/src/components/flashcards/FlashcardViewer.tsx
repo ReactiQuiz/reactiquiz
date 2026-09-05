@@ -59,7 +59,7 @@ function FlashcardViewer({
       </Typography>
       <Box sx={{ width: '100%', minHeight: '380px', perspective: '1000px', mb: 2.5 }}>
         <FlashcardItem
-          frontText={currentCard.frontText}
+          frontText={currentCard.question_text || currentCard.text || currentCard.frontText || ''}
           options={currentCard.options}
           correctOptionId={currentCard.correctOptionId}
           explanation={currentCard.explanation}

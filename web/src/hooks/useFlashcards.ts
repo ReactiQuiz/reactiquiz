@@ -82,16 +82,28 @@ export const useFlashcards = (): UseFlashcardsReturn => {
     // Only proceed if data is available
     if (fetchedQuestions && fetchedQuestions.length > 0) {
       // Format the raw questions into the structure needed for flashcards
-      const formatted = fetchedQuestions.map(q => ({
-        id: q.id,
-        question_text: q.question_text,
-        options: q.options,
-        correct_answer: q.correct_answer,
-        explanation: q.explanation || '', // Default to empty string if no explanation
-        marks: q.marks,
-        topicId: q.topicId,
-        createdAt: q.createdAt || '', // Default to empty string if no creation date
-      }));
+      const formatted = fetchedQuestions.map(q => {
+        let correctOptId = q.correctOptionId;
+        if (!correctOptId && Array.isArray(q.options) && typeof q.correct_answer === 'number') {
+          const opt = q.options[q.correct_answer];
+          if (opt) {
+            correctOptId = typeof opt === 'string' ? String.fromCharCode(97 + q.correct_answer) : opt.id;
+          }
+        }
+        return {
+          ...q,
+          id: q.id,
+          question_text: q.question_text || q.text || '',
+          text: q.text || q.question_text || '',
+          options: q.options,
+          correct_answer: q.correct_answer,
+          correctOptionId: correctOptId,
+          explanation: q.explanation || '',
+          marks: q.marks,
+          topicId: q.topicId,
+          createdAt: q.createdAt || '',
+        };
+      });
       // Create the initial shuffled deck and set it to state
       setFlashcards(shuffleArray([...formatted]));
       setCurrentCardIndex(0); // Reset to the first card
@@ -108,16 +120,28 @@ export const useFlashcards = (): UseFlashcardsReturn => {
   const handleShuffleCards = useCallback(() => {
     if (fetchedQuestions && fetchedQuestions.length > 0) {
       // Format questions into flashcard structure
-      const formatted = fetchedQuestions.map(q => ({
-        id: q.id,
-        question_text: q.question_text,
-        options: q.options,
-        correct_answer: q.correct_answer,
-        explanation: q.explanation || '',
-        marks: q.marks,
-        topicId: q.topicId,
-        createdAt: q.createdAt || '',
-      }));
+      const formatted = fetchedQuestions.map(q => {
+        let correctOptId = q.correctOptionId;
+        if (!correctOptId && Array.isArray(q.options) && typeof q.correct_answer === 'number') {
+          const opt = q.options[q.correct_answer];
+          if (opt) {
+            correctOptId = typeof opt === 'string' ? String.fromCharCode(97 + q.correct_answer) : opt.id;
+          }
+        }
+        return {
+          ...q,
+          id: q.id,
+          question_text: q.question_text || q.text || '',
+          text: q.text || q.question_text || '',
+          options: q.options,
+          correct_answer: q.correct_answer,
+          correctOptionId: correctOptId,
+          explanation: q.explanation || '',
+          marks: q.marks,
+          topicId: q.topicId,
+          createdAt: q.createdAt || '',
+        };
+      });
       // Shuffle and update the deck
       setFlashcards(shuffleArray([...formatted]));
       setCurrentCardIndex(0); // Reset to first card after shuffle
