@@ -57,7 +57,8 @@ const AccountPage = React.lazy(() => import('../pages/AccountPage')); // User ac
 const ResultsPage = React.lazy(() => import('../pages/ResultsPage')); // Quiz results page
 const QuizPage = React.lazy(() => import('../pages/QuizPage')); // Quiz taking page
 const QuizLoadingPage = React.lazy(() => import('../pages/QuizLoadingPage')); // Quiz loading page
-const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage')); // Homi Bhabha exam page
+const HomibhabhaPage = React.lazy(() => import('../pages/HomibhabhaPage'));
+const ScholarshipPage = React.lazy(() => import('../pages/ScholarshipPage')); // Scholarship exam page // Homi Bhabha exam page
 const SettingsPage = React.lazy(() => import('../pages/SettingsPage')); // User settings page
 const FlashcardPage = React.lazy(() => import('../pages/FlashcardPage')); // Flashcard study page
 const NotesPage = React.lazy(() => import('../pages/NotesPage')); // Study notes reader page
@@ -146,6 +147,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/flashcards/:topicId" element={<ProtectedRoute><FlashcardPage /></ProtectedRoute>} />
           <Route path="/notes/:topicId" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
           <Route path="/homibhabha" element={<ProtectedRoute><HomibhabhaPage /></ProtectedRoute>} />
+          <Route path="/scholarship" element={<ProtectedRoute><ScholarshipPage /></ProtectedRoute>} />
           {/* About page accessible to authenticated users, redirects guests to /about-guest */}
           <Route path="/about" element={currentUser ? <AboutPage /> : <Navigate to="/about-guest" />} />
 

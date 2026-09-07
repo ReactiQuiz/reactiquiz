@@ -124,6 +124,9 @@ export const useResults = (): UseResultsReturn => {
         } else if (result.topicId && result.topicId.startsWith('homibhabha-practice-')) {
           const parts = result.topicId.split('-');
           fallbackTopicName = `Homi Bhabha Practice Test - Std ${parts[2]}th`;
+        } else if (result.topicId && result.topicId.startsWith('scholarship-')) {
+          const paper = result.topicId.includes('paper_1') ? 'Paper 1' : 'Paper 2';
+          fallbackTopicName = `Scholarship Exam - ${paper}`;
         } else if (result.topicId) {
           fallbackTopicName = result.topicId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
         }

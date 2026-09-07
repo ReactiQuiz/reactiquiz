@@ -18,6 +18,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import PollIcon from '@mui/icons-material/Poll';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InfoIcon from '@mui/icons-material/Info';
+import SchoolIcon from '@mui/icons-material/School';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useAuth } from '../../contexts/AuthContext';
@@ -44,6 +45,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({ open, onClose }) => {
   }> = [
     { text: 'Dashboard', icon: <DashboardIcon fontSize="small" />, path: '/dashboard' },
     { text: 'All Subjects', icon: <CategoryIcon fontSize="small" />, path: '/subjects' },
+    { text: 'ScholarShip', icon: <SchoolIcon fontSize="small" />, path: '/scholarship' },
     { text: 'Results', icon: <PollIcon fontSize="small" />, path: '/results' },
     { type: 'divider' },
     { text: 'My Account', icon: <AccountCircleIcon fontSize="small" />, path: '/account' },
