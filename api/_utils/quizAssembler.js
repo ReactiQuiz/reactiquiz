@@ -68,3 +68,46 @@ const assembleHomiBhabhaPracticeTest = async (tx, params) => {
 module.exports = {
     assembleHomiBhabhaPracticeTest,
 };
+/**
+ * Assemble Scholarship Mock Exam (Paper 1 or Paper 2)
+ */
+const assembleScholarshipMock = async (tx, paperType, classLevel = 'Class 5th') => {
+    let langSubjectKey = 'first-language-marathi';
+    let mainSubjectKey = 'mathematics';
+
+    if (paperType === 'paper_2' || paperType === 'mock_paper_2') {
+        langSubjectKey = 'third-language-english';
+        mainSubjectKey = 'intelligence-test';
+    }
+
+    const [langQuestions, mainQuestions] = await Promise.all([
+        fetchQuestionsForSubject(tx, langSubjectKey, 25, classLevel),
+        fetchQuestionsForSubject(tx, mainSubjectKey, 50, classLevel)
+    ]);
+
+    let combined = [...langQuestions, ...mainQuestions];
+    if (combined.length === 0) {
+        throw new Error(`No scholarship questions found for ${paperType} and class ${classLevel}.`);
+    }
+
+    const numTwoOptionToTarget = Math.round(combined.length * 0.2);
+    let currentTwoOptionCount = combined.filter(q => q.numCorrectRequired === 2).length;
+
+    if (currentTwoOptionCount < numTwoOptionToTarget) {
+        for (let i = 0; i < combined.length && currentTwoOptionCount < numTwoOptionToTarget; i++) {
+            const q = combined[i];
+            if (!q.numCorrectRequired || q.numCorrectRequired === 1) {
+                q.numCorrectRequired = 2;
+                q.correctOptionIds = q.correctOptionIds || [q.correctOptionId || 'A', 'B'];
+                currentTwoOptionCount++;
+            }
+        }
+    }
+
+    return shuffleArray(combined);
+};
+
+module.exports = {
+    assembleHomiBhabhaPracticeTest,
+    assembleScholarshipMock,
+};
