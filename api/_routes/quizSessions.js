@@ -13,7 +13,7 @@ const crypto = require('crypto');
 const { turso } = require('../_utils/tursoClient');
 const { verifyToken } = require('../_middleware/auth');
 const { logApi, logError } = require('../_utils/logger');
-const { assembleHomiBhabhaPracticeTest } = require('../_utils/quizAssembler');
+const { assembleHomiBhabhaPracticeTest, assembleScholarshipMock } = require('../_utils/quizAssembler');
 const { shuffleArray } = require('../_utils/arrayUtils');
 const { asyncHandler } = require('../_utils/asyncHandler');
 
@@ -117,6 +117,8 @@ router.get('/:sessionId', verifyToken, asyncHandler(async (req, res) => {
             questions = quizParams.selectedQuestionIds.map((id) => byId.get(id)).filter(Boolean);
         } else if (quizParams.quizType === 'homibhabha-practice') {
             questions = await assembleHomiBhabhaPracticeTest(tx, quizParams);
+        } else if (quizParams.quizType === 'scholarship-mock') {
+            questions = await assembleScholarshipMock(tx, quizParams.paperType || 'paper_1', quizParams.classLevel || 'Class 5th');
         } else {
             const { rows } = await tx.execute({
                 sql: `SELECT id, topicId, text, options FROM questions WHERE topicId = ?;`,

@@ -2,21 +2,26 @@
 /**
  * Quiz Assembly Utility
  * 
- * Provides functions for assembling quiz questions for Homi Bhabha practice tests.
+ * Provides functions for assembling quiz questions for Homi Bhabha practice tests
+ * and Scholarship mock examinations (Paper 1 & Paper 2).
  */
 
-const { shuffleArray } = require('./arrayUtils');
+const { shuffleArray } = require("./arrayUtils");
 
 /**
  * Fetch Questions For Subject
  * 
  * Fetches questions for a specific subject from the Turso database.
- * Prioritizes questions from higher grades (9th, 8th, 7th).
+ * Prioritizes requested target class (e.g. 5th, 8th), then higher grades.
  */
-const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded) => {
+const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded, targetClass) => {
     let subjectQuestions = [];
     const gatheredQuestionIds = new Set();
-    const priorityOrder = ['9th', '8th', '7th'];
+
+    const formattedTargetClass = targetClass ? targetClass.replace("Class ", "").trim() : null;
+    const priorityOrder = formattedTargetClass
+        ? [formattedTargetClass, "5th", "8th", "7th", "9th"]
+        : ["9th", "8th", "7th", "5th"];
 
     for (const grade of priorityOrder) {
         if (subjectQuestions.length >= totalNeeded) break;
@@ -28,9 +33,9 @@ const fetchQuestionsForSubject = async (tx, subjectKey, totalNeeded) => {
                 JOIN quiz_topics t ON q.topicId = t.id
                 JOIN subjects s ON t.subject_id = s.id
                 WHERE s.subjectKey = ?
-                AND t.class = ?;
+                AND (t.class = ? OR t.class = ?);
             `,
-            args: [subjectKey, grade]
+            args: [subjectKey, grade, `Class ${grade}`]
         });
 
         const newQuestions = rows.filter((q) => !gatheredQuestionIds.has(q.id));
@@ -51,33 +56,30 @@ const assembleHomiBhabhaPracticeTest = async (tx, params) => {
     const { questionComposition } = params;
 
     const [physicsQs, chemistryQs, biologyQs, gkQs] = await Promise.all([
-        fetchQuestionsForSubject(tx, 'physics', questionComposition.physics.total),
-        fetchQuestionsForSubject(tx, 'chemistry', questionComposition.chemistry.total),
-        fetchQuestionsForSubject(tx, 'biology', questionComposition.biology.total),
-        fetchQuestionsForSubject(tx, 'gk', questionComposition.gk.total)
+        fetchQuestionsForSubject(tx, "physics", questionComposition.physics.total),
+        fetchQuestionsForSubject(tx, "chemistry", questionComposition.chemistry.total),
+        fetchQuestionsForSubject(tx, "biology", questionComposition.biology.total),
+        fetchQuestionsForSubject(tx, "gk", questionComposition.gk.total)
     ]);
 
     const allQuestions = [...physicsQs, ...chemistryQs, ...biologyQs, ...gkQs];
     if (allQuestions.length === 0) {
-        throw new Error('No questions found for the specified composition.');
+        throw new Error("No questions found for the specified composition.");
     }
 
     return shuffleArray(allQuestions);
 };
 
-module.exports = {
-    assembleHomiBhabhaPracticeTest,
-};
 /**
  * Assemble Scholarship Mock Exam (Paper 1 or Paper 2)
  */
-const assembleScholarshipMock = async (tx, paperType, classLevel = 'Class 5th') => {
-    let langSubjectKey = 'first-language-marathi';
-    let mainSubjectKey = 'mathematics';
+const assembleScholarshipMock = async (tx, paperType, classLevel = "Class 5th") => {
+    let langSubjectKey = "first-language-marathi";
+    let mainSubjectKey = "mathematics";
 
-    if (paperType === 'paper_2' || paperType === 'mock_paper_2') {
-        langSubjectKey = 'third-language-english';
-        mainSubjectKey = 'intelligence-test';
+    if (paperType === "paper_2" || paperType === "mock_paper_2") {
+        langSubjectKey = "third-language-english";
+        mainSubjectKey = "intelligence-test";
     }
 
     const [langQuestions, mainQuestions] = await Promise.all([
@@ -98,7 +100,7 @@ const assembleScholarshipMock = async (tx, paperType, classLevel = 'Class 5th') 
             const q = combined[i];
             if (!q.numCorrectRequired || q.numCorrectRequired === 1) {
                 q.numCorrectRequired = 2;
-                q.correctOptionIds = q.correctOptionIds || [q.correctOptionId || 'A', 'B'];
+                q.correctOptionIds = q.correctOptionIds || [q.correctOptionId || "A", "B"];
                 currentTwoOptionCount++;
             }
         }

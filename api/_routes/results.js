@@ -44,15 +44,52 @@ router.post('/', verifyToken, asyncHandler(async (req, res) => {
         let score = 0;
         for (const question of questionsResult.rows) {
             const questionId = question.id;
-            const userAnswerIndex = userAnswersSnapshot[questionId];
+            const rawUserAnswer = userAnswersSnapshot[questionId];
 
-            if (userAnswerIndex !== undefined && userAnswerIndex !== null) {
-                const options = JSON.parse(question.options);
-                if (options && options[userAnswerIndex]) {
-                    const selectedOptionId = options[userAnswerIndex].id;
-                    if (selectedOptionId === question.correctOptionId) {
-                        score++;
+            if (rawUserAnswer !== undefined && rawUserAnswer !== null) {
+                const options = JSON.parse(question.options || "[]");
+                let userSelectedOptionIds = [];
+
+                if (Array.isArray(rawUserAnswer)) {
+                    userSelectedOptionIds = rawUserAnswer.map(idx =>
+                        typeof idx === "number" && options[idx] ? options[idx].id : String(idx)
+                    );
+                } else if (typeof rawUserAnswer === "number" && options[rawUserAnswer]) {
+                    userSelectedOptionIds = [options[rawUserAnswer].id];
+                } else if (typeof rawUserAnswer === "string") {
+                    if (rawUserAnswer.trim().startsWith("[")) {
+                        try {
+                            const parsed = JSON.parse(rawUserAnswer);
+                            if (Array.isArray(parsed)) {
+                                userSelectedOptionIds = parsed.map(idx =>
+                                    typeof idx === "number" && options[idx] ? options[idx].id : String(idx)
+                                );
+                            }
+                        } catch (e) {}
                     }
+                    if (userSelectedOptionIds.length === 0) {
+                        userSelectedOptionIds = [rawUserAnswer.trim()];
+                    }
+                }
+
+                let targetCorrectIds = [];
+                if (question.correctOptionIds) {
+                    targetCorrectIds = Array.isArray(question.correctOptionIds)
+                        ? question.correctOptionIds
+                        : (typeof question.correctOptionIds === "string" ? JSON.parse(question.correctOptionIds) : []);
+                } else if (question.correctOptionId) {
+                    targetCorrectIds = [question.correctOptionId];
+                }
+
+                const normUser = userSelectedOptionIds.map(s => String(s).toUpperCase()).sort();
+                const normTarget = targetCorrectIds.map(s => String(s).toUpperCase()).sort();
+
+                if (
+                    normUser.length === normTarget.length &&
+                    normUser.length > 0 &&
+                    normUser.every((val, idx) => val === normTarget[idx])
+                ) {
+                    score++;
                 }
             }
         }

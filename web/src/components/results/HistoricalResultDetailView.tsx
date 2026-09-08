@@ -86,6 +86,9 @@ const HistoricalResultDetailView: React.FC<HistoricalResultDetailViewProps> = ({
     } else if (rawResult.topicId && rawResult.topicId.startsWith('homibhabha-practice-')) {
       const parts = rawResult.topicId.split('-');
       resolvedTopicName = `Homi Bhabha Practice Test - Std ${parts[2]}th`;
+    } else if (rawResult.topicId && rawResult.topicId.startsWith('scholarship-')) {
+      const paper = rawResult.topicId.includes('paper_1') ? 'Paper 1' : 'Paper 2';
+      resolvedTopicName = `Scholarship Exam - ${paper}`;
     } else if (rawResult.topicId) {
       resolvedTopicName = rawResult.topicId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     } else {
