@@ -13,7 +13,6 @@ import {
   DialogActions,
   Button,
   FormControl,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -65,7 +64,7 @@ const ScholarshipModal: React.FC<ScholarshipModalProps> = ({
 
       <DialogContent dividers>
         <Box sx={{ mb: 2.5 }}>
-          <Typography variant="subtitle2" color="text.secondary" gutterPath>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
             Examinee Standard / Grade Selection:
           </Typography>
           <FormControl component="fieldset" sx={{ mt: 1, width: "100%" }}>
